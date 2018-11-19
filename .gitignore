@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+aggregator/settings/local.py
+
+# SQLite
+*.sqlite3
