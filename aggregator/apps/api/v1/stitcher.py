@@ -1,3 +1,4 @@
+from copy import deepcopy
 from django.urls import reverse
 
 
@@ -59,12 +60,18 @@ class Stitcher:
             "polling_station_known",
             "postcode_location",
             "custom_finder",
-            "council",
-            "polling_station",
             "report_problem_url",
         )
         for field in fields:
             resp[field] = self.wdiv_resp[field]
+        resp["council"] = deepcopy(self.wdiv_resp["council"])
+        if resp["council"]:
+            resp["council"].pop("url", None)
+        resp["polling_station"] = deepcopy(self.wdiv_resp["polling_station"])
+        if resp["polling_station"]:
+            resp["polling_station"]["properties"].pop("urls", None)
+            resp["polling_station"]["properties"].pop("council", None)
+            resp["polling_station"]["properties"].pop("station_id", None)
         return resp
 
     def make_result_known_response(self):
