@@ -3,6 +3,12 @@ import aiohttp
 from django.conf import settings
 
 
+class ApiError(Exception):
+    def __init__(self, status, message):
+        self.status = status
+        self.message = message
+
+
 def get_event_loop():
     try:
         loop = asyncio.get_event_loop()
@@ -19,9 +25,8 @@ async def fetch(url):
     async with aiohttp.ClientSession(timeout=timeout) as session:
         async with session.get(url) as response:
             print(url)
-            response.raise_for_status()
             body = await response.json()
-            return {"url": url, "json": body}
+            return {"url": url, "json": body, "status": response.status}
 
 
 class ApiClient:
@@ -48,16 +53,21 @@ class ApiClient:
 
         self.loop.run_until_complete(responses)
 
-        return (
-            self.get_wdiv_result(responses.result()),
-            self.get_wcivf_result(responses.result()),
-        )
+        wdiv_result = self.get_wdiv_result(responses.result())
+        wcivf_result = self.get_wcivf_result(responses.result())
+
+        if wdiv_result["status"] >= 400:
+            raise ApiError(wdiv_result["status"], wdiv_result["json"]["detail"])
+        if wcivf_result["status"] >= 400:
+            raise ApiError(wcivf_result["status"], wcivf_result["json"]["detail"])
+
+        return (wdiv_result["json"], wcivf_result["json"])
 
     def get_result_by_base_url(self, results, base_url):
         for r in results:
             if base_url in r["url"]:
-                return r["json"]
-        return None
+                return r
+        raise ApiError(500, "Internal Server Error")
 
     def get_wdiv_result(self, results):
         return self.get_result_by_base_url(results, settings.WDIV_BASE_URL)
@@ -71,15 +81,22 @@ class ApiClient:
 
         wdiv_response = asyncio.ensure_future(fetch(wdiv_url))
         self.loop.run_until_complete(wdiv_response)
+        wdiv_result = wdiv_response.result()
+        if wdiv_result["status"] >= 400:
+            raise ApiError(wdiv_result["status"], wdiv_result["json"]["detail"])
+        wdiv_json = wdiv_result["json"]
 
-        wdiv_result = wdiv_response.result()["json"]
-        if wdiv_result["ballots"]:
-            ballot_ids = [b["ballot_paper_id"] for b in wdiv_result["ballots"]]
+        if wdiv_json["ballots"]:
+            ballot_ids = [b["ballot_paper_id"] for b in wdiv_json["ballots"]]
             wcivf_url = f'{settings.WCIVF_BASE_URL}candidates_for_ballots/?ballot_ids={",".join(ballot_ids)}'
         else:
-            wcivf_url = f'{settings.WCIVF_BASE_URL}candidates_for_postcode/?postcode={wdiv_result["addresses"][0]["postcode"]}'
+            wcivf_url = f'{settings.WCIVF_BASE_URL}candidates_for_postcode/?postcode={wdiv_json["addresses"][0]["postcode"]}'
 
         wcivf_response = asyncio.ensure_future(fetch(wcivf_url))
         self.loop.run_until_complete(wcivf_response)
+        wcivf_result = wcivf_response.result()
+        if wcivf_result["status"] >= 400:
+            raise ApiError(wcivf_result["status"], wcivf_result["json"]["detail"])
+        wcivf_json = wcivf_result["json"]
 
-        return wdiv_result, wcivf_response.result()["json"]
+        return wdiv_json, wcivf_json

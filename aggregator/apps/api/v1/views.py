@@ -4,7 +4,7 @@ import aiohttp
 import json
 from django.http import HttpResponse
 from django.views import View
-from .api_client import ApiClient
+from .api_client import ApiClient, ApiError
 from .stitcher import Stitcher, StitcherValidationError
 
 
@@ -16,17 +16,15 @@ class BaseView(View, metaclass=abc.ABCMeta):
     def get(self, request, *args, **kwargs):
         try:
             return self.get_response(request, *args, **kwargs)
-        except aiohttp.ClientResponseError as e:
-            # TODO: improve this
+        except ApiError as e:
             return HttpResponse(
                 json.dumps({"message": e.message}),
                 content_type="application/json",
                 status=e.status,
             )
-        except asyncio.TimeoutError as e:
-            # TODO: improve this
+        except (asyncio.TimeoutError, aiohttp.ClientConnectorError):
             return HttpResponse(
-                json.dumps({"message": "timeout"}),
+                json.dumps({"message": "Backend Connection Error"}),
                 content_type="application/json",
                 status=500,
             )
