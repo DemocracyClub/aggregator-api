@@ -14,9 +14,15 @@ class Stitcher:
         self.validate()
 
     def validate(self):
-        # TODO: perform some validation checks here to ensure
+        for ballot in self.wdiv_resp["ballots"]:
+            if not self.get_wcivf_ballot(ballot["ballot_paper_id"]):
+                raise StitcherValidationError(
+                    f'Could not find expected ballot {ballot["ballot_paper_id"]}'
+                )
+
+        # TODO: add more validation checks here to ensure
         # the wdiv/wcivf responses we've got to work with make sense
-        # raise a StitcherValidationError if not
+
         return True
 
     def make_address_picker_response(self):

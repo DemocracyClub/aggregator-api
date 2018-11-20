@@ -41,7 +41,7 @@ class PostcodeView(BaseView):
             stitcher = Stitcher(wdiv, wcivf, request)
         except StitcherValidationError:
             return HttpResponse(
-                json.dumps({"message": str(e)}),
+                json.dumps({"message": "Internal Server Error"}),
                 content_type="application/json",
                 status=500,
             )
@@ -65,7 +65,7 @@ class AddressView(BaseView):
             stitcher = Stitcher(wdiv, wcivf, request)
         except StitcherValidationError:
             return HttpResponse(
-                json.dumps({"message": str(e)}),
+                json.dumps({"message": "Internal Server Error"}),
                 content_type="application/json",
                 status=500,
             )
