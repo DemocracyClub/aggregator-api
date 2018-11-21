@@ -18,13 +18,15 @@ def get_event_loop():
     return loop
 
 
-async def fetch(url):
-    # TODO: set a custom user agent
-    # TODO: set utm_ params
+async def fetch(url, params=None):
+    if not params:
+        params = {}
+
+    params["utm_medium"] = "devs.DC API"
+    headers = {"User-Agent": "devs.DC API"}
     timeout = aiohttp.ClientTimeout(total=10)
     async with aiohttp.ClientSession(timeout=timeout) as session:
-        async with session.get(url) as response:
-            print(url)
+        async with session.get(url, params=params, headers=headers) as response:
             body = await response.json()
             return {"url": url, "json": body, "status": response.status}
 
@@ -40,14 +42,16 @@ class ApiClient:
             pass
 
     def get_data_for_postcode(self, postcode):
-        # TODO: API key for WDIV
-        wdiv_url = f"{settings.WDIV_BASE_URL}postcode/{postcode}"
+        wdiv_url = f"{settings.WDIV_BASE_URL}postcode/{postcode}/"
+        wdiv_params = {}
+        if settings.WDIV_API_KEY:
+            wdiv_params["auth_token"] = settings.WDIV_API_KEY
         wcivf_url = (
             f"{settings.WCIVF_BASE_URL}candidates_for_postcode/?postcode={postcode}"
         )
 
         responses = asyncio.gather(
-            asyncio.ensure_future(fetch(wdiv_url)),
+            asyncio.ensure_future(fetch(wdiv_url, wdiv_params)),
             asyncio.ensure_future(fetch(wcivf_url)),
         )
 
@@ -76,10 +80,12 @@ class ApiClient:
         return self.get_result_by_base_url(results, settings.WCIVF_BASE_URL)
 
     def get_data_for_address(self, slug):
-        # TODO: API key for WDIV
-        wdiv_url = f"{settings.WDIV_BASE_URL}address/{slug}"
+        wdiv_url = f"{settings.WDIV_BASE_URL}address/{slug}/"
+        wdiv_params = {}
+        if settings.WDIV_API_KEY:
+            wdiv_params["auth_token"] = settings.WDIV_API_KEY
 
-        wdiv_response = asyncio.ensure_future(fetch(wdiv_url))
+        wdiv_response = asyncio.ensure_future(fetch(wdiv_url, wdiv_params))
         self.loop.run_until_complete(wdiv_response)
         wdiv_result = wdiv_response.result()
         if wdiv_result["status"] >= 400:
