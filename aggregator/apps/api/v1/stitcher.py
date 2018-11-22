@@ -25,6 +25,12 @@ class Stitcher:
 
         return True
 
+    def get_electoral_services(self):
+        council = deepcopy(self.wdiv_resp["council"])
+        if council:
+            council.pop("url", None)
+        return council
+
     def make_address_picker_response(self):
         addresses = []
         for address in self.wdiv_resp["addresses"]:
@@ -38,7 +44,13 @@ class Stitcher:
                     ),
                 }
             )
-        response = {"address_picker": True, "addresses": addresses, "results": []}
+        response = {
+            "address_picker": True,
+            "addresses": addresses,
+            "results": [],
+            "electoral_services": self.get_electoral_services(),
+            "postcode_location": self.wdiv_resp["postcode_location"],
+        }
         return response
 
     def get_dates(self):
@@ -62,22 +74,14 @@ class Stitcher:
     @property
     def minimal_wdiv_response(self):
         resp = {}
-        fields = (
-            "polling_station_known",
-            "postcode_location",
-            "custom_finder",
-            "report_problem_url",
-        )
+        fields = ("polling_station_known", "custom_finder", "report_problem_url")
         for field in fields:
             resp[field] = self.wdiv_resp[field]
-        resp["council"] = deepcopy(self.wdiv_resp["council"])
-        if resp["council"]:
-            resp["council"].pop("url", None)
-        resp["polling_station"] = deepcopy(self.wdiv_resp["polling_station"])
-        if resp["polling_station"]:
-            resp["polling_station"]["properties"].pop("urls", None)
-            resp["polling_station"]["properties"].pop("council", None)
-            resp["polling_station"]["properties"].pop("station_id", None)
+        resp["station"] = deepcopy(self.wdiv_resp["polling_station"])
+        if resp["station"]:
+            resp["station"]["properties"].pop("urls", None)
+            resp["station"]["properties"].pop("council", None)
+            resp["station"]["properties"].pop("station_id", None)
         return resp
 
     def make_result_known_response(self):
@@ -106,5 +110,11 @@ class Stitcher:
                 ballot["wcivf_url"] = wcivf_ballot["absolute_url"]
         if results:
             results[0]["polling_station"] = self.minimal_wdiv_response
-        response = {"address_picker": False, "addresses": [], "results": results}
+        response = {
+            "address_picker": False,
+            "addresses": [],
+            "results": results,
+            "electoral_services": self.get_electoral_services(),
+            "postcode_location": self.wdiv_resp["postcode_location"],
+        }
         return response
