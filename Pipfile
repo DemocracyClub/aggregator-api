@@ -16,3 +16,6 @@ dc-base-theme = {ref = "0.3.7",git = "https://github.com/DemocracyClub/dc_base_t
 
 [requires]
 python_version = "3.6"
+
+[scripts]
+black = "black ."

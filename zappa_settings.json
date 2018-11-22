@@ -1,0 +1,10 @@
+{
+    "dev": {
+        "aws_region": "eu-west-2",
+        "django_settings": "aggregator.settings.zappa",
+        "profile_name": "wcivf",
+        "project_name": "aggregator-api",
+        "runtime": "python3.6",
+        "s3_bucket": "aggregator-api-zappa"
+    }
+}
