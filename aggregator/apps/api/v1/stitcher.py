@@ -85,10 +85,20 @@ class Stitcher:
         dates = self.get_dates()
         for date in dates:
             ballots = self.get_ballots_for_date(date)
-            results.append({"date": date, "polling_station": None, "ballots": ballots})
+            results.append(
+                {
+                    "date": date,
+                    "polling_station": None,
+                    # TODO: populate notifications with aggregated
+                    # ballot meta-data relevant to this date
+                    "notifications": [],
+                    "ballots": ballots,
+                }
+            )
         for date in results:
             for ballot in date["ballots"]:
                 wcivf_ballot = self.get_wcivf_ballot(ballot["ballot_paper_id"])
+
                 ballot["election_id"] = wcivf_ballot["election_id"]
                 ballot["election_name"] = wcivf_ballot["election_name"]
                 ballot["post_name"] = wcivf_ballot["post"]["post_name"]
