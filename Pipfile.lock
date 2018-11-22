@@ -1,10 +1,16 @@
 {
     "_meta": {
         "hash": {
+<<<<<<< 2ba823f2c7a7a0c4b9d689a6b23ade6c90ecab94
             "sha256": "8ee84a06a629ad2226f825bedb784204f76002aebffecec4408d7fe289bcb8aa"
+=======
+            "sha256": "6c8ea0627a47ceda14250d2c489f829c3b453ef6cf22e9652615919e51bc8d60"
+>>>>>>> pipenv faffing
         },
         "pipfile-spec": 6,
-        "requires": {},
+        "requires": {
+            "python_version": "3.6"
+        },
         "sources": [
             {
                 "name": "pypi",
@@ -42,6 +48,7 @@
             "index": "pypi",
             "version": "==3.4.4"
         },
+<<<<<<< 2ba823f2c7a7a0c4b9d689a6b23ade6c90ecab94
         "appdirs": {
             "hashes": [
                 "sha256:9e5896d1372858f8dd3344faf4e5014d21849c756c8d5701f78f8a103b372d92",
@@ -56,6 +63,8 @@
             ],
             "version": "==1.9.3"
         },
+=======
+>>>>>>> pipenv faffing
         "async-timeout": {
             "hashes": [
                 "sha256:0c3c816a028d47f659d6ff5c745cb2acf1f966da1fe5c19c77a70282b25f4c5f",
@@ -70,6 +79,7 @@
             ],
             "version": "==18.2.0"
         },
+<<<<<<< 2ba823f2c7a7a0c4b9d689a6b23ade6c90ecab94
         "black": {
             "hashes": [
                 "sha256:817243426042db1d36617910df579a54f1afd659adb96fc5032fcf4b36209739",
@@ -106,19 +116,14 @@
             ],
             "version": "==1.1.0.post1"
         },
+=======
+>>>>>>> pipenv faffing
         "chardet": {
             "hashes": [
                 "sha256:84ab92ed1c4d4f16916e05906b6b75a6c0fb5db821cc65e70cbd64a3e2a5eaae",
                 "sha256:fc323ffcaeaed0e0a02bf4d117757b98aed530d9ed4531e3e15460124c106691"
             ],
             "version": "==3.0.4"
-        },
-        "click": {
-            "hashes": [
-                "sha256:2335065e6395b9e67ca716de5f7526736bfa6ceead690adf616d925bdc622b13",
-                "sha256:5b94b49521f6456670fdb30cd82a4eca9412788a93fa6dd6df72c94d5a8ff2d7"
-            ],
-            "version": "==7.0"
         },
         "django": {
             "hashes": [
@@ -221,6 +226,7 @@
                 "sha256:f08c1dcac70b558183b3b755b92f1135a76fd1caa04009b89ddea57a815599aa"
             ],
             "version": "==4.5.1"
+<<<<<<< 2ba823f2c7a7a0c4b9d689a6b23ade6c90ecab94
         },
         "placebo": {
             "hashes": [
@@ -242,6 +248,8 @@
                 "sha256:c3733135d3b184196fdb8844f6a74bbfb9cf6720d1dcce3254bdc434353f938f"
             ],
             "version": "==1.2.4"
+=======
+>>>>>>> pipenv faffing
         },
         "pytz": {
             "hashes": [
@@ -250,6 +258,7 @@
             ],
             "version": "==2018.7"
         },
+<<<<<<< 2ba823f2c7a7a0c4b9d689a6b23ade6c90ecab94
         "pyyaml": {
             "hashes": [
                 "sha256:3d7da3009c0f3e783b2c873687652d83b1bbfd5c88e9813fb7e5b03c0dd3108b",
@@ -342,6 +351,8 @@
             ],
             "version": "==0.4.6"
         },
+=======
+>>>>>>> pipenv faffing
         "yarl": {
             "hashes": [
                 "sha256:2556b779125621b311844a072e0ed367e8409a18fa12cbd68eb1258d187820f9",
@@ -366,5 +377,42 @@
             "version": "==0.47.1"
         }
     },
-    "develop": {}
+    "develop": {
+        "appdirs": {
+            "hashes": [
+                "sha256:9e5896d1372858f8dd3344faf4e5014d21849c756c8d5701f78f8a103b372d92",
+                "sha256:d8b24664561d0d34ddfaec54636d502d7cea6e29c3eaf68f3df6180863e2166e"
+            ],
+            "version": "==1.4.3"
+        },
+        "attrs": {
+            "hashes": [
+                "sha256:10cbf6e27dbce8c30807caf056c8eb50917e0eaafe86347671b57254006c3e69",
+                "sha256:ca4be454458f9dec299268d472aaa5a11f67a4ff70093396e1ceae9c76cf4bbb"
+            ],
+            "version": "==18.2.0"
+        },
+        "black": {
+            "hashes": [
+                "sha256:817243426042db1d36617910df579a54f1afd659adb96fc5032fcf4b36209739",
+                "sha256:e030a9a28f542debc08acceb273f228ac422798e5215ba2a791a6ddeaaca22a5"
+            ],
+            "index": "pypi",
+            "version": "==18.9b0"
+        },
+        "click": {
+            "hashes": [
+                "sha256:2335065e6395b9e67ca716de5f7526736bfa6ceead690adf616d925bdc622b13",
+                "sha256:5b94b49521f6456670fdb30cd82a4eca9412788a93fa6dd6df72c94d5a8ff2d7"
+            ],
+            "version": "==7.0"
+        },
+        "toml": {
+            "hashes": [
+                "sha256:229f81c57791a41d65e399fc06bf0848bab550a9dfd5ed66df18ce5f05e73d5c",
+                "sha256:235682dd292d5899d361a811df37e04a8828a5b1da3115886b73cf81ebc9100e"
+            ],
+            "version": "==0.10.0"
+        }
+    }
 }

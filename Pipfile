@@ -4,11 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [dev-packages]
+black = "==18.9b0"
 
 [packages]
 django = ">=1.11,<2.0"
 aiohttp = ">=3.4"
-black = "==18.9b0"
 zappa = "*"
 dc-base-theme = {editable = true,git = "https://github.com/DemocracyClub/dc_base_theme.git",ref = "0.3.7"}
 
@@ -18,3 +18,6 @@ python_version = "3.6"
 
 [scripts]
 black = "black ."
+
+[requires]
+python_version = "3.6"
