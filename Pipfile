@@ -13,4 +13,4 @@ name = "pypi"
 
 django = ">=1.11,<2.0"
 aiohttp = ">=3.4"
-black = "*"
+black = "==18.9b0"
