@@ -1,0 +1,12 @@
+{% extends "dc_base.html" %}
+
+{% load pipeline %}
+
+{% block extra_site_css %}
+    {% stylesheet 'styles' %}
+{% endblock extra_site_css %}
+
+{% block site_meta %}
+    <title>{% block title %}{% endblock title %} | {{ site_title }}</title>
+    {{ block.super }}
+{% endblock site_meta %}
