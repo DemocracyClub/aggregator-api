@@ -43,7 +43,7 @@ class ApiClient:
 
     def get_data_for_postcode(self, postcode):
         wdiv_url = f"{settings.WDIV_BASE_URL}postcode/{postcode}/"
-        wdiv_params = {}
+        wdiv_params = {"all_future_ballots": 1}
         if settings.WDIV_API_KEY:
             wdiv_params["auth_token"] = settings.WDIV_API_KEY
         wcivf_url = (
@@ -81,7 +81,7 @@ class ApiClient:
 
     def get_data_for_address(self, slug):
         wdiv_url = f"{settings.WDIV_BASE_URL}address/{slug}/"
-        wdiv_params = {}
+        wdiv_params = {"all_future_ballots": 1}
         if settings.WDIV_API_KEY:
             wdiv_params["auth_token"] = settings.WDIV_API_KEY
 
