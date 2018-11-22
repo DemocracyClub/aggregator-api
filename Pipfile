@@ -4,13 +4,12 @@ url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [dev-packages]
-
-
+black = "==18.9b0"
 
 [packages]
-
 django = ">=1.11,<2.0"
 aiohttp = ">=3.4"
-black = "*"
+
+[requires]
+python_version = "3.6"
