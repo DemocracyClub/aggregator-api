@@ -15,7 +15,6 @@ dc-base-theme = {editable = true,git = "https://github.com/DemocracyClub/dc_base
 [requires]
 python_version = "3.6"
 
-
 [scripts]
 black = "black ."
 
