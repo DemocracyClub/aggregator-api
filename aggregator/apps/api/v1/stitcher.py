@@ -40,7 +40,7 @@ class Stitcher:
                     "postcode": address["postcode"],
                     "slug": address["slug"],
                     "url": self.request.build_absolute_uri(
-                        reverse("v1-address", args=(address["slug"],))
+                        reverse("api:v1:address", args=(address["slug"],))
                     ),
                 }
             )
