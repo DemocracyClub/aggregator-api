@@ -1,0 +1,90 @@
+# Python CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-python/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
+      - image: circleci/python:3.6.1
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v2-dependencies-{{ checksum "Pipfile.lock" }}
+          # fallback to using the latest cache if no exact match is found
+          - v2-dependencies-
+
+      - run:
+          name: install dependencies
+          command: |
+            sudo pip install pipenv
+            pipenv install --dev
+
+      - save_cache:
+          paths:
+            - .local/share/virtualenvs/
+          key: v2-dependencies-{{ checksum "Pipfile.lock" }}
+
+      - run:
+          name: run Black
+          command: |
+            pipenv run black
+
+      - store_artifacts:
+          path: test-reports
+          destination: test-reports
+  deploy:
+    docker:
+      # specify the version you desire here
+      # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
+      - image: circleci/python:3.6.1
+
+    working_directory: ~/repo
+
+    steps:
+      - run:
+          name: Do Deploy
+          command: |
+            echo "Deploy would be here"
+
+workflows:
+  version: 2
+  deploy_from_master:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - develop
+                - master
+
+#
+# workflows:
+#   version: 2
+#   dev_stage_pre-prod:
+#     jobs:
+#       - test_dev:
+#           filters:  # using regex filters requires the entire branch to match
+#             branches:
+#               only:  # only branches matching the below regex filters will run
+#                 - dev
+#                 - /user-.*/
+#       - test_stage:
+#           filters:
+#             branches:
+#               only: stage
+#       - test_pre-prod:
+#           filters:
+#             branches:
+#               only: /pre-prod(?:-.+)?$/
