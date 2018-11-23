@@ -66,8 +66,7 @@ workflows:
           filters:
             branches:
               only:
-                - develop
-                - master
+                - fake-master
 
 
 #
