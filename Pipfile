@@ -17,10 +17,3 @@ python_version = "3.6"
 
 [scripts]
 black = "black ."
-
-[requires]
-python_version = "3.6"
-
-
-[scripts]
-black = "black ."
