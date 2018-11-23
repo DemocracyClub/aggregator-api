@@ -112,6 +112,7 @@ from dc_theme.settings import (
     get_pipeline_settings,
     STATICFILES_STORAGE,
     STATICFILES_FINDERS,
+    SASS_INCLUDE_PATHS,
 )
 
 PIPELINE = get_pipeline_settings(extra_css=["css/styles.scss"])
