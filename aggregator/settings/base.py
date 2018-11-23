@@ -26,6 +26,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "api",
+    "dc_theme",
+    "pipeline",
 ]
 
 MIDDLEWARE = [
@@ -43,7 +45,9 @@ ROOT_URLCONF = "aggregator.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [
+            os.path.join(BASE_DIR, "templates")
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -51,6 +55,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                'dc_theme.context_processors.dc_theme_context',
             ]
         },
     }
@@ -102,6 +107,24 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
+from dc_theme.settings import (
+    get_pipeline_settings,
+    STATICFILES_STORAGE,
+    STATICFILES_FINDERS
+)
+
+PIPELINE = get_pipeline_settings(
+    extra_css=['css/styles.scss', ],
+)
+
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static_files")
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "assets"),
+)
+
+SITE_TITLE = "Democracy Club Developers"
 
 from .constants import *  # noqa
 

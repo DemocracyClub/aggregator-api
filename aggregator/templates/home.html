@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+
+{% block title %}Developers{% endblock title %}
+
+{% block content %}
+<div class="card">
+    <h1>Developer site <em>Alpha</em></h1>
+
+    <p>This is a site for our APIs and data. It's very young and will be updated soon.</p>
+    <p>If you're interested in what we're up to, please
+      <a href="https://democracyclub.org.uk/contact/">get in touch</a> or
+      <a href="https://slack.democracyclub.org.uk/">join our Slack</a>.
+
+    </p>
+</div>
+
+<div class="card">
+  <p>
+    At the moment, about the only thing this project does is give
+    election, candidates and polling station info for postcodes.</p>
+
+    <p>See, e.g. <code>{% url "v1-postcode" "SW1A1AA"%}</code>.</p>
+
+</div>
+
+{% endblock content %}
