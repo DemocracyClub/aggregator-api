@@ -2,6 +2,8 @@ import abc
 import asyncio
 import aiohttp
 import json
+import os
+import re
 from django.http import HttpResponse
 from django.views import View
 from .api_client import ApiClient, ApiError
@@ -72,4 +74,57 @@ class AddressView(BaseView):
 
         return HttpResponse(
             json.dumps(result), content_type="application/json", status=200
+        )
+
+
+class SandboxView(View):
+    def get(self, request, *args, **kwargs):
+
+        base_path = os.path.dirname(__file__)
+        get_fixture = lambda filename: open(
+            os.path.join(base_path, "sandbox-responses", f"{filename}.json")
+        )
+
+        example_postcodes = (
+            "AA11AA",  # no election
+            "AA12AA",  # one election, station known, with candidates
+            "AA12AB",  # one election, station not known, with candidates
+            "AA13AA",  # address picker
+            "AA14AA",  # multiple elections
+        )
+
+        if "postcode" in kwargs:
+            postcode = re.sub("[^A-Z0-9]", "", kwargs["postcode"].upper())
+            if postcode in example_postcodes:
+                return HttpResponse(
+                    get_fixture(postcode), content_type="application/json", status=200
+                )
+            return HttpResponse(
+                json.dumps({"message": "Could not geocode from any source"}),
+                content_type="application/json",
+                status=400,
+            )
+
+        example_slugs = (
+            "e09000033-2282254634585",
+            "e09000033-8531289123599",
+            "e09000033-7816246896787",
+        )
+        if "slug" in kwargs:
+            if kwargs["slug"] in example_slugs:
+                return HttpResponse(
+                    get_fixture(kwargs["slug"]),
+                    content_type="application/json",
+                    status=200,
+                )
+            return HttpResponse(
+                json.dumps({"message": "Address not found"}),
+                content_type="application/json",
+                status=404,
+            )
+
+        return HttpResponse(
+            json.dumps({"message": "Internal Server Error"}),
+            content_type="application/json",
+            status=500,
         )
