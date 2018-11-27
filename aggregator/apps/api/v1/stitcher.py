@@ -92,7 +92,12 @@ class Stitcher:
             results.append(
                 {
                     "date": date,
-                    "polling_station": None,
+                    "polling_station": {
+                        "polling_station_known": False,
+                        "custom_finder": None,
+                        "report_problem_url": None,
+                        "station": None,
+                    },
                     # TODO: populate notifications with aggregated
                     # ballot meta-data relevant to this date
                     "notifications": [],

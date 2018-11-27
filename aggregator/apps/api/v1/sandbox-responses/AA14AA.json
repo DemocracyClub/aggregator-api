@@ -400,7 +400,12 @@
     },
     {
       "date": "2018-06-14",
-      "polling_station": null,
+      "polling_station": {
+        "polling_station_known": false,
+        "custom_finder": null,
+        "report_problem_url": null,
+        "station": null
+      },
       "notifications": [],
       "ballots": [
         {
