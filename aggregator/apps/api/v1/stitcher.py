@@ -47,7 +47,7 @@ class Stitcher:
         response = {
             "address_picker": True,
             "addresses": addresses,
-            "results": [],
+            "dates": [],
             "electoral_services": self.get_electoral_services(),
             "postcode_location": self.wdiv_resp["postcode_location"],
         }
@@ -118,7 +118,7 @@ class Stitcher:
         response = {
             "address_picker": False,
             "addresses": [],
-            "results": results,
+            "dates": results,
             "electoral_services": self.get_electoral_services(),
             "postcode_location": self.wdiv_resp["postcode_location"],
         }
