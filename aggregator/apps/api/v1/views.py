@@ -16,6 +16,18 @@ class BaseView(View, metaclass=abc.ABCMeta):
         pass
 
     def get(self, request, *args, **kwargs):
+
+        auth_header = request.META.get("HTTP_AUTHORIZATION", None)
+        auth_param = request.GET.get("auth_token", None)
+        if (not auth_param and not auth_header) or (
+            auth_header and not re.match(r"Token .*", auth_header)
+        ):
+            return HttpResponse(
+                json.dumps({"message": "Invalid token."}),
+                content_type="application/json",
+                status=401,
+            )
+
         try:
             return self.get_response(request, *args, **kwargs)
         except ApiError as e:
