@@ -1,0 +1,238 @@
+FORMAT: 1A
+HOST: https://developers.democracyclub.org.uk/api/v1
+
+
+## Group Democracy Club Developer API
+
+This API is currently in private beta. All requests must be made with an API key. If you're interested in working with the data, [contact us](https://democracyclub.org.uk/contact/) for an API key.
+
+
+## Group Postcode search
+
+The `/postcode` and `/address` endpoints find details of ballots, candidates and polling stations based on the user's registered address. This allows you to present Democracy Club's data to users in your website or app.
+
+The entry point to a polling station search is a call to the `/postcode` endpoint.
+A valid postcode search may result in one of 3 outcomes:
+* There are no upcoming ballots relevant to this area.
+* We hold data for this area and the same ballots, candidates and polling station data is relevant to all registered addresses with this postcode.
+* We hold data for this area but different information is applicable to different addresses with this postcode. To find relevant data, we must show the user an address picker and make a second API call to the `/address` endpoint.
+
+
+## Postcode search: No upcoming ballots [/postcode/{postcode}.json]
+
+Example of a response when there are no upcoming ballots.
+
+In this case `address_picker` is `false` and `dates` is an empty array.
+
++ Parameters
+    + postcode: `SW1A1AA` (required, string) - Whitespace in postcodes is ignored, so format may be `SW1A1AA` or `SW1A 1AA`
+
+### Postcode search: No upcoming ballots [GET]
+
++ Response 200 (application/json)
+
+    + Attributes
+        + `address_picker`: `false` (boolean) - True if we need to show this user an address picker
+        + addresses (array[object]) - An array of address objects containing the addresses applicable to this request (if necessary)
+        + dates (array[object]) - An array of date objects containing details of relevant ballots, candidates and polling station information
+        + `electoral_services` (ElectoralServices, nullable) - Contact details for the user's local Electoral Services team. If we do not know the user's polling station, this can be used to provide contact info for their local council. This may be `null` if we are not able to determine the user's council.
+        + `postcode_location` (PostcodeLocation) - A [GeoJSON Feature](https://tools.ietf.org/html/rfc7946#section-3.2) containing a [Point object](https://tools.ietf.org/html/rfc7946#section-3.1.2) describing the centroid of the input postcode. If providing a map or directions for a polling station journey, use this as the start point. This may be `null` if we are not able to accurately geocode.
+
++ Response 400 (application/json)
+
+        { "detail": "Could not geocode from any source" }
+
+
+## Postcode search: Results found [/postcode/{postcode}.json]
+
+Example of a response when we hold data for this area and the same ballots, candidates and polling station data is relevant to all registered addresses with this postcode.
+
+In this case `address_picker` is `false` and `dates` is an array of date objects.
+
++ Parameters
+    + postcode: `SW1A1AA` (required, string) - Whitespace in postcodes is ignored, so format may be `SW1A1AA` or `SW1A 1AA`
+
+### Postcode search: Results found [GET]
+
++ Response 200 (application/json)
+
+    + Attributes(ValidResponse)
+
++ Response 400 (application/json)
+
+        { "detail": "Could not geocode from any source" }
+
+
+## Postcode search: Address picker [/postcode/{postcode}.json]
+
+Example of a response when we must show the user an address picker. This should be followed by a second API call to the `/address` endpoint.
+
+In this case `address_picker` is `true` and `dates` is an empty array. `addresses` is an array of address objects.
+
++ Parameters
+    + postcode: `SW1A1AA` (required, string) - Whitespace in postcodes is ignored, so format may be `SW1A1AA` or `SW1A 1AA`
+
+
+### Postcode search: Address picker [GET]
+
++ Response 200 (application/json)
+
+    + Attributes
+        + `address_picker`: `true` (boolean) - True if we need to show this user an address picker
+        + addresses (array[object], fixed-type) - An array of address objects containing the addresses applicable to this request (if necessary)
+            + (object)
+                + address: `16 DUNCAN CLOSE, ST. MELLONS, CARDIFF`
+                + postcode: `CF3 1NP`
+                + slug: `w06000015-100100106448`
+                + url: `http://developers.democracyclub.org.uk/api/v1/address/w06000015-100100106448` - Call this URL to get data for this registered address
+            + (object)
+                + address: `26 DUNCAN CLOSE, ST. MELLONS, CARDIFF`
+                + postcode: `CF3 1NP`
+                + slug: `w06000015-100100106458`
+                + url: `http://developers.democracyclub.org.uk/api/v1/address/w06000015-100100106448` - Call this URL to get data for this registered address
+        + dates (array[object]) - An array of date objects containing details of relevant ballots, candidates and polling station information
+        + `electoral_services` (ElectoralServices, nullable) - Contact details for the user's local Electoral Services team. If we do not know the user's polling station, this can be used to provide contact info for their local council. This may be `null` if we are not able to determine the user's council.
+        + `postcode_location` (PostcodeLocation) - A [GeoJSON Feature](https://tools.ietf.org/html/rfc7946#section-3.2) containing a [Point object](https://tools.ietf.org/html/rfc7946#section-3.1.2) describing the centroid of the input postcode. If providing a map or directions for a polling station journey, use this as the start point. This may be `null` if we are not able to accurately geocode.
+
++ Response 400 (application/json)
+
+        { "detail": "Could not geocode from any source" }
+
+
+## Group Address search
+
+## Address search [/address/{slug}.json]
+
+In the event that the same information is not applicable to all addresses described by a postcode, a call to `/postcode` will return an array of address objects, each of which corresponds to a call to the `/address` endpoint. A subsequent call to `/address` will return an object of the same format as a valid call to `/postcode`.
+
++ Parameters
+    + slug: `e07000223-527-5-truleigh-way-shoreham-by-sea-west-sussex-bn436hw` (required, string) - A unique slug describing a residential address
+
+### Address search [GET]
+
++ Response 200 (application/json)
+
+    + Attributes(ValidResponse)
+
++ Response 404 (application/json)
+
+        { "detail": "Address not found" }
+
+
+## Group Sandbox outputs
+
+At any time the live data we expose via the API reflects reality. This means that there are conditions which are important to model in your application but are difficult to replicate using live data.
+To make it easier to replicate a variety of behaviours in test/development we provide a 'sandbox API' at [http://developers.democracyclub.org.uk/api/v1/sandbox](http://developers.democracyclub.org.uk/api/v1/sandbox) which serves fake but plausible data.
+The following test postcodes and address slugs are valid in the sandbox. Each one represents a different scenario:
+
+* postcode [AA11AA](http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA11AA) - No upcoming ballots
+* postcode [AA12AA](http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA12AA) - One upcoming ballot, station known, with candidates
+* postcode [AA12AB](http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA12AB) - One upcoming ballot, station not known, with candidates
+* postcode [AA13AA](http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA13AA) - We need to show the user an address picker. Each of the following `/address` calls has different polling station info:
+    * address slug [e09000033-2282254634585](http://developers.democracyclub.org.uk/api/v1/sandbox/address/e09000033-2282254634585)
+    * address slug [e09000033-8531289123599](http://developers.democracyclub.org.uk/api/v1/sandbox/address/e09000033-8531289123599)
+    * address slug [e09000033-7816246896787](http://developers.democracyclub.org.uk/api/v1/sandbox/address/e09000033-7816246896787)
+* postcode [AA14AA](http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA14AA) - Four upcoming ballots across 3 future dates with a cancellation:
+    * `mayor.lewisham.2018-05-03` - Mayoral election 
+    * `local.lewisham.blackheath.2018-05-03` - This election is cancelled and rescheduled on 2018-05-10
+    * `local.lewisham.blackheath.2018-05-10` - This election replaces the cancelled `local.lewisham.blackheath.2018-05-03`
+    * `parl.lewisham-east.by.2018-06-14` - This election is scheduled but we don't know of any candidates yet
+* postcode [AA15AA](http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA15AA) - Northern Ireland. This example shows the `custom_finder` key in use. We can use this to redirect users to Electoral Office for Northern Ireland's website for polling station data.
+
+
+## Group Notes and Tips
+
+### Polling Stations
+
+* If we don't know a user's polling station, sometimes we may provide an external link for more info in `custom_finder`. This will always be populated for users in Northern Ireland where the Electoral Office for Northern Ireland run their own service.
+* If we don't know a user's polling station and `custom_finder` is not populated, the contact details in the `electoral_services` object can be used to provide contact details for the user's local electoral services team.
+
+### Ballots and Candidates
+
+* It is possible for more than one ballot to occur on the same date, so a `ballots` array may contain many objects. For example, a user may vote in a local council election and mayoral election on the same day.
+* Occasionally a ballot needs to be cancelled. The most common reason for this is if one of the candidates dies between close of nominations and polling day, but there are other situations where this may happen. Remember to check the `cancelled` flag on ballot objects.
+* In an Additional Member System election using party lists, candidates should be shown to users grouped by party and ordered by `list_position` within parties.
+* We'll use the `notifications` array to provide additional info to be shown to the user about special conditions to be aware of on this date (e.g: voter id pilots - details TBC)
+
+
+
+# Data Structures
+
+## ElectoralServices (object)
++ `council_id`: `W06000015` (string) - GSS code for this council
++ name: `Cardiff Council` (string) - Name of this council
++ address: `Electoral Registration Officer\nCity of Cardiff Council\nCounty Hall Atlantic Wharf` (string) - Contact address for this council
++ postcode: `CF10 4UW` (string) - Postcode component of contact address for this council
++ email: `electoralservices@cardiff.gov.uk` (string) - Contact email address for this council's Electoral Services team
++ phone: `029 2087 2034` (string) - Telephone number for this council's Electoral Services team
++ website: `http://www.cardiff.gov.uk/` (string) - URL for this council's website
+
+## Point (object)
++ type: `Point` (string)
++ coordinates: (array[number], fixed-type)
+    + `-3.1137973461538473`
+    + `51.52117513846153`
+
+## PostcodeLocation (object)
++ type: `Feature` (string)
++ properties: (object, nullable)
++ geometry (Point)
+
+
+## ValidResponse (object)
++ `address_picker`: `false` (boolean) - True if we need to show this user an address picker
++ addresses (array[object]) - An array of address objects containing the addresses applicable to this request (if necessary)
++ dates (array[object], fixed-type) - An array of date objects (each describing a date on which an election or poll will take place) containing details of relevant ballots, candidates and polling station information
+    + (object)
+        + date: `2017-05-04` (string) - Polling day on which an election will occur
+        + `polling_station`: (object) - Results for polling station search
+            + `polling_station_known`: `true` (boolean) - Do we know where this user should vote?
+            + `custom_finder`: (string, nullable) - If we don't know a user's polling station, sometimes we can provide the URL of another polling station finder. This will always be populated for users in Northern Ireland where Electoral Office for Northern Ireland run their own service.
+            + `report_problem_url`: `http://wheredoivote.co.uk/report_problem/?source=testing&source_url=testing` (string, nullable) - If we provide a polling station result, this URL may be used to provide a user with a back-channel to report inaccurate data.
+            + station: (object, nullable) - A [GeoJSON Feature](https://tools.ietf.org/html/rfc7946#section-3.2) describing the user's polling station (if known)
+                + id: `w06000015.QK` (string)
+                + type: `Feature` (string)
+                + geometry: (object, nullable) - A GeoJSON [Point object](https://tools.ietf.org/html/rfc7946#section-3.1.2) object describing the location of this polling station. Optionally null if we know the address only but can't geocode a location.
+                    + type: `Point` (string)
+                    + coordinates: (array[number], fixed-type)
+                        + `-3.119229`
+                        + `51.510885`
+                + properties: (object)
+                    + postcode: (string) - Postcode for this polling station
+                    + address: `Earlswood Social Club, 160-164 Greenway Road, Rumney` (string) - Address for this polling station
+        + notifications: (array[object]) - Array of notifications to be shown to the user about special conditions to be aware of on this date (details TBC)
+        + ballots: (array[object], fixed-type) - List of ballots happening on this date. It is possible for more than one ballot to occur on the same date. For example, a user may vote in a local council election and mayoral election on the same day.
+            + (object)
+                + `ballot_paper_id`: `local.cardiff.pontprennauold-st-mellons.2017-05-04` (string) - Identifier for this ballot
+                + `ballot_title`: `Cardiff local election Pontprennau/Old St. Mellons` (string) - Friendly name for this ballot
+                + `poll_open_date`: `2017-05-04` (string) - Polling day for this ballot
+                + `elected_role`: `Local Councillor` (string) - Name of the role the winner(s) of this election will assume
+                + metadata: (object, nullable) - Object containing information about special conditions for the user to be aware about (e.g: cancelled elections, voter id pilot). (details TBC)
+                + cancelled: `false` (boolean) - True if this ballot has been cancelled
+                + `replaced_by`: (string, nullable) - If a ballot has been cancelled (cancelled = true) and rescheduled for a later date, this key will hold the ballot_paper_id of the ballot that replaces it.
+                + replaces: (string, nullable) - If this ballot replaces another cancelled ballot, this key will hold the ballot_paper_id of the ballot that it replaces.
+                + `election_id`: `local.cardiff.2017-05-04` (string) - Identifier for this ballot's parent election group
+                + `election_name`: `Cardiff local election` (string) - Friendly name for this ballot's parent election group
+                + `post_name`: `Pontprennau/Old St. Mellons` (string) - Name of the division or post the winner(s) of this election will represent
+                + candidates: (array[object], fixed-type) - Array of candidate objects describing candidates that will appear on this ballot paper
+                    + (object)
+                        + `list_position`: (number, nullable) - Numeric position in party list. This value is only relevant to Additional Member System elections using party lists. It will always be null in First-Past-The-post elections.
+                        + party: (object)
+                            + `party_id`: `party:90` (string)
+                            + `party_name`: `Liberal Democrats` (string)
+                        + person: (object)
+                            + `ynr_id`: `23417` (number)
+                            + name: `David Keigwin` (string)
+                            + `absolute_url`: `https://whocanivotefor.co.uk/person/23417/david-keigwin` (string) - Link for more (human-readable) information about this candidate
+                    + (object)
+                        + `list_position`: (number, nullable) - Numeric position in party list. This value is only relevant to Additional Member System elections using party lists. It will always be null in First-Past-The-post elections.
+                        + party: (object)
+                            + `party_id`: `party:52` (string)
+                            + `party_name`: `Conservative and Unionist Party` (string)
+                        + person: (object)
+                            + `ynr_id`: `19974` (number)
+                            + name: `Dianne Rees` (string)
+                            + `absolute_url`: `https://whocanivotefor.co.uk/person/19974/dianne-rees` (string) - Link for more (human-readable) information about this candidate
+                + `wcivf_url`: `https://whocanivotefor.co.uk/elections/local.cardiff.2017-05-04/post-UTE:W05000900/pontprennauold-st-mellons` - Link for more (human-readable) information about this ballot
++ `electoral_services` (ElectoralServices, nullable) - Contact details for the user's local Electoral Services team. If we do not know the user's polling station, this can be used to provide contact info for their local council. This may be `null` if we are not able to determine the user's council.
++ `postcode_location` (PostcodeLocation) - A [GeoJSON Feature](https://tools.ietf.org/html/rfc7946#section-3.2) containing a [Point object](https://tools.ietf.org/html/rfc7946#section-3.1.2) describing the centroid of the input postcode. If providing a map or directions for a polling station journey, use this as the start point. This may be `null` if we are not able to accurately geocode.
