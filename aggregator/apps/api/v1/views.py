@@ -91,6 +91,7 @@ class SandboxView(View):
             "AA12AB",  # one election, station not known, with candidates
             "AA13AA",  # address picker
             "AA14AA",  # multiple elections
+            "AA15AA",  # Northern Ireland
         )
 
         if "postcode" in kwargs:
