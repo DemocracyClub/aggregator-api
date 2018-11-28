@@ -53,7 +53,7 @@ jobs:
       - run:
           name: Do Deploy
           command: |
-            echo "Deploy would be here"
+            deploy.sh
 
 workflows:
   version: 2
