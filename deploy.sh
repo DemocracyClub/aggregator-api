@@ -31,8 +31,7 @@ mkdir -p `echo $VIRTUAL_ENV `/lib/python3.6/site-packages/{pillow,libsass}
 # Update Zappa
 zappa update $DEPLOY_ENV
 
-# Migrate the Django DB
-zappa manage $DEPLOY_ENV "migrate --noinput"
+# Migrate the Django DB#zappa manage $DEPLOY_ENV "migrate --noinput"
 
 # Collect static files
-zappa manage $DEPLOY_ENV "collectstatic --noinput"
+zappa manage $DEPLOY_ENV "collectstatic --noinput --clear"

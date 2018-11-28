@@ -30,7 +30,7 @@ jobs:
 
       - save_cache:
           paths:
-            - .local/share/virtualenvs/
+            - ~/.local/share/virtualenvs/
           key: v2-dependencies-{{ checksum "Pipfile.lock" }}
 
       - run:
@@ -41,6 +41,13 @@ jobs:
       - store_artifacts:
           path: test-reports
           destination: test-reports
+      - persist_to_workspace:
+          root: ~/repo
+          paths: "*"
+      - persist_to_workspace:
+          root: ~/.local/share/virtualenvs/
+          paths: "*"
+
   deploy:
     docker:
       # specify the version you desire here
@@ -50,10 +57,25 @@ jobs:
     working_directory: ~/repo
 
     steps:
+      - attach_workspace:
+          at: ~/repo
+      - attach_workspace:
+          at: .local/share/virtualenvs/
+      - restore_cache:
+          keys:
+          - v2-dependencies-{{ checksum "Pipfile.lock" }}
+          # fallback to using the latest cache if no exact match is found
+          - v2-dependencies-
+      - run:
+          name: install dependencies
+          command: |
+            sudo pip install pipenv
+            pipenv install
+            pipenv install zappa==0.47.1
       - run:
           name: Do Deploy
           command: |
-            ~/repo/deploy.sh
+            pipenv run circleci_deploy
 
 workflows:
   version: 2
