@@ -25,10 +25,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "api",
     "dc_theme",
     "pipeline",
 ]
+PROJECT_APPS = ["api"]
+INSTALLED_APPS += PROJECT_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
