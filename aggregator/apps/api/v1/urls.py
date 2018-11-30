@@ -1,6 +1,9 @@
 from django.conf.urls import url
-from django.views.generic import TemplateView
+from django.urls import reverse_lazy
+from django.views.generic import RedirectView, TemplateView
 from .views import AddressView, PostcodeView, SandboxView
+
+docs_redirect = RedirectView.as_view(url=reverse_lazy("api:v1:docs"), permanent=True)
 
 urlpatterns = [
     url(
@@ -19,5 +22,12 @@ urlpatterns = [
         SandboxView.as_view(),
         name="sandbox-address",
     ),
-    url(r"^$", TemplateView.as_view(template_name="api_docs_rendered.html")),
+    url(
+        r"^$", TemplateView.as_view(template_name="api_docs_rendered.html"), name="docs"
+    ),
+    url(r"^postcode/$", docs_redirect),
+    url(r"^address/$", docs_redirect),
+    url(r"^sandbox/postcode/$", docs_redirect),
+    url(r"^sandbox/address/$", docs_redirect),
+    url(r"^sandbox/$", docs_redirect),
 ]
