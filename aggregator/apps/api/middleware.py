@@ -9,6 +9,10 @@ class LoggerMiddleware(object):
 
     def __call__(self, request):
         response = self.get_response(request)
-        if response.status_code >= 500 and "sandbox" not in request.path:
+        if (
+            response.status_code >= 500
+            and "/sandbox" not in request.path
+            and "/api" in request.path
+        ):
             logger.error(f"{response.status_code} - {response.content}")
         return response
