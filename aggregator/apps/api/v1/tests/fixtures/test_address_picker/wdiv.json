@@ -1,0 +1,55 @@
+{
+  "polling_station_known": false,
+  "postcode_location": {
+    "type": "Feature",
+    "properties": null,
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -0.18387315,
+        51.513099069999996
+      ]
+    }
+  },
+  "custom_finder": null,
+  "council": {
+    "url": "http://wheredoivote.co.uk/api/beta/councils/E09000033/",
+    "council_id": "E09000033",
+    "name": "City of Westminster",
+    "email": "electoralservices@westminster.gov.uk",
+    "phone": "020 7641 2730",
+    "website": "http://www.westminster.gov.uk/",
+    "postcode": "WC2N 5HR",
+    "address": "Electoral Registration Officer\nWestminster City Council\n2nd Floor, City Hall\n5 Strand"
+  },
+  "polling_station": null,
+  "addresses": [
+    {
+      "address": "42 Leinster Gardens, London",
+      "postcode": "AA13AA",
+      "council": "http://127.0.0.1:8001/api/beta/councils/E09000033/",
+      "slug": "e09000033-2282254634585",
+      "polling_station_id": "foo",
+      "url": "http://127.0.0.1:8001/api/beta/address/e09000033-2282254634585"
+    },
+    {
+      "address": "19A Leinster Gardens, London",
+      "postcode": "AA13AA",
+      "council": "http://127.0.0.1:8001/api/beta/councils/E09000033/",
+      "slug": "e09000033-8531289123599",
+      "polling_station_id": "bar",
+      "url": "http://127.0.0.1:8001/api/beta/address/e09000033-8531289123599"
+    },
+    {
+      "address": "22 Leinster Gardens, London",
+      "postcode": "AA13AA",
+      "council": "http://127.0.0.1:8001/api/beta/councils/E09000033/",
+      "slug": "e09000033-7816246896787",
+      "polling_station_id": "baz",
+      "url": "http://127.0.0.1:8001/api/beta/address/e09000033-7816246896787"
+    }
+  ],
+  "report_problem_url": null,
+  "metadata": null,
+  "ballots": []
+}

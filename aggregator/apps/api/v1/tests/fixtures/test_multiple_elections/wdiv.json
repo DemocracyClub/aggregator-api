@@ -1,0 +1,71 @@
+{
+  "polling_station_known": false,
+  "postcode_location": {
+    "type": "Feature",
+    "properties": null,
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        0.008211636363636364,
+        51.46623861363635
+      ]
+    }
+  },
+  "custom_finder": null,
+  "council": {
+    "url": "http://127.0.0.1:8001/api/beta/councils/E09000023/",
+    "council_id": "E09000023",
+    "name": "London Borough of Lewisham",
+    "email": "electoral.services@lewisham.gov.uk",
+    "phone": "020 8314 6086",
+    "website": "http://www.lewisham.gov.uk/",
+    "postcode": "SE6 4RU",
+    "address": "Electoral Registration Officer\nLewisham Town Hall\nCatford Road\nCatford"
+  },
+  "polling_station": null,
+  "addresses": [],
+  "report_problem_url": null,
+  "metadata": null,
+  "ballots": [
+    {
+      "ballot_paper_id": "mayor.lewisham.2018-05-03",
+      "ballot_title": "Mayor of Lewisham election",
+      "poll_open_date": "2018-05-03",
+      "elected_role": "Mayor of Lewisham",
+      "metadata": null,
+      "cancelled": false,
+      "replaced_by": null,
+      "replaces": null
+    },
+    {
+      "ballot_paper_id": "local.lewisham.blackheath.2018-05-03",
+      "ballot_title": "Lewisham local election Blackheath",
+      "poll_open_date": "2018-05-03",
+      "elected_role": "Local Councillor",
+      "metadata": null,
+      "cancelled": true,
+      "replaced_by": "local.lewisham.blackheath.2018-05-10",
+      "replaces": null
+    },
+    {
+      "ballot_paper_id": "local.lewisham.blackheath.2018-05-10",
+      "ballot_title": "Lewisham local election Blackheath",
+      "poll_open_date": "2018-05-10",
+      "elected_role": "Local Councillor",
+      "metadata": null,
+      "cancelled": false,
+      "replaced_by": null,
+      "replaces": "local.lewisham.blackheath.2018-05-03"
+    },
+    {
+      "ballot_paper_id": "parl.lewisham-east.by.2018-06-14",
+      "ballot_title": "Lewisham East by-election",
+      "poll_open_date": "2018-06-14",
+      "elected_role": "Member of Parliament",
+      "metadata": null,
+      "cancelled": false,
+      "replaced_by": null,
+      "replaces": null
+    }
+  ]
+}
