@@ -5,3 +5,28 @@
 body {
   background-color:#FFF;
 }
+
+footer {
+  ul {
+    overflow: hidden;
+  }
+
+  li {
+    float: left;
+  }
+}
+
+.api-method {
+  @extend code;
+  border-radius: 5px;
+  padding: 0.2em 0.5em;
+}
+
+.api-http-code {
+  cursor: pointer;
+}
+
+.api-method-GET {
+  background-color: $dc-green;
+  color: #FFF;
+}

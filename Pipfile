@@ -1,16 +1,16 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
 [dev-packages]
 black = "==18.9b0"
+django-apiblueprint-view = ">=2.0.0,<3.0"
 
 [packages]
 django = ">=1.11,<2.0"
 aiohttp = ">=3.4"
-dc-base-theme = {editable = true,git = "https://github.com/DemocracyClub/dc_base_theme.git",ref = "0.3.7"}
+dc-base-theme = {ref = "0.3.7",git = "https://github.com/DemocracyClub/dc_base_theme.git",editable = true}
 
 [requires]
 python_version = "3.6"

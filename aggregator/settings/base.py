@@ -25,10 +25,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "apiblueprint_view",
     "dc_theme",
     "pipeline",
 ]
-PROJECT_APPS = ["api"]
+PROJECT_APPS = ["api", "api.v1"]
 INSTALLED_APPS += PROJECT_APPS
 
 MIDDLEWARE = [
