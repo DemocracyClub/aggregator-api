@@ -35,12 +35,6 @@ class ApiClient:
     def __init__(self):
         self.loop = get_event_loop()
 
-    def __del__(self):
-        try:
-            self.loop.close()
-        except Exception:
-            pass
-
     def get_data_for_postcode(self, postcode):
         wdiv_url = f"{settings.WDIV_BASE_URL}postcode/{postcode}/"
         wdiv_params = {"all_future_ballots": 1}
