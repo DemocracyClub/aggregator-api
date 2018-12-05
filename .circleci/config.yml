@@ -28,6 +28,11 @@ jobs:
             sudo pip install pipenv
             pipenv install --dev
 
+      - run:
+          name: check for insecure dependencies
+          command: |
+            pipenv check
+
       - save_cache:
           paths:
             - ~/.local/share/virtualenvs/
