@@ -38,6 +38,11 @@ jobs:
           command: |
             pipenv run blackci
 
+      - run:
+          name: run test suite
+          command: |
+            pipenv run pytest
+
       - store_artifacts:
           path: test-reports
           destination: test-reports
