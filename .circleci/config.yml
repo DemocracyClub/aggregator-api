@@ -34,9 +34,9 @@ jobs:
           key: v2-dependencies-{{ checksum "Pipfile.lock" }}
 
       - run:
-          name: run Black
+          name: check coding standards
           command: |
-            pipenv run black
+            pipenv run blackci
 
       - store_artifacts:
           path: test-reports
