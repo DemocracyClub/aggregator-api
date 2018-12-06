@@ -15,5 +15,17 @@
                 "Resource": "arn:aws:s3:::static-developers-dev.democracyclub.org.uk/*"
             }
         ]
+    },
+    "prod": {
+        "extends": "dev",
+        "domain": "developers.democracyclub.org.uk",
+        "s3_bucket": "aggregator-api-zappa-prod",
+        "extra_permissions": [
+            {
+                "Effect": "Allow",
+                "Action": ["s3:*"],
+                "Resource": "arn:aws:s3:::aggregator-api-prod-static"
+            },
+        ]
     }
 }

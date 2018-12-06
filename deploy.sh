@@ -6,15 +6,15 @@ die () {
     exit 1
 }
 
-# if [ $# -eq 0 ]
-#   then
-#     die "No env supplied. Call with ./deploy [dev|prod]"
-# fi
+if [ $# -eq 0 ]
+  then
+    die "No env supplied. Call with ./deploy [dev|prod]"
+fi
 
 
-DEPLOY_ENV="dev"
-# [ $DEPLOY_ENV == "dev" ] || [ $DEPLOY_ENV == "prod" ] || die "Env not valid. Must be dev or prod"
-# export STAGE=$1
+DEPLOY_ENV=$1
+[ $DEPLOY_ENV == "dev" ] || [ $DEPLOY_ENV == "prod" ] || die "Env not valid. Must be dev or prod"
+export STAGE=$1
 
 echo "Performing Django checks"
 FRAMEWORK="Zappa" python manage.py check
@@ -31,7 +31,8 @@ mkdir -p `echo $VIRTUAL_ENV `/lib/python3.6/site-packages/{pillow,libsass}
 # Update Zappa
 zappa update $DEPLOY_ENV
 
-# Migrate the Django DB#zappa manage $DEPLOY_ENV "migrate --noinput"
+# Migrate the Django DB
+zappa manage $DEPLOY_ENV "migrate --noinput"
 
 # Collect static files
 zappa manage $DEPLOY_ENV "collectstatic --noinput"

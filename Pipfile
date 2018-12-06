@@ -22,6 +22,7 @@ python_version = "3.6"
 [scripts]
 black = "black ."
 black-check = "black --check ."
-circleci_deploy = "~/repo/deploy.sh"
+circleci_deploy_dev = "~/repo/deploy.sh dev"
+circleci_deploy_prod = "~/repo/deploy.sh prod"
 pytest = "pytest"
 pytest-flake = "pytest --flake"

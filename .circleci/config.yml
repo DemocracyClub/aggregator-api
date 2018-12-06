@@ -84,9 +84,13 @@ jobs:
             pipenv install
             pipenv install zappa==0.47.1
       - run:
-          name: Do Deploy
+          name: Do Stage Deploy
           command: |
-            pipenv run circleci_deploy
+            pipenv run circleci_deploy_dev
+      - run:
+          name: Do Prod Deploy
+          command: |
+            pipenv run circleci_deploy_prod
 
 workflows:
   version: 2
