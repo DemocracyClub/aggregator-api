@@ -34,9 +34,15 @@ jobs:
           key: v2-dependencies-{{ checksum "Pipfile.lock" }}
 
       - run:
+          name: check for insecure dependencies
+          command: |
+            pipenv check
+
+      - run:
           name: check coding standards
           command: |
-            pipenv run blackci
+            pipenv run black-check
+            pipenv run pytest-flake
 
       - run:
           name: run test suite

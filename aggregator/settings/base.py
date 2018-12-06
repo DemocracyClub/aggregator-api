@@ -108,7 +108,7 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-from dc_theme.settings import (
+from dc_theme.settings import (  # noqa
     get_pipeline_settings,
     STATICFILES_STORAGE,
     STATICFILES_FINDERS,
