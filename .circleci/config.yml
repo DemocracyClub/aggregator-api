@@ -80,7 +80,7 @@ jobs:
       - run:
           name: Do Deploy
           command: |
-            pipenv run circleci_deploy
+            pipenv run circleci_deploy_prod
 
 workflows:
   version: 2

@@ -22,5 +22,5 @@ python_version = "3.6"
 [scripts]
 black = "black ."
 blackci = "black --check ."
-circleci_deploy = "~/repo/deploy.sh"
+circleci_deploy_prod = "~/repo/deploy.sh prod"
 pytest = "pytest"
