@@ -5,7 +5,6 @@ name = "pypi"
 
 [dev-packages]
 black = "==18.9b0"
-django-apiblueprint-view = ">=2.0.0,<3.0"
 pytest = ">=4.0.1,<5.0"
 pytest-django = ">=3.4.4,<4.0"
 pytest-flakes = ">=4.0.0,<5.0"
@@ -15,6 +14,7 @@ django = ">=1.11,<2.0"
 aiohttp = ">=3.4"
 dc-base-theme = {editable = true,git = "https://github.com/DemocracyClub/dc_base_theme.git",ref = "0.3.7"}
 django-storages = "==1.7.1"
+django-apiblueprint-view = ">=2.0.0,<3.0"
 
 [requires]
 python_version = "3.6"
