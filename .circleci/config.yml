@@ -47,7 +47,12 @@ jobs:
       - run:
           name: run test suite
           command: |
-            pipenv run pytest
+            pipenv run pytest --cov-report= --cov=aggregator
+
+      - run:
+          name: update coveralls
+          command: |
+            if [ -n "$COVERALLS_REPO_TOKEN" ]; then pipenv run coveralls; else echo "skipping coverage for forked PR"; fi
 
       - store_artifacts:
           path: test-reports
