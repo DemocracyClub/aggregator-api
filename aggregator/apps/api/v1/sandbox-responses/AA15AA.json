@@ -10,14 +10,27 @@
         "report_problem_url": null,
         "station": null
       },
-      "notifications": [],
+      "notifications": [
+        {
+          "type": "voter_id",
+          "url": "http://www.eoni.org.uk/Vote/Voting-at-a-polling-place",
+          "title": "You need to show photographic ID to vote in this election",
+          "detail": "Voters in Northern Ireland are required to show one form of photo ID, like a passport or driving licence."
+        }
+      ],
       "ballots": [
         {
           "ballot_paper_id": "parl.west-tyrone.by.2018-05-03",
           "ballot_title": "West Tyrone by-election",
           "poll_open_date": "2018-11-22",
           "elected_role": "Member of Parliament",
-          "metadata": null,
+          "metadata": {
+            "ni-voter-id": {
+              "url": "http://www.eoni.org.uk/Vote/Voting-at-a-polling-place",
+              "title": "You need to show photographic ID to vote in this election",
+              "detail": "Voters in Northern Ireland are required to show one form of photo ID, like a passport or driving licence."
+            }
+          },
           "cancelled": false,
           "replaced_by": null,
           "replaces": null,

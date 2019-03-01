@@ -42,7 +42,13 @@
       "ballot_title": "Lewisham local election Blackheath",
       "poll_open_date": "2018-05-03",
       "elected_role": "Local Councillor",
-      "metadata": null,
+      "metadata": {
+        "cancelled_election": {
+            "title": "Cancelled Election",
+            "url": "https://www.lewisham.gov.uk/mayorandcouncil/elections/Pages/default.aspx",
+            "detail": "The election for a Borough Councillor to represent the Blackheath Ward has now been postponed due to leaves on the line."
+          }
+      },
       "cancelled": true,
       "replaced_by": "local.lewisham.blackheath.2018-05-10",
       "replaces": null
