@@ -49,6 +49,11 @@ jobs:
           command: |
             pipenv run pytest
 
+      - run:
+          name: update coveralls
+          command: |
+            if [ -n \"$COVERALLS_REPO_TOKEN\" ]; then pipenv run coveralls; fi
+
       - store_artifacts:
           path: test-reports
           destination: test-reports
