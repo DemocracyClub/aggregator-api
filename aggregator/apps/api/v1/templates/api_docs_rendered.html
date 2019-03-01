@@ -3794,7 +3794,14 @@ A valid postcode search may result in one of 3 outcomes:</p>
           }
         }
       },
-      &quot;notifications&quot;: [],
+      &quot;notifications&quot;: [
+        {
+          &quot;title&quot;: &quot;Some unexpected event is happening&quot;,
+          &quot;type&quot;: &quot;cancelled_election&quot;,
+          &quot;detail&quot;: &quot;Some more details&quot;,
+          &quot;url&quot;: &quot;https://foo.bar/baz&quot;
+        }
+      ],
       &quot;ballots&quot;: [
         {
           &quot;ballot_paper_id&quot;: &quot;local.cardiff.pontprennauold-st-mellons.2017-05-04&quot;,
@@ -3968,7 +3975,31 @@ A valid postcode search may result in one of 3 outcomes:</p>
           },
           &quot;notifications&quot;: {
             &quot;type&quot;: &quot;array&quot;,
-            &quot;description&quot;: &quot;Array of notifications to be shown to the user about special conditions to be aware of on this date (details TBC)&quot;
+            &quot;items&quot;: {
+              &quot;type&quot;: &quot;object&quot;,
+              &quot;properties&quot;: {
+                &quot;title&quot;: {
+                  &quot;type&quot;: &quot;string&quot;
+                },
+                &quot;type&quot;: {
+                  &quot;type&quot;: &quot;object&quot;,
+                  &quot;enum&quot;: [
+                    {
+                      &quot;cancelled_election&quot;: &quot;&quot;,
+                      &quot;voter_id&quot;: &quot;&quot;
+                    }
+                  ],
+                  &quot;description&quot;: &quot;Type of notification&quot;
+                },
+                &quot;detail&quot;: {
+                  &quot;type&quot;: &quot;string&quot;
+                },
+                &quot;url&quot;: {
+                  &quot;type&quot;: &quot;string&quot;
+                }
+              }
+            },
+            &quot;description&quot;: &quot;Array of notifications to be shown to the user about special conditions to be aware of on this date.&quot;
           },
           &quot;ballots&quot;: {
             &quot;type&quot;: &quot;array&quot;,
@@ -6206,7 +6237,14 @@ A valid postcode search may result in one of 3 outcomes:</p>
           }
         }
       },
-      &quot;notifications&quot;: [],
+      &quot;notifications&quot;: [
+        {
+          &quot;title&quot;: &quot;Some unexpected event is happening&quot;,
+          &quot;type&quot;: &quot;cancelled_election&quot;,
+          &quot;detail&quot;: &quot;Some more details&quot;,
+          &quot;url&quot;: &quot;https://foo.bar/baz&quot;
+        }
+      ],
       &quot;ballots&quot;: [
         {
           &quot;ballot_paper_id&quot;: &quot;local.cardiff.pontprennauold-st-mellons.2017-05-04&quot;,
@@ -6380,7 +6418,31 @@ A valid postcode search may result in one of 3 outcomes:</p>
           },
           &quot;notifications&quot;: {
             &quot;type&quot;: &quot;array&quot;,
-            &quot;description&quot;: &quot;Array of notifications to be shown to the user about special conditions to be aware of on this date (details TBC)&quot;
+            &quot;items&quot;: {
+              &quot;type&quot;: &quot;object&quot;,
+              &quot;properties&quot;: {
+                &quot;title&quot;: {
+                  &quot;type&quot;: &quot;string&quot;
+                },
+                &quot;type&quot;: {
+                  &quot;type&quot;: &quot;object&quot;,
+                  &quot;enum&quot;: [
+                    {
+                      &quot;cancelled_election&quot;: &quot;&quot;,
+                      &quot;voter_id&quot;: &quot;&quot;
+                    }
+                  ],
+                  &quot;description&quot;: &quot;Type of notification&quot;
+                },
+                &quot;detail&quot;: {
+                  &quot;type&quot;: &quot;string&quot;
+                },
+                &quot;url&quot;: {
+                  &quot;type&quot;: &quot;string&quot;
+                }
+              }
+            },
+            &quot;description&quot;: &quot;Array of notifications to be shown to the user about special conditions to be aware of on this date.&quot;
           },
           &quot;ballots&quot;: {
             &quot;type&quot;: &quot;array&quot;,
@@ -12245,9 +12307,45 @@ The following test postcodes and address slugs are valid in the sandbox. Each on
 <li><p>It is possible for more than one ballot to occur on the same date, so a <code>ballots</code> array may contain many objects. For example, a user may vote in a local council election and mayoral election on the same day.</p></li>
 <li><p>Occasionally a ballot needs to be cancelled. The most common reason for this is if one of the candidates dies between close of nominations and polling day, but there are other situations where this may happen. Remember to check the <code>cancelled</code> flag on ballot objects.</p></li>
 <li><p>In an Additional Member System election using party lists, candidates should be shown to users grouped by party and ordered by <code>list_position</code> within parties.</p></li>
-<li><p>We'll use the <code>notifications</code> array to provide additional info to be shown to the user about special conditions to be aware of on this date (e.g: voter id pilots - details TBC)</p></li>
+<li><p>We'll use the <code>notifications</code> array to provide additional info to be shown to the user about special conditions to be aware of on this date e.g: identification requirements, or a cancelled poll.</p></li>
 </ul>
 </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
 
   
 
@@ -15373,11 +15471,11 @@ The following test postcodes and address slugs are valid in the sandbox. Each on
       </ul>
     </nav>
 
-    <p>Copyright © 2018 Democracy Club Community Interest Company Company No: <a href="https://beta.companieshouse.gov.uk/company/09461226">09461226</a></p>
+    <p>Copyright © 2019 Democracy Club Community Interest Company Company No: <a href="https://beta.companieshouse.gov.uk/company/09461226">09461226</a></p>
     <p>
-      Contains OS data © Crown copyright and database right 2018<br>
-      Contains Royal Mail data © Royal Mail copyright and database right 2018<br>
-      Contains National Statistics data © Crown copyright and database right 2018<br>
+      Contains OS data © Crown copyright and database right 2019<br>
+      Contains Royal Mail data © Royal Mail copyright and database right 2019<br>
+      Contains National Statistics data © Crown copyright and database right 2019<br>
     </p>
 
   </div>
