@@ -52,7 +52,7 @@ jobs:
       - run:
           name: update coveralls
           command: |
-            if [ -n \"$COVERALLS_REPO_TOKEN\" ]; then pipenv run coveralls; fi
+            if [ -n "$COVERALLS_REPO_TOKEN" ]; then pipenv run coveralls; else echo "skipping coverage for forked PR"; fi
 
       - store_artifacts:
           path: test-reports
