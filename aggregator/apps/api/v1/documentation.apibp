@@ -152,7 +152,7 @@ The following test postcodes and address slugs are valid in the sandbox. Each on
 * It is possible for more than one ballot to occur on the same date, so a `ballots` array may contain many objects. For example, a user may vote in a local council election and mayoral election on the same day.
 * Occasionally a ballot needs to be cancelled. The most common reason for this is if one of the candidates dies between close of nominations and polling day, but there are other situations where this may happen. Remember to check the `cancelled` flag on ballot objects.
 * In an Additional Member System election using party lists, candidates should be shown to users grouped by party and ordered by `list_position` within parties.
-* We'll use the `notifications` array to provide additional info to be shown to the user about special conditions to be aware of on this date (e.g: voter id pilots - details TBC)
+* We'll use the `notifications` array to provide additional info to be shown to the user about special conditions to be aware of on this date e.g: identification requirements, or a cancelled poll.
 
 
 
@@ -200,7 +200,15 @@ The following test postcodes and address slugs are valid in the sandbox. Each on
                 + properties: (object)
                     + postcode: (string) - Postcode for this polling station
                     + address: `Earlswood Social Club, 160-164 Greenway Road, Rumney` (string) - Address for this polling station
-        + notifications: (array[object]) - Array of notifications to be shown to the user about special conditions to be aware of on this date (details TBC)
+        + notifications: (array[object], fixed-type) - Array of notifications to be shown to the user about special conditions to be aware of on this date.
+            + (object)
+                + `title`: `Some unexpected event is happening` (string)
+                + `type`: `cancelled_election` (enum[string]) - Type of notification
+                    + Members:
+                        + `cancelled_election`
+                        + `voter_id`
+                + `detail`: `Some more details` (string)
+                + `url`: `https://foo.bar/baz` (string)
         + ballots: (array[object], fixed-type) - List of ballots happening on this date. It is possible for more than one ballot to occur on the same date. For example, a user may vote in a local council election and mayoral election on the same day.
             + (object)
                 + `ballot_paper_id`: `local.cardiff.pontprennauold-st-mellons.2017-05-04` (string) - Identifier for this ballot

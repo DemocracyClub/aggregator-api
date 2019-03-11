@@ -6,6 +6,43 @@ class StitcherValidationError(Exception):
     pass
 
 
+class NotificationsMaker:
+    def __init__(self, ballots):
+        self.ballots = ballots
+        self.cancelled_ballots = self.get_cancelled_ballots()
+
+    def get_cancelled_ballots(self):
+        return [b for b in self.ballots if b["cancelled"]]
+
+    def get_metadata_by_key(self, key):
+        for b in self.ballots:
+            if b["metadata"] and key in b["metadata"]:
+                return b["metadata"][key]
+        return None
+
+    @property
+    def all_ballots_cancelled(self):
+        return len(self.cancelled_ballots) > 0 and len(self.ballots) == len(
+            self.cancelled_ballots
+        )
+
+    @property
+    def notifications(self):
+        if self.all_ballots_cancelled:
+            notification = self.get_metadata_by_key("cancelled_election")
+            notification["type"] = "cancelled_election"
+            return [notification]
+
+        notification = self.get_metadata_by_key(
+            "2019-05-02-id-pilot"
+        ) or self.get_metadata_by_key("ni-voter-id")
+        if notification:
+            notification["type"] = "voter_id"
+            return [notification]
+
+        return []
+
+
 class Stitcher:
     def __init__(self, wdiv_resp, wcivf_resp, request):
         self.wdiv_resp = wdiv_resp
@@ -89,6 +126,7 @@ class Stitcher:
         dates = self.get_dates()
         for date in dates:
             ballots = self.get_ballots_for_date(date)
+            nm = NotificationsMaker(ballots)
             results.append(
                 {
                     "date": date,
@@ -98,9 +136,7 @@ class Stitcher:
                         "report_problem_url": None,
                         "station": None,
                     },
-                    # TODO: populate notifications with aggregated
-                    # ballot meta-data relevant to this date
-                    "notifications": [],
+                    "notifications": nm.notifications,
                     "ballots": ballots,
                 }
             )
