@@ -13,9 +13,9 @@ The `/postcode` and `/address` endpoints find details of ballots, candidates and
 
 The entry point to a polling station search is a call to the `/postcode` endpoint.
 A valid postcode search may result in one of 3 outcomes:
-* There are no upcoming ballots relevant to this area.
-* We hold data for this area and the same ballots, candidates and polling station data is relevant to all registered addresses with this postcode.
-* We hold data for this area but different information is applicable to different addresses with this postcode. To find relevant data, we must show the user an address picker and make a second API call to the `/address` endpoint.
+* <a href="#postcode-search-no-upcoming-ballots-3">No upcoming ballots</a>: There are no upcoming ballots relevant to this area.
+* <a href="#postcode-search-results-found-3">Results found</a>: We hold data for this area and the same ballots, candidates and polling station data is relevant to all registered addresses with this postcode.
+* <a href="#postcode-search-address-picker-3">Address picker</a>: We hold data for this area but different information is applicable to different addresses with this postcode. To find relevant data, we must show the user an address picker and make a second API call to the <a href="#address-search-2">`/address` endpoint</a>.
 
 
 ## Postcode search: No upcoming ballots [/postcode/{postcode}]
@@ -144,7 +144,14 @@ The following test postcodes and address slugs are valid in the sandbox. Each on
 
 ### Polling Stations
 
-* If we don't know a user's polling station, sometimes we may provide an external link for more info in `custom_finder`. This will always be populated for users in Northern Ireland where the Electoral Office for Northern Ireland run their own service.
+* If we don't know a user's polling station, sometimes we may provide an external link for more info in `custom_finder`. This will always be populated for users in Northern Ireland where the Electoral Office for Northern Ireland run their own service. e.g:
+
+<pre><code>{
+...
+  "custom_finder": "http://www.eoni.org.uk/Offices/Postcode-Search-Results?postcode=BT28%202EY"
+}
+</code></pre>
+
 * If we don't know a user's polling station and `custom_finder` is not populated, the contact details in the `electoral_services` object can be used to provide contact details for the user's local electoral services team.
 
 ### Ballots and Candidates
@@ -153,6 +160,37 @@ The following test postcodes and address slugs are valid in the sandbox. Each on
 * Occasionally a ballot needs to be cancelled. The most common reason for this is if one of the candidates dies between close of nominations and polling day, but there are other situations where this may happen. Remember to check the `cancelled` flag on ballot objects.
 * In an Additional Member System election using party lists, candidates should be shown to users grouped by party and ordered by `list_position` within parties.
 * We'll use the `notifications` array to provide additional info to be shown to the user about special conditions to be aware of on this date e.g: identification requirements, or a cancelled poll.
+
+### ID Requirements for Local Elections May 2019
+
+On 2 May 2019, local elections take place in England and Northern Ireland.
+
+All voters in Northern Ireland must present photo ID to vote at a polling station.
+
+Additionally, following on from the pilots in 2018, voters in 11 local
+authorities in England will be required to present identification in order
+to vote at a polling station. Each area has slightly different requirements.
+API responses for a postcode or address in an authority where identification
+is required will include this information in the `notifications` array. e.g:
+
+<pre><code>{
+...
+  "notifications": [
+    {
+      "type": "voter_id",
+      "title": "You need to show ID to vote at this election",
+      "url": "https://www.woking.gov.uk/voterid",
+      "detail": "Voters in Woking will be required to show photo ID before they can vote."
+    }
+  ]
+}
+</code></pre>
+
+This information will be provided in all responses from the
+`/address` and `/postcode` API endpoints,
+even if we are not able to provide a polling station result.
+We encourage our API consumers to provide users in these areas with
+information about the pilots.
 
 
 
