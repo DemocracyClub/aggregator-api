@@ -8,7 +8,9 @@ assert ZAPPA_STAGE in ("dev", "prod")
 
 ALLOWED_HOSTS = [
     "vps1s53ua6.execute-api.eu-west-2.amazonaws.com",  # Dev
+    "devtest.democracyclub.org.uk",  # Dev
     "q2l5dijqu0.execute-api.eu-west-2.amazonaws.com",  # Prod
+    "developers.democracyclub.org.uk",  # Prod
 ]
 
 FORCE_SCRIPT_NAME = "/"
