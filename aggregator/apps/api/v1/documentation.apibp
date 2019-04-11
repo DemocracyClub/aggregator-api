@@ -158,7 +158,7 @@ The following test postcodes and address slugs are valid in the sandbox. Each on
 
 * It is possible for more than one ballot to occur on the same date, so a `ballots` array may contain many objects. For example, a user may vote in a local council election and mayoral election on the same day.
 * Occasionally a ballot needs to be cancelled. The most common reason for this is if one of the candidates dies between close of nominations and polling day, but there are other situations where this may happen. Remember to check the `cancelled` flag on ballot objects.
-* In an Additional Member System election using party lists, candidates should be shown to users grouped by party and ordered by `list_position` within parties.
+* In an election using party lists, candidates should be shown to users grouped by party and ordered by `list_position` within parties. In an election which uses party lists, the `candidates` array is sorted by party and `list_position` within parties. For other election types it is sorted alphabetically by candidate name.
 * We'll use the `notifications` array to provide additional info to be shown to the user about special conditions to be aware of on this date e.g: identification requirements, or a cancelled poll.
 
 ### ID Requirements for Local Elections May 2019
@@ -260,9 +260,9 @@ information about the pilots.
                 + `election_id`: `local.cardiff.2017-05-04` (string) - Identifier for this ballot's parent election group
                 + `election_name`: `Cardiff local election` (string) - Friendly name for this ballot's parent election group
                 + `post_name`: `Pontprennau/Old St. Mellons` (string) - Name of the division or post the winner(s) of this election will represent
-                + candidates: (array[object], fixed-type) - Array of candidate objects describing candidates that will appear on this ballot paper
+                + candidates: (array[object], fixed-type) - Array of candidate objects describing candidates that will appear on this ballot paper. In an election which uses party lists, the `candidates` array is sorted by party and `list_position` within parties. For other election types it is sorted alphabetically by candidate name.
                     + (object)
-                        + `list_position`: (number, nullable) - Numeric position in party list. This value is only relevant to Additional Member System elections using party lists. It will always be null in First-Past-The-post elections.
+                        + `list_position`: (number, nullable) - Numeric position in party list. This value is only relevant to elections using party lists. It will always be null in First-Past-The-post elections.
                         + party: (object)
                             + `party_id`: `party:90` (string)
                             + `party_name`: `Liberal Democrats` (string)
@@ -271,7 +271,7 @@ information about the pilots.
                             + name: `David Keigwin` (string)
                             + `absolute_url`: `https://whocanivotefor.co.uk/person/23417/david-keigwin` (string) - Link for more (human-readable) information about this candidate
                     + (object)
-                        + `list_position`: (number, nullable) - Numeric position in party list. This value is only relevant to Additional Member System elections using party lists. It will always be null in First-Past-The-post elections.
+                        + `list_position`: (number, nullable) - Numeric position in party list. This value is only relevant to elections using party lists. It will always be null in First-Past-The-post elections.
                         + party: (object)
                             + `party_id`: `party:52` (string)
                             + `party_name`: `Conservative and Unionist Party` (string)
