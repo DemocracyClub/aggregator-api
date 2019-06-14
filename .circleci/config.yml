@@ -87,7 +87,6 @@ jobs:
           command: |
             sudo pip install pipenv
             pipenv install
-            pipenv install zappa==0.47.1
       - run:
           name: Do Stage Deploy
           command: |
