@@ -113,10 +113,10 @@
         },
         "django-apiblueprint-view": {
             "hashes": [
-                "sha256:4771bd99208b9ef18a7ae9d0a78f2292ed8c3376a4ff510789321652f692a13e"
+                "sha256:b61ada2d8691c6f11901363a58ceb91df91077fd0f9c7d19b94d8998ab2db981"
             ],
             "index": "pypi",
-            "version": "==2.0.1"
+            "version": "==2.1.0"
         },
         "django-pipeline": {
             "hashes": [
