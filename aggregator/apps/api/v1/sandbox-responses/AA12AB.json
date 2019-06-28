@@ -15,6 +15,7 @@
         {
           "ballot_paper_id": "local.westminster.lancaster-gate.by.2018-11-22",
           "ballot_title": "Westminster local election Lancaster Gate by-election",
+          "ballot_url": "https://developers.democracyclub.org.uk/api/v1/sandbox/elections/local.westminster.lancaster-gate.by.2018-11-22/",
           "poll_open_date": "2018-11-22",
           "elected_role": "Local Councillor",
           "metadata": null,

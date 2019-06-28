@@ -24,11 +24,17 @@ def load_sandbox_output(filename):
 class StitcherTests(TestCase):
     maxDiff = None
 
+    def setUp(self):
+        self.request = HttpRequest()
+        self.request.build_absolute_uri = (
+            lambda route: f'https://developers.democracyclub.org.uk{route.replace("/api/v1/", "/api/v1/sandbox/")}'
+        )
+
     def test_no_ballots(self):
         s = Stitcher(
             load_fixture("test_no_elections", "wdiv"),
             load_fixture("test_no_elections", "wcivf"),
-            HttpRequest(),
+            self.request,
         )
         self.assertDictEqual(
             s.make_result_known_response(), load_sandbox_output("AA11AA")
@@ -38,7 +44,7 @@ class StitcherTests(TestCase):
         s = Stitcher(
             load_fixture("test_one_election_station_known_with_candidates", "wdiv"),
             load_fixture("test_one_election_station_known_with_candidates", "wcivf"),
-            HttpRequest(),
+            self.request,
         )
         self.assertDictEqual(
             s.make_result_known_response(), load_sandbox_output("AA12AA")
@@ -50,21 +56,17 @@ class StitcherTests(TestCase):
             load_fixture(
                 "test_one_election_station_not_known_with_candidates", "wcivf"
             ),
-            HttpRequest(),
+            self.request,
         )
         self.assertDictEqual(
             s.make_result_known_response(), load_sandbox_output("AA12AB")
         )
 
     def test_address_picker(self):
-        request = HttpRequest()
-        request.build_absolute_uri = (
-            lambda route: f'https://developers.democracyclub.org.uk{route.replace("/api/v1/", "/api/v1/sandbox/")}'
-        )
         s = Stitcher(
             load_fixture("test_address_picker", "wdiv"),
             load_fixture("test_address_picker", "wcivf"),
-            request,
+            self.request,
         )
         self.assertDictEqual(
             s.make_address_picker_response(), load_sandbox_output("AA13AA")
@@ -74,7 +76,7 @@ class StitcherTests(TestCase):
         s = Stitcher(
             load_fixture("test_multiple_elections", "wdiv"),
             load_fixture("test_multiple_elections", "wcivf"),
-            HttpRequest(),
+            self.request,
         )
         self.assertDictEqual(
             s.make_result_known_response(), load_sandbox_output("AA14AA")

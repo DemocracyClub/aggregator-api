@@ -144,6 +144,9 @@ class Stitcher:
             for ballot in date["ballots"]:
                 wcivf_ballot = self.get_wcivf_ballot(ballot["ballot_paper_id"])
 
+                ballot["ballot_url"] = self.request.build_absolute_uri(
+                    reverse("api:v1:elections_get", args=(ballot["ballot_paper_id"],))
+                )
                 ballot["election_id"] = wcivf_ballot["election_id"]
                 ballot["election_name"] = wcivf_ballot["election_name"]
                 ballot["post_name"] = wcivf_ballot["post"]["post_name"]
