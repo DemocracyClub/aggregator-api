@@ -6,7 +6,7 @@ import os
 import re
 from django.http import HttpResponse
 from django.views import View
-from .api_client import ApiClient, ApiError
+from .api_client import EEApiClient, WdivWcivfApiClient, ApiError
 from .stitcher import Stitcher, StitcherValidationError
 
 
@@ -46,7 +46,7 @@ class BaseView(View, metaclass=abc.ABCMeta):
 
 class PostcodeView(BaseView):
     def get_response(self, request, *args, **kwargs):
-        client = ApiClient()
+        client = WdivWcivfApiClient(request)
         wdiv, wcivf = client.get_data_for_postcode(kwargs["postcode"])
 
         try:
@@ -70,7 +70,7 @@ class PostcodeView(BaseView):
 
 class AddressView(BaseView):
     def get_response(self, request, *args, **kwargs):
-        client = ApiClient()
+        client = WdivWcivfApiClient(request)
         wdiv, wcivf = client.get_data_for_address(kwargs["slug"])
 
         try:
@@ -89,9 +89,26 @@ class AddressView(BaseView):
         )
 
 
+class ElectionListView(BaseView):
+    def get_response(self, request, *args, **kwargs):
+        client = EEApiClient(request)
+        result = client.get_election_list(request.GET)
+        return HttpResponse(
+            json.dumps(result), content_type="application/json", status=200
+        )
+
+
+class SingleElectionView(BaseView):
+    def get_response(self, request, *args, **kwargs):
+        client = EEApiClient(request)
+        result = client.get_single_election(kwargs["slug"])
+        return HttpResponse(
+            json.dumps(result), content_type="application/json", status=200
+        )
+
+
 class SandboxView(View):
     def get(self, request, *args, **kwargs):
-
         base_path = os.path.dirname(__file__)
         get_fixture = lambda filename: open(
             os.path.join(base_path, "sandbox-responses", f"{filename}.json")
