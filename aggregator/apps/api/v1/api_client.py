@@ -25,7 +25,7 @@ async def fetch(url, params=None):
     if not params:
         params = {}
 
-    headers = {"Accept": "application/json", "User-Agent": "devs.DC API"}
+    headers = {"Accept": "application/json", "User-Agent": settings.USER_AGENT}
     timeout = aiohttp.ClientTimeout(total=10)
     async with aiohttp.ClientSession(timeout=timeout) as session:
         async with session.get(url, params=params, headers=headers) as response:
@@ -51,14 +51,14 @@ class AsyncApiClient:
 class WdivWcivfApiClient(AsyncApiClient):
     @property
     def wdiv_params(self):
-        params = {"all_future_ballots": 1, "utm_medium": "devs.DC API"}
+        params = {"all_future_ballots": 1, "utm_medium": settings.USER_AGENT}
         if settings.WDIV_API_KEY:
             params["auth_token"] = settings.WDIV_API_KEY
         return params
 
     @property
     def wcivf_params(self):
-        return {"utm_medium": "devs.DC API"}
+        return {"utm_medium": settings.USER_AGENT}
 
     def get_data_for_postcode(self, postcode):
         wdiv_url = f"{settings.WDIV_BASE_URL}postcode/{postcode}/"
