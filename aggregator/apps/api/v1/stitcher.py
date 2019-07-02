@@ -57,7 +57,7 @@ class Stitcher:
                     f'Could not find expected ballot {ballot["ballot_paper_id"]}'
                 )
 
-        # TODO: add more validation checks here to ensure
+        # TODO: define a schema and validate against it here to ensure
         # the wdiv/wcivf responses we've got to work with make sense
 
         return True
