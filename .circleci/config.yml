@@ -42,7 +42,7 @@ jobs:
           name: check coding standards
           command: |
             pipenv run black-check
-            pipenv run pytest-flake
+            pipenv run pytest --flakes
 
       - run:
           name: run test suite
