@@ -1,3 +1,4 @@
+from collections import namedtuple
 from urllib.parse import urlparse
 import asyncio
 import aiohttp
@@ -33,13 +34,27 @@ async def fetch(url, params=None):
             return {"url": url, "json": body, "status": response.status}
 
 
-def proxy_single_request(loop, url, params=None):
-    response = asyncio.ensure_future(fetch(url, params))
+Request = namedtuple("Request", ["url", "params"])
+
+
+def get_future(url, params):
+    return asyncio.ensure_future(fetch(url, params))
+
+
+def proxy_single_request(loop, request):
+    response = get_future(request.url, request.params)
     loop.run_until_complete(response)
     result = response.result()
     if result["status"] >= 400:
         raise ApiError(result["status"], result["json"]["detail"])
     return result
+
+
+def proxy_multiple_requests(loop, *requests):
+    futures = [get_future(r.url, r.params) for r in requests]
+    responses = asyncio.gather(*futures)
+    loop.run_until_complete(responses)
+    return responses.result()
 
 
 class AsyncApiClient:
@@ -66,15 +81,14 @@ class WdivWcivfApiClient(AsyncApiClient):
             f"{settings.WCIVF_BASE_URL}candidates_for_postcode/?postcode={postcode}"
         )
 
-        responses = asyncio.gather(
-            asyncio.ensure_future(fetch(wdiv_url, self.wdiv_params)),
-            asyncio.ensure_future(fetch(wcivf_url, self.wcivf_params)),
+        responses = proxy_multiple_requests(
+            self.loop,
+            Request(wdiv_url, self.wdiv_params),
+            Request(wcivf_url, self.wcivf_params),
         )
 
-        self.loop.run_until_complete(responses)
-
-        wdiv_result = self.get_wdiv_result(responses.result())
-        wcivf_result = self.get_wcivf_result(responses.result())
+        wdiv_result = self.get_wdiv_result(responses)
+        wcivf_result = self.get_wcivf_result(responses)
 
         if wdiv_result["status"] >= 400:
             raise ApiError(wdiv_result["status"], wdiv_result["json"]["detail"])
@@ -98,7 +112,9 @@ class WdivWcivfApiClient(AsyncApiClient):
     def get_data_for_address(self, slug):
         wdiv_url = f"{settings.WDIV_BASE_URL}address/{slug}/"
 
-        wdiv_result = proxy_single_request(self.loop, wdiv_url, self.wdiv_params)
+        wdiv_result = proxy_single_request(
+            self.loop, Request(wdiv_url, self.wdiv_params)
+        )
         wdiv_json = wdiv_result["json"]
 
         if wdiv_json["ballots"]:
@@ -107,7 +123,9 @@ class WdivWcivfApiClient(AsyncApiClient):
         else:
             wcivf_url = f'{settings.WCIVF_BASE_URL}candidates_for_postcode/?postcode={wdiv_json["addresses"][0]["postcode"]}'
 
-        wcivf_result = proxy_single_request(self.loop, wcivf_url, self.wcivf_params)
+        wcivf_result = proxy_single_request(
+            self.loop, Request(wcivf_url, self.wcivf_params)
+        )
         wcivf_json = wcivf_result["json"]
 
         return wdiv_json, wcivf_json
@@ -148,13 +166,14 @@ class EEApiClient(AsyncApiClient):
 
     def get_single_election(self, slug):
         ee_url = f"{settings.EE_BASE_URL}elections/{slug}/"
-        ee_result = proxy_single_request(self.loop, ee_url)
+        ee_result = proxy_single_request(self.loop, Request(ee_url, None))
         return self.filter_single_election(ee_result["json"])
 
     def get_election_list(self, query_dict):
         ee_url = f"{settings.EE_BASE_URL}elections/"
         ee_result = proxy_single_request(
-            self.loop, ee_url, dict(self.clean_query_params(query_dict).items())
+            self.loop,
+            Request(ee_url, dict(self.clean_query_params(query_dict).items())),
         )
         return self.filter_election_list(ee_result["json"])
 
