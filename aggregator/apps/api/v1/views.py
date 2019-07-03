@@ -5,7 +5,8 @@ import os
 import re
 from django.http import HttpResponse, JsonResponse
 from django.views import View
-from .api_client import EEApiClient, WdivWcivfApiClient, ApiError
+from ..errors import ApiError
+from .api_client import EEApiClient, WdivWcivfApiClient, UpstreamApiError
 from .stitcher import Stitcher, StitcherValidationError
 
 
@@ -21,14 +22,14 @@ class BaseView(View, metaclass=abc.ABCMeta):
         if (not auth_param and not auth_header) or (
             auth_header and not re.match(r"Token .*", auth_header)
         ):
-            return JsonResponse({"message": "Invalid token."}, status=401)
+            raise ApiError("Invalid token.", status=401)
 
         try:
             return self.get_response(request, *args, **kwargs)
-        except ApiError as e:
-            return JsonResponse({"message": e.message}, status=e.status)
+        except UpstreamApiError as e:
+            raise ApiError(e.message, status=e.status)
         except (asyncio.TimeoutError, aiohttp.ClientConnectorError):
-            return JsonResponse({"message": "Backend Connection Error"}, status=500)
+            raise ApiError("Backend Connection Error")
 
 
 class PostcodeView(BaseView):
@@ -39,7 +40,7 @@ class PostcodeView(BaseView):
         try:
             stitcher = Stitcher(wdiv, wcivf, request)
         except StitcherValidationError:
-            return JsonResponse({"message": "Internal Server Error"}, status=500)
+            raise ApiError("Internal Server Error")
 
         if not wdiv["polling_station_known"] and len(wdiv["addresses"]) > 0:
             result = stitcher.make_address_picker_response()
@@ -57,7 +58,7 @@ class AddressView(BaseView):
         try:
             stitcher = Stitcher(wdiv, wcivf, request)
         except StitcherValidationError:
-            return JsonResponse({"message": "Internal Server Error"}, status=500)
+            raise ApiError("Internal Server Error")
 
         result = stitcher.make_result_known_response()
 
@@ -100,9 +101,7 @@ class SandboxView(View):
                 return HttpResponse(
                     get_fixture(postcode), content_type="application/json", status=200
                 )
-            return JsonResponse(
-                {"message": "Could not geocode from any source"}, status=400
-            )
+            raise ApiError("Could not geocode from any source", status=400)
 
         example_slugs = (
             "e09000033-2282254634585",
@@ -116,6 +115,6 @@ class SandboxView(View):
                     content_type="application/json",
                     status=200,
                 )
-            return JsonResponse({"message": "Address not found"}, status=404)
+            raise ApiError("Address not found", status=404)
 
-        return JsonResponse({"message": "Internal Server Error"}, status=500)
+        raise ApiError("Internal Server Error")
