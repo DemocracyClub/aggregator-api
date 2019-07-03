@@ -57,7 +57,7 @@ class Stitcher:
                     f'Could not find expected ballot {ballot["ballot_paper_id"]}'
                 )
 
-        # TODO: add more validation checks here to ensure
+        # TODO: define a schema and validate against it here to ensure
         # the wdiv/wcivf responses we've got to work with make sense
 
         return True
@@ -144,6 +144,9 @@ class Stitcher:
             for ballot in date["ballots"]:
                 wcivf_ballot = self.get_wcivf_ballot(ballot["ballot_paper_id"])
 
+                ballot["ballot_url"] = self.request.build_absolute_uri(
+                    reverse("api:v1:elections_get", args=(ballot["ballot_paper_id"],))
+                )
                 ballot["election_id"] = wcivf_ballot["election_id"]
                 ballot["election_name"] = wcivf_ballot["election_name"]
                 ballot["post_name"] = wcivf_ballot["post"]["post_name"]

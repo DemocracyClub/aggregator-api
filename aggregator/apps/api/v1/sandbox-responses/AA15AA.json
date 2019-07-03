@@ -22,6 +22,7 @@
         {
           "ballot_paper_id": "parl.west-tyrone.by.2018-05-03",
           "ballot_title": "West Tyrone by-election",
+          "ballot_url": "https://developers.democracyclub.org.uk/api/v1/sandbox/elections/parl.west-tyrone.by.2018-05-03/",
           "poll_open_date": "2018-11-22",
           "elected_role": "Member of Parliament",
           "metadata": {

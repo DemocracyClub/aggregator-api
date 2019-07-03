@@ -1,81 +1,69 @@
-import json
-import os
 from django.http import HttpRequest
 from django.test import TestCase
 from api.v1.stitcher import Stitcher
-
-
-def load_fixture(testname, fixture):
-    dirname = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.abspath(
-        os.path.join(dirname, f"fixtures/{testname}", f"{fixture}.json")
-    )
-    return json.load(open(file_path))
-
-
-def load_sandbox_output(filename):
-    dirname = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.abspath(
-        os.path.join(dirname, "..", f"sandbox-responses/{filename}.json")
-    )
-    return json.load(open(file_path))
+from api.v1.tests.helpers import load_fixture, load_sandbox_output, fixture_map
 
 
 class StitcherTests(TestCase):
     maxDiff = None
 
+    def setUp(self):
+        self.request = HttpRequest()
+        self.request.build_absolute_uri = (
+            lambda route: f'https://developers.democracyclub.org.uk{route.replace("/api/v1/", "/api/v1/sandbox/")}'
+        )
+
     def test_no_ballots(self):
+        postcode = "AA11AA"
         s = Stitcher(
-            load_fixture("test_no_elections", "wdiv"),
-            load_fixture("test_no_elections", "wcivf"),
-            HttpRequest(),
+            load_fixture(fixture_map[postcode], "wdiv"),
+            load_fixture(fixture_map[postcode], "wcivf"),
+            self.request,
         )
         self.assertDictEqual(
-            s.make_result_known_response(), load_sandbox_output("AA11AA")
+            s.make_result_known_response(), load_sandbox_output(postcode)
         )
 
     def test_one_election_station_known_with_candidates(self):
+        postcode = "AA12AA"
         s = Stitcher(
-            load_fixture("test_one_election_station_known_with_candidates", "wdiv"),
-            load_fixture("test_one_election_station_known_with_candidates", "wcivf"),
-            HttpRequest(),
+            load_fixture(fixture_map[postcode], "wdiv"),
+            load_fixture(fixture_map[postcode], "wcivf"),
+            self.request,
         )
         self.assertDictEqual(
-            s.make_result_known_response(), load_sandbox_output("AA12AA")
+            s.make_result_known_response(), load_sandbox_output(postcode)
         )
 
     def test_one_election_station_not_known_with_candidates(self):
+        postcode = "AA12AB"
         s = Stitcher(
-            load_fixture("test_one_election_station_not_known_with_candidates", "wdiv"),
-            load_fixture(
-                "test_one_election_station_not_known_with_candidates", "wcivf"
-            ),
-            HttpRequest(),
+            load_fixture(fixture_map[postcode], "wdiv"),
+            load_fixture(fixture_map[postcode], "wcivf"),
+            self.request,
         )
         self.assertDictEqual(
-            s.make_result_known_response(), load_sandbox_output("AA12AB")
+            s.make_result_known_response(), load_sandbox_output(postcode)
         )
 
     def test_address_picker(self):
-        request = HttpRequest()
-        request.build_absolute_uri = (
-            lambda route: f'https://developers.democracyclub.org.uk{route.replace("/api/v1/", "/api/v1/sandbox/")}'
-        )
+        postcode = "AA13AA"
         s = Stitcher(
-            load_fixture("test_address_picker", "wdiv"),
-            load_fixture("test_address_picker", "wcivf"),
-            request,
+            load_fixture(fixture_map[postcode], "wdiv"),
+            load_fixture(fixture_map[postcode], "wcivf"),
+            self.request,
         )
         self.assertDictEqual(
-            s.make_address_picker_response(), load_sandbox_output("AA13AA")
+            s.make_address_picker_response(), load_sandbox_output(postcode)
         )
 
     def test_multiple_elections(self):
+        postcode = "AA14AA"
         s = Stitcher(
-            load_fixture("test_multiple_elections", "wdiv"),
-            load_fixture("test_multiple_elections", "wcivf"),
-            HttpRequest(),
+            load_fixture(fixture_map[postcode], "wdiv"),
+            load_fixture(fixture_map[postcode], "wcivf"),
+            self.request,
         )
         self.assertDictEqual(
-            s.make_result_known_response(), load_sandbox_output("AA14AA")
+            s.make_result_known_response(), load_sandbox_output(postcode)
         )

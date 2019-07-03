@@ -15,6 +15,7 @@
         {
           "ballot_paper_id": "mayor.lewisham.2018-05-03",
           "ballot_title": "Mayor of Lewisham election",
+          "ballot_url": "https://developers.democracyclub.org.uk/api/v1/sandbox/elections/mayor.lewisham.2018-05-03/",
           "poll_open_date": "2018-05-03",
           "elected_role": "Mayor of Lewisham",
           "metadata": null,
@@ -115,6 +116,7 @@
         {
           "ballot_paper_id": "local.lewisham.blackheath.2018-05-03",
           "ballot_title": "Lewisham local election Blackheath",
+          "ballot_url": "https://developers.democracyclub.org.uk/api/v1/sandbox/elections/local.lewisham.blackheath.2018-05-03/",
           "poll_open_date": "2018-05-03",
           "elected_role": "Local Councillor",
           "metadata": {
@@ -269,6 +271,7 @@
         {
           "ballot_paper_id": "local.lewisham.blackheath.2018-05-10",
           "ballot_title": "Lewisham local election Blackheath",
+          "ballot_url": "https://developers.democracyclub.org.uk/api/v1/sandbox/elections/local.lewisham.blackheath.2018-05-10/",
           "poll_open_date": "2018-05-10",
           "elected_role": "Local Councillor",
           "metadata": null,
@@ -417,6 +420,7 @@
         {
           "ballot_paper_id": "parl.lewisham-east.by.2018-06-14",
           "ballot_title": "Lewisham East by-election",
+          "ballot_url": "https://developers.democracyclub.org.uk/api/v1/sandbox/elections/parl.lewisham-east.by.2018-06-14/",
           "poll_open_date": "2018-06-14",
           "elected_role": "Member of Parliament",
           "metadata": null,

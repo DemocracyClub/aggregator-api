@@ -272,6 +272,7 @@ is required will include this information in the `notifications` array. e.g:
             + (object)
                 + `ballot_paper_id`: `local.cardiff.pontprennauold-st-mellons.2017-05-04` (string) - Identifier for this ballot
                 + `ballot_title`: `Cardiff local election Pontprennau/Old St. Mellons` (string) - Friendly name for this ballot
+                + `ballot_url`: `https://developers.democracyclub.org.uk/api/v1/local.cardiff.pontprennauold-st-mellons.2017-05-04/` (string) - API link for more detailed info about this ballot from the /elections endpoint
                 + `poll_open_date`: `2017-05-04` (string) - Polling day for this ballot
                 + `elected_role`: `Local Councillor` (string) - Name of the role the winner(s) of this election will assume
                 + metadata: (object, nullable) - Object containing information about special conditions for the user to be aware about (e.g: cancelled elections, voter id pilot). (details TBC)
