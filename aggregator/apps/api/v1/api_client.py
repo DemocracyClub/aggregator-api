@@ -8,9 +8,9 @@ from django.urls import reverse
 
 
 class UpstreamApiError(Exception):
-    def __init__(self, status, message):
-        self.status = status
+    def __init__(self, message, status):
         self.message = message
+        self.status = status
 
 
 def get_event_loop():
@@ -46,7 +46,7 @@ def proxy_single_request(loop, request):
     loop.run_until_complete(response)
     result = response.result()
     if result["status"] >= 400:
-        raise UpstreamApiError(result["status"], result["json"]["detail"])
+        raise UpstreamApiError(result["json"]["detail"], result["status"])
     return result
 
 
@@ -91,10 +91,10 @@ class WdivWcivfApiClient(AsyncApiClient):
         wcivf_result = self.get_wcivf_result(responses)
 
         if wdiv_result["status"] >= 400:
-            raise UpstreamApiError(wdiv_result["status"], wdiv_result["json"]["detail"])
+            raise UpstreamApiError(wdiv_result["json"]["detail"], wdiv_result["status"])
         if wcivf_result["status"] >= 400:
             raise UpstreamApiError(
-                wcivf_result["status"], wcivf_result["json"]["detail"]
+                wcivf_result["json"]["detail"], wcivf_result["status"]
             )
 
         return (wdiv_result["json"], wcivf_result["json"])
@@ -103,7 +103,7 @@ class WdivWcivfApiClient(AsyncApiClient):
         for r in results:
             if base_url in r["url"]:
                 return r
-        raise UpstreamApiError(500, "Internal Server Error")
+        raise UpstreamApiError("Internal Server Error", 500)
 
     def get_wdiv_result(self, results):
         return self.get_result_by_base_url(results, settings.WDIV_BASE_URL)

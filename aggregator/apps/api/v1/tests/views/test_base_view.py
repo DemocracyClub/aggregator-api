@@ -9,7 +9,7 @@ def aiohttp_error(*args, **kwargs):
 
 
 def api_error(*args, **kwargs):
-    raise UpstreamApiError(500, "oh noes!!")
+    raise UpstreamApiError("oh noes!!", 500)
 
 
 class BaseViewTests(TestCase):
