@@ -1,10 +1,9 @@
 import abc
 import asyncio
 import aiohttp
-import json
 import os
 import re
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views import View
 from .api_client import EEApiClient, WdivWcivfApiClient, ApiError
 from .stitcher import Stitcher, StitcherValidationError
@@ -22,26 +21,14 @@ class BaseView(View, metaclass=abc.ABCMeta):
         if (not auth_param and not auth_header) or (
             auth_header and not re.match(r"Token .*", auth_header)
         ):
-            return HttpResponse(
-                json.dumps({"message": "Invalid token."}),
-                content_type="application/json",
-                status=401,
-            )
+            return JsonResponse({"message": "Invalid token."}, status=401)
 
         try:
             return self.get_response(request, *args, **kwargs)
         except ApiError as e:
-            return HttpResponse(
-                json.dumps({"message": e.message}),
-                content_type="application/json",
-                status=e.status,
-            )
+            return JsonResponse({"message": e.message}, status=e.status)
         except (asyncio.TimeoutError, aiohttp.ClientConnectorError):
-            return HttpResponse(
-                json.dumps({"message": "Backend Connection Error"}),
-                content_type="application/json",
-                status=500,
-            )
+            return JsonResponse({"message": "Backend Connection Error"}, status=500)
 
 
 class PostcodeView(BaseView):
@@ -52,20 +39,14 @@ class PostcodeView(BaseView):
         try:
             stitcher = Stitcher(wdiv, wcivf, request)
         except StitcherValidationError:
-            return HttpResponse(
-                json.dumps({"message": "Internal Server Error"}),
-                content_type="application/json",
-                status=500,
-            )
+            return JsonResponse({"message": "Internal Server Error"}, status=500)
 
         if not wdiv["polling_station_known"] and len(wdiv["addresses"]) > 0:
             result = stitcher.make_address_picker_response()
         else:
             result = stitcher.make_result_known_response()
 
-        return HttpResponse(
-            json.dumps(result), content_type="application/json", status=200
-        )
+        return JsonResponse(result, status=200)
 
 
 class AddressView(BaseView):
@@ -76,35 +57,25 @@ class AddressView(BaseView):
         try:
             stitcher = Stitcher(wdiv, wcivf, request)
         except StitcherValidationError:
-            return HttpResponse(
-                json.dumps({"message": "Internal Server Error"}),
-                content_type="application/json",
-                status=500,
-            )
+            return JsonResponse({"message": "Internal Server Error"}, status=500)
 
         result = stitcher.make_result_known_response()
 
-        return HttpResponse(
-            json.dumps(result), content_type="application/json", status=200
-        )
+        return JsonResponse(result, status=200)
 
 
 class ElectionListView(BaseView):
     def get_response(self, request, *args, **kwargs):
         client = EEApiClient(request)
         result = client.get_election_list(request.GET)
-        return HttpResponse(
-            json.dumps(result), content_type="application/json", status=200
-        )
+        return JsonResponse(result, status=200)
 
 
 class SingleElectionView(BaseView):
     def get_response(self, request, *args, **kwargs):
         client = EEApiClient(request)
         result = client.get_single_election(kwargs["slug"])
-        return HttpResponse(
-            json.dumps(result), content_type="application/json", status=200
-        )
+        return JsonResponse(result, status=200)
 
 
 class SandboxView(View):
@@ -129,10 +100,8 @@ class SandboxView(View):
                 return HttpResponse(
                     get_fixture(postcode), content_type="application/json", status=200
                 )
-            return HttpResponse(
-                json.dumps({"message": "Could not geocode from any source"}),
-                content_type="application/json",
-                status=400,
+            return JsonResponse(
+                {"message": "Could not geocode from any source"}, status=400
             )
 
         example_slugs = (
@@ -147,14 +116,6 @@ class SandboxView(View):
                     content_type="application/json",
                     status=200,
                 )
-            return HttpResponse(
-                json.dumps({"message": "Address not found"}),
-                content_type="application/json",
-                status=404,
-            )
+            return JsonResponse({"message": "Address not found"}, status=404)
 
-        return HttpResponse(
-            json.dumps({"message": "Internal Server Error"}),
-            content_type="application/json",
-            status=500,
-        )
+        return JsonResponse({"message": "Internal Server Error"}, status=500)
