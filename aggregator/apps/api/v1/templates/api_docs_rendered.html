@@ -480,12 +480,10 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                   &quot;type&quot;: &quot;string&quot;
                 },
                 &quot;type&quot;: {
-                  &quot;type&quot;: &quot;object&quot;,
+                  &quot;type&quot;: &quot;string&quot;,
                   &quot;enum&quot;: [
-                    {
-                      &quot;cancelled_election&quot;: &quot;&quot;,
-                      &quot;voter_id&quot;: &quot;&quot;
-                    }
+                    &quot;cancelled_election&quot;,
+                    &quot;voter_id&quot;
                   ],
                   &quot;description&quot;: &quot;Type of notification&quot;
                 },
@@ -518,7 +516,7 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                 },
                 &quot;poll_open_date&quot;: {
                   &quot;type&quot;: &quot;string&quot;,
-                  &quot;description&quot;: &quot;Polling day for this ballot&quot;
+                  &quot;description&quot;: &quot;Polling day for this ballot  (ISO 8601)&quot;
                 },
                 &quot;elected_role&quot;: {
                   &quot;type&quot;: &quot;string&quot;,
@@ -1184,12 +1182,10 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                   &quot;type&quot;: &quot;string&quot;
                 },
                 &quot;type&quot;: {
-                  &quot;type&quot;: &quot;object&quot;,
+                  &quot;type&quot;: &quot;string&quot;,
                   &quot;enum&quot;: [
-                    {
-                      &quot;cancelled_election&quot;: &quot;&quot;,
-                      &quot;voter_id&quot;: &quot;&quot;
-                    }
+                    &quot;cancelled_election&quot;,
+                    &quot;voter_id&quot;
                   ],
                   &quot;description&quot;: &quot;Type of notification&quot;
                 },
@@ -1222,7 +1218,7 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                 },
                 &quot;poll_open_date&quot;: {
                   &quot;type&quot;: &quot;string&quot;,
-                  &quot;description&quot;: &quot;Polling day for this ballot&quot;
+                  &quot;description&quot;: &quot;Polling day for this ballot  (ISO 8601)&quot;
                 },
                 &quot;elected_role&quot;: {
                   &quot;type&quot;: &quot;string&quot;,
@@ -1445,6 +1441,832 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
 </code></pre></div><div class="api-action-body">
     Body:
     <pre><code>{ &quot;detail&quot;: &quot;Address not found&quot; }
+</code></pre></div></div></div></div></div></div><div class="api-resource-group card"><h2 id="elections-2">
+        Elections&nbsp;<a
+          href="#elections-2"
+          class="permalink">&para;</a></h2><div class="api-description"><p>The <code>/elections/</code> endpoint gives access to Democracy Club's full database of elections.</p><p>Each election object is assigned an <a href="https://elections.democracyclub.org.uk/reference_definition/">Election Identifier</a></p><p>Democracy Club's election model is hierarchical.
+The lowest level (or most detailed) election object is called the ballot id and describes a single ballot paper.
+Each level above this is a group id. For example the ballot
+<code>local.worcestershire.bewdley.2017-05-04</code> is a child of the (organisation) group
+<code>local.worcestershire.2017-05-04</code> which is in turn a child of the (election) group
+<code>local.2017-05-04</code>.</p><p>An election object is described fully in the JSON schema, but broadly contains information about:</p><ul><li><p>The election or group itself</p></li><li><p>The object's position in the hierarchy</p></li><li><p>The organisation (e.g: parliament or council) holding the election</p></li><li><p>The division (e.g: constituency or ward) that a candidate will be elected to represent</p></li></ul></div><div class="api-resource card"><h3 id="list-elections-3">
+      List Elections&nbsp;<a
+        href="#list-elections-3"
+        class="permalink">&para;</a></h3><code>/elections/</code><div class="api-action-example">
+    Example:
+    <a href="https://developers.democracyclub.org.uk/api/v1/elections/"><code>https://developers.democracyclub.org.uk/api/v1/elections/</code></a></div><div class="api-parameters"><h4>Parameters</h4><ul><li><p><strong>coords</strong>&#32;
+
+                <code>string</code>
+
+                
+                  (
+                    optional
+                  )
+                
+              </p><p>Pass a lat/lon string as <code>?coords={lat},{lon}</code> to find elections covering the given coordinates. For lookup by postcode/address, use the <a href="#postcode-search-2">/postcode</a> endpoint.</p><p>Example: <code>52.290719,-1.935395</code></p></li><li><p><strong>current</strong>&#32;
+
+                <code>string</code>
+
+                
+                  (
+                    optional
+                  )
+                
+              </p><p>Pass <code>?current=1</code> to return only elections whose polling date is either in the future or was in the last 20 days</p><p>Example: <code>1</code></p></li><li><p><strong>future</strong>&#32;
+
+                <code>string</code>
+
+                
+                  (
+                    optional
+                  )
+                
+              </p><p>Pass <code>?future=1</code> to return only elections whose polling date is in the future</p><p>Example: <code>1</code></p></li><li><p><strong>limit</strong>&#32;
+
+                <code>number</code>
+
+                
+                  (
+                    optional
+                  )
+                
+              </p><p>Pass <code>?limit={num}</code> to specify number of election objects to return. Use with <code>offset</code> to page over results</p><p>Example: <code>20</code></p></li><li><p><strong>offset</strong>&#32;
+
+                <code>number</code>
+
+                
+                  (
+                    optional
+                  )
+                
+              </p><p>Pass <code>?offset={num}</code> to specify Election object to start from. Use with <code>limit</code> to page over results</p><p>Example: <code>20</code></p></li></ul></div><div class="api-description"><p>List or filter all election objects.</p></div><div class="api-action"><h4 id="list-elections-4">
+      List elections&nbsp;<a
+        href="#list-elections-4"
+        class="permalink">&para;</a></h4><div class="api-action-transaction"><div class="api-action-request">
+  
+  Request <span class="api-method api-method-GET badge success">GET</span>
+  &#32;
+  <code>/elections/</code></div><div class="api-action-response">
+  
+  Response <code class="api-http-code">200</code><div class="api-action-headers">
+      Headers:
+      <pre><code>Content-Type: application/json
+</code></pre></div><div class="api-action-body">
+    Body:
+    <pre><code>{
+  &quot;count&quot;: 18014,
+  &quot;next&quot;: &quot;https://developers.democracyclub.org.uk/api/v1/elections/?limit=100&amp;offset=100&quot;,
+  &quot;previous&quot;: null,
+  &quot;results&quot;: [
+    {
+      &quot;election_id&quot;: &quot;naw.c.alyn-and-deeside.by.2018-02-06&quot;,
+      &quot;election_title&quot;: &quot;Alyn and Deeside (Constituencies) by-election&quot;,
+      &quot;poll_open_date&quot;: &quot;2018-02-06&quot;,
+      &quot;election_type&quot;: {
+        &quot;name&quot;: &quot;National Assembly for Wales elections&quot;,
+        &quot;election_type&quot;: &quot;naw&quot;
+      },
+      &quot;election_subtype&quot;: {
+        &quot;name&quot;: &quot;Constituencies&quot;,
+        &quot;election_subtype&quot;: &quot;c&quot;
+      },
+      &quot;organisation&quot;: {
+        &quot;official_identifier&quot;: &quot;naw&quot;,
+        &quot;organisation_type&quot;: &quot;naw&quot;,
+        &quot;organisation_subtype&quot;: &quot;&quot;,
+        &quot;official_name&quot;: &quot;Welsh assembly&quot;,
+        &quot;common_name&quot;: &quot;Welsh assembly&quot;,
+        &quot;slug&quot;: &quot;naw&quot;,
+        &quot;territory_code&quot;: &quot;WLS&quot;,
+        &quot;election_name&quot;: &quot;National Assembly for Wales election&quot;,
+        &quot;start_date&quot;: &quot;1999-05-06&quot;,
+        &quot;end_date&quot;: null
+      },
+      &quot;group&quot;: &quot;naw.c.2018-02-06&quot;,
+      &quot;group_type&quot;: null,
+      &quot;children&quot;: [],
+      &quot;elected_role&quot;: &quot;Assembly Member&quot;,
+      &quot;seats_contested&quot;: 1,
+      &quot;division&quot;: {
+        &quot;divisionset&quot;: {
+          &quot;start_date&quot;: &quot;2016-04-13&quot;,
+          &quot;end_date&quot;: null,
+          &quot;legislation_url&quot;: null,
+          &quot;consultation_url&quot;: null,
+          &quot;short_title&quot;: &quot;2016 Boundaries&quot;,
+          &quot;notes&quot;: &quot;Auto imported from http://mapit.mysociety.org&quot;
+        },
+        &quot;name&quot;: &quot;Alyn and Deeside&quot;,
+        &quot;official_identifier&quot;: &quot;gss:W09000007&quot;,
+        &quot;slug&quot;: &quot;alyn-and-deeside&quot;,
+        &quot;division_type&quot;: &quot;WAC&quot;,
+        &quot;division_election_sub_type&quot;: &quot;c&quot;,
+        &quot;seats_total&quot;: null,
+        &quot;territory_code&quot;: &quot;WLS&quot;
+      },
+      &quot;voting_system&quot;: {
+        &quot;slug&quot;: &quot;FPTP&quot;,
+        &quot;name&quot;: &quot;First-past-the-post&quot;,
+        &quot;uses_party_lists&quot;: false
+      },
+      &quot;current&quot;: false,
+      &quot;metadata&quot;: null,
+      &quot;cancelled&quot;: false,
+      &quot;replaces&quot;: null,
+      &quot;replaced_by&quot;: null
+    }
+  ]
+}</code></pre></div><div class="api-action-schema">
+    Schema:
+    <pre><code>{
+  &quot;$schema&quot;: &quot;http://json-schema.org/draft-04/schema#&quot;,
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;properties&quot;: {
+    &quot;count&quot;: {
+      &quot;type&quot;: &quot;number&quot;,
+      &quot;description&quot;: &quot;Total number of election objects&quot;
+    },
+    &quot;next&quot;: {
+      &quot;type&quot;: [
+        &quot;string&quot;,
+        &quot;null&quot;
+      ],
+      &quot;description&quot;: &quot;Link to next page of results&quot;
+    },
+    &quot;previous&quot;: {
+      &quot;type&quot;: [
+        &quot;string&quot;,
+        &quot;null&quot;
+      ],
+      &quot;description&quot;: &quot;Link to previous page of results&quot;
+    },
+    &quot;results&quot;: {
+      &quot;type&quot;: &quot;array&quot;,
+      &quot;items&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;election_id&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;Identifier for this election&quot;
+          },
+          &quot;election_title&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;Friendly name for this election&quot;
+          },
+          &quot;poll_open_date&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;Polling day for this election (ISO 8601)&quot;
+          },
+          &quot;election_type&quot;: {
+            &quot;type&quot;: &quot;object&quot;,
+            &quot;properties&quot;: {
+              &quot;name&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;Friendly name for this election type&quot;
+              },
+              &quot;election_type&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;Identifier slug for this election type (a component of the identifier)&quot;
+              }
+            }
+          },
+          &quot;election_subtype&quot;: {
+            &quot;type&quot;: [
+              &quot;object&quot;,
+              &quot;null&quot;
+            ],
+            &quot;properties&quot;: {
+              &quot;name&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;Friendly name for this election subtype&quot;
+              },
+              &quot;election_subtype&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;Identifier slug for this election subtype (a component of the identifier)&quot;
+              }
+            },
+            &quot;description&quot;: &quot;Election subtype provides details for the subtype in Additional Member System elections (Welsh Assembly, Scottish Parliament, Greater London Assembly). This key will be null for other election types&quot;
+          },
+          &quot;organisation&quot;: {
+            &quot;type&quot;: &quot;object&quot;,
+            &quot;properties&quot;: {
+              &quot;official_identifier&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;An identifier for this organisation. Where possible, we&#39;ll us a code from the relevant [gov.uk register](https://www.registers.service.gov.uk/).&quot;
+              },
+              &quot;organisation_type&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;enum&quot;: [
+                  &quot;combined-authority&quot;,
+                  &quot;europarl&quot;,
+                  &quot;gla&quot;,
+                  &quot;local-authority&quot;,
+                  &quot;naw&quot;,
+                  &quot;nia&quot;,
+                  &quot;parl&quot;,
+                  &quot;police-area&quot;,
+                  &quot;sp&quot;
+                ]
+              },
+              &quot;organisation_subtype&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;enum&quot;: [
+                  &quot;CA&quot;,
+                  &quot;CC&quot;,
+                  &quot;CTY&quot;,
+                  &quot;LBO&quot;,
+                  &quot;MD&quot;,
+                  &quot;NMD&quot;,
+                  &quot;SRA&quot;,
+                  &quot;UA&quot;
+                ],
+                &quot;description&quot;: &quot;If organisation_type = &#39;local-authority&#39;, an additional description of what type of local authority this is from the [gov.uk local authority registers](https://www.registers.service.gov.uk/category/regional-and-local-government). Empty string for other organisation types&quot;
+              },
+              &quot;official_name&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;Long name of the organisation&quot;
+              },
+              &quot;common_name&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;Short name of the organisation&quot;
+              },
+              &quot;slug&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;Identifier slug for this organisation (a component of the identifier)&quot;
+              },
+              &quot;territory_code&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;enum&quot;: [
+                  &quot;ENG&quot;,
+                  &quot;WLS&quot;,
+                  &quot;SCT&quot;,
+                  &quot;NIR&quot;,
+                  &quot;GBN&quot;
+                ]
+              },
+              &quot;election_name&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;Base name for elections to this organisation&quot;
+              },
+              &quot;start_date&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;Start date (ISO 8601) for this organisation, or the first date on which we can validly create an election for it&quot;
+              },
+              &quot;end_date&quot;: {
+                &quot;type&quot;: [
+                  &quot;string&quot;,
+                  &quot;null&quot;
+                ],
+                &quot;description&quot;: &quot;End date (ISO 8601) for this organisation, or the last date on which we can validly create an election for it. Null when the organisation is current&quot;
+              }
+            },
+            &quot;description&quot;: &quot;Object describing the body the winner of this election will be elected to&quot;
+          },
+          &quot;group&quot;: {
+            &quot;type&quot;: [
+              &quot;string&quot;,
+              &quot;null&quot;
+            ],
+            &quot;description&quot;: &quot;Identifier for this election&#39;s parent group. If this is an election group (group_type = &#39;election&#39;), this will be null&quot;
+          },
+          &quot;group_type&quot;: {
+            &quot;type&quot;: [
+              &quot;string&quot;,
+              &quot;null&quot;
+            ],
+            &quot;description&quot;: &quot;One of &#39;election&#39;, &#39;organisation&#39; or null. Null if this election is a ballot&quot;
+          },
+          &quot;children&quot;: {
+            &quot;type&quot;: &quot;array&quot;,
+            &quot;description&quot;: &quot;Identifiers for any elections belonging to this election group. Empty array for ballots&quot;
+          },
+          &quot;elected_role&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;Name of the role the winner(s) of this election will assume&quot;
+          },
+          &quot;seats_contested&quot;: {
+            &quot;type&quot;: [
+              &quot;number&quot;,
+              &quot;null&quot;
+            ],
+            &quot;description&quot;: &quot;Number of seats contested in this election. Populated only for ballots&quot;
+          },
+          &quot;division&quot;: {
+            &quot;type&quot;: [
+              &quot;object&quot;,
+              &quot;null&quot;
+            ],
+            &quot;properties&quot;: {
+              &quot;divisionset&quot;: {
+                &quot;type&quot;: &quot;object&quot;,
+                &quot;properties&quot;: {
+                  &quot;start_date&quot;: {
+                    &quot;type&quot;: &quot;string&quot;,
+                    &quot;description&quot;: &quot;Start date (ISO 8601) for this Division Set, or the first date on which we can validly create an election for a division in it&quot;
+                  },
+                  &quot;end_date&quot;: {
+                    &quot;type&quot;: [
+                      &quot;string&quot;,
+                      &quot;null&quot;
+                    ],
+                    &quot;description&quot;: &quot;End date (ISO 8601) for this Division Set, or the last date on which we can validly create an election for a division in it. Null when the Division Set is current&quot;
+                  },
+                  &quot;legislation_url&quot;: {
+                    &quot;type&quot;: [
+                      &quot;string&quot;,
+                      &quot;null&quot;
+                    ],
+                    &quot;description&quot;: &quot;Link to the legislation which defined the Division Set, if we hold it&quot;
+                  },
+                  &quot;consultation_url&quot;: {
+                    &quot;type&quot;: [
+                      &quot;string&quot;,
+                      &quot;null&quot;
+                    ],
+                    &quot;description&quot;: &quot;Link to the process which defined the Division Set, if we hold it.&quot;
+                  },
+                  &quot;short_title&quot;: {
+                    &quot;type&quot;: &quot;string&quot;,
+                    &quot;description&quot;: &quot;Short name of the Division Set&quot;
+                  },
+                  &quot;notes&quot;: {
+                    &quot;type&quot;: &quot;string&quot;,
+                    &quot;description&quot;: &quot;Notes on the source of the boundaries&quot;
+                  }
+                },
+                &quot;description&quot;: &quot;Electoral divisions change over time. A Division Set represents a group of boundaries which are in use over a period of time.&quot;
+              },
+              &quot;name&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;Name of this division&quot;
+              },
+              &quot;official_identifier&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;Identifier for this division. Where possible this will be a GSS code prefixed by `gss:`. If a GSS code is not available yet, we&#39;ll assign the division a temporary ID&quot;
+              },
+              &quot;slug&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;Identifier slug for this division (a component of the identifier)&quot;
+              },
+              &quot;division_type&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;An Ordnance Survey AREA_CODE describing what type of division this is. See https://www.ordnancesurvey.co.uk/docs/technical-specifications/boundary-line-technical-specification.pdf&quot;
+              },
+              &quot;division_election_sub_type&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;Identifier slug for this election subtype (a component of the identifier).&quot;
+              },
+              &quot;seats_total&quot;: {
+                &quot;type&quot;: [
+                  &quot;number&quot;,
+                  &quot;null&quot;
+                ],
+                &quot;description&quot;: &quot;Total number of seats in this division (may not all be elected in a single election)&quot;
+              },
+              &quot;territory_code&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;enum&quot;: [
+                  &quot;ENG&quot;,
+                  &quot;WLS&quot;,
+                  &quot;SCT&quot;,
+                  &quot;NIR&quot;
+                ]
+              }
+            },
+            &quot;description&quot;: &quot;Object describing the division (e.g: constituency or ward) the winner of this election will represent, if applicable. Election groups don&#39;t have a division. Also the ballot object for some election types don&#39;t have a division (e.g: Directly elected mayors and Police and Crime Commissioners represent an organisation directly)&quot;
+          },
+          &quot;voting_system&quot;: {
+            &quot;type&quot;: &quot;object&quot;,
+            &quot;properties&quot;: {
+              &quot;slug&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;Identifier slug for voting system used by this election&quot;
+              },
+              &quot;name&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;Friendly description for voting system used by this election&quot;
+              },
+              &quot;uses_party_lists&quot;: {
+                &quot;type&quot;: &quot;boolean&quot;,
+                &quot;description&quot;: &quot;Does this voting system use party lists?&quot;
+              }
+            }
+          },
+          &quot;current&quot;: {
+            &quot;type&quot;: &quot;boolean&quot;,
+            &quot;description&quot;: &quot;True if this election is in the future or if polling day was in the last 20 days&quot;
+          },
+          &quot;metadata&quot;: {
+            &quot;type&quot;: [
+              &quot;object&quot;,
+              &quot;null&quot;
+            ],
+            &quot;properties&quot;: {},
+            &quot;description&quot;: &quot;Object containing information about special conditions for the user to be aware about (e.g: cancelled elections, voter id pilot).&quot;
+          },
+          &quot;cancelled&quot;: {
+            &quot;type&quot;: &quot;boolean&quot;,
+            &quot;description&quot;: &quot;True if this ballot has been cancelled&quot;
+          },
+          &quot;replaces&quot;: {
+            &quot;type&quot;: [
+              &quot;string&quot;,
+              &quot;null&quot;
+            ],
+            &quot;description&quot;: &quot;If a ballot replaces another cancelled ballot, this key will hold the identifier of the ballot that it replaces.&quot;
+          },
+          &quot;replaced_by&quot;: {
+            &quot;type&quot;: [
+              &quot;string&quot;,
+              &quot;null&quot;
+            ],
+            &quot;description&quot;: &quot;If a ballot has been cancelled (cancelled = true) and rescheduled for a later date, this key will hold the identifier of the ballot that replaces it.&quot;
+          }
+        }
+      },
+      &quot;description&quot;: &quot;Array of Election objects&quot;
+    }
+  }
+}</code></pre></div></div></div></div></div><div class="api-resource card"><h3 id="single-election-3">
+      Single election&nbsp;<a
+        href="#single-election-3"
+        class="permalink">&para;</a></h3><code>/elections/{id}</code><div class="api-action-example">
+    Example:
+    <a href="https://developers.democracyclub.org.uk/api/v1/elections/naw.c.alyn-and-deeside.by.2018-02-06"><code>https://developers.democracyclub.org.uk/api/v1/elections/naw.c.alyn-and-deeside.by.2018-02-06</code></a></div><div class="api-parameters"><h4>Parameters</h4><ul><li><p><strong>id</strong>&#32;
+
+                <code>string</code>
+
+                
+                  (
+                    required
+                  )
+                
+              </p><p>A Democracy Club election ID</p><p>Example: <code>naw.c.alyn-and-deeside.by.2018-02-06</code></p></li></ul></div><div class="api-description"><p>Retrieve a single election object by id.</p></div><div class="api-action"><h4 id="single-election-4">
+      Single election&nbsp;<a
+        href="#single-election-4"
+        class="permalink">&para;</a></h4><div class="api-action-transaction"><div class="api-action-request">
+  
+  Request <span class="api-method api-method-GET badge success">GET</span>
+  &#32;
+  <code>/elections/{id}</code></div><div class="api-action-response">
+  
+  Response <code class="api-http-code">200</code><div class="api-action-headers">
+      Headers:
+      <pre><code>Content-Type: application/json
+</code></pre></div><div class="api-action-body">
+    Body:
+    <pre><code>{
+  &quot;election_id&quot;: &quot;naw.c.alyn-and-deeside.by.2018-02-06&quot;,
+  &quot;election_title&quot;: &quot;Alyn and Deeside (Constituencies) by-election&quot;,
+  &quot;poll_open_date&quot;: &quot;2018-02-06&quot;,
+  &quot;election_type&quot;: {
+    &quot;name&quot;: &quot;National Assembly for Wales elections&quot;,
+    &quot;election_type&quot;: &quot;naw&quot;
+  },
+  &quot;election_subtype&quot;: {
+    &quot;name&quot;: &quot;Constituencies&quot;,
+    &quot;election_subtype&quot;: &quot;c&quot;
+  },
+  &quot;organisation&quot;: {
+    &quot;official_identifier&quot;: &quot;naw&quot;,
+    &quot;organisation_type&quot;: &quot;naw&quot;,
+    &quot;organisation_subtype&quot;: &quot;&quot;,
+    &quot;official_name&quot;: &quot;Welsh assembly&quot;,
+    &quot;common_name&quot;: &quot;Welsh assembly&quot;,
+    &quot;slug&quot;: &quot;naw&quot;,
+    &quot;territory_code&quot;: &quot;WLS&quot;,
+    &quot;election_name&quot;: &quot;National Assembly for Wales election&quot;,
+    &quot;start_date&quot;: &quot;1999-05-06&quot;,
+    &quot;end_date&quot;: null
+  },
+  &quot;group&quot;: &quot;naw.c.2018-02-06&quot;,
+  &quot;group_type&quot;: null,
+  &quot;children&quot;: [],
+  &quot;elected_role&quot;: &quot;Assembly Member&quot;,
+  &quot;seats_contested&quot;: 1,
+  &quot;division&quot;: {
+    &quot;divisionset&quot;: {
+      &quot;start_date&quot;: &quot;2016-04-13&quot;,
+      &quot;end_date&quot;: null,
+      &quot;legislation_url&quot;: null,
+      &quot;consultation_url&quot;: null,
+      &quot;short_title&quot;: &quot;2016 Boundaries&quot;,
+      &quot;notes&quot;: &quot;Auto imported from http://mapit.mysociety.org&quot;
+    },
+    &quot;name&quot;: &quot;Alyn and Deeside&quot;,
+    &quot;official_identifier&quot;: &quot;gss:W09000007&quot;,
+    &quot;slug&quot;: &quot;alyn-and-deeside&quot;,
+    &quot;division_type&quot;: &quot;WAC&quot;,
+    &quot;division_election_sub_type&quot;: &quot;c&quot;,
+    &quot;seats_total&quot;: null,
+    &quot;territory_code&quot;: &quot;WLS&quot;
+  },
+  &quot;voting_system&quot;: {
+    &quot;slug&quot;: &quot;FPTP&quot;,
+    &quot;name&quot;: &quot;First-past-the-post&quot;,
+    &quot;uses_party_lists&quot;: false
+  },
+  &quot;current&quot;: false,
+  &quot;metadata&quot;: null,
+  &quot;cancelled&quot;: false,
+  &quot;replaces&quot;: null,
+  &quot;replaced_by&quot;: null
+}</code></pre></div><div class="api-action-schema">
+    Schema:
+    <pre><code>{
+  &quot;$schema&quot;: &quot;http://json-schema.org/draft-04/schema#&quot;,
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;properties&quot;: {
+    &quot;election_id&quot;: {
+      &quot;type&quot;: &quot;string&quot;,
+      &quot;description&quot;: &quot;Identifier for this election&quot;
+    },
+    &quot;election_title&quot;: {
+      &quot;type&quot;: &quot;string&quot;,
+      &quot;description&quot;: &quot;Friendly name for this election&quot;
+    },
+    &quot;poll_open_date&quot;: {
+      &quot;type&quot;: &quot;string&quot;,
+      &quot;description&quot;: &quot;Polling day for this election (ISO 8601)&quot;
+    },
+    &quot;election_type&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;name&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Friendly name for this election type&quot;
+        },
+        &quot;election_type&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Identifier slug for this election type (a component of the identifier)&quot;
+        }
+      }
+    },
+    &quot;election_subtype&quot;: {
+      &quot;type&quot;: [
+        &quot;object&quot;,
+        &quot;null&quot;
+      ],
+      &quot;properties&quot;: {
+        &quot;name&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Friendly name for this election subtype&quot;
+        },
+        &quot;election_subtype&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Identifier slug for this election subtype (a component of the identifier)&quot;
+        }
+      },
+      &quot;description&quot;: &quot;Election subtype provides details for the subtype in Additional Member System elections (Welsh Assembly, Scottish Parliament, Greater London Assembly). This key will be null for other election types&quot;
+    },
+    &quot;organisation&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;official_identifier&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;An identifier for this organisation. Where possible, we&#39;ll us a code from the relevant [gov.uk register](https://www.registers.service.gov.uk/).&quot;
+        },
+        &quot;organisation_type&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;enum&quot;: [
+            &quot;combined-authority&quot;,
+            &quot;europarl&quot;,
+            &quot;gla&quot;,
+            &quot;local-authority&quot;,
+            &quot;naw&quot;,
+            &quot;nia&quot;,
+            &quot;parl&quot;,
+            &quot;police-area&quot;,
+            &quot;sp&quot;
+          ]
+        },
+        &quot;organisation_subtype&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;enum&quot;: [
+            &quot;CA&quot;,
+            &quot;CC&quot;,
+            &quot;CTY&quot;,
+            &quot;LBO&quot;,
+            &quot;MD&quot;,
+            &quot;NMD&quot;,
+            &quot;SRA&quot;,
+            &quot;UA&quot;
+          ],
+          &quot;description&quot;: &quot;If organisation_type = &#39;local-authority&#39;, an additional description of what type of local authority this is from the [gov.uk local authority registers](https://www.registers.service.gov.uk/category/regional-and-local-government). Empty string for other organisation types&quot;
+        },
+        &quot;official_name&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Long name of the organisation&quot;
+        },
+        &quot;common_name&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Short name of the organisation&quot;
+        },
+        &quot;slug&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Identifier slug for this organisation (a component of the identifier)&quot;
+        },
+        &quot;territory_code&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;enum&quot;: [
+            &quot;ENG&quot;,
+            &quot;WLS&quot;,
+            &quot;SCT&quot;,
+            &quot;NIR&quot;,
+            &quot;GBN&quot;
+          ]
+        },
+        &quot;election_name&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Base name for elections to this organisation&quot;
+        },
+        &quot;start_date&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Start date (ISO 8601) for this organisation, or the first date on which we can validly create an election for it&quot;
+        },
+        &quot;end_date&quot;: {
+          &quot;type&quot;: [
+            &quot;string&quot;,
+            &quot;null&quot;
+          ],
+          &quot;description&quot;: &quot;End date (ISO 8601) for this organisation, or the last date on which we can validly create an election for it. Null when the organisation is current&quot;
+        }
+      },
+      &quot;description&quot;: &quot;Object describing the body the winner of this election will be elected to&quot;
+    },
+    &quot;group&quot;: {
+      &quot;type&quot;: [
+        &quot;string&quot;,
+        &quot;null&quot;
+      ],
+      &quot;description&quot;: &quot;Identifier for this election&#39;s parent group. If this is an election group (group_type = &#39;election&#39;), this will be null&quot;
+    },
+    &quot;group_type&quot;: {
+      &quot;type&quot;: [
+        &quot;string&quot;,
+        &quot;null&quot;
+      ],
+      &quot;description&quot;: &quot;One of &#39;election&#39;, &#39;organisation&#39; or null. Null if this election is a ballot&quot;
+    },
+    &quot;children&quot;: {
+      &quot;type&quot;: &quot;array&quot;,
+      &quot;description&quot;: &quot;Identifiers for any elections belonging to this election group. Empty array for ballots&quot;
+    },
+    &quot;elected_role&quot;: {
+      &quot;type&quot;: &quot;string&quot;,
+      &quot;description&quot;: &quot;Name of the role the winner(s) of this election will assume&quot;
+    },
+    &quot;seats_contested&quot;: {
+      &quot;type&quot;: [
+        &quot;number&quot;,
+        &quot;null&quot;
+      ],
+      &quot;description&quot;: &quot;Number of seats contested in this election. Populated only for ballots&quot;
+    },
+    &quot;division&quot;: {
+      &quot;type&quot;: [
+        &quot;object&quot;,
+        &quot;null&quot;
+      ],
+      &quot;properties&quot;: {
+        &quot;divisionset&quot;: {
+          &quot;type&quot;: &quot;object&quot;,
+          &quot;properties&quot;: {
+            &quot;start_date&quot;: {
+              &quot;type&quot;: &quot;string&quot;,
+              &quot;description&quot;: &quot;Start date (ISO 8601) for this Division Set, or the first date on which we can validly create an election for a division in it&quot;
+            },
+            &quot;end_date&quot;: {
+              &quot;type&quot;: [
+                &quot;string&quot;,
+                &quot;null&quot;
+              ],
+              &quot;description&quot;: &quot;End date (ISO 8601) for this Division Set, or the last date on which we can validly create an election for a division in it. Null when the Division Set is current&quot;
+            },
+            &quot;legislation_url&quot;: {
+              &quot;type&quot;: [
+                &quot;string&quot;,
+                &quot;null&quot;
+              ],
+              &quot;description&quot;: &quot;Link to the legislation which defined the Division Set, if we hold it&quot;
+            },
+            &quot;consultation_url&quot;: {
+              &quot;type&quot;: [
+                &quot;string&quot;,
+                &quot;null&quot;
+              ],
+              &quot;description&quot;: &quot;Link to the process which defined the Division Set, if we hold it.&quot;
+            },
+            &quot;short_title&quot;: {
+              &quot;type&quot;: &quot;string&quot;,
+              &quot;description&quot;: &quot;Short name of the Division Set&quot;
+            },
+            &quot;notes&quot;: {
+              &quot;type&quot;: &quot;string&quot;,
+              &quot;description&quot;: &quot;Notes on the source of the boundaries&quot;
+            }
+          },
+          &quot;description&quot;: &quot;Electoral divisions change over time. A Division Set represents a group of boundaries which are in use over a period of time.&quot;
+        },
+        &quot;name&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Name of this division&quot;
+        },
+        &quot;official_identifier&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Identifier for this division. Where possible this will be a GSS code prefixed by `gss:`. If a GSS code is not available yet, we&#39;ll assign the division a temporary ID&quot;
+        },
+        &quot;slug&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Identifier slug for this division (a component of the identifier)&quot;
+        },
+        &quot;division_type&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;An Ordnance Survey AREA_CODE describing what type of division this is. See https://www.ordnancesurvey.co.uk/docs/technical-specifications/boundary-line-technical-specification.pdf&quot;
+        },
+        &quot;division_election_sub_type&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Identifier slug for this election subtype (a component of the identifier).&quot;
+        },
+        &quot;seats_total&quot;: {
+          &quot;type&quot;: [
+            &quot;number&quot;,
+            &quot;null&quot;
+          ],
+          &quot;description&quot;: &quot;Total number of seats in this division (may not all be elected in a single election)&quot;
+        },
+        &quot;territory_code&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;enum&quot;: [
+            &quot;ENG&quot;,
+            &quot;WLS&quot;,
+            &quot;SCT&quot;,
+            &quot;NIR&quot;
+          ]
+        }
+      },
+      &quot;description&quot;: &quot;Object describing the division (e.g: constituency or ward) the winner of this election will represent, if applicable. Election groups don&#39;t have a division. Also the ballot object for some election types don&#39;t have a division (e.g: Directly elected mayors and Police and Crime Commissioners represent an organisation directly)&quot;
+    },
+    &quot;voting_system&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;slug&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Identifier slug for voting system used by this election&quot;
+        },
+        &quot;name&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Friendly description for voting system used by this election&quot;
+        },
+        &quot;uses_party_lists&quot;: {
+          &quot;type&quot;: &quot;boolean&quot;,
+          &quot;description&quot;: &quot;Does this voting system use party lists?&quot;
+        }
+      }
+    },
+    &quot;current&quot;: {
+      &quot;type&quot;: &quot;boolean&quot;,
+      &quot;description&quot;: &quot;True if this election is in the future or if polling day was in the last 20 days&quot;
+    },
+    &quot;metadata&quot;: {
+      &quot;type&quot;: [
+        &quot;object&quot;,
+        &quot;null&quot;
+      ],
+      &quot;properties&quot;: {},
+      &quot;description&quot;: &quot;Object containing information about special conditions for the user to be aware about (e.g: cancelled elections, voter id pilot).&quot;
+    },
+    &quot;cancelled&quot;: {
+      &quot;type&quot;: &quot;boolean&quot;,
+      &quot;description&quot;: &quot;True if this ballot has been cancelled&quot;
+    },
+    &quot;replaces&quot;: {
+      &quot;type&quot;: [
+        &quot;string&quot;,
+        &quot;null&quot;
+      ],
+      &quot;description&quot;: &quot;If a ballot replaces another cancelled ballot, this key will hold the identifier of the ballot that it replaces.&quot;
+    },
+    &quot;replaced_by&quot;: {
+      &quot;type&quot;: [
+        &quot;string&quot;,
+        &quot;null&quot;
+      ],
+      &quot;description&quot;: &quot;If a ballot has been cancelled (cancelled = true) and rescheduled for a later date, this key will hold the identifier of the ballot that replaces it.&quot;
+    }
+  }
+}</code></pre></div></div></div><div class="api-action-transaction"><div class="api-action-request">
+  
+  Request <span class="api-method api-method-GET badge success">GET</span>
+  &#32;
+  <code>/elections/{id}</code></div><div class="api-action-response">
+  
+  Response <code class="api-http-code">404</code><div class="api-action-headers">
+      Headers:
+      <pre><code>Content-Type: application/json
+</code></pre></div><div class="api-action-body">
+    Body:
+    <pre><code>{ &quot;detail&quot;: &quot;Not found&quot; }
 </code></pre></div></div></div></div></div></div><div class="api-resource-group card"><h2 id="sandbox-outputs-2">
         Sandbox outputs&nbsp;<a
           href="#sandbox-outputs-2"

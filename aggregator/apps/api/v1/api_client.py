@@ -186,6 +186,7 @@ class EEApiClient(AsyncApiClient):
             election["organisation"].pop("url", None)
 
         if "division" in election and election["division"]:
+            election["division"].pop("division_subtype", None)
             election["division"].pop("geography_curie", None)
             election["division"].pop("mapit_generation_low", None)
             election["division"].pop("mapit_generation_high", None)
