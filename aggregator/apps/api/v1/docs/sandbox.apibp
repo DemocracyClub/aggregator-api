@@ -1,0 +1,19 @@
+## Group Sandbox outputs
+
+At any time the live data we expose via the API reflects reality. This means that there are conditions which are important to model in your application but are difficult to replicate using live data.
+To make it easier to replicate a variety of behaviours in test/development we provide a 'sandbox API' at [http://developers.democracyclub.org.uk/api/v1/sandbox](http://developers.democracyclub.org.uk/api/v1/sandbox) which serves fake but plausible data.
+The following test postcodes and address slugs are valid in the sandbox. Each one represents a different scenario:
+
+* postcode [AA11AA](http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA11AA) - No upcoming ballots
+* postcode [AA12AA](http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA12AA) - One upcoming ballot, station known, with candidates
+* postcode [AA12AB](http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA12AB) - One upcoming ballot, station not known, with candidates
+* postcode [AA13AA](http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA13AA) - We need to show the user an address picker. Each of the following `/address` calls has different polling station info:
+    * address slug [e09000033-2282254634585](http://developers.democracyclub.org.uk/api/v1/sandbox/address/e09000033-2282254634585)
+    * address slug [e09000033-8531289123599](http://developers.democracyclub.org.uk/api/v1/sandbox/address/e09000033-8531289123599)
+    * address slug [e09000033-7816246896787](http://developers.democracyclub.org.uk/api/v1/sandbox/address/e09000033-7816246896787)
+* postcode [AA14AA](http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA14AA) - Four upcoming ballots across 3 future dates with a cancellation:
+    * `mayor.lewisham.2018-05-03` - Mayoral election 
+    * `local.lewisham.blackheath.2018-05-03` - This election is cancelled and rescheduled on 2018-05-10
+    * `local.lewisham.blackheath.2018-05-10` - This election replaces the cancelled `local.lewisham.blackheath.2018-05-03`
+    * `parl.lewisham-east.by.2018-06-14` - This election is scheduled but we don't know of any candidates yet
+* postcode [AA15AA](http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA15AA) - Northern Ireland. This example shows the `custom_finder` key in use. We can use this to redirect users to Electoral Office for Northern Ireland's website for polling station data.

@@ -14,7 +14,7 @@ class Command(BaseCommand):
 
         view = ApiBlueprintView.as_view(
             blueprint=os.path.join(
-                settings.BASE_DIR, "apps/api/v1/documentation.apibp"
+                settings.BASE_DIR, "apps/api/v1/docs/documentation.apibp"
             ),
             template_name="api_docs_template.html",
             styles={

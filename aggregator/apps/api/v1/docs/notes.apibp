@@ -1,0 +1,73 @@
+## Group Notes and Tips
+
+### Polling Stations
+
+* If we don't know a user's polling station, sometimes we may provide an external link for more info in `custom_finder`. This will always be populated for users in Northern Ireland where the Electoral Office for Northern Ireland run their own service. e.g:
+
+<pre><code>{
+...
+  "custom_finder": "http://www.eoni.org.uk/Offices/Postcode-Search-Results?postcode=BT28%202EY"
+}
+</code></pre>
+
+* If we don't know a user's polling station and `custom_finder` is not populated, the contact details in the `electoral_services` object can be used to provide contact details for the user's local electoral services team.
+
+### Ballots and Candidates
+
+* It is possible for more than one ballot to occur on the same date, so a `ballots` array may contain many objects. For example, a user may vote in a local council election and mayoral election on the same day.
+* Occasionally a ballot needs to be cancelled. The most common reason for this is if one of the candidates dies between close of nominations and polling day, but there are other situations where this may happen. Remember to check the `cancelled` flag on ballot objects.
+* In an election using party lists, candidates should be shown to users grouped by party and ordered by `list_position` within parties. In an election which uses party lists, the `candidates` array is sorted by party and `list_position` within parties. For other election types it is sorted alphabetically by candidate name.
+
+### Notifications
+
+We'll use the `notifications` array to provide additional info
+to be shown to the user about special conditions to be aware of on this date
+e.g: identification requirements, or a cancelled poll.
+
+#### ID Requirements
+
+All voters in Northern Ireland must present photo ID to vote at a polling station.
+
+Additionally, there have been several trials in England
+to test introducing ID requirements more widely.
+API responses for a postcode or address in an authority where identification
+is required will include this information in the `notifications` array. e.g:
+
+<pre><code>{
+...
+  "notifications": [
+    {
+      "url": "http://www.eoni.org.uk/Vote/Voting-at-a-polling-place",
+      "title": "You need to show photographic ID to vote in this election",
+      "detail": "Voters in Northern Ireland are required to show one form of photo ID, like a passport or driving licence.",
+      "type": "voter_id"
+    }
+  ]
+}
+</code></pre>
+
+This information will be provided in all responses from the
+`/address` and `/postcode` API endpoints,
+even if we are not able to provide a polling station result.
+We encourage our API consumers to provide users in these areas with
+information about the pilots.
+
+#### Cancelled Polls
+
+Sometimes a scheduled poll may be cancelled. This is usuaully either because
+the election is uncontested or due to death of a candidate.
+API responses for a postcode or address in an authority where identification
+is required will include this information in the `notifications` array. e.g:
+
+<pre><code>{
+...
+  "notifications": [
+    {
+      "url": null,
+      "type": "cancelled_election",
+      "detail": "The poll for this election will not take place because it is uncontested.",
+      "title": "Uncontested Election"
+    }
+  ]
+}
+</code></pre>
