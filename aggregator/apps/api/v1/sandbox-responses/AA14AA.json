@@ -25,6 +25,7 @@
           "election_id": "mayor.lewisham.2018-05-03",
           "election_name": "Mayor of Lewisham election",
           "post_name": "London Borough of Lewisham",
+          "candidates_verified": true,
           "candidates": [
             {
               "list_position": null,
@@ -132,6 +133,7 @@
           "election_id": "local.lewisham.2018-05-03",
           "election_name": "Lewisham local election",
           "post_name": "Blackheath",
+          "candidates_verified": true,
           "candidates": [
             {
               "list_position": null,
@@ -281,6 +283,7 @@
           "election_id": "local.lewisham.2018-05-10",
           "election_name": "Lewisham local election",
           "post_name": "Blackheath",
+          "candidates_verified": false,
           "candidates": [
             {
               "list_position": null,
@@ -430,6 +433,7 @@
           "election_id": "parl.2018-06-14",
           "election_name": "UK Parliament elections",
           "post_name": "Lewisham East",
+          "candidates_verified": false,
           "candidates": [],
           "wcivf_url": "https://whocanivotefor.co.uk/elections/parl.2018-06-14/post-WMC:E14000787/lewisham-east"
         }

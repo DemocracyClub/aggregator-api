@@ -62,6 +62,7 @@
                 + `election_id`: `local.cardiff.2017-05-04` (string) - Identifier for this ballot's parent election group
                 + `election_name`: `Cardiff local election` (string) - Friendly name for this ballot's parent election group
                 + `post_name`: `Pontprennau/Old St. Mellons` (string) - Name of the division or post the winner(s) of this election will represent
+                + `candidates_verified`: `false` (boolean) - True if the list of candidates for this election has been confirmed against the nomination papers for this ballot. If this property is False, the candidate list is provisional or unconfirmed.
                 + candidates: (array[object], fixed-type) - Array of candidate objects describing candidates that will appear on this ballot paper. In an election which uses party lists, the `candidates` array is sorted by party and `list_position` within parties. For other election types it is sorted alphabetically by candidate name.
                     + (object)
                         + `list_position`: (number, nullable) - Numeric position in party list. This value is only relevant to elections using party lists. It will always be null in First-Past-The-post elections.

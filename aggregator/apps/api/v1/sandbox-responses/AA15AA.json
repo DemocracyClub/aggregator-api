@@ -38,6 +38,7 @@
           "election_id": "parl.2018-05-03",
           "election_name": "UK Parliament elections",
           "post_name": "West Tyrone",
+          "candidates_verified": false,
           "candidates": [],
           "wcivf_url": "https://whocanivotefor.co.uk/elections/parl.2018-05-03/post-WMC:N06000018/west-tyrone"
         }
