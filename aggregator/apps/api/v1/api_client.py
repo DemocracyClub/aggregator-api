@@ -159,6 +159,7 @@ class EEApiClient(AsyncApiClient):
             "future",
             "coords",
             "metadata",
+            "identifier_type",
         ]
         q = QueryDict("", mutable=True)
         q.update({k: v for k, v in params.items() if k in allowed_query_params})
@@ -181,6 +182,7 @@ class EEApiClient(AsyncApiClient):
         election.pop("deleted", None)
         election.pop("explanation", None)
         election.pop("tmp_election_id", None)
+        election.pop("group_type", None)
 
         if "organisation" in election and election["organisation"]:
             election["organisation"].pop("url", None)

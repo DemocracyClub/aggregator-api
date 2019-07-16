@@ -28,6 +28,7 @@
       },
       "group": "local.2016-05-05",
       "group_type": "organisation",
+      "identifier_type": "organisation",
       "children": [
         "local.adur.buckingham.2016-05-05",
         "local.adur.churchill.2016-05-05",
@@ -85,6 +86,7 @@
       },
       "group": "local.2018-05-03",
       "group_type": "organisation",
+      "identifier_type": "organisation",
       "children": [
         "local.amber-valley.alfreton.2018-05-03",
         "local.amber-valley.belper-east.2018-05-03",

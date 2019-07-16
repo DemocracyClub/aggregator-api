@@ -1481,7 +1481,16 @@ Each level above this is a group id. For example the ballot
                     optional
                   )
                 
-              </p><p>Pass <code>?future=1</code> to return only elections whose polling date is in the future</p><p>Example: <code>1</code></p></li><li><p><strong>limit</strong>&#32;
+              </p><p>Pass <code>?future=1</code> to return only elections whose polling date is in the future</p><p>Example: <code>1</code></p></li><li><p><strong>identifier_type</strong>&#32;
+
+                <code>string</code>
+
+                
+                  (
+                    optional
+                  )
+                
+              </p><p>Pass <code>?identifier_type=election</code>, <code>?identifier_type=organisation</code> or <code>?identifier_type=ballot</code> to return only election groups, organisation groups or ballot objects.</p><p>Example: <code>ballot</code></p></li><li><p><strong>limit</strong>&#32;
 
                 <code>number</code>
 
@@ -1543,7 +1552,7 @@ Each level above this is a group id. For example the ballot
         &quot;end_date&quot;: null
       },
       &quot;group&quot;: &quot;naw.c.2018-02-06&quot;,
-      &quot;group_type&quot;: null,
+      &quot;identifier_type&quot;: null,
       &quot;children&quot;: [],
       &quot;elected_role&quot;: &quot;Assembly Member&quot;,
       &quot;seats_contested&quot;: 1,
@@ -1729,12 +1738,12 @@ Each level above this is a group id. For example the ballot
             ],
             &quot;description&quot;: &quot;Identifier for this election&#39;s parent group. If this is an election group (group_type = &#39;election&#39;), this will be null&quot;
           },
-          &quot;group_type&quot;: {
+          &quot;identifier_type&quot;: {
             &quot;type&quot;: [
               &quot;string&quot;,
               &quot;null&quot;
             ],
-            &quot;description&quot;: &quot;One of &#39;election&#39;, &#39;organisation&#39; or null. Null if this election is a ballot&quot;
+            &quot;description&quot;: &quot;One of &#39;election&#39;, &#39;organisation&#39; or &#39;ballot&#39;.&quot;
           },
           &quot;children&quot;: {
             &quot;type&quot;: &quot;array&quot;,
@@ -1848,7 +1857,7 @@ Each level above this is a group id. For example the ballot
               },
               &quot;uses_party_lists&quot;: {
                 &quot;type&quot;: &quot;boolean&quot;,
-                &quot;description&quot;: &quot;Does this voting system use party lists?&quot;
+                &quot;description&quot;: &quot;True if this voting system uses party lists&quot;
               }
             }
           },
@@ -1940,7 +1949,7 @@ Each level above this is a group id. For example the ballot
     &quot;end_date&quot;: null
   },
   &quot;group&quot;: &quot;naw.c.2018-02-06&quot;,
-  &quot;group_type&quot;: null,
+  &quot;identifier_type&quot;: null,
   &quot;children&quot;: [],
   &quot;elected_role&quot;: &quot;Assembly Member&quot;,
   &quot;seats_contested&quot;: 1,
@@ -2101,12 +2110,12 @@ Each level above this is a group id. For example the ballot
       ],
       &quot;description&quot;: &quot;Identifier for this election&#39;s parent group. If this is an election group (group_type = &#39;election&#39;), this will be null&quot;
     },
-    &quot;group_type&quot;: {
+    &quot;identifier_type&quot;: {
       &quot;type&quot;: [
         &quot;string&quot;,
         &quot;null&quot;
       ],
-      &quot;description&quot;: &quot;One of &#39;election&#39;, &#39;organisation&#39; or null. Null if this election is a ballot&quot;
+      &quot;description&quot;: &quot;One of &#39;election&#39;, &#39;organisation&#39; or &#39;ballot&#39;.&quot;
     },
     &quot;children&quot;: {
       &quot;type&quot;: &quot;array&quot;,
@@ -2220,7 +2229,7 @@ Each level above this is a group id. For example the ballot
         },
         &quot;uses_party_lists&quot;: {
           &quot;type&quot;: &quot;boolean&quot;,
-          &quot;description&quot;: &quot;Does this voting system use party lists?&quot;
+          &quot;description&quot;: &quot;True if this voting system uses party lists&quot;
         }
       }
     },
