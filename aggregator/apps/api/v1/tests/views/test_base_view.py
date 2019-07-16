@@ -1,7 +1,7 @@
 import aiohttp
 from unittest.mock import patch
 from django.test import TestCase
-from api.v1.api_client import ApiError
+from api.v1.api_client import UpstreamApiError
 
 
 def aiohttp_error(*args, **kwargs):
@@ -9,7 +9,7 @@ def aiohttp_error(*args, **kwargs):
 
 
 def api_error(*args, **kwargs):
-    raise ApiError(500, "oh noes!!")
+    raise UpstreamApiError("oh noes!!", 500)
 
 
 class BaseViewTests(TestCase):
