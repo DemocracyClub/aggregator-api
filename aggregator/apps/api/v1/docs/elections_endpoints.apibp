@@ -28,6 +28,7 @@ List or filter all election objects.
     + coords: `52.290719,-1.935395` (string, optional) - Pass a lat/lon string as `?coords={lat},{lon}` to find elections covering the given coordinates. For lookup by postcode/address, use the [/postcode](#postcode-search-2) endpoint.
     + current: `1` (string, optional) - Pass `?current=1` to return only elections whose polling date is either in the future or was in the last 20 days
     + future: `1` (string, optional) - Pass `?future=1` to return only elections whose polling date is in the future
+    + `identifier_type`: `ballot` (string, optional) - Pass `?identifier_type=election`, `?identifier_type=organisation` or `?identifier_type=ballot` to return only election groups, organisation groups or ballot objects.
     + limit: 20 (number, optional) - Pass `?limit={num}` to specify number of election objects to return. Use with `offset` to page over results
         + Default: `100`
     + offset: 20 (number, optional) - Pass `?offset={num}` to specify Election object to start from. Use with `limit` to page over results

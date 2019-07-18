@@ -67,7 +67,7 @@
     + `election_subtype`: `c` (string) - Identifier slug for this election subtype (a component of the identifier)
 + organisation (ElectionOrganisation) - Object describing the body the winner of this election will be elected to
 + group: `naw.c.2018-02-06` (string, nullable) - Identifier for this election's parent group. If this is an election group (group_type = 'election'), this will be null
-+ group_type: (string, nullable) - One of 'election', 'organisation' or null. Null if this election is a ballot
++ identifier_type: (string, nullable) - One of 'election', 'organisation' or 'ballot'.
 + children: (array[string]) - Identifiers for any elections belonging to this election group. Empty array for ballots
 + `elected_role`: `Assembly Member` (string) - Name of the role the winner(s) of this election will assume
 + `seats_contested`: 1 (number, nullable) - Number of seats contested in this election. Populated only for ballots
@@ -75,7 +75,7 @@
 + `voting_system`: (object)
     + slug: `FPTP` (string) - Identifier slug for voting system used by this election
     + name: `First-past-the-post` (string) - Friendly description for voting system used by this election
-    + `uses_party_lists`: `false` (boolean) - Does this voting system use party lists?
+    + `uses_party_lists`: `false` (boolean) - True if this voting system uses party lists
 + current: `false` (boolean) - True if this election is in the future or if polling day was in the last 20 days
 + metadata: (object, nullable) - Object containing information about special conditions for the user to be aware about (e.g: cancelled elections, voter id pilot).
 + cancelled: `false` (boolean) - True if this ballot has been cancelled
