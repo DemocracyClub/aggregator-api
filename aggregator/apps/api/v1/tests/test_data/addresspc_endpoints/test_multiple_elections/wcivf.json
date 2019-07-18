@@ -10,6 +10,7 @@
       "post_name": "London Borough of Lewisham"
     },
     "cancelled": false,
+    "ballot_locked": true,
     "candidates": [
       {
         "list_position": null,
@@ -109,6 +110,7 @@
       "post_name": "Blackheath"
     },
     "cancelled": true,
+    "ballot_locked": true,
     "candidates": [
       {
         "list_position": null,
@@ -244,6 +246,7 @@
       "post_name": "Blackheath"
     },
     "cancelled": false,
+    "ballot_locked": false,
     "candidates": [
       {
         "list_position": null,
@@ -379,6 +382,7 @@
       "post_name": "Lewisham East"
     },
     "cancelled": false,
+    "ballot_locked": false,
     "candidates": [],
     "ballot_paper_id": "parl.lewisham-east.by.2018-06-14"
   }

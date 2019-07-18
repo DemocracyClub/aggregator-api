@@ -150,6 +150,7 @@ class Stitcher:
                 ballot["election_id"] = wcivf_ballot["election_id"]
                 ballot["election_name"] = wcivf_ballot["election_name"]
                 ballot["post_name"] = wcivf_ballot["post"]["post_name"]
+                ballot["candidates_verified"] = wcivf_ballot["ballot_locked"]
                 ballot["candidates"] = wcivf_ballot["candidates"]
                 ballot["wcivf_url"] = wcivf_ballot["absolute_url"]
         if results:

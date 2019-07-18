@@ -10,6 +10,7 @@
       "post_name": "Lancaster Gate"
     },
     "cancelled": false,
+    "ballot_locked": true,
     "candidates": [
       {
         "list_position": null,
