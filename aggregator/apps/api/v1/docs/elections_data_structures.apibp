@@ -67,7 +67,7 @@
     + `election_subtype`: `c` (string) - Identifier slug for this election subtype (a component of the identifier)
 + organisation (ElectionOrganisation) - Object describing the body the winner of this election will be elected to
 + group: `naw.c.2018-02-06` (string, nullable) - Identifier for this election's parent group. If this is an election group (group_type = 'election'), this will be null
-+ identifier_type: (string, nullable) - One of 'election', 'organisation' or 'ballot'.
++ `identifier_type`: `ballot` (string) - One of 'election', 'organisation' or 'ballot'.
 + children: (array[string]) - Identifiers for any elections belonging to this election group. Empty array for ballots
 + `elected_role`: `Assembly Member` (string) - Name of the role the winner(s) of this election will assume
 + `seats_contested`: 1 (number, nullable) - Number of seats contested in this election. Populated only for ballots
