@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a839fc0cb2008aa259e92a8facb050cd55f5443dd7d29d419e6d62f916e4a7e3"
+            "sha256": "713533289211249350db836897210503091328ae8515a84899e94272cbece9bb"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -67,17 +67,17 @@
         },
         "boto3": {
             "hashes": [
-                "sha256:1a228661611cb99c3c54f5bdbdc29d9d7ef5341676a644d2508eeeff7b8b2fe3",
-                "sha256:c25d1089676213bda140c5b6faacd008b93203d27f1707cf0efc827d46cd719d"
+                "sha256:13ec6cc11a329b56681b9a24421e58fac753cfb79085f186076fd3f9ca958c56",
+                "sha256:72bea54f1dfa080a5b10ae09946649f174ee72bb07a0eecf8ee774533bda2462"
             ],
-            "version": "==1.9.212"
+            "version": "==1.9.214"
         },
         "botocore": {
             "hashes": [
-                "sha256:123b1d703ee3445850f00969e07e276f949834c43048b6a9a0e5e7966a523108",
-                "sha256:bebd21f9c8badcb895fb735743d2a8df8289162314b9346879cb74a1d698e075"
+                "sha256:1c357c8081f67797596eb28295cac38aa835cdb4ef6c69ede57e203359659d9c",
+                "sha256:2b6e366cac12f7146542ac802ea62a6b46dfc92e9ee3eb75ba450949d5e10f71"
             ],
-            "version": "==1.12.212"
+            "version": "==1.12.214"
         },
         "certifi": {
             "hashes": [
@@ -143,15 +143,15 @@
         "dc-base-theme": {
             "editable": true,
             "git": "https://github.com/DemocracyClub/dc_base_theme.git",
-            "ref": "6caa1e5ebe8b7b190f1439e43f0288590c5ca8b8"
+            "ref": "d66bbc315112d18eaba3f693fb36eb637220c7ce"
         },
         "django": {
             "hashes": [
-                "sha256:52a66d7f8b036d02da0a4472359e8be1727424fc1e4b4f5c684ef97de7b569e1",
-                "sha256:c85b8c95366e187ca0581d45a6e508107ca4bd38cb45c24aa09d3572074c523d"
+                "sha256:16a5d54411599780ac9dfe3b9b38f90f785c51259a584e0b24b6f14a7f69aae8",
+                "sha256:9a2f98211ab474c710fcdad29c82f30fc14ce9917c7a70c3682162a624de4035"
             ],
             "index": "pypi",
-            "version": "==1.11.23"
+            "version": "==2.2.4"
         },
         "django-apiblueprint-view": {
             "hashes": [
@@ -162,10 +162,10 @@
         },
         "django-pipeline": {
             "hashes": [
-                "sha256:3eb391e59525beedf0a45d4b6ef7e6a3e69f720b7560a1a305e115eb33d5fb6c",
-                "sha256:3ed7e5913c521a568ab3a9866d83b239b8c8c2e03a4d99689a87788aec3fa256"
+                "sha256:b56f2cfdb113dc1cb05257d8eb8d145fc0ade6f0d1236fb425df15bd059dce15",
+                "sha256:ef67aaf58959a2959e13fc114001cee5beec05ac18a81cc700ea9f1c8e3f40a8"
             ],
-            "version": "==1.6.9"
+            "version": "==1.6.14"
         },
         "django-storages": {
             "hashes": [
@@ -396,6 +396,13 @@
                 "sha256:d16a0141ec1a18405cd4ce8b4613101da75da0e9a7aec5bdd4fa804d0e0eba73"
             ],
             "version": "==1.12.0"
+        },
+        "sqlparse": {
+            "hashes": [
+                "sha256:40afe6b8d4b1117e7dff5504d7a8ce07d9a1b15aeeade8a2d10f130a834f8177",
+                "sha256:7c3dca29c022744e95b547e867cee89f4fce4373f3549ccd8797d8eb52cdb873"
+            ],
+            "version": "==0.3.0"
         },
         "toml": {
             "hashes": [
