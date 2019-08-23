@@ -6,4 +6,4 @@ update_configs:
     ignored_updates:
       - match:
           dependency_name: "django"
-          version_requirement: 3.x
+          version_requirement: ">=2.0"
