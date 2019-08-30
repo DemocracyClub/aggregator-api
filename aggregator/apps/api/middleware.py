@@ -12,11 +12,7 @@ class ErrorHandlerMiddleware:
         self.get_response = get_response
 
     def process_exception(self, request, exception):
-        if (
-            not settings.DEBUG
-            and "/sandbox" not in request.path
-            and "/api" in request.path
-        ):
+        if not settings.DEBUG and "/api" in request.path:
             if isinstance(exception, ApiError):
                 if exception.status >= 500:
                     logger.error(traceback.format_exc())
