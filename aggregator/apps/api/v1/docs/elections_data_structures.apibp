@@ -76,7 +76,7 @@
     + slug: `FPTP` (string) - Identifier slug for voting system used by this election
     + name: `First-past-the-post` (string) - Friendly description for voting system used by this election
     + `uses_party_lists`: `false` (boolean) - True if this voting system uses party lists
-+ current: `false` (boolean) - True if this election is in the future or if polling day was in the last 20 days
++ current: `false` (boolean) - True if this election will happen in the near future or happened in the recent past. Usually this is an election whose polling date is either in the next 90 days or was in the last 20 days, but we may sometimes make an editorial decision that a major election is "current" for a wider window than this.
 + metadata: (object, nullable) - Object containing information about special conditions for the user to be aware about (e.g: cancelled elections, voter id pilot).
 + cancelled: `false` (boolean) - True if this ballot has been cancelled
 + replaces: (string, nullable) - If a ballot replaces another cancelled ballot, this key will hold the identifier of the ballot that it replaces.

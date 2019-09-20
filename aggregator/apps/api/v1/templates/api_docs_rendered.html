@@ -1482,7 +1482,7 @@ Each level above this is a group id. For example the ballot
                     optional
                   )
                 
-              </p><p>Pass <code>?current=1</code> to return only elections whose polling date is either in the future or was in the last 20 days</p><p>Example: <code>1</code></p></li><li><p><strong>future</strong>&#32;
+              </p><p>Pass <code>?current=1</code> to return only elections which will happen in the near future (we may hold info on candidates or polling stations) or happened in the recent past (we may hold results). Usually this is an election whose polling date is either in the next 90 days or was in the last 20 days, but we may sometimes make an editorial decision that a major election (e.g: a scheduled general election) is "current" for a wider window than this.</p><p>Example: <code>1</code></p></li><li><p><strong>future</strong>&#32;
 
                 <code>string</code>
 
@@ -1870,7 +1870,7 @@ Each level above this is a group id. For example the ballot
           },
           &quot;current&quot;: {
             &quot;type&quot;: &quot;boolean&quot;,
-            &quot;description&quot;: &quot;True if this election is in the future or if polling day was in the last 20 days&quot;
+            &quot;description&quot;: &quot;True if this election will happen in the near future or happened in the recent past. Usually this is an election whose polling date is either in the next 90 days or was in the last 20 days, but we may sometimes make an editorial decision that a major election is \&quot;current\&quot; for a wider window than this.&quot;
           },
           &quot;metadata&quot;: {
             &quot;type&quot;: [
@@ -2239,7 +2239,7 @@ Each level above this is a group id. For example the ballot
     },
     &quot;current&quot;: {
       &quot;type&quot;: &quot;boolean&quot;,
-      &quot;description&quot;: &quot;True if this election is in the future or if polling day was in the last 20 days&quot;
+      &quot;description&quot;: &quot;True if this election will happen in the near future or happened in the recent past. Usually this is an election whose polling date is either in the next 90 days or was in the last 20 days, but we may sometimes make an editorial decision that a major election is \&quot;current\&quot; for a wider window than this.&quot;
     },
     &quot;metadata&quot;: {
       &quot;type&quot;: [
