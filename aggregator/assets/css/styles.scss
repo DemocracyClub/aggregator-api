@@ -30,3 +30,20 @@ footer {
   background-color: $dc-green;
   color: #FFF;
 }
+
+.badge-grid {
+  @extend .fukol-grid;
+  .card + .card {
+    margin-top:0.5em;
+  }
+
+  code {
+    overflow-wrap: anywhere;
+  }
+
+  text-align:center;
+
+  .dark {
+    background-color: $off-black;
+  }
+}
