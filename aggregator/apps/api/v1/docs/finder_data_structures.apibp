@@ -73,15 +73,19 @@
                             + `ynr_id`: `23417` (number)
                             + name: `David Keigwin` (string)
                             + `absolute_url`: `https://whocanivotefor.co.uk/person/23417/david-keigwin` (string) - Link for more (human-readable) information about this candidate
+                            + `email`: `dave@example.com` (string, nullable) - Email address for this candidate, if we hold it
+                            + `photo_url`: (string, nullable) - URL for a photo of this candidate, if we hold one
                     + (object)
                         + `list_position`: (number, nullable) - Numeric position in party list. This value is only relevant to elections using party lists. It will always be null in First-Past-The-post elections.
                         + party: (object)
                             + `party_id`: `party:52` (string)
                             + `party_name`: `Conservative and Unionist Party` (string)
                         + person: (object)
-                            + `ynr_id`: `19974` (number)
-                            + name: `Dianne Rees` (string)
-                            + `absolute_url`: `https://whocanivotefor.co.uk/person/19974/dianne-rees` (string) - Link for more (human-readable) information about this candidate
+                            + `ynr_id`: `8071` (number)
+                            + name: `Joel Williams` (string)
+                            + `absolute_url`: `https://whocanivotefor.co.uk/person/8071/joel-williams` (string) - Link for more (human-readable) information about this candidate
+                            + `email`: (string, nullable) - Email address for this candidate, if we hold it
+                            + `photo_url`: `https://static-candidates.democracyclub.org.uk/media/images/images/8071.png` (string, nullable) - URL for a photo of this candidate, if we hold one
                 + `wcivf_url`: `https://whocanivotefor.co.uk/elections/local.cardiff.2017-05-04/post-UTE:W05000900/pontprennauold-st-mellons` - Link for more (human-readable) information about this ballot
 + `electoral_services` (ElectoralServices, nullable) - Contact details for the user's local Electoral Services team. If we do not know the user's polling station, this can be used to provide contact info for their local council. This may be `null` if we are not able to determine the user's council.
 + `postcode_location` (PostcodeLocation) - A [GeoJSON Feature](https://tools.ietf.org/html/rfc7946#section-3.2) containing a [Point object](https://tools.ietf.org/html/rfc7946#section-3.1.2) describing the centroid of the input postcode. If providing a map or directions for a polling station journey, use this as the start point. This may be `null` if we are not able to accurately geocode.

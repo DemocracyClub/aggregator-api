@@ -333,7 +333,9 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
               &quot;person&quot;: {
                 &quot;ynr_id&quot;: 23417,
                 &quot;name&quot;: &quot;David Keigwin&quot;,
-                &quot;absolute_url&quot;: &quot;https://whocanivotefor.co.uk/person/23417/david-keigwin&quot;
+                &quot;absolute_url&quot;: &quot;https://whocanivotefor.co.uk/person/23417/david-keigwin&quot;,
+                &quot;email&quot;: &quot;dave@example.com&quot;,
+                &quot;photo_url&quot;: null
               }
             },
             {
@@ -343,9 +345,11 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                 &quot;party_name&quot;: &quot;Conservative and Unionist Party&quot;
               },
               &quot;person&quot;: {
-                &quot;ynr_id&quot;: 19974,
-                &quot;name&quot;: &quot;Dianne Rees&quot;,
-                &quot;absolute_url&quot;: &quot;https://whocanivotefor.co.uk/person/19974/dianne-rees&quot;
+                &quot;ynr_id&quot;: 8071,
+                &quot;name&quot;: &quot;Joel Williams&quot;,
+                &quot;absolute_url&quot;: &quot;https://whocanivotefor.co.uk/person/8071/joel-williams&quot;,
+                &quot;email&quot;: null,
+                &quot;photo_url&quot;: &quot;https://static-candidates.democracyclub.org.uk/media/images/images/8071.png&quot;
               }
             }
           ],
@@ -601,6 +605,20 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                             &quot;absolute_url&quot;: {
                               &quot;type&quot;: &quot;string&quot;,
                               &quot;description&quot;: &quot;Link for more (human-readable) information about this candidate&quot;
+                            },
+                            &quot;email&quot;: {
+                              &quot;type&quot;: [
+                                &quot;string&quot;,
+                                &quot;null&quot;
+                              ],
+                              &quot;description&quot;: &quot;Email address for this candidate, if we hold it&quot;
+                            },
+                            &quot;photo_url&quot;: {
+                              &quot;type&quot;: [
+                                &quot;string&quot;,
+                                &quot;null&quot;
+                              ],
+                              &quot;description&quot;: &quot;URL for a photo of this candidate, if we hold one&quot;
                             }
                           }
                         }
@@ -639,6 +657,20 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                             &quot;absolute_url&quot;: {
                               &quot;type&quot;: &quot;string&quot;,
                               &quot;description&quot;: &quot;Link for more (human-readable) information about this candidate&quot;
+                            },
+                            &quot;email&quot;: {
+                              &quot;type&quot;: [
+                                &quot;string&quot;,
+                                &quot;null&quot;
+                              ],
+                              &quot;description&quot;: &quot;Email address for this candidate, if we hold it&quot;
+                            },
+                            &quot;photo_url&quot;: {
+                              &quot;type&quot;: [
+                                &quot;string&quot;,
+                                &quot;null&quot;
+                              ],
+                              &quot;description&quot;: &quot;URL for a photo of this candidate, if we hold one&quot;
                             }
                           }
                         }
@@ -1040,7 +1072,9 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
               &quot;person&quot;: {
                 &quot;ynr_id&quot;: 23417,
                 &quot;name&quot;: &quot;David Keigwin&quot;,
-                &quot;absolute_url&quot;: &quot;https://whocanivotefor.co.uk/person/23417/david-keigwin&quot;
+                &quot;absolute_url&quot;: &quot;https://whocanivotefor.co.uk/person/23417/david-keigwin&quot;,
+                &quot;email&quot;: &quot;dave@example.com&quot;,
+                &quot;photo_url&quot;: null
               }
             },
             {
@@ -1050,9 +1084,11 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                 &quot;party_name&quot;: &quot;Conservative and Unionist Party&quot;
               },
               &quot;person&quot;: {
-                &quot;ynr_id&quot;: 19974,
-                &quot;name&quot;: &quot;Dianne Rees&quot;,
-                &quot;absolute_url&quot;: &quot;https://whocanivotefor.co.uk/person/19974/dianne-rees&quot;
+                &quot;ynr_id&quot;: 8071,
+                &quot;name&quot;: &quot;Joel Williams&quot;,
+                &quot;absolute_url&quot;: &quot;https://whocanivotefor.co.uk/person/8071/joel-williams&quot;,
+                &quot;email&quot;: null,
+                &quot;photo_url&quot;: &quot;https://static-candidates.democracyclub.org.uk/media/images/images/8071.png&quot;
               }
             }
           ],
@@ -1308,6 +1344,20 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                             &quot;absolute_url&quot;: {
                               &quot;type&quot;: &quot;string&quot;,
                               &quot;description&quot;: &quot;Link for more (human-readable) information about this candidate&quot;
+                            },
+                            &quot;email&quot;: {
+                              &quot;type&quot;: [
+                                &quot;string&quot;,
+                                &quot;null&quot;
+                              ],
+                              &quot;description&quot;: &quot;Email address for this candidate, if we hold it&quot;
+                            },
+                            &quot;photo_url&quot;: {
+                              &quot;type&quot;: [
+                                &quot;string&quot;,
+                                &quot;null&quot;
+                              ],
+                              &quot;description&quot;: &quot;URL for a photo of this candidate, if we hold one&quot;
                             }
                           }
                         }
@@ -1346,6 +1396,20 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                             &quot;absolute_url&quot;: {
                               &quot;type&quot;: &quot;string&quot;,
                               &quot;description&quot;: &quot;Link for more (human-readable) information about this candidate&quot;
+                            },
+                            &quot;email&quot;: {
+                              &quot;type&quot;: [
+                                &quot;string&quot;,
+                                &quot;null&quot;
+                              ],
+                              &quot;description&quot;: &quot;Email address for this candidate, if we hold it&quot;
+                            },
+                            &quot;photo_url&quot;: {
+                              &quot;type&quot;: [
+                                &quot;string&quot;,
+                                &quot;null&quot;
+                              ],
+                              &quot;description&quot;: &quot;URL for a photo of this candidate, if we hold one&quot;
                             }
                           }
                         }
