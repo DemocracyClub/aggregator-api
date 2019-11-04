@@ -1,5 +1,6 @@
 __pycache__/
 *.pyc
+*.DS_Store
 aggregator/settings/local.py
 aggregator/static_files/
 
