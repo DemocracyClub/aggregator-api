@@ -21,7 +21,9 @@
         "person": {
           "ynr_id": 42253,
           "name": "Angela Patricia Piddock",
-          "absolute_url": "https://whocanivotefor.co.uk/person/42253/angela-patricia-piddock"
+          "absolute_url": "https://whocanivotefor.co.uk/person/42253/angela-patricia-piddock",
+          "email": null,
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/42253.png"
         }
       },
       {
@@ -33,7 +35,9 @@
         "person": {
           "ynr_id": 42681,
           "name": "Margot Joan Bright",
-          "absolute_url": "https://whocanivotefor.co.uk/person/42681/margot-joan-bright"
+          "absolute_url": "https://whocanivotefor.co.uk/person/42681/margot-joan-bright",
+          "email": "lancastergate@westminsterconservatives.com",
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/42681.png"
         }
       },
       {
@@ -45,7 +49,9 @@
         "person": {
           "ynr_id": 42252,
           "name": "Sally Elizabeth Gray",
-          "absolute_url": "https://whocanivotefor.co.uk/person/42252/sally-elizabeth-gray"
+          "absolute_url": "https://whocanivotefor.co.uk/person/42252/sally-elizabeth-gray",
+          "email": null,
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/42252.png"
         }
       },
       {
@@ -57,7 +63,9 @@
         "person": {
           "ynr_id": 7505,
           "name": "Zack Polanski",
-          "absolute_url": "https://whocanivotefor.co.uk/person/7505/zack-polanski"
+          "absolute_url": "https://whocanivotefor.co.uk/person/7505/zack-polanski",
+          "email": "info@zackpolanski.com",
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/7505.png"
         }
       }
     ],
