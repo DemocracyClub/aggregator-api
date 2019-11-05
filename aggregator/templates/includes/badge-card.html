@@ -1,5 +1,5 @@
 {% load staticfiles %}
 <div class="card {{ class }}">
   <img src="{% static path %}">
-  <code>https://{{request.META.HTTP_HOST}}{% static path %}</code>
+  <code>{% static path %}</code>
 </div>
