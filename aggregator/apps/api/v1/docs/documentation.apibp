@@ -4,8 +4,11 @@ HOST: https://developers.democracyclub.org.uk/api/v1
 
 ## Group Democracy Club Developer API
 
-This API is currently in private beta. All requests must be made with an API key. If you're interested in working with the data, [contact us](https://democracyclub.org.uk/contact/) for an API key.
-
+This API is currently in private beta.
+All requests must be made with an API key.
+If you're interested in working with the data,
+[contact us](https://democracyclub.org.uk/contact/) for an API key.
+Usage must comply with our [terms of use](/terms).
 
 <!-- include(finder_endpoints.apibp) -->
 
