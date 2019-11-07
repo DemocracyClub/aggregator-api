@@ -66,6 +66,21 @@ class Stitcher:
         council = deepcopy(self.wdiv_resp["council"])
         if council:
             council.pop("url", None)
+
+            # FIXME: remove this bodge at some point
+            if (
+                "parl.banff-and-buchan.2019-12-12"
+                in [b["ballot_paper_id"] for b in self.wdiv_resp["ballots"]]
+                and council["email"] == "ero@grampian-ero.gov.uk"
+                and council["phone"] == "01224 068400"
+            ):
+                council["email"] = "banff@grampian-vjb.gov.uk"
+                council["phone"] = "01261 815516"
+                council["postcode"] = "AB45 1DZ"
+                council[
+                    "address"
+                ] = "Grampian Electoral Registration Officer\nMitchell Burnett House\nColleonard Road\nBanff"
+
         return council
 
     def make_address_picker_response(self):
