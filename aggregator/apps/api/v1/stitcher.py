@@ -115,7 +115,9 @@ class Stitcher:
             for ballot in self.wdiv_resp["ballots"]
             if ballot["poll_open_date"] == date
         ]
-        return ballots
+
+        # TODO: define a full hierarchy of election interesting-ness
+        return sorted(ballots, key=lambda k: int(".by." in k["ballot_paper_id"]))
 
     def get_wcivf_ballot(self, ballot_id):
         for ballot in self.wcivf_resp:
