@@ -2,6 +2,31 @@ from copy import deepcopy
 from django.urls import reverse
 
 
+def ballot_charisma(ballot):
+    charisma_map = {
+        "ref": 100,
+        "parl": 90,
+        "europarl": 80,
+        "mayor": 70,
+        "naw": 60,
+        "sp": 60,
+        "nia": 60,
+        "gla": 60,
+        "pcc": 50,
+        "local": 40,
+    }
+
+    base_charisma = charisma_map[ballot["ballot_paper_id"].split(".")[0]]
+    # by-elections are slightly less charismatic than scheduled elections
+    by_election_modifier = int(".by." in ballot["ballot_paper_id"])
+
+    return base_charisma - by_election_modifier
+
+
+def sort_ballots(ballots):
+    return sorted(ballots, key=lambda k: ballot_charisma(k), reverse=True)
+
+
 class StitcherValidationError(Exception):
     pass
 
@@ -107,9 +132,7 @@ class Stitcher:
             for ballot in self.wdiv_resp["ballots"]
             if ballot["poll_open_date"] == date
         ]
-
-        # TODO: define a full hierarchy of election interesting-ness
-        return sorted(ballots, key=lambda k: int(".by." in k["ballot_paper_id"]))
+        return sort_ballots(ballots)
 
     def get_wcivf_ballot(self, ballot_id):
         for ballot in self.wcivf_resp:
