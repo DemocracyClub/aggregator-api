@@ -57,17 +57,17 @@
         },
         "boto3": {
             "hashes": [
-                "sha256:05f7ae180813fbf11cb7397b43b6bd29463abdc246bee58127836f1a8f6a9a2f",
-                "sha256:3480c87b530e7f41d9264a6725dda68208de2697822cf02cd3a541b001872410"
+                "sha256:27e221d3868f35687807e5c920f7e8d4872f722f64196a7fd274a06ad65beec0",
+                "sha256:8ff4e3d9e5d6a26dd7494afc68dc96afe6b7bda88130cca84cd58702d888ed27"
             ],
-            "version": "==1.11.9"
+            "version": "==1.11.10"
         },
         "botocore": {
             "hashes": [
-                "sha256:1909424c9544f92142c8e551888731e32a99f9c99cfe8d21fea3ec0c32981dae",
-                "sha256:e3e3c0f59dc30c86dd2116aece3bd554f8476446cf1c5770bbf5111993d676c8"
+                "sha256:cf3144994191847e30ef76781af867009bdc233b3f1f4736615e5330687a891e",
+                "sha256:f11ff8616f46ca04697df031e622c9ed50931b9d649d4e719f961e9d80771e8d"
             ],
-            "version": "==1.14.9"
+            "version": "==1.14.10"
         },
         "certifi": {
             "hashes": [
@@ -142,11 +142,11 @@
         },
         "django": {
             "hashes": [
-                "sha256:20111383869ad1b11400c94b0c19d4ab12975316cd058eabd17452e0546169b8",
-                "sha256:372faee5b93c92f19e9d65f52b278a1b689d3e3b4a7d9d30db73a78ebc729770"
+                "sha256:a3b01cdff845a43830d7ccacff55e0b8ff08305a4cbf894517a686e53ba3ad2d",
+                "sha256:b33ce35f47f745fea6b5aa3cf3f4241069803a3712d423ac748bd673a39741eb"
             ],
             "index": "pypi",
-            "version": "==1.11.27"
+            "version": "==1.11.28"
         },
         "django-apiblueprint-view": {
             "hashes": [
@@ -438,10 +438,10 @@
         },
         "wheel": {
             "hashes": [
-                "sha256:48e082fac9a549bb30abcb71360db41e9e999f63bfc9933fdb7339ba7205330f",
-                "sha256:664b9c5033ee7cd5aa6b355bc8a4a5915eadb7612e7b0acab1aa71f005457107"
+                "sha256:8788e9155fe14f54164c1b9eb0a319d98ef02c160725587ad60f14ddc57b6f96",
+                "sha256:df277cb51e61359aba502208d680f90c0493adec6f0e848af94948778aed386e"
             ],
-            "version": "==0.34.1"
+            "version": "==0.34.2"
         },
         "wsgi-request-logger": {
             "hashes": [
