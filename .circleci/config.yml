@@ -91,10 +91,6 @@ jobs:
           name: Do Stage Deploy
           command: |
             pipenv run circleci_deploy_dev
-      - run:
-          name: Do Prod Deploy
-          command: |
-            pipenv run circleci_deploy_prod
 
 workflows:
   version: 2
@@ -104,10 +100,6 @@ workflows:
       - deploy:
           requires:
             - build
-          filters:
-            branches:
-              only:
-                - master
 
 
 #
