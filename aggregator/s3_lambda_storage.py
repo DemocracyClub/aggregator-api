@@ -55,7 +55,10 @@ class PatchedS3Boto3Storage(S3Boto3Storage):
         if isinstance(content, File):
             content = content.file
 
-        self._save_content(obj, content, parameters=parameters)
+        if name == "staticfiles.json":
+            super()._save_content(obj, content, parameters)
+        else:
+            self._save_content(obj, content, parameters=parameters)
         return cleaned_name
 
     def _save_content(self, obj, content, parameters):
