@@ -155,6 +155,8 @@ class Stitcher:
                 ballot["candidates_verified"] = wcivf_ballot["ballot_locked"]
                 ballot["candidates"] = wcivf_ballot["candidates"]
                 ballot["wcivf_url"] = wcivf_ballot["absolute_url"]
+                ballot["voting_system"] = wcivf_ballot["voting_system"]
+                ballot["seats_contested"] = wcivf_ballot["seats_contested"]
         if results:
             results[0]["polling_station"] = self.minimal_wdiv_response
         response = {

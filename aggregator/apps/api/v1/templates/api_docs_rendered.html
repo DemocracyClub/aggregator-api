@@ -327,6 +327,11 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
           &quot;election_name&quot;: &quot;Cardiff local election&quot;,
           &quot;post_name&quot;: &quot;Pontprennau/Old St. Mellons&quot;,
           &quot;candidates_verified&quot;: false,
+          &quot;voting_system&quot;: {
+            &quot;slug&quot;: &quot;&quot;,
+            &quot;name&quot;: &quot;&quot;
+          },
+          &quot;seats_contested&quot;: 0,
           &quot;candidates&quot;: [
             {
               &quot;list_position&quot;: null,
@@ -572,6 +577,23 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                 &quot;candidates_verified&quot;: {
                   &quot;type&quot;: &quot;boolean&quot;,
                   &quot;description&quot;: &quot;True if the list of candidates for this election has been confirmed against the nomination papers for this ballot. If this property is False, the candidate list is provisional or unconfirmed.&quot;
+                },
+                &quot;voting_system&quot;: {
+                  &quot;type&quot;: &quot;object&quot;,
+                  &quot;properties&quot;: {
+                    &quot;slug&quot;: {
+                      &quot;type&quot;: &quot;string&quot;,
+                      &quot;description&quot;: &quot;One of `AMS`, `FPTP`, `PR-CL`, `sv`, `STV`&quot;
+                    },
+                    &quot;name&quot;: {
+                      &quot;type&quot;: &quot;string&quot;,
+                      &quot;description&quot;: &quot;The name of this voting system (e.g: \&quot;First-past-the-post\&quot;)&quot;
+                    }
+                  },
+                  &quot;description&quot;: &quot;The voting system used in this election&quot;
+                },
+                &quot;seats_contested&quot;: {
+                  &quot;type&quot;: &quot;number&quot;
                 },
                 &quot;candidates&quot;: {
                   &quot;type&quot;: &quot;array&quot;,
@@ -1066,6 +1088,11 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
           &quot;election_name&quot;: &quot;Cardiff local election&quot;,
           &quot;post_name&quot;: &quot;Pontprennau/Old St. Mellons&quot;,
           &quot;candidates_verified&quot;: false,
+          &quot;voting_system&quot;: {
+            &quot;slug&quot;: &quot;&quot;,
+            &quot;name&quot;: &quot;&quot;
+          },
+          &quot;seats_contested&quot;: 0,
           &quot;candidates&quot;: [
             {
               &quot;list_position&quot;: null,
@@ -1311,6 +1338,23 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                 &quot;candidates_verified&quot;: {
                   &quot;type&quot;: &quot;boolean&quot;,
                   &quot;description&quot;: &quot;True if the list of candidates for this election has been confirmed against the nomination papers for this ballot. If this property is False, the candidate list is provisional or unconfirmed.&quot;
+                },
+                &quot;voting_system&quot;: {
+                  &quot;type&quot;: &quot;object&quot;,
+                  &quot;properties&quot;: {
+                    &quot;slug&quot;: {
+                      &quot;type&quot;: &quot;string&quot;,
+                      &quot;description&quot;: &quot;One of `AMS`, `FPTP`, `PR-CL`, `sv`, `STV`&quot;
+                    },
+                    &quot;name&quot;: {
+                      &quot;type&quot;: &quot;string&quot;,
+                      &quot;description&quot;: &quot;The name of this voting system (e.g: \&quot;First-past-the-post\&quot;)&quot;
+                    }
+                  },
+                  &quot;description&quot;: &quot;The voting system used in this election&quot;
+                },
+                &quot;seats_contested&quot;: {
+                  &quot;type&quot;: &quot;number&quot;
                 },
                 &quot;candidates&quot;: {
                   &quot;type&quot;: &quot;array&quot;,

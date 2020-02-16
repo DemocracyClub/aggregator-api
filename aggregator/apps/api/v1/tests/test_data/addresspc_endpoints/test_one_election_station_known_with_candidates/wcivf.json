@@ -10,6 +10,12 @@
       "post_name": "Lancaster Gate"
     },
     "cancelled": false,
+    "voting_system": {
+      "slug": "FPTP",
+      "name": "First-past-the-post"
+    },
+    "seats_contested": 1,
+    "organisation_type": "local-authority",
     "ballot_locked": true,
     "candidates": [
       {

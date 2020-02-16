@@ -26,6 +26,11 @@
           "election_name": "Mayor of Lewisham election",
           "post_name": "London Borough of Lewisham",
           "candidates_verified": true,
+          "voting_system": {
+            "slug": "sv",
+            "name": "Supplementary Vote"
+          },
+          "seats_contested": 1,
           "candidates": [
             {
               "list_position": null,
@@ -142,6 +147,11 @@
               }
           },
           "cancelled": true,
+          "voting_system": {
+            "slug": "FPTP",
+            "name": "First-past-the-post"
+          },
+          "seats_contested": 1,
           "replaced_by": "local.lewisham.blackheath.2018-05-10",
           "replaces": null,
           "election_id": "local.lewisham.2018-05-03",
@@ -314,6 +324,11 @@
           "cancelled": false,
           "replaced_by": null,
           "replaces": "local.lewisham.blackheath.2018-05-03",
+          "seats_contested": 1,
+          "voting_system": {
+            "name": "First-past-the-post",
+            "slug": "FPTP"
+          },
           "election_id": "local.lewisham.2018-05-10",
           "election_name": "Lewisham local election",
           "post_name": "Blackheath",
@@ -488,6 +503,11 @@
           "election_name": "UK Parliament elections",
           "post_name": "Lewisham East",
           "candidates_verified": false,
+          "voting_system": {
+            "slug": "FPTP",
+            "name": "First-past-the-post"
+          },
+          "seats_contested": 1,
           "candidates": [],
           "wcivf_url": "https://whocanivotefor.co.uk/elections/parl.2018-06-14/post-WMC:E14000787/lewisham-east"
         }
