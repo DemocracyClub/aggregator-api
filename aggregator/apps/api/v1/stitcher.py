@@ -2,22 +2,25 @@ from copy import deepcopy
 from django.urls import reverse
 
 
-def ballot_charisma(ballot):
+def ballot_charisma(ballot, sort_keys):
     charisma_map = {
-        "ref": 100,
-        "parl": 90,
-        "europarl": 80,
-        "mayor": 70,
-        "naw": 60,
-        "sp": 60,
-        "nia": 60,
-        "gla": 60,
-        "pcc": 50,
-        "local": 40,
+        "ref": {"default": 100},
+        "parl": {"default": 90},
+        "europarl": {"default": 80},
+        "mayor": {"default": 70, "local-authority": 65},
+        "naw": {"default": 60},
+        "sp": {"default": 60},
+        "nia": {"default": 60},
+        "gla": {"default": 60},
+        "pcc": {"default": 50},
+        "local": {"default": 40},
     }
     modifier = 0
-    ballot_paper_id = ballot("ballot_paper_id")
-    base_charisma = charisma_map[ballot_paper_id.split(".")[0]]
+    ballot_paper_id = ballot["ballot_paper_id"]
+    values_for_type = charisma_map[ballot_paper_id.split(".")[0]]
+    base_charisma = values_for_type.get(
+        sort_keys.get(ballot_paper_id), values_for_type.get("default")
+    )
     # GLA Additional are less important than constituencies
     if ballot_paper_id.startswith("gla.a"):
         modifier += 1
@@ -28,10 +31,10 @@ def ballot_charisma(ballot):
     return base_charisma - modifier
 
 
-def sort_ballots(dates):
+def sort_ballots(dates, sort_keys):
     for date in dates:
         date["ballots"] = sorted(
-            date["ballots"], key=lambda k: ballot_charisma(k.get), reverse=True
+            date["ballots"], key=lambda k: ballot_charisma(k, sort_keys), reverse=True
         )
     return dates
 
@@ -82,6 +85,7 @@ class Stitcher:
         self.wdiv_resp = wdiv_resp
         self.wcivf_resp = wcivf_resp
         self.wcivf_by_ballot = self.make_wcivf_by_ballot()
+        self.ballot_sort_keys = {}
         self.request = request
         self.validate()
 
@@ -202,12 +206,19 @@ class Stitcher:
                 ballot["wcivf_url"] = wcivf_ballot["absolute_url"]
                 ballot["voting_system"] = wcivf_ballot["voting_system"]
                 ballot["seats_contested"] = wcivf_ballot["seats_contested"]
+
+                # We only sort by organisation_type at the moment, but we
+                # could add more values here to sort by more fields
+                self.ballot_sort_keys[ballot["ballot_paper_id"]] = wcivf_ballot[
+                    "organisation_type"
+                ]
+
         if results:
             results[0]["polling_station"] = self.minimal_wdiv_response
         response = {
             "address_picker": False,
             "addresses": [],
-            "dates": sort_ballots(results),
+            "dates": sort_ballots(results, self.ballot_sort_keys),
             "electoral_services": self.get_electoral_services(),
             "registration": self.get_registration_contacts(),
             "postcode_location": self.wdiv_resp["postcode_location"],

@@ -42,4 +42,29 @@ class SortBallotsTests(TestCase):
                 ],
             },
         ]
-        self.assertEqual(expected, sort_ballots(initial))
+        self.assertEqual(expected, sort_ballots(initial, {}))
+
+    def test_mayor_types_sorted(self):
+        initial = [
+            {
+                "poll_open_date": "2020-05-07",
+                "ballots": [
+                    {"ballot_paper_id": "mayor.liverpool.2020-05-07"},
+                    {"ballot_paper_id": "mayor.liverpool-city-ca.2020-05-07"},
+                ],
+            }
+        ]
+        sort_keys = {
+            "mayor.liverpool.2020-05-07": "local-authority",
+            "mayor.liverpool-city-ca.2020-05-07": "combined-authority",
+        }
+        expected = [
+            {
+                "poll_open_date": "2020-05-07",
+                "ballots": [
+                    {"ballot_paper_id": "mayor.liverpool-city-ca.2020-05-07"},
+                    {"ballot_paper_id": "mayor.liverpool.2020-05-07"},
+                ],
+            }
+        ]
+        self.assertEqual(expected, sort_ballots(initial, sort_keys))
