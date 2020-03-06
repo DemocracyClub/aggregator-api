@@ -72,12 +72,13 @@ class Stitcher:
     def __init__(self, wdiv_resp, wcivf_resp, request):
         self.wdiv_resp = wdiv_resp
         self.wcivf_resp = wcivf_resp
+        self.wcivf_by_ballot = self.make_wcivf_by_ballot()
         self.request = request
         self.validate()
 
     def validate(self):
         for ballot in self.wdiv_resp["ballots"]:
-            if not self.get_wcivf_ballot(ballot["ballot_paper_id"]):
+            if ballot["ballot_paper_id"] not in self.wcivf_by_ballot:
                 raise StitcherValidationError(
                     f'Could not find expected ballot {ballot["ballot_paper_id"]}'
                 )
@@ -98,6 +99,16 @@ class Stitcher:
     def get_registration_contacts(self):
         council = deepcopy(self.wdiv_resp["council"])
         return council.get("registration_contacts", self.get_electoral_services())
+
+    def make_wcivf_by_ballot(self):
+        """
+        Iterate over the WCIVF response once to create a dict keyed by
+        ballot paper ID
+        """
+        by_ballot = {}
+        for ballot in self.wcivf_resp:
+            by_ballot[ballot["ballot_paper_id"]] = ballot
+        return by_ballot
 
     def make_address_picker_response(self):
         addresses = []
@@ -134,12 +145,6 @@ class Stitcher:
         ]
         return sort_ballots(ballots)
 
-    def get_wcivf_ballot(self, ballot_id):
-        for ballot in self.wcivf_resp:
-            if ballot["ballot_paper_id"] == ballot_id:
-                return ballot
-        return None
-
     @property
     def minimal_wdiv_response(self):
         resp = {}
@@ -172,9 +177,10 @@ class Stitcher:
                     "ballots": ballots,
                 }
             )
+
         for date in results:
             for ballot in date["ballots"]:
-                wcivf_ballot = self.get_wcivf_ballot(ballot["ballot_paper_id"])
+                wcivf_ballot = self.wcivf_by_ballot[ballot["ballot_paper_id"]]
 
                 ballot["ballot_url"] = self.request.build_absolute_uri(
                     reverse("api:v1:elections_get", args=(ballot["ballot_paper_id"],))
