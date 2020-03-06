@@ -15,16 +15,25 @@ def ballot_charisma(ballot):
         "pcc": 50,
         "local": 40,
     }
-
-    base_charisma = charisma_map[ballot["ballot_paper_id"].split(".")[0]]
+    modifier = 0
+    ballot_paper_id = ballot("ballot_paper_id")
+    base_charisma = charisma_map[ballot_paper_id.split(".")[0]]
+    # GLA Additional are less important than constituencies
+    if ballot_paper_id.startswith("gla.a"):
+        modifier += 1
     # by-elections are slightly less charismatic than scheduled elections
-    by_election_modifier = int(".by." in ballot["ballot_paper_id"])
+    if ".by." in ballot_paper_id:
+        modifier += 1
 
-    return base_charisma - by_election_modifier
+    return base_charisma - modifier
 
 
-def sort_ballots(ballots):
-    return sorted(ballots, key=lambda k: ballot_charisma(k), reverse=True)
+def sort_ballots(dates):
+    for date in dates:
+        date["ballots"] = sorted(
+            date["ballots"], key=lambda k: ballot_charisma(k.get), reverse=True
+        )
+    return dates
 
 
 class StitcherValidationError(Exception):
@@ -143,7 +152,7 @@ class Stitcher:
             for ballot in self.wdiv_resp["ballots"]
             if ballot["poll_open_date"] == date
         ]
-        return sort_ballots(ballots)
+        return ballots
 
     @property
     def minimal_wdiv_response(self):
@@ -198,7 +207,7 @@ class Stitcher:
         response = {
             "address_picker": False,
             "addresses": [],
-            "dates": results,
+            "dates": sort_ballots(results),
             "electoral_services": self.get_electoral_services(),
             "registration": self.get_registration_contacts(),
             "postcode_location": self.wdiv_resp["postcode_location"],
