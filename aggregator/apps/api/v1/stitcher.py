@@ -90,14 +90,14 @@ class Stitcher:
     def __init__(self, wdiv_resp, wcivf_resp, request):
         self.wdiv_resp = wdiv_resp
         self.wcivf_resp = wcivf_resp
-        self.wcivf_by_ballot = self.make_wcivf_by_ballot()
+        self.wcivf_ballots = self.make_wcivf_ballots()
         self.ballot_sort_keys = {}
         self.request = request
         self.validate()
 
     def validate(self):
         for ballot in self.wdiv_resp["ballots"]:
-            if ballot["ballot_paper_id"] not in self.wcivf_by_ballot:
+            if ballot["ballot_paper_id"] not in self.wcivf_ballots:
                 raise StitcherValidationError(
                     f'Could not find expected ballot {ballot["ballot_paper_id"]}'
                 )
@@ -119,7 +119,7 @@ class Stitcher:
         council = deepcopy(self.wdiv_resp["council"])
         return council.get("registration_contacts", self.get_electoral_services())
 
-    def make_wcivf_by_ballot(self):
+    def make_wcivf_ballots(self):
         """
         Iterate over the WCIVF response once to create a dict keyed by
         ballot paper ID
@@ -199,7 +199,7 @@ class Stitcher:
 
         for date in results:
             for ballot in date["ballots"]:
-                wcivf_ballot = self.wcivf_by_ballot[ballot["ballot_paper_id"]]
+                wcivf_ballot = self.wcivf_ballots[ballot["ballot_paper_id"]]
 
                 ballot["ballot_url"] = self.request.build_absolute_uri(
                     reverse("api:v1:elections_get", args=(ballot["ballot_paper_id"],))
