@@ -50,6 +50,10 @@ jobs:
             pipenv run pytest --cov-report= --cov=aggregator
 
       - run:
+          name: build docs
+          command: pipenv run ./manage.py build_docs
+
+      - run:
           name: update coveralls
           command: |
             if [ -n "$COVERALLS_REPO_TOKEN" ]; then pipenv run coveralls; else echo "skipping coverage for forked PR"; fi

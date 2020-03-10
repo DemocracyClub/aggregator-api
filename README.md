@@ -25,22 +25,7 @@ This project provides an API gateway in front of other Democracy Club APIs.
 
 ### Documentation
 
-The API docs use [drafter 3](https://github.com/apiaryio/drafter/) for parsing [API Blueprint](https://apiblueprint.org/).
-
-This needs to be installed/compiled manually:
-
-```
-wget https://github.com/apiaryio/drafter/releases/download/v3.2.7/drafter-v3.2.7.tar.gz
-tar xvzf drafter-v3.2.7.tar.gz
-cd drafter-v3.2.7
-/usr/bin/python2 configure --shared
-make libdrafter
-sudo cp build/out/Release/lib.target/libdrafter.so /usr/lib/libdrafter.so
-sudo mkdir -p /usr/include/drafter
-sudo cp src/drafter.h /usr/include/drafter/drafter.h
-```
-
-Because we're deployed on lambda, we build the docs locally instead of rendering on-the-fly and then commit the compiled documentation so it can be served as a static template. Compile the docs with `./manage.py build_docs`.
+We build the docs locally instead of rendering on-the-fly and then commit the compiled documentation so it can be served as a static template. Compile the docs with `./manage.py build_docs`. The API docs use [drafter 3](https://github.com/apiaryio/drafter/) for parsing [API Blueprint](https://apiblueprint.org/). On linux this will be installed automatically with the python dependencies. On OSX/Windows, this needs to be [installed seperately](https://github.com/apiaryio/drafter/tree/v3.2.7#install).
 
 ## Configuration
 
