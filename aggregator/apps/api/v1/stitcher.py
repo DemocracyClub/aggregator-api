@@ -1,3 +1,4 @@
+import re
 from copy import deepcopy
 from django.urls import reverse
 
@@ -8,10 +9,10 @@ def ballot_charisma(ballot, sort_keys):
         "parl": {"default": 90},
         "europarl": {"default": 80},
         "mayor": {"default": 70, "local-authority": 65},
-        "naw": {"default": 60},
-        "sp": {"default": 60},
         "nia": {"default": 60},
-        "gla": {"default": 60},
+        "gla": {"default": 60, "a": 55},
+        "naw": {"default": 60, "r": 55},
+        "sp": {"default": 60, "r": 55},
         "pcc": {"default": 50},
         "local": {"default": 40},
     }
@@ -27,9 +28,11 @@ def ballot_charisma(ballot, sort_keys):
     default_weight_for_election_type = weights.get("default")
     base_charisma = weights.get(organisation_type, default_weight_for_election_type)
 
-    # GLA Additional are less important than constituencies
-    if ballot_paper_id.startswith("gla.a"):
-        modifier += 1
+    # Look up `r` and `a` subtypes
+    subtype = re.match(r"^[^.]+\.([ar])\.", ballot_paper_id)
+    if subtype:
+        base_charisma = weights.get(subtype.group(1), base_charisma)
+
     # by-elections are slightly less charismatic than scheduled elections
     if ".by." in ballot_paper_id:
         modifier += 1
