@@ -17,10 +17,16 @@ def ballot_charisma(ballot, sort_keys):
     }
     modifier = 0
     ballot_paper_id = ballot["ballot_paper_id"]
-    values_for_type = charisma_map[ballot_paper_id.split(".")[0]]
-    base_charisma = values_for_type.get(
-        sort_keys.get(ballot_paper_id), values_for_type.get("default")
-    )
+
+    # Look up the dict of possible weights for this election type
+    weights = charisma_map[ballot_paper_id.split(".")[0]]
+
+    # Extract the organisation type from the sort keys
+    organisation_type = sort_keys.get(ballot_paper_id)
+
+    default_weight_for_election_type = weights.get("default")
+    base_charisma = weights.get(organisation_type, default_weight_for_election_type)
+
     # GLA Additional are less important than constituencies
     if ballot_paper_id.startswith("gla.a"):
         modifier += 1
