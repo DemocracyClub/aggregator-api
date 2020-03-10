@@ -25,7 +25,7 @@ This project provides an API gateway in front of other Democracy Club APIs.
 
 ### Documentation
 
-We build the docs locally instead of rendering on-the-fly and then commit the compiled documentation so it can be served as a static template. Compile the docs with `./manage.py build_docs`.
+We build the docs locally instead of rendering on-the-fly and then commit the compiled documentation so it can be served as a static template. Compile the docs with `./manage.py build_docs`. The API docs use [drafter 3](https://github.com/apiaryio/drafter/) for parsing [API Blueprint](https://apiblueprint.org/). On linux this will be installed automatically with the python dependencies. On OSX/Windows, this needs to be [installed seperately](https://github.com/apiaryio/drafter/tree/v3.2.7#install).
 
 ## Configuration
 
