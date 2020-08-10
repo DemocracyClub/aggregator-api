@@ -14,9 +14,7 @@ class ElectionViewTests(TestCase):
         ),
     )
     def test_list_valid(self):
-        response = self.client.get(
-            f"/api/v1/elections/", HTTP_AUTHORIZATION="Token foo"
-        )
+        response = self.client.get("/api/v1/elections/", HTTP_AUTHORIZATION="Token foo")
         expected = load_fixture(
             "elections_endpoint/test_every_election_list", "expected_output"
         )
@@ -26,7 +24,7 @@ class ElectionViewTests(TestCase):
         mock = Mock(return_value={})
         with patch("api.v1.api_client.EEApiClient.get_election_list", mock):
             self.client.get(
-                f"/api/v1/elections/?limit=100&foo=bar", HTTP_AUTHORIZATION="Token foo"
+                "/api/v1/elections/?limit=100&foo=bar", HTTP_AUTHORIZATION="Token foo"
             )
             # this one should pass the GET params down the call stack
             self.assertDictEqual(
@@ -41,7 +39,7 @@ class ElectionViewTests(TestCase):
     )
     def test_single_valid(self):
         response = self.client.get(
-            f"/api/v1/elections/local.cardiff.ely.by.2019-02-21/",
+            "/api/v1/elections/local.cardiff.ely.by.2019-02-21/",
             HTTP_AUTHORIZATION="Token foo",
         )
         expected = load_fixture(
@@ -53,7 +51,7 @@ class ElectionViewTests(TestCase):
         mock = Mock(return_value={})
         with patch("api.v1.api_client.EEApiClient.get_single_election", mock):
             self.client.get(
-                f"/api/v1/elections/local.cardiff.ely.by.2019-02-21/?&foo=bar",
+                "/api/v1/elections/local.cardiff.ely.by.2019-02-21/?&foo=bar",
                 HTTP_AUTHORIZATION="Token foo",
             )
             mock.assert_called_with("local.cardiff.ely.by.2019-02-21")
