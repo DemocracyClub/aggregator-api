@@ -26,7 +26,7 @@ class PostcodeViewTests(TestCase):
         # we're mocking a valid set of WDIV/WCIVF responses here
         # but when we try to parse them, Stitcher will throw an error
         response = self.client.get(
-            f"/api/v1/postcode/SW1A1AA/", HTTP_AUTHORIZATION="Token foo"
+            "/api/v1/postcode/SW1A1AA/", HTTP_AUTHORIZATION="Token foo"
         )
         self.assertEqual(500, response.status_code)
         self.assertDictEqual({"message": "Internal Server Error"}, response.json())
@@ -55,6 +55,6 @@ class PostcodeViewTests(TestCase):
         )
         with patch("api.v1.api_client.WdivWcivfApiClient.get_data_for_postcode", mock):
             self.client.get(
-                f"/api/v1/postcode/SW1A1AA/?foo=bar", HTTP_AUTHORIZATION="Token foo"
+                "/api/v1/postcode/SW1A1AA/?foo=bar", HTTP_AUTHORIZATION="Token foo"
             )
             mock.assert_called_with("SW1A1AA")

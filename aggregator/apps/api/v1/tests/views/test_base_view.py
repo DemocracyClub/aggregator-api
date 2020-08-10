@@ -38,7 +38,7 @@ class BaseViewTests(TestCase):
         # if the upstream API responds with an error response
         # we just forward it to the client
         response = self.client.get(
-            f"/api/v1/postcode/SW1A1AA/", HTTP_AUTHORIZATION="Token foo"
+            "/api/v1/postcode/SW1A1AA/", HTTP_AUTHORIZATION="Token foo"
         )
         self.assertEqual(500, response.status_code)
         self.assertDictEqual({"message": "oh noes!!"}, response.json())
