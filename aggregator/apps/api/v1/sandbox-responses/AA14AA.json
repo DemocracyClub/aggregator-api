@@ -527,6 +527,7 @@
     "postcode": "SE6 4RU",
     "address": "Electoral Registration Officer\nLewisham Town Hall\nCatford Road\nCatford"
   },
+  "registration": null,
   "postcode_location": {
     "type": "Feature",
     "properties": null,

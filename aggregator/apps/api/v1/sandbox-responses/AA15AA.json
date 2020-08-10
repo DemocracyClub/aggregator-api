@@ -60,6 +60,7 @@
     "postcode": "BT1 1ER",
     "address": "The Electoral Office Headquarters\nSt Anne's House\n15 Church Street\nBelfast"
   },
+  "registration": null,
   "postcode_location": {
     "type": "Feature",
     "properties": null,

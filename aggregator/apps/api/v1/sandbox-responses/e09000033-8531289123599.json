@@ -118,6 +118,7 @@
     "postcode": "WC2N 5HR",
     "address": "Electoral Registration Officer\nWestminster City Council\n2nd Floor, City Hall\n5 Strand"
   },
+  "registration": null,
   "postcode_location": {
     "type": "Feature",
     "properties": null,

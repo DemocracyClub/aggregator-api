@@ -136,6 +136,13 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
     &quot;phone&quot;: &quot;029 2087 2034&quot;,
     &quot;website&quot;: &quot;http://www.cardiff.gov.uk/&quot;
   },
+  &quot;registration&quot;: {
+    &quot;address&quot;: &quot;Electoral Registration Officer\\nCity of Cardiff Council\\nCounty Hall Atlantic Wharf&quot;,
+    &quot;postcode&quot;: &quot;CF10 4UW&quot;,
+    &quot;email&quot;: &quot;electoralservices@cardiff.gov.uk&quot;,
+    &quot;phone&quot;: &quot;029 2087 2034&quot;,
+    &quot;website&quot;: &quot;http://www.cardiff.gov.uk/&quot;
+  },
   &quot;postcode_location&quot;: {
     &quot;type&quot;: &quot;Feature&quot;,
     &quot;properties&quot;: null,
@@ -201,6 +208,35 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
         }
       },
       &quot;description&quot;: &quot;Contact details for the user&#39;s local Electoral Services team. If we do not know the user&#39;s polling station, this can be used to provide contact info for their local council. This may be `null` if we are not able to determine the user&#39;s council.&quot;
+    },
+    &quot;registration&quot;: {
+      &quot;type&quot;: [
+        &quot;object&quot;,
+        &quot;null&quot;
+      ],
+      &quot;properties&quot;: {
+        &quot;address&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Contact address for this council&quot;
+        },
+        &quot;postcode&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Postcode component of contact address for this council&quot;
+        },
+        &quot;email&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Contact email address for this council&#39;s Electoral Services team&quot;
+        },
+        &quot;phone&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Telephone number for this council&#39;s Electoral Services team&quot;
+        },
+        &quot;website&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;URL for this council&#39;s website&quot;
+        }
+      },
+      &quot;description&quot;: &quot;Sometimes the contact information for registration and proxy voting is different to the electoral services contact details. Use these if they exist and your users might have questions about voter registration. If this key is null, assume the electoral services contact details can be used for electoral registration related enquiries.&quot;
     },
     &quot;postcode_location&quot;: {
       &quot;type&quot;: &quot;object&quot;,
@@ -371,6 +407,13 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
   &quot;electoral_services&quot;: {
     &quot;council_id&quot;: &quot;W06000015&quot;,
     &quot;name&quot;: &quot;Cardiff Council&quot;,
+    &quot;address&quot;: &quot;Electoral Registration Officer\\nCity of Cardiff Council\\nCounty Hall Atlantic Wharf&quot;,
+    &quot;postcode&quot;: &quot;CF10 4UW&quot;,
+    &quot;email&quot;: &quot;electoralservices@cardiff.gov.uk&quot;,
+    &quot;phone&quot;: &quot;029 2087 2034&quot;,
+    &quot;website&quot;: &quot;http://www.cardiff.gov.uk/&quot;
+  },
+  &quot;registration&quot;: {
     &quot;address&quot;: &quot;Electoral Registration Officer\\nCity of Cardiff Council\\nCounty Hall Atlantic Wharf&quot;,
     &quot;postcode&quot;: &quot;CF10 4UW&quot;,
     &quot;email&quot;: &quot;electoralservices@cardiff.gov.uk&quot;,
@@ -759,6 +802,35 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
       },
       &quot;description&quot;: &quot;Contact details for the user&#39;s local Electoral Services team. If we do not know the user&#39;s polling station, this can be used to provide contact info for their local council. This may be `null` if we are not able to determine the user&#39;s council.&quot;
     },
+    &quot;registration&quot;: {
+      &quot;type&quot;: [
+        &quot;object&quot;,
+        &quot;null&quot;
+      ],
+      &quot;properties&quot;: {
+        &quot;address&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Contact address for this council&quot;
+        },
+        &quot;postcode&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Postcode component of contact address for this council&quot;
+        },
+        &quot;email&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Contact email address for this council&#39;s Electoral Services team&quot;
+        },
+        &quot;phone&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Telephone number for this council&#39;s Electoral Services team&quot;
+        },
+        &quot;website&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;URL for this council&#39;s website&quot;
+        }
+      },
+      &quot;description&quot;: &quot;Sometimes the contact information for registration and proxy voting is different to the electoral services contact details. Use these if they exist and your users might have questions about voter registration. If this key is null, assume the electoral services contact details can be used for electoral registration related enquiries.&quot;
+    },
     &quot;postcode_location&quot;: {
       &quot;type&quot;: &quot;object&quot;,
       &quot;properties&quot;: {
@@ -855,6 +927,13 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
   &quot;electoral_services&quot;: {
     &quot;council_id&quot;: &quot;W06000015&quot;,
     &quot;name&quot;: &quot;Cardiff Council&quot;,
+    &quot;address&quot;: &quot;Electoral Registration Officer\\nCity of Cardiff Council\\nCounty Hall Atlantic Wharf&quot;,
+    &quot;postcode&quot;: &quot;CF10 4UW&quot;,
+    &quot;email&quot;: &quot;electoralservices@cardiff.gov.uk&quot;,
+    &quot;phone&quot;: &quot;029 2087 2034&quot;,
+    &quot;website&quot;: &quot;http://www.cardiff.gov.uk/&quot;
+  },
+  &quot;registration&quot;: {
     &quot;address&quot;: &quot;Electoral Registration Officer\\nCity of Cardiff Council\\nCounty Hall Atlantic Wharf&quot;,
     &quot;postcode&quot;: &quot;CF10 4UW&quot;,
     &quot;email&quot;: &quot;electoralservices@cardiff.gov.uk&quot;,
@@ -964,6 +1043,35 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
         }
       },
       &quot;description&quot;: &quot;Contact details for the user&#39;s local Electoral Services team. If we do not know the user&#39;s polling station, this can be used to provide contact info for their local council. This may be `null` if we are not able to determine the user&#39;s council.&quot;
+    },
+    &quot;registration&quot;: {
+      &quot;type&quot;: [
+        &quot;object&quot;,
+        &quot;null&quot;
+      ],
+      &quot;properties&quot;: {
+        &quot;address&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Contact address for this council&quot;
+        },
+        &quot;postcode&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Postcode component of contact address for this council&quot;
+        },
+        &quot;email&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Contact email address for this council&#39;s Electoral Services team&quot;
+        },
+        &quot;phone&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Telephone number for this council&#39;s Electoral Services team&quot;
+        },
+        &quot;website&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;URL for this council&#39;s website&quot;
+        }
+      },
+      &quot;description&quot;: &quot;Sometimes the contact information for registration and proxy voting is different to the electoral services contact details. Use these if they exist and your users might have questions about voter registration. If this key is null, assume the electoral services contact details can be used for electoral registration related enquiries.&quot;
     },
     &quot;postcode_location&quot;: {
       &quot;type&quot;: &quot;object&quot;,
@@ -1143,6 +1251,13 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
     &quot;phone&quot;: &quot;029 2087 2034&quot;,
     &quot;website&quot;: &quot;http://www.cardiff.gov.uk/&quot;
   },
+  &quot;registration&quot;: {
+    &quot;address&quot;: &quot;Electoral Registration Officer\\nCity of Cardiff Council\\nCounty Hall Atlantic Wharf&quot;,
+    &quot;postcode&quot;: &quot;CF10 4UW&quot;,
+    &quot;email&quot;: &quot;electoralservices@cardiff.gov.uk&quot;,
+    &quot;phone&quot;: &quot;029 2087 2034&quot;,
+    &quot;website&quot;: &quot;http://www.cardiff.gov.uk/&quot;
+  },
   &quot;postcode_location&quot;: {
     &quot;type&quot;: &quot;Feature&quot;,
     &quot;properties&quot;: null,
@@ -1524,6 +1639,35 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
         }
       },
       &quot;description&quot;: &quot;Contact details for the user&#39;s local Electoral Services team. If we do not know the user&#39;s polling station, this can be used to provide contact info for their local council. This may be `null` if we are not able to determine the user&#39;s council.&quot;
+    },
+    &quot;registration&quot;: {
+      &quot;type&quot;: [
+        &quot;object&quot;,
+        &quot;null&quot;
+      ],
+      &quot;properties&quot;: {
+        &quot;address&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Contact address for this council&quot;
+        },
+        &quot;postcode&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Postcode component of contact address for this council&quot;
+        },
+        &quot;email&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Contact email address for this council&#39;s Electoral Services team&quot;
+        },
+        &quot;phone&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Telephone number for this council&#39;s Electoral Services team&quot;
+        },
+        &quot;website&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;URL for this council&#39;s website&quot;
+        }
+      },
+      &quot;description&quot;: &quot;Sometimes the contact information for registration and proxy voting is different to the electoral services contact details. Use these if they exist and your users might have questions about voter registration. If this key is null, assume the electoral services contact details can be used for electoral registration related enquiries.&quot;
     },
     &quot;postcode_location&quot;: {
       &quot;type&quot;: &quot;object&quot;,
