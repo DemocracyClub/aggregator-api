@@ -120,6 +120,8 @@ class Stitcher:
 
     def get_registration_contacts(self):
         council = deepcopy(self.wdiv_resp["council"])
+        if not council:
+            return None
         details = council.get("registration_contacts", None)
         if not details:
             details = self.get_electoral_services()
