@@ -60,7 +60,15 @@
     "postcode": "BT1 1ER",
     "address": "The Electoral Office Headquarters\nSt Anne's House\n15 Church Street\nBelfast"
   },
-  "registration": null,
+  "registration": {
+    "council_id": "N09000007",
+    "name": "",
+    "email": "info@eoni.org.uk",
+    "phone": "",
+    "website": "http://www.eoni.org.uk/",
+    "postcode": "BT1 1ER",
+    "address": "The Electoral Office Headquarters\nSt Anne's House\n15 Church Street\nBelfast"
+  },
   "postcode_location": {
     "type": "Feature",
     "properties": null,

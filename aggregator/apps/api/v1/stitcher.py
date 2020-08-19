@@ -72,7 +72,7 @@ class Stitcher:
 
     def get_registration_contacts(self):
         council = deepcopy(self.wdiv_resp["council"])
-        return council.get("registration_contacts", None)
+        return council.get("registration_contacts", self.get_electoral_services())
 
     def make_address_picker_response(self):
         addresses = []
