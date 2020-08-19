@@ -10,7 +10,11 @@
 }
 </code></pre>
 
-* If we don't know a user's polling station and `custom_finder` is not populated, the contact details in the `electoral_services` object can be used to provide contact details for the user's local electoral services team.
+* If we don't know a user's polling station and `custom_finder` is not populated, the contact details in the `electoral_services` or `registration` object can be used to provide contact details for the user's local electoral services or registration team.
+
+### Contact details
+
+We provide two types of contact details; "electoral services" and "registration". This is because in Scotland and Northern Ireland the local authority doesn't handle electoral registration. If you are using the data to deal with electoral registration, use the `registration` contact details. Please make sure you are using the correct contact details for your users needs.
 
 ### Ballots and Candidates
 
