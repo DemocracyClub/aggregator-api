@@ -1,5 +1,51 @@
+import re
 from copy import deepcopy
 from django.urls import reverse
+
+
+def ballot_charisma(ballot, sort_keys):
+    charisma_map = {
+        "ref": {"default": 100},
+        "parl": {"default": 90},
+        "europarl": {"default": 80},
+        "mayor": {"default": 70, "local-authority": 65},
+        "nia": {"default": 60},
+        "gla": {"default": 60, "a": 55},
+        "naw": {"default": 60, "r": 55},
+        "sp": {"default": 60, "r": 55},
+        "pcc": {"default": 50},
+        "local": {"default": 40},
+    }
+    modifier = 0
+    ballot_paper_id = ballot["ballot_paper_id"]
+
+    # Look up the dict of possible weights for this election type
+    weights = charisma_map[ballot_paper_id.split(".")[0]]
+
+    # Extract the organisation type from the sort keys
+    organisation_type = sort_keys.get(ballot_paper_id)
+
+    default_weight_for_election_type = weights.get("default")
+    base_charisma = weights.get(organisation_type, default_weight_for_election_type)
+
+    # Look up `r` and `a` subtypes
+    subtype = re.match(r"^[^.]+\.([ar])\.", ballot_paper_id)
+    if subtype:
+        base_charisma = weights.get(subtype.group(1), base_charisma)
+
+    # by-elections are slightly less charismatic than scheduled elections
+    if ".by." in ballot_paper_id:
+        modifier += 1
+
+    return base_charisma - modifier
+
+
+def sort_ballots(dates, sort_keys):
+    for date in dates:
+        date["ballots"] = sorted(
+            date["ballots"], key=lambda k: ballot_charisma(k, sort_keys), reverse=True
+        )
+    return dates
 
 
 class StitcherValidationError(Exception):
@@ -47,12 +93,14 @@ class Stitcher:
     def __init__(self, wdiv_resp, wcivf_resp, request):
         self.wdiv_resp = wdiv_resp
         self.wcivf_resp = wcivf_resp
+        self.wcivf_ballots = self.make_wcivf_ballots()
+        self.ballot_sort_keys = {}
         self.request = request
         self.validate()
 
     def validate(self):
         for ballot in self.wdiv_resp["ballots"]:
-            if not self.get_wcivf_ballot(ballot["ballot_paper_id"]):
+            if ballot["ballot_paper_id"] not in self.wcivf_ballots:
                 raise StitcherValidationError(
                     f'Could not find expected ballot {ballot["ballot_paper_id"]}'
                 )
@@ -73,6 +121,16 @@ class Stitcher:
     def get_registration_contacts(self):
         council = deepcopy(self.wdiv_resp["council"])
         return council.get("registration_contacts", self.get_electoral_services())
+
+    def make_wcivf_ballots(self):
+        """
+        Iterate over the WCIVF response once to create a dict keyed by
+        ballot paper ID
+        """
+        by_ballot = {}
+        for ballot in self.wcivf_resp:
+            by_ballot[ballot["ballot_paper_id"]] = ballot
+        return by_ballot
 
     def make_address_picker_response(self):
         addresses = []
@@ -107,15 +165,7 @@ class Stitcher:
             for ballot in self.wdiv_resp["ballots"]
             if ballot["poll_open_date"] == date
         ]
-
-        # TODO: define a full hierarchy of election interesting-ness
-        return sorted(ballots, key=lambda k: int(".by." in k["ballot_paper_id"]))
-
-    def get_wcivf_ballot(self, ballot_id):
-        for ballot in self.wcivf_resp:
-            if ballot["ballot_paper_id"] == ballot_id:
-                return ballot
-        return None
+        return ballots
 
     @property
     def minimal_wdiv_response(self):
@@ -149,9 +199,10 @@ class Stitcher:
                     "ballots": ballots,
                 }
             )
+
         for date in results:
             for ballot in date["ballots"]:
-                wcivf_ballot = self.get_wcivf_ballot(ballot["ballot_paper_id"])
+                wcivf_ballot = self.wcivf_ballots[ballot["ballot_paper_id"]]
 
                 ballot["ballot_url"] = self.request.build_absolute_uri(
                     reverse("api:v1:elections_get", args=(ballot["ballot_paper_id"],))
@@ -164,12 +215,19 @@ class Stitcher:
                 ballot["wcivf_url"] = wcivf_ballot["absolute_url"]
                 ballot["voting_system"] = wcivf_ballot["voting_system"]
                 ballot["seats_contested"] = wcivf_ballot["seats_contested"]
+
+                # We only sort by organisation_type at the moment, but we
+                # could add more values here to sort by more fields
+                self.ballot_sort_keys[ballot["ballot_paper_id"]] = wcivf_ballot[
+                    "organisation_type"
+                ]
+
         if results:
             results[0]["polling_station"] = self.minimal_wdiv_response
         response = {
             "address_picker": False,
             "addresses": [],
-            "dates": results,
+            "dates": sort_ballots(results, self.ballot_sort_keys),
             "electoral_services": self.get_electoral_services(),
             "registration": self.get_registration_contacts(),
             "postcode_location": self.wdiv_resp["postcode_location"],
