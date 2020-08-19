@@ -527,6 +527,15 @@
     "postcode": "SE6 4RU",
     "address": "Electoral Registration Officer\nLewisham Town Hall\nCatford Road\nCatford"
   },
+  "registration": {
+    "council_id": "E09000023",
+    "name": "London Borough of Lewisham",
+    "email": "electoral.services@lewisham.gov.uk",
+    "phone": "020 8314 6086",
+    "website": "http://www.lewisham.gov.uk/",
+    "postcode": "SE6 4RU",
+    "address": "Electoral Registration Officer\nLewisham Town Hall\nCatford Road\nCatford"
+  },
   "postcode_location": {
     "type": "Feature",
     "properties": null,

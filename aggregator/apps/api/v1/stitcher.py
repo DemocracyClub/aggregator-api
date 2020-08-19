@@ -66,7 +66,13 @@ class Stitcher:
         council = deepcopy(self.wdiv_resp["council"])
         if council:
             council.pop("url", None)
+            council.pop("electoral_services_contacts", None)
+            council.pop("registration_contacts", None)
         return council
+
+    def get_registration_contacts(self):
+        council = deepcopy(self.wdiv_resp["council"])
+        return council.get("registration_contacts", self.get_electoral_services())
 
     def make_address_picker_response(self):
         addresses = []
@@ -86,6 +92,7 @@ class Stitcher:
             "addresses": addresses,
             "dates": [],
             "electoral_services": self.get_electoral_services(),
+            "registration": self.get_registration_contacts(),
             "postcode_location": self.wdiv_resp["postcode_location"],
         }
         return response
@@ -164,6 +171,7 @@ class Stitcher:
             "addresses": [],
             "dates": results,
             "electoral_services": self.get_electoral_services(),
+            "registration": self.get_registration_contacts(),
             "postcode_location": self.wdiv_resp["postcode_location"],
         }
         return response

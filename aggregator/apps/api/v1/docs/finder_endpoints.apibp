@@ -27,6 +27,7 @@ In this case `address_picker` is `false` and `dates` is an empty array.
         + addresses (array[object]) - An array of address objects containing the addresses applicable to this request (if necessary)
         + dates (array[object]) - An array of date objects containing details of relevant ballots, candidates and polling station information
         + `electoral_services` (ElectoralServices, nullable) - Contact details for the user's local Electoral Services team. If we do not know the user's polling station, this can be used to provide contact info for their local council. This may be `null` if we are not able to determine the user's council.
+        + `registration` (Registration, nullable) - Sometimes the contact information for registration and proxy voting is different to the electoral services contact details. Use these if they exist and your users might have questions about voter registration. If this key is null, assume the electoral services contact details can be used for electoral registration related enquiries.
         + `postcode_location` (PostcodeLocation) - A [GeoJSON Feature](https://tools.ietf.org/html/rfc7946#section-3.2) containing a [Point object](https://tools.ietf.org/html/rfc7946#section-3.1.2) describing the centroid of the input postcode. If providing a map or directions for a polling station journey, use this as the start point. This may be `null` if we are not able to accurately geocode.
 
 + Response 400 (application/json)
@@ -83,6 +84,7 @@ In this case `address_picker` is `true` and `dates` is an empty array. `addresse
                 + url: `http://developers.democracyclub.org.uk/api/v1/address/w06000015-100100106448` - Call this URL to get data for this registered address
         + dates (array[object]) - An array of date objects containing details of relevant ballots, candidates and polling station information
         + `electoral_services` (ElectoralServices, nullable) - Contact details for the user's local Electoral Services team. If we do not know the user's polling station, this can be used to provide contact info for their local council. This may be `null` if we are not able to determine the user's council.
+        + `registration` (Registration, nullable) - Sometimes the contact information for registration and proxy voting is different to the electoral services contact details. Use these if they exist and your users might have questions about voter registration. If this key is null, assume the electoral services contact details can be used for electoral registration related enquiries.
         + `postcode_location` (PostcodeLocation) - A [GeoJSON Feature](https://tools.ietf.org/html/rfc7946#section-3.2) containing a [Point object](https://tools.ietf.org/html/rfc7946#section-3.1.2) describing the centroid of the input postcode. If providing a map or directions for a polling station journey, use this as the start point. This may be `null` if we are not able to accurately geocode.
 
 + Response 400 (application/json)
