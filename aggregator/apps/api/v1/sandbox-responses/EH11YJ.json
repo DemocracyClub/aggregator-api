@@ -1,0 +1,32 @@
+{
+  "address_picker": false,
+  "addresses": [],
+  "dates": [],
+  "electoral_services": {
+    "council_id": "EDH",
+    "name": "City of Edinburgh Council",
+    "email": "elections@edinburgh.gov.uk",
+    "phone": "0131 200 2315",
+    "website": "https://www.edinburgh.gov.uk/info/20033/elections_and_voting",
+    "postcode": "",
+    "address": ""
+  },
+  "registration": {
+    "phone": "0131 200 2315",
+    "email": "enquiries@lothian-vjb.gov.uk",
+    "address": "Electoral Registration Officer\nLothian Valuation Joint Board\n17A South Gyle Crescent\nEDINBURGH",
+    "postcode": "EH12 9FL",
+    "website": "http://www.lothian-vjb.gov.uk/"
+  },
+  "postcode_location": {
+    "type": "Feature",
+    "properties": null,
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -0.13447605,
+        51.489488200000004
+      ]
+    }
+  }
+}

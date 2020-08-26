@@ -123,7 +123,12 @@ class Stitcher:
         if not council:
             return None
         details = council.get("registration_contacts", None)
-        if not details:
+        if details:
+            try:
+                details["phone"] = details.get("phone", [])[0]
+            except IndexError:
+                details["phone"] = ""
+        else:
             details = self.get_electoral_services()
         return details
 
