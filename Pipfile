@@ -18,7 +18,7 @@ dc-base-theme = {editable = true,git = "https://github.com/DemocracyClub/dc_base
 django-storages = "==1.8"
 django-apiblueprint-view = ">=2.3.0,<3.0"
 raven = ">=6.10,<7.0"
-zappa = "==0.48.2"
+zappa = "==0.52.0"
 django-cors-headers = ">=2.0.0,<3.3.0"
 
 [scripts]
