@@ -28,3 +28,6 @@ circleci_deploy_dev = "~/repo/deploy.sh dev"
 circleci_deploy_prod = "~/repo/deploy.sh prod"
 coveralls = "coveralls"
 pytest = "pytest"
+
+[requires]
+python_version = "3.6"
