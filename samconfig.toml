@@ -1,0 +1,10 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "Django-Test-App"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1m77mxawsox8c"
+s3_prefix = "Django-Test-App"
+region = "eu-west-2"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"

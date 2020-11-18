@@ -6,3 +6,6 @@ aggregator/static_files/
 
 # SQLite
 *.sqlite3
+
+.aws-sam
+/requirements.txt
