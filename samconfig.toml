@@ -44,7 +44,7 @@ force_upload = true
 [production.deploy]
 [production.deploy.parameters]
 stack_name = "aggregator-api-production"
-s3_bucket = "aggregator-api-production-deployment-via-sam-cli-lksjdfoiuwermncvd"
+s3_bucket = "aggregator-api-production-deployment-via-sam-cli-lksjdfoiuwerm"
 s3_prefix = "production"
 region = "eu-west-2"
 confirm_changeset = false
