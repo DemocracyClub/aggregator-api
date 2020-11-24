@@ -107,13 +107,13 @@ workflows:
       - sam_build_artifacts:
           requires: [ install_and_update_dependencies ]
       - sam_deploy_staging:
-          requires: [ sam_build_artifacts, test ]
+          requires: [ sam_build_artifacts ] # , test ]
           context: [ deployment-staging-aggregator-api ]
           filters:
             branches:
               only: [ aws-ci-cd ]
       - sam_deploy_production:
-          requires: [ sam_deploy_staging ]
+          requires: [ sam_build_artifacts ]
           context: [ deployment-production-aggregator-api ]
           filters:
             branches:
