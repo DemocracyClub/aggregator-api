@@ -38,3 +38,19 @@ progressbar = false
 fail_on_empty_changeset = false
 force_upload = true
 #kms-key-id = "" # having this unset uses an AWS-managed key; it doesn't not-encrypt files
+
+
+[production]
+[production.deploy]
+[production.deploy.parameters]
+stack_name = "aggregator-api-production"
+s3_bucket = "aggregator-api-production-deployment-via-sam-cli-lksjdfoiuwermncvd"
+s3_prefix = "production"
+region = "eu-west-2"
+confirm_changeset = false
+capabilities = "CAPABILITY_IAM"
+tags = "dc-product=\"aggregator-api\" dc-environment=\"production\""
+progressbar = false
+fail_on_empty_changeset = false
+force_upload = true
+#kms-key-id = "" # having this unset uses an AWS-managed key; it doesn't not-encrypt files
