@@ -10,3 +10,4 @@ aggregator/static_files/
 /requirements.txt
 /lambda-layers/DependenciesLayer/requirements.txt
 /.aws-sam/
+/test-results
