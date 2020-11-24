@@ -3,7 +3,7 @@ import awsgi
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "aggregator.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "aggregator.settings.aws_lambda")
 
 application = get_wsgi_application()
 

@@ -1,17 +1,9 @@
-import os
 from .base import *  # noqa
 
 DEBUG = False
 
-ZAPPA_STAGE = os.environ["STAGE"]
-assert ZAPPA_STAGE in ("dev", "prod")
 
-ALLOWED_HOSTS = [
-    "vps1s53ua6.execute-api.eu-west-2.amazonaws.com",  # Dev
-    "devtest.democracyclub.org.uk",  # Dev
-    "q2l5dijqu0.execute-api.eu-west-2.amazonaws.com",  # Prod
-    "developers.democracyclub.org.uk",  # Prod
-]
+ALLOWED_HOSTS = ["*"]
 
 FORCE_SCRIPT_NAME = "/"
 USE_X_FORWARDED_HOST = True
@@ -25,12 +17,16 @@ AWS_S3_USE_SSL = True
 AWS_S3_REGION_NAME = "eu-west-2"
 AWS_QUERYSTRING_AUTH = False
 
+# TODO: pull in something meaningful here
+ZAPPA_STAGE = False
 if ZAPPA_STAGE == "prod":
     AWS_STORAGE_BUCKET_NAME = "aggregator-api-prod-static"
     AWS_S3_CUSTOM_DOMAIN = "developers.democracyclub.org.uk"
 else:
-    AWS_STORAGE_BUCKET_NAME = "static-developers-dev.democracyclub.org.uk"
-    AWS_S3_CUSTOM_DOMAIN = "devtest.democracyclub.org.uk"
+    AWS_STORAGE_BUCKET_NAME = "static-developers-dev-aws-ci-cd-test"
+    AWS_S3_CUSTOM_DOMAIN = (
+        "static-developers-dev-aws-ci-cd-test.s3-website.eu-west-2.amazonaws.com"
+    )
 
 
 MEDIAFILES_LOCATION = "media"
