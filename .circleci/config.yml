@@ -4,115 +4,120 @@
 #
 version: 2
 jobs:
-  build:
+
+  install_and_update_dependencies:
     docker:
-      # specify the version you desire here
-      # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
-      - image: circleci/python:3.6.1
-
+      - image: circleci/python:3.6.12
     working_directory: ~/repo
-
     steps:
       - checkout
-
-      # Download and cache dependencies
       - restore_cache:
           keys:
           - v2-dependencies-{{ checksum "Pipfile.lock" }}
-          # fallback to using the latest cache if no exact match is found
           - v2-dependencies-
-
-      - run:
-          name: install dependencies
-          command: |
-            sudo pip install pipenv
-            pipenv install --dev
-
+      - run: &install-pipenv sudo pip install pipenv --quiet --no-input
+      - run: pipenv install --dev
+      - run: pipenv check # before save_cache so an insecure cache is never saved
+      - run: mkdir -p ~/workspace
+      - run: make lambda-layers/DependenciesLayer/requirements.txt
+      - persist_to_workspace:
+          root: ~/repo/
+          paths: [ lambda-layers/DependenciesLayer/requirements.txt ]
       - save_cache:
+          when: on_success
           paths:
             - ~/.local/share/virtualenvs/
           key: v2-dependencies-{{ checksum "Pipfile.lock" }}
 
-      - run:
-          name: check for insecure dependencies
-          command: |
-            pipenv check
-
-      - run:
-          name: check coding standards
-          command: |
-            pipenv run black-check
-            pipenv run pytest --flakes
-
-      - run:
-          name: run test suite
-          command: |
-            pipenv run pytest --cov-report= --cov=aggregator
-
-      - run:
-          name: build docs
-          command: pipenv run ./manage.py build_docs
-
-      - run:
-          name: update coveralls
-          command: |
-            if [ -n "$COVERALLS_REPO_TOKEN" ]; then pipenv run coveralls; else echo "skipping coverage for forked PR"; fi
-
-      - store_artifacts:
-          path: test-reports
-          destination: test-reports
-      - persist_to_workspace:
-          root: ~/repo
-          paths: "*"
-      - persist_to_workspace:
-          root: ~/.local/share/virtualenvs/
-          paths: "*"
-
-  deploy:
+  test:
     docker:
-      # specify the version you desire here
-      # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
-      - image: circleci/python:3.6.1
-
+      - image: circleci/python:3.6.12
     working_directory: ~/repo
-
     steps:
-      - attach_workspace:
-          at: ~/repo
-      - attach_workspace:
-          at: .local/share/virtualenvs/
+      - checkout
       - restore_cache:
           keys:
           - v2-dependencies-{{ checksum "Pipfile.lock" }}
-          # fallback to using the latest cache if no exact match is found
           - v2-dependencies-
-      - run:
-          name: install dependencies
-          command: |
-            sudo pip install pipenv
-            pipenv install
-      - run:
-          name: Do Stage Deploy
-          command: |
-            pipenv run circleci_deploy_dev
-      - run:
-          name: Do Prod Deploy
-          command: |
-            pipenv run circleci_deploy_prod
+      - run: *install-pipenv
+      - run: pipenv run black-check
+      - run: pipenv run pytest --flakes
+      - run: pipenv run pytest --cov-report= --cov=aggregator
+      - run: pipenv run ./manage.py build_docs
+      - run: |
+          if [ -n "$COVERALLS_REPO_TOKEN" ]; then
+            pipenv run coveralls
+          else
+            echo "skipping coverage for forked PR"
+          fi
+      - store_artifacts:
+          path: test-reports
+          destination: test-reports
+
+  sam_build_artifacts:
+    docker:
+      - image: amazon/aws-sam-cli-build-image-python3.6:latest
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/repo/
+      - run: make build NO_SAM_BUILD_USE_CONTAINER=true NO_PIPENV=true
+      - persist_to_workspace:
+          root: ~/repo/
+          paths: [ .aws-sam/build/ ]
+
+  sam_deploy_staging:
+    docker:
+      - image: circleci/python:3.6.12
+    working_directory: ~/repo/
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/repo/
+      - restore_cache:
+          keys:
+          - v2-dependencies-{{ checksum "Pipfile.lock" }}
+          - v2-dependencies-
+      - run: *install-pipenv
+      - run: pipenv run sam deploy --config-env staging --config-file ~/repo/samconfig.toml --template-file ~/repo/.aws-sam/build/template.yaml
+
+  sam_deploy_production:
+    docker:
+      - image: circleci/python:3.6.12
+    working_directory: ~ #/repo
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/workspace/
+      - restore_cache:
+          keys:
+          - v2-dependencies-{{ checksum "Pipfile.lock" }}
+          - v2-dependencies-
+      - run: *install-pipenv
+      - run: echo Redirecting production to https://kgb.ru ...
 
 workflows:
   version: 2
-  deploy_from_master:
+  test_build_deploy:
     jobs:
-      - build
-      - deploy:
-          requires:
-            - build
+      - install_and_update_dependencies
+      - test:
+          requires: [ install_and_update_dependencies ]
+      - sam_build_artifacts:
+          requires: [ install_and_update_dependencies ]
+      - sam_deploy_staging:
+          requires: [ sam_build_artifacts, test ]
+          context: [ deployment-staging-aggregator-api ]
           filters:
             branches:
-              only:
-                - master
-
+              only: [ aws-ci-cd ]
+      - sam_deploy_production:
+          requires: [ sam_deploy_staging ]
+          context: [ deployment-production-aggregator-api ]
+          filters:
+            branches:
+              only: [ aws-ci-cd ]
 
 #
 # workflows:
