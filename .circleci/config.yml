@@ -83,10 +83,8 @@ jobs:
           - v2-dependencies-{{ checksum "Pipfile.lock" }}
           - v2-dependencies-
       - run: *install-pipenv
-      - run: |
-          pipenv run sam deploy --config-env staging --config-file ~/repo/samconfig.toml --template-file ~/repo/.aws-sam/build/template.yaml | tee deployment-output.txt
-          cat deployment-output.txt | awk '$1=="Value" && $2 ~ "^https://"{print $2}' >deployment-api-gateway-url.txt
-      - run: xargs --max-args 1 --verbose curl --fail <deployment-api-gateway-url.txt
+      - run: pipenv run sam deploy --config-env staging --config-file ~/repo/samconfig.toml --template-file ~/repo/.aws-sam/build/template.yaml | tee sam-deploy-output.txt
+      - run: make smoke-test-lambda-deploy
 
   sam_deploy_production:
     docker:

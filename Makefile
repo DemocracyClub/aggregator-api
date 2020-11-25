@@ -16,7 +16,13 @@ endif
 
 .PHONY: clean
 clean:
-	rm -f requirements.txt lambda-layers/DependenciesLayer/requirements.txt
+	rm -f requirements.txt lambda-layers/DependenciesLayer/requirements.txt lambda-deployment-api-gateway-url.txt sam-deploy-output.txt
+
+smoke-test-lambda-deploy: lambda-deployment-api-gateway-url.txt
+	@cat lambda-deployment-api-gateway-url.txt | xargs --max-args 1 --verbose curl --fail
+
+lambda-deployment-api-gateway-url.txt: sam-deploy-output.txt
+	@cat sam-deploy-output.txt | awk '$$1=="Value" && $$2 ~ "^https://"{print $$2}' >$@
 
 .PHONY: local-server
 local-server: .aws-sam/build/local-server-template.yaml
