@@ -23,7 +23,7 @@ if ZAPPA_STAGE == "prod":
     AWS_STORAGE_BUCKET_NAME = "aggregator-api-prod-static"
     AWS_S3_CUSTOM_DOMAIN = "developers.democracyclub.org.uk"
 else:
-    AWS_STORAGE_BUCKET_NAME = "static-developers-dev-aws-ci-cd-test"
+    AWS_STORAGE_BUCKET_NAME = "static-developers-dev-sym-aws-ci-cd-test"
     AWS_S3_CUSTOM_DOMAIN = (
         "static-developers-dev-aws-ci-cd-test.s3-website.eu-west-2.amazonaws.com"
     )
