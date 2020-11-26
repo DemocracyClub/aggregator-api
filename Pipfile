@@ -15,7 +15,7 @@ aws-sam-cli = "*"
 [packages]
 django = ">=1.11,<2.0"
 aiohttp = ">=3.4"
-django-storages = "==1.8"
+django-storages = "==1.9.1"
 django-apiblueprint-view = ">=2.3.0,<3.0"
 raven = ">=6.10,<7.0"
 django-cors-headers = ">=2.0.0,<3.3.0"
