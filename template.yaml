@@ -13,7 +13,7 @@ Globals:
 Parameters:
   SecretKey:
     Type: String
-    Default: "okgf3ok2rfokv4p3kfodskgo23fgre;fergfds@sfwsf;2d234$32e412e1e32fg32rfgvfxkbrkof3q"
+    Default: "okgf3ok2rfokv4p3kfodskgo23fgrefergfds@sfwsf32d23432e412e1e32fg32rfgvfxkbrkof3q"
   DjangoSettingsModule:
     Type: String
     # Whilst the app is stateless, this default is safe. No production resources can be
