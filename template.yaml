@@ -10,6 +10,23 @@ Globals:
   Function:
     Timeout: 10
 
+Parameters:
+  SecretKey:
+    Type: String
+    Default: "okgf3ok2rfokv4p3kfodskgo23fgre;fergfds@sfwsf;2d234$32e412e1e32fg32rfgvfxkbrkof3q"
+  DjangoSettingsModule:
+    Type: String
+    # Whilst the app is stateless, this default is safe. No production resources can be
+    # reached by non-production environments, so forgetting to set this environment variable
+    # in development or staging environments won't affect production. Forgetting to set it
+    # in production, however, will fail safe and work as intended.
+    Default: "aggregator.settings.lambda_production"
+  AppDebugMode:
+    Type: String
+    # Only certain environments examine this variable to dis-/en-able Debug mode.
+    # Specifically, the production environment has this hardcoded as False.
+    Default: "False"
+
 Resources:
   DependenciesLayer:
     Type: AWS::Serverless::LayerVersion
@@ -19,6 +36,7 @@ Resources:
         - python3.6
     Metadata:
       BuildMethod: makefile
+    RetentionPolicy: Delete
   AggregatorApiFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -30,7 +48,9 @@ Resources:
       MemorySize: 192
       Environment:
         Variables:
-          SECRET_KEY: "gfrejiok34mfk54mvk54lv9fdv3i4gf,lwqd;3rjv823f903rf;;vsf'nytppoqkdfmskfmerk#"
+          SECRET_KEY: !Ref SecretKey
+          DJANGO_SETTINGS_MODULE: !Ref DjangoSettingsModule
+          DEBUG: !Ref AppDebugMode
       Events:
         HTTPRequests:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
@@ -59,3 +79,6 @@ Outputs:
   AggregatorApiFunctionIamRole:
     Description: "Implicit IAM Role created for Aggregator API function"
     Value: !GetAtt AggregatorApiFunctionRole.Arn
+  DjangoSettingsModule:
+    Description: "Runtime settings module used by Django (CHECK THIS IS WHAT YOU EXPECT!)"
+    Value: !Ref DjangoSettingsModule

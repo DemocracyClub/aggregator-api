@@ -43,7 +43,7 @@ jobs:
       - run: pipenv run black-check
       - run: pipenv run pytest --flakes
       - run: pipenv run pytest --cov-report= --cov=aggregator --junitxml=test-results/junit.xml
-      - run: pipenv run ./manage.py build_docs
+      - run: SECRET_KEY=notasecretkey pipenv run ./manage.py build_docs
       - run: |
           if [ -n "$COVERALLS_REPO_TOKEN" ]; then
             pipenv run coveralls
@@ -83,7 +83,13 @@ jobs:
           - v2-dependencies-{{ checksum "Pipfile.lock" }}
           - v2-dependencies-
       - run: *install-pipenv
-      - run: pipenv run sam deploy --config-env staging --config-file ~/repo/samconfig.toml --template-file ~/repo/.aws-sam/build/template.yaml | tee sam-deploy-output.txt
+      - run:
+          name: pipenv run sam deploy --config-env staging ...
+          command: |
+            pipenv run sam deploy --config-file ~/repo/samconfig.toml --template-file ~/repo/.aws-sam/build/template.yaml \
+              --config-env staging \
+              --parameter-overrides "DjangoSettingsModule=aggregator.settings.lambda_staging SecretKey=$SECRET_KEY" \
+            | tee sam-deploy-output.txt          
       - run: make smoke-test-lambda-deploy
 
   sam_deploy_production:
@@ -99,7 +105,12 @@ jobs:
           - v2-dependencies-{{ checksum "Pipfile.lock" }}
           - v2-dependencies-
       - run: *install-pipenv
-      - run: pipenv run sam deploy --config-env production --config-file ~/repo/samconfig.toml --template-file ~/repo/.aws-sam/build/template.yaml
+      - run:
+          name: pipenv run sam deploy --config-env production ...
+          command: |
+            pipenv run sam deploy --config-file ~/repo/samconfig.toml --template-file ~/repo/.aws-sam/build/template.yaml \
+              --config-env production \
+              --parameter-overrides "DjangoSettingsModule=aggregator.settings.lambda_production SecretKey=$SECRET_KEY" \
 
 workflows:
   version: 2
