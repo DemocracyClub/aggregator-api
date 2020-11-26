@@ -6,7 +6,7 @@ stack_name = "aggregator-api-jcm1"
 s3_bucket = "aggregator-api-sam-21edfreg43gas"
 s3_prefix = "jcm1"
 region = "eu-west-2"
-confirm_changeset = true
+confirm_changeset = false
 capabilities = "CAPABILITY_IAM"
 tags = "dc-product=\"aggregator-api\" dc-environment=\"development\" dc-instance=\"jcm1\""
 
