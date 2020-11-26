@@ -27,6 +27,7 @@ Resources:
       Layers:
         - !Ref DependenciesLayer
       Runtime: python3.6
+      MemorySize: 192
       Environment:
         Variables:
           SECRET_KEY: "gfrejiok34mfk54mvk54lv9fdv3i4gf,lwqd;3rjv823f903rf;;vsf'nytppoqkdfmskfmerk#"
