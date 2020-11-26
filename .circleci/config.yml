@@ -1,8 +1,7 @@
-# Python CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-python/ for more details
-#
-version: 2
+# https://circleci.com/docs/2.0/configuration-reference/
+
+version: 2.1
+
 jobs:
 
   install_and_update_dependencies:
@@ -57,7 +56,7 @@ jobs:
           path: test-results
 
 
-  sam_build_artifacts:
+  sam_build:
     docker:
       - image: amazon/aws-sam-cli-build-image-python3.6:latest
     working_directory: ~/repo
@@ -70,10 +69,14 @@ jobs:
           root: ~/repo/
           paths: [ .aws-sam/build/ ]
 
-  sam_deploy_staging:
+  sam_deploy:
     docker:
       - image: circleci/python:3.6.12
     working_directory: ~/repo/
+    parameters:
+      dc-environment:
+        type: enum
+        enum: [ "staging", "production" ]
     steps:
       - checkout
       - attach_workspace:
@@ -84,33 +87,18 @@ jobs:
           - v2-dependencies-
       - run: *install-pipenv
       - run:
-          name: pipenv run sam deploy --config-env staging ...
+          name: pipenv run sam deploy --config-env << parameters.dc-environment >>
           command: |
-            pipenv run sam deploy --config-file ~/repo/samconfig.toml --template-file ~/repo/.aws-sam/build/template.yaml \
-              --config-env staging \
-              --parameter-overrides "DjangoSettingsModule=aggregator.settings.lambda_staging SecretKey=$SECRET_KEY" \
+            pipenv run sam deploy \
+              --config-file ~/repo/samconfig.toml \
+              --config-env << parameters.dc-environment >> \
+              --template-file ~/repo/.aws-sam/build/template.yaml \
+              --parameter-overrides \
+                "DjangoSettingsModule=aggregator.settings.lambda_<< parameters.dc-environment >> \
+                 SecretKey=$SECRET_KEY \
+                 AppDebugMode=$APP_DEBUG_MODE" \
             | tee sam-deploy-output.txt          
       - run: make smoke-test-lambda-deploy
-
-  sam_deploy_production:
-    docker:
-      - image: circleci/python:3.6.12
-    working_directory: ~/repo/
-    steps:
-      - checkout
-      - attach_workspace:
-          at: ~/repo/
-      - restore_cache:
-          keys:
-          - v2-dependencies-{{ checksum "Pipfile.lock" }}
-          - v2-dependencies-
-      - run: *install-pipenv
-      - run:
-          name: pipenv run sam deploy --config-env production ...
-          command: |
-            pipenv run sam deploy --config-file ~/repo/samconfig.toml --template-file ~/repo/.aws-sam/build/template.yaml \
-              --config-env production \
-              --parameter-overrides "DjangoSettingsModule=aggregator.settings.lambda_production SecretKey=$SECRET_KEY" \
 
 workflows:
   version: 2
@@ -119,37 +107,21 @@ workflows:
       - install_and_update_dependencies
       - test:
           requires: [ install_and_update_dependencies ]
-      - sam_build_artifacts:
+      - sam_build:
           requires: [ install_and_update_dependencies ]
-      - sam_deploy_staging:
-          requires: [ sam_build_artifacts, test ]
+      - sam_deploy:
+          name: sam_deploy_staging
+          dc-environment: staging
+          requires: [ sam_build, test ]
           context: [ deployment-staging-aggregator-api ]
           filters:
             branches:
               only: [ aws-ci-cd ]
-      - sam_deploy_production:
+      - sam_deploy:
+          name: sam_deploy_production
+          dc-environment: production
           requires: [ sam_deploy_staging ]
           context: [ deployment-production-aggregator-api ]
           filters:
             branches:
               only: [ aws-ci-cd ]
-
-#
-# workflows:
-#   version: 2
-#   dev_stage_pre-prod:
-#     jobs:
-#       - test_dev:
-#           filters:  # using regex filters requires the entire branch to match
-#             branches:
-#               only:  # only branches matching the below regex filters will run
-#                 - dev
-#                 - /user-.*/
-#       - test_stage:
-#           filters:
-#             branches:
-#               only: stage
-#       - test_pre-prod:
-#           filters:
-#             branches:
-#               only: /pre-prod(?:-.+)?$/
