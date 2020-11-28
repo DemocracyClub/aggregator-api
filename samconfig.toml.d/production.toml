@@ -1,0 +1,19 @@
+# This file and its quirks are documented here: https://github.com/aws/aws-sam-cli/blob/develop/docs/sam-config-docs.md
+
+version = 0.1
+
+[production]
+[production.deploy]
+[production.deploy.parameters]
+stack_name = "aggregator-api-production"
+s3_bucket = "aggregator-api-production-deployment-via-sam-cli-lksjdfoiuwerm"
+s3_prefix = "production"
+#kms-key-id = "" # having this unset uses an AWS-managed key; it doesn't "not encrypt" files
+region = "eu-west-2"
+confirm_changeset = false
+capabilities = "CAPABILITY_IAM"
+tags = "dc-product=\"aggregator-api\" dc-environment=\"production\""
+progressbar = false
+fail_on_empty_changeset = false
+force_upload = true
+# FIXME: explain why having a "parameter_overrides" setting here would prohibit using CI envvars

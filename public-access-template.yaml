@@ -1,0 +1,81 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  aggregator-api-front-end
+
+  The TLS/custom-domain terminator for the DC Aggregator API
+
+Parameters:
+  LambdaStackName:
+    Description: "The name of the CloudFormation Stack that created the API Gateway & Lambda function to publish"
+    Type: String
+
+  CertificateArn:
+    Type: String
+
+  PublicFqdn:
+    Type: String
+
+Resources:
+
+  CloudFrontDistribution:
+    Type: 'AWS::CloudFront::Distribution'
+    Properties:
+      DistributionConfig:
+        Comment: 'Cloudfront Distribution pointing to Lambda origin'
+        Origins:
+          - Id: "AggregatorApiOnLambda"
+            DomainName:
+              Fn::ImportValue: !Sub "${LambdaStackName}:AggregatorApiFqdn"
+            OriginPath: "/Prod"
+            CustomOriginConfig:
+              OriginProtocolPolicy: "https-only"
+          - Id: "StaticAssetsOnS3"
+            DomainName: !Sub
+              - ${bucket}.s3-website.${AWS::Region}.amazonaws.com
+              - bucket:
+                  Fn::ImportValue: !Sub "${LambdaStackName}:StaticAssetsBucket"
+            CustomOriginConfig:
+              OriginProtocolPolicy: http-only
+        Enabled: true
+        HttpVersion: 'http1.1'
+        Aliases:
+          - !Ref PublicFqdn
+        DefaultCacheBehavior:
+          AllowedMethods: [ GET, HEAD, OPTIONS ]
+          TargetOriginId: "AggregatorApiOnLambda"
+          ForwardedValues:
+            QueryString: true
+            Cookies:
+              Forward: "all"
+          ViewerProtocolPolicy: "redirect-to-https"
+        CacheBehaviors:
+        - AllowedMethods: [ GET, HEAD, OPTIONS ]
+          TargetOriginId: "StaticAssetsOnS3"
+          ForwardedValues:
+            QueryString: 'true'
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: "redirect-to-https"
+          MinTTL: '50'
+          PathPattern: static/*
+        PriceClass: "PriceClass_100"
+        ViewerCertificate:
+          AcmCertificateArn: !Ref CertificateArn
+          MinimumProtocolVersion: TLSv1
+          SslSupportMethod: sni-only
+
+  DnsRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      AliasTarget:
+        DNSName: !GetAtt CloudFrontDistribution.DomainName
+        HostedZoneId: Z2FDTNDATAQYW2 # this is an AWS-owned, global singleton required for Aliases to CloudFront
+      HostedZoneName: !Sub "${PublicFqdn}."
+      Name: !Sub "${PublicFqdn}."
+      Type: A
+
+Outputs:
+  CloudFrontDistributionFqdn:
+    Description: "The FQDN of the CloudFront distribution serving this instance"
+    Value: !GetAtt CloudFrontDistribution.DomainName

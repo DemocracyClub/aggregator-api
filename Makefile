@@ -14,18 +14,36 @@ else
   PIPENV_RUN=pipenv run
 endif
 
+ifeq "$(origin CONFIG-ENV)" "environment"
+$(error "CONFIG-ENV is (somehow!) set as an environment variable; see the README for why this isn't allowed.")
+endif
+
 .PHONY: clean
 clean:
-	rm -f requirements.txt lambda-layers/DependenciesLayer/requirements.txt lambda-deployment-api-gateway-url.txt sam-deploy-output.txt
+	rm -rf \
+	  .aws-sam/ \
+	  requirements.txt \
+	  lambda-layers/DependenciesLayer/requirements.txt \
+	  lambda-deployment-api-gateway-url.txt \
+	  sam-deploy-output.txt
 
+.PHONY: test
+test: sam-validate-template
+
+.PHONY: sam-validate-template
+sam-validate-template: export AWS_DEFAULT_REGION=eu-west-2
+sam-validate-template:
+	$(PIPENV_RUN) sam validate
+
+.PHONY: smoke-test-lambda-deploy
 smoke-test-lambda-deploy: lambda-deployment-api-gateway-url.txt
 	@cat lambda-deployment-api-gateway-url.txt | xargs --max-args 1 --verbose curl --fail
 lambda-deployment-api-gateway-url.txt: sam-deploy-output.txt
 	@cat sam-deploy-output.txt | awk '$$1=="Value" && $$2 ~ "^https://"{print $$2}' >$@
 
 .PHONY: local-server
-local-server: .aws-sam/build/local-server-template.yaml
-	$(PIPENV_RUN) sam local start-api --debug --template-file .aws-sam/build/local-server-template.yaml
+local-server: check-config-env .aws-sam/build/local-server-template.yaml
+	$(PIPENV_RUN) sam local start-api --config-env $(CONFIG-ENV) --config-file $(CURDIR)/samconfig.toml --template-file .aws-sam/build/local-server-template.yaml # --debug
 
 .PHONY: build
 build: requirements.txt lambda-layers/DependenciesLayer/requirements.txt
@@ -38,6 +56,10 @@ lambda-layers/DependenciesLayer/requirements.txt: Pipfile Pipfile.lock
 	$(PIPENV) lock -r | sed "s/^-e //" >$@
 requirements.txt:
 	@echo "# This file is intentionally left empty by Makefile:requirements.txt" >requirements.txt
+
+.PHONY: check-config-env
+check-config-env:
+	@fgrep -q "[$(CONFIG-ENV)]" samconfig.toml || { echo "Config env '$(CONFIG-ENV)' not found in samconfig.toml"; exit 1; }
 
 #SOURCE_FILES?=$(shell rsync --exclude-from="$(SAM_IGNORE_FILE)" --dry-run --ignore-times --checksum-choice=none --whole-file --recursive ./ --list-only | tr -s ' ' | grep -v ^d | cut -f5- -d' ')
 #
@@ -57,6 +79,3 @@ requirements.txt:
 #	echo >$@/requirements.txt # this zeros out any existing requirements.txt
 #	@touch $@
 #
-#ifeq "$(origin DEPLOY-PROFILE)" "environment"
-#$(error "DEPLOY-PROFILE is (somehow!) set as an environment variable; see the README for why this isn't allowed.")
-#endif

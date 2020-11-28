@@ -5,29 +5,38 @@ Description: >
 
   The DC Aggregator API running in AWS Lambda deployed via SAM
 
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
     Timeout: 10
 
 Parameters:
-  SecretKey:
+
+  AppSecretKey:
+    Description: "The SECRET_KEY environment variable passed to the app."
     Type: String
-    Default: "okgf3ok2rfokv4p3kfodskgo23fgrefergfds@sfwsf32d23432e412e1e32fg32rfgvfxkbrkof3q"
-  DjangoSettingsModule:
+
+  AppDjangoSettingsModule:
+    Description: "The DJANGO_SETTINGS_MODULE environment variable passed to the app."
     Type: String
-    # Whilst the app is stateless, this default is safe. No production resources can be
-    # reached by non-production environments, so forgetting to set this environment variable
-    # in development or staging environments won't affect production. Forgetting to set it
-    # in production, however, will fail safe and work as intended.
-    Default: "aggregator.settings.lambda_production"
-  AppDebugMode:
+
+  AppDebug:
+    Description: "The DEBUG environment variable passed to the app. Only certain environments examine this variable; specifically, the production environment has this hardcoded as False."
     Type: String
-    # Only certain environments examine this variable to dis-/en-able Debug mode.
-    # Specifically, the production environment has this hardcoded as False.
     Default: "False"
+    AllowedValues:
+    - "True"
+    - "False"
+
+  AppAwsStorageBucketName:
+    Description: "The AWS_STORAGE_BUCKET_NAME environment variable passed to the app."
+    Type: String
+
+  AppPublicFqdn:
+    Description: "The public FQDN via which this instance will be accessed by users. Passed to the app as the PUBLIC_FQDN environment variable."
+    Default: "example.com"
 
 Resources:
+
   DependenciesLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
@@ -37,8 +46,9 @@ Resources:
     Metadata:
       BuildMethod: makefile
     RetentionPolicy: Delete
+
   AggregatorApiFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function
     Properties:
       CodeUri: ./
       Handler: aggregator.lambda_awsgi.lambda_handler
@@ -48,21 +58,31 @@ Resources:
       MemorySize: 192
       Environment:
         Variables:
-          SECRET_KEY: !Ref SecretKey
-          DJANGO_SETTINGS_MODULE: !Ref DjangoSettingsModule
-          DEBUG: !Ref AppDebugMode
+          SECRET_KEY: !Ref AppSecretKey
+          DJANGO_SETTINGS_MODULE: !Ref AppDjangoSettingsModule
+          DEBUG: !Ref AppDebug
+          AWS_STORAGE_BUCKET_NAME: !Ref AppAwsStorageBucketName
+      Policies:
+      - Version: '2012-10-17' 
+        Statement:
+          - Effect: Allow
+            Action: [ s3:ListBucket ]
+            Resource: !Sub 'arn:aws:s3:::${AppAwsStorageBucketName}'
+          - Effect: Allow
+            Action: [ s3:PutObject, s3:GetObject, s3:DeleteObject ]
+            Resource: !Sub 'arn:aws:s3:::${AppAwsStorageBucketName}/*'
       Events:
         HTTPRequests:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Type: Api
           Properties:
             Path: /{proxy+}
-            Method: get
+            Method: GET
         HTTPRequestRoots:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Type: Api
           Properties:
             Path: /
-            Method: get
-      AutoPublishAlias: live
+            Method: GET
+      AutoPublishAlias: Live
       DeploymentPreference:
         Type: AllAtOnce
 
@@ -70,15 +90,13 @@ Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  AggregatorApiHTTP:
-    Description: "API Gateway endpoint URL for Prod stage for Aggregator API function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
-  AggregatorApiFunction:
-    Description: "Aggregator API Lambda Function ARN"
-    Value: !GetAtt AggregatorApiFunction.Arn
-  AggregatorApiFunctionIamRole:
-    Description: "Implicit IAM Role created for Aggregator API function"
-    Value: !GetAtt AggregatorApiFunctionRole.Arn
-  DjangoSettingsModule:
-    Description: "Runtime settings module used by Django (CHECK THIS IS WHAT YOU EXPECT!)"
-    Value: !Ref DjangoSettingsModule
+  AggregatorApiFqdn:
+    Description: "API Gateway endpoint FQDN for Aggregator API function"
+    Value: !Sub "${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com"
+    Export:
+      Name: !Join [ ":", [ !Ref "AWS::StackName", "AggregatorApiFqdn" ] ]
+  AppAwsStorageBucketName:
+    Description: "The S3 bucket holding the static assets for this instance"
+    Value: !Ref AppAwsStorageBucketName
+    Export:
+      Name: !Join [ ":", [ !Ref "AWS::StackName", "StaticAssetsBucket" ] ]

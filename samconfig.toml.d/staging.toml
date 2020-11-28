@@ -1,0 +1,35 @@
+# This file and its quirks are documented here:
+# https://github.com/aws/aws-sam-cli/blob/develop/docs/sam-config-docs.md
+version = 0.1
+
+[staging]
+[staging.deploy]
+[staging.deploy.parameters]
+stack_name = "AggregatorApiApp-staging"
+s3_bucket = "aggregator-api-deployment-artifacts-staging-3jfac0gjro"
+s3_prefix = "staging"
+region = "eu-west-2"
+confirm_changeset = false
+capabilities = "CAPABILITY_IAM"
+tags = "dc-product=\"aggregator-api\" dc-environment=\"staging\""
+progressbar = false
+fail_on_empty_changeset = false
+force_upload = true
+# Using a "parameter_overrides" setting here would block using CI envvars, as only
+# one overrides source is used and this source doesn't pass through shell interpolation.
+
+[staging-public-access]
+[staging-public-access.deploy]
+[staging-public-access.deploy.parameters]
+template = "public-access-template.yaml"
+stack_name = "AggregatorApiPublicAccess-staging"
+region = "eu-west-2"
+capabilities = "CAPABILITY_IAM"
+# Using a "parameter_overrides" setting here would block using CI envvars, as only
+# one overrides source is used and this source doesn't pass through shell interpolation.
+
+[staging.logs]
+[staging.logs.parameters]
+stack_name = "AggregatorApiApp-staging"
+name = "AggregatorApiFunction"
+region = "eu-west-2"
