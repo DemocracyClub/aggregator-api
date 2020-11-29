@@ -111,7 +111,7 @@ jobs:
                  AppDjangoSettingsModule=$DJANGO_SETTINGS_MODULE \
                  AppPublicFqdn=<< parameters.dc-public-fqdn >> \
                  AppSecretKey=$SECRET_KEY \
-                "
+                " \
             | tee sam-deploy-output.txt
       - run: make smoke-test-lambda-deploy
 
