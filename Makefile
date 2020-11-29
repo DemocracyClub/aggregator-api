@@ -25,7 +25,7 @@ clean:
 	  requirements.txt \
 	  lambda-layers/DependenciesLayer/requirements.txt \
 	  lambda-deployment-api-gateway-url.txt \
-	  sam-deploy-output.txt
+	  sam-deploy-output*
 
 .PHONY: test
 test: sam-validate-template
@@ -36,10 +36,14 @@ sam-validate-template:
 	$(PIPENV_RUN) sam validate
 
 .PHONY: smoke-test-lambda-deploy
-smoke-test-lambda-deploy: lambda-deployment-api-gateway-url.txt
-	@cat lambda-deployment-api-gateway-url.txt | xargs --max-args 1 --verbose curl --fail
-lambda-deployment-api-gateway-url.txt: sam-deploy-output.txt
-	@cat sam-deploy-output.txt | awk '$$1=="Value" && $$2 ~ "^https://"{print $$2}' >$@
+smoke-test-lambda-deploy: sam-deploy-output.lambda-deployment-api-gateway-fqdn
+	@cat $< | xargs --max-args 1 -I{} --verbose curl --fail https://{}/Prod
+sam-deploy-output.lambda-deployment-api-gateway-fqdn: sam-deploy-output.structured
+	@cat $< | awk '/^AggregatorApiFqdn/{print $$2}' >$@
+sam-deploy-output.structured: sam-deploy-output.txt
+	@cat $< | grep -A1000 ^Outputs$$ | grep -E '^(Key|Value) ' | sed -E 's/^(Key|Value)[ ]*//' | awk '{printf $$0 " "; getline x; print x}' >$@
+sam-deploy-output.txt:
+	@[ -s $@ ] || { echo "To run these tests, capture the output of a non-empty sam deploy in 'sam-deploy-output.txt' first."; exit 1; }
 
 .PHONY: local-server
 local-server: check-config-env .aws-sam/build/local-server-template.yaml

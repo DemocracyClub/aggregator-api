@@ -11,3 +11,4 @@ aggregator/static_files/
 /lambda-layers/DependenciesLayer/requirements.txt
 /.aws-sam/
 /test-results
+/sam-deploy-output*
