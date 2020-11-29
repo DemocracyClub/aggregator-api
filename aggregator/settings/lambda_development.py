@@ -36,6 +36,7 @@ STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
     "pipeline.finders.CachedFileFinder",
     "pipeline.finders.PipelineFinder",
+    "pipeline.finders.ManifestFinder",
 )
 
 PIPELINE["COMPILERS"] = ("aggregator.s3_lambda_storage.LambdaSASSCompiler",)  # noqa
