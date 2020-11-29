@@ -32,6 +32,7 @@ Parameters:
     Type: String
 
   AppPublicFqdn:
+    Type: String
     Description: "The public FQDN via which this instance will be accessed by users. Passed to the app as the PUBLIC_FQDN environment variable."
     Default: "example.com"
 
