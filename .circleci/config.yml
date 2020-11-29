@@ -97,6 +97,7 @@ jobs:
           - v2-dependencies-{{ checksum "Pipfile.lock" }}
           - v2-dependencies-
       - run: *install-pipenv
+      - run: printenv DJANGO_SETTINGS_MODULE AWS_STORAGE_BUCKET_NAME
       - run: pipenv run python manage.py collectstatic --noinput
       - run:
           name: pipenv run sam deploy --config-env << parameters.dc-environment >>
