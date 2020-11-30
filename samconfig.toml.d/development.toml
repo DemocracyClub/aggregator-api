@@ -9,17 +9,6 @@ version = 0.1
 ####################################################################################
 
 [jcm1]
-[jcm1.local_start_api]
-[jcm1.local_start_api.parameters]
-debug = true
-# These parameter overrides are *not* merged with those provided directly to the
-# `sam XXXX` CLI command: those provided at the CLI are the *only* ones used.
-parameter_overrides = """
-  PublicFqdn=environments.womblelabs.co.uk \
-  AppAwsStorageBucketName=aggregator-api-static-assets-development-7e3eabce9c \
-  AppDebug=True \
-  AppDjangoSettingsModule=aggregator.settings.lambda_development \
-"""
 
 [jcm1.deploy]
 [jcm1.deploy.parameters]
@@ -33,12 +22,10 @@ tags = 'dc-product="aggregator-api" dc-environment="development" dc-instance="jc
 # These parameter overrides are *not* merged with those provided directly to the
 # `sam XXXX` CLI command: those provided at the CLI are the *only* ones used.
 parameter_overrides = """
-#  PublicFqdn=environments.womblelabs.co.uk \
-  AppAwsStorageBucketName=aggregator-api-static-assets-development-7e3eabce9c \
-  AppDebug=True \
-  AppDjangoSettingsModule=aggregator.settings.lambda_development \
-  AppSecretKey=notaverygoodsecret \
+  AppDjangoSettingsModule=aggregator.settings.lambda_no_debug_merged_assets \
+  AppSecretKey=badf00d \
 """
+#  PublicFqdn=environments.womblelabs.co.uk \
 
 [jcm1-public-access]
 [jcm1-public-access.deploy]
@@ -48,7 +35,7 @@ stack_name = "AggregatorApiPublicAccess-jcm1"
 region = "eu-west-2"
 capabilities "CAPABILITY_IAM"
 parameter_overrides = """
-  LambdaStackName="AggregatorApiApp-jcm1"
+  LambdaStackName="AggregatorApiApp-jcm1" \
   CertificateArn="arn:aws:acm:us-east-1:489559689862:certificate/7177497b-8705-461b-832a-b3b98699e24e" \
   PublicFqdn=environments.womblelabs.co.uk \
 """

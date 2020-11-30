@@ -7,8 +7,6 @@ aggregator/static_files/
 # SQLite
 *.sqlite3
 
-/requirements.txt
-/lambda-layers/DependenciesLayer/requirements.txt
 /.aws-sam/
 /test-results
-/sam-deploy-output*
+/lambda-layers/DependenciesLayer/requirements.txt

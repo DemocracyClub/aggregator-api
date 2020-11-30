@@ -3,11 +3,11 @@ from pipeline.compilers.sass import SASSCompiler
 from django.conf import settings
 from django.contrib.staticfiles.storage import staticfiles_storage
 from pipeline.storage import PipelineMixin
-from whitenoise.storage import CompressedManifestStaticFilesStorage
+from django.contrib.staticfiles.storage import ManifestStaticFilesStorage
 
 
-class StaticStorage(PipelineMixin, CompressedManifestStaticFilesStorage):
-   pass
+class StaticStorage(PipelineMixin, ManifestStaticFilesStorage):
+    pass
 
 
 class LambdaSASSCompiler(SASSCompiler):
@@ -20,8 +20,8 @@ class LambdaSASSCompiler(SASSCompiler):
     """
 
     def compile_file(self, infile, outfile, outdated=False, force=False):
-        for path in settings.STATICFILES_DIRS:
-            outfile = outfile.replace(path, "").strip("/")
+        if not outdated:
+            return open(outfile).read()
         import sass
 
         out_value = sass.compile(

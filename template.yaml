@@ -8,6 +8,9 @@ Description: >
 Globals:
   Function:
     Timeout: 10
+  Api:
+    BinaryMediaTypes:
+      - "*/*"
 
 Parameters:
 
@@ -18,23 +21,6 @@ Parameters:
   AppDjangoSettingsModule:
     Description: "The DJANGO_SETTINGS_MODULE environment variable passed to the app."
     Type: String
-
-  AppDebug:
-    Description: "The DEBUG environment variable passed to the app. Only certain environments examine this variable; specifically, the production environment has this hardcoded as False."
-    Type: String
-    Default: "False"
-    AllowedValues:
-    - "True"
-    - "False"
-
-  AppAwsStorageBucketName:
-    Description: "The AWS_STORAGE_BUCKET_NAME environment variable passed to the app."
-    Type: String
-
-  AppPublicFqdn:
-    Type: String
-    Description: "The public FQDN via which this instance will be accessed by users. Passed to the app as the PUBLIC_FQDN environment variable."
-    Default: "example.com"
 
 Resources:
 
@@ -51,7 +37,7 @@ Resources:
   AggregatorApiFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./
+      CodeUri: .
       Handler: aggregator.lambda_awsgi.lambda_handler
       Layers:
         - !Ref DependenciesLayer
@@ -61,17 +47,6 @@ Resources:
         Variables:
           SECRET_KEY: !Ref AppSecretKey
           DJANGO_SETTINGS_MODULE: !Ref AppDjangoSettingsModule
-          DEBUG: !Ref AppDebug
-          AWS_STORAGE_BUCKET_NAME: !Ref AppAwsStorageBucketName
-      Policies:
-      - Version: '2012-10-17' 
-        Statement:
-          - Effect: Allow
-            Action: [ s3:ListBucket ]
-            Resource: !Sub 'arn:aws:s3:::${AppAwsStorageBucketName}'
-          - Effect: Allow
-            Action: [ s3:PutObject, s3:GetObject, s3:DeleteObject ]
-            Resource: !Sub 'arn:aws:s3:::${AppAwsStorageBucketName}/*'
       Events:
         HTTPRequests:
           Type: Api
@@ -88,16 +63,8 @@ Resources:
         Type: AllAtOnce
 
 Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   AggregatorApiFqdn:
     Description: "API Gateway endpoint FQDN for Aggregator API function"
     Value: !Sub "${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com"
     Export:
       Name: !Join [ ":", [ !Ref "AWS::StackName", "AggregatorApiFqdn" ] ]
-  AppAwsStorageBucketName:
-    Description: "The S3 bucket holding the static assets for this instance"
-    Value: !Ref AppAwsStorageBucketName
-    Export:
-      Name: !Join [ ":", [ !Ref "AWS::StackName", "StaticAssetsBucket" ] ]

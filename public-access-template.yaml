@@ -24,26 +24,31 @@ Resources:
       DistributionConfig:
         Comment: 'Cloudfront Distribution pointing to Lambda origin'
         Origins:
-          - Id: "AggregatorApiOnLambda"
+
+          - Id: Static
             DomainName:
               Fn::ImportValue: !Sub "${LambdaStackName}:AggregatorApiFqdn"
             OriginPath: "/Prod"
             CustomOriginConfig:
               OriginProtocolPolicy: "https-only"
-          - Id: "StaticAssetsOnS3"
-            DomainName: !Sub
-              - ${bucket}.s3-website.${AWS::Region}.amazonaws.com
-              - bucket:
-                  Fn::ImportValue: !Sub "${LambdaStackName}:StaticAssetsBucket"
+            OriginShield:
+              Enabled: true
+              OriginShieldRegion: eu-west-2
+
+          - Id: Dynamic
+            DomainName:
+              Fn::ImportValue: !Sub "${LambdaStackName}:AggregatorApiFqdn"
+            OriginPath: "/Prod"
             CustomOriginConfig:
-              OriginProtocolPolicy: http-only
+              OriginProtocolPolicy: "https-only"
+
         Enabled: true
         HttpVersion: 'http1.1'
         Aliases:
           - !Ref PublicFqdn
         DefaultCacheBehavior:
           AllowedMethods: [ GET, HEAD, OPTIONS ]
-          TargetOriginId: "AggregatorApiOnLambda"
+          TargetOriginId: Dynamic
           ForwardedValues:
             QueryString: true
             Cookies:
@@ -51,7 +56,7 @@ Resources:
           ViewerProtocolPolicy: "redirect-to-https"
         CacheBehaviors:
         - AllowedMethods: [ GET, HEAD, OPTIONS ]
-          TargetOriginId: "StaticAssetsOnS3"
+          TargetOriginId: Static
           ForwardedValues:
             QueryString: 'true'
             Cookies:

@@ -22,6 +22,7 @@ endif
 clean:
 	rm -rf \
 	  .aws-sam/ \
+	  aggregator/static_files/ \
 	  requirements.txt \
 	  lambda-layers/DependenciesLayer/requirements.txt \
 	  lambda-deployment-api-gateway-url.txt \
@@ -51,6 +52,7 @@ local-server: check-config-env .aws-sam/build/local-server-template.yaml
 
 .PHONY: build
 build: requirements.txt lambda-layers/DependenciesLayer/requirements.txt
+	SECRET_KEY=badsecret DJANGO_SETTINGS_MODULE=aggregator.settings.lambda_development $(PIPENV_RUN) python manage.py collectstatic --noinput
 	$(PIPENV_RUN) sam build $(SAM_CONTAINER_FLAG)
 
 .aws-sam/build/local-server-template.yaml: template.yaml lambda-layers/DependenciesLayer/requirements.txt
