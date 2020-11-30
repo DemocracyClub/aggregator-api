@@ -21,6 +21,10 @@ raven = ">=6.10,<7.0"
 django-cors-headers = ">=2.0.0,<3.3.0"
 aws-wsgi = "*"
 
+[packages.whitenoise]
+extras = ["brotli"]
+version = "*"
+
 [scripts]
 black = "black ."
 black-check = "black --check ."
