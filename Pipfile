@@ -21,7 +21,7 @@ raven = ">=6.10,<7.0"
 django-cors-headers = ">=2.0.0,<3.3.0"
 aws-wsgi = "*"
 dc-base-theme = { ref = "0.3.12", git = "https://github.com/DemocracyClub/dc_base_theme.git" }
-whitenoise = { extras = ["brotli"] }
+whitenoise = "*"
 
 [scripts]
 black = "black ."
