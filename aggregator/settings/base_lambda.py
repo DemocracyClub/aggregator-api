@@ -7,8 +7,8 @@ DEBUG = os.environ.get("DEBUG", False)
 WHITENOISE_AUTOREFRESH = False
 WHITENOISE_STATIC_PREFIX = "/static/"
 
-PIPELINE['PIPELINE_ENABLED'] = False
-PIPELINE['PIPELINE_COLLECTOR_ENABLED'] = False
+PIPELINE["PIPELINE_ENABLED"] = False  # noqa
+PIPELINE["PIPELINE_COLLECTOR_ENABLED"] = False  # noqa
 
 if os.environ.get("API_IS_BEHIND_CLOUDFRONT", False) in [True, "true", "True", "TRUE"]:
     USE_X_FORWARDED_HOST = True

@@ -1,4 +1,4 @@
 from .base_lambda import *  # noqa
 
 DEBUG = True
-PIPELINE['PIPELINE_ENABLED'] = True
+PIPELINE["PIPELINE_ENABLED"] = True  # noqa
