@@ -55,7 +55,6 @@ jobs:
       - store_test_results:
           path: test-results
 
-
   sam_build:
     docker:
       - image: amazon/aws-sam-cli-build-image-python3.6:latest
@@ -64,7 +63,10 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/repo/
-      - run: make build NO_SAM_BUILD_USE_CONTAINER=true NO_PIPENV=true
+      - run: pip install --upgrade pip
+      - run: pip install -r lambda-layers/DependenciesLayer/requirements.txt
+      - run: make collectstatic
+      - run: sam build
       - persist_to_workspace:
           root: ~/repo/
           paths: [ .aws-sam/build/ ]
@@ -84,10 +86,8 @@ jobs:
         enum:
           - "developers.womblelabs.co.uk"
           - "developers.democracyclub.org.uk"
-      dc-storage-bucket: { type: string }
     environment:
-      AWS_STORAGE_BUCKET_NAME: << parameters.dc-storage-bucket >>
-      DJANGO_SETTINGS_MODULE: aggregator.settings.lambda_<< parameters.dc-environment >>
+      DJANGO_SETTINGS_MODULE: aggregator.settings.lambda_no_debug_merged_assets
     steps:
       - checkout
       - attach_workspace:
@@ -97,8 +97,7 @@ jobs:
           - v2-dependencies-{{ checksum "Pipfile.lock" }}
           - v2-dependencies-
       - run: *install-pipenv
-      - run: printenv DJANGO_SETTINGS_MODULE AWS_STORAGE_BUCKET_NAME
-      - run: pipenv run python manage.py collectstatic --noinput
+      - run: printenv DJANGO_SETTINGS_MODULE
       - run:
           name: pipenv run sam deploy --config-env << parameters.dc-environment >>
           command: |
@@ -107,10 +106,7 @@ jobs:
               --config-env << parameters.dc-environment >> \
               --template-file ~/repo/.aws-sam/build/template.yaml \
               --parameter-overrides " \
-                 AppAwsStorageBucketName=$AWS_STORAGE_BUCKET_NAME \
-                 AppDebug=$APP_DEBUG \
                  AppDjangoSettingsModule=$DJANGO_SETTINGS_MODULE \
-                 AppPublicFqdn=<< parameters.dc-public-fqdn >> \
                  AppSecretKey=$SECRET_KEY \
                 " \
             | tee sam-deploy-output.txt
@@ -129,19 +125,17 @@ workflows:
           name: sam_deploy_staging
           dc-environment: staging
           dc-public-fqdn: developers.womblelabs.co.uk
-          dc-storage-bucket: aggregator-api-static-assets-staging-dd49af09f6
           requires: [ sam_build, test ]
           context: [ deployment-staging-aggregator-api ]
           filters:
             branches:
               only: [ aws-ci-cd ]
-      - sam_deploy:
-          name: sam_deploy_production
-          dc-environment: production
-          dc-public-fqdn: developers.democracyclub.org.uk
-          dc-storage-bucket: aggregator-api-production-static-assets-FIXME
-          requires: [ sam_deploy_staging ]
-          context: [ deployment-production-aggregator-api ]
-          filters:
-            branches:
-              only: [ aws-ci-cd ]
+#      - sam_deploy:
+#          name: sam_deploy_production
+#          dc-environment: production
+#          dc-public-fqdn: developers.democracyclub.org.uk
+#          requires: [ sam_deploy_staging ]
+#          context: [ deployment-production-aggregator-api ]
+#          filters:
+#            branches:
+#              only: [ aws-ci-cd ]
