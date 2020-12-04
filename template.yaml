@@ -22,6 +22,14 @@ Parameters:
     Description: "The DJANGO_SETTINGS_MODULE environment variable passed to the app."
     Type: String
 
+  AppIsBehindCloudFront:
+    Description: "The APP_IS_BEHIND_CLOUDFRONT environment variable passed to the app, which modifies various path- and host-related settings."
+    Type: String
+    AllowedValues:
+    - "True"
+    - "False"
+    Default: "False"
+
 Resources:
 
   DependenciesLayer:
@@ -47,6 +55,7 @@ Resources:
         Variables:
           SECRET_KEY: !Ref AppSecretKey
           DJANGO_SETTINGS_MODULE: !Ref AppDjangoSettingsModule
+          APP_IS_BEHIND_CLOUDFRONT: !Ref AppIsBehindCloudFront
       Events:
         HTTPRequests:
           Type: Api

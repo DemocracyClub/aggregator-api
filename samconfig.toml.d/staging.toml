@@ -31,7 +31,12 @@ force_upload = true
 template = "public-access-template.yaml"
 stack_name = "AggregatorApiPublicAccess-staging"
 region = "eu-west-2"
+confirm_changeset = false
 capabilities = "CAPABILITY_IAM"
+tags = "dc-product=\"aggregator-api\" dc-environment=\"staging\""
+progressbar = false
+fail_on_empty_changeset = false
+force_upload = true
 # Using a "parameter_overrides" setting here would block using CI envvars, as only
 # one overrides source is used and this source doesn't pass through shell interpolation.
 

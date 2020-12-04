@@ -6,8 +6,8 @@ Description: >
   The TLS/custom-domain terminator for the DC Aggregator API
 
 Parameters:
-  LambdaStackName:
-    Description: "The name of the CloudFormation Stack that created the API Gateway & Lambda function to publish"
+  StackNameSuffix:
+    Description: "The suffix which, when prepended by 'AggregatorApiApp-' is the name of the CloudFormation Stack that created the API Gateway & Lambda function that this Stack/deployment will wrap TLS, caching and a domain name around."
     Type: String
 
   CertificateArn:
@@ -27,7 +27,7 @@ Resources:
 
           - Id: Static
             DomainName:
-              Fn::ImportValue: !Sub "${LambdaStackName}:AggregatorApiFqdn"
+              Fn::ImportValue: !Sub "AggregatorApiApp-${StackNameSuffix}:AggregatorApiFqdn"
             OriginPath: "/Prod"
             CustomOriginConfig:
               OriginProtocolPolicy: "https-only"
@@ -37,7 +37,7 @@ Resources:
 
           - Id: Dynamic
             DomainName:
-              Fn::ImportValue: !Sub "${LambdaStackName}:AggregatorApiFqdn"
+              Fn::ImportValue: !Sub "AggregatorApiApp-${StackNameSuffix}:AggregatorApiFqdn"
             OriginPath: "/Prod"
             CustomOriginConfig:
               OriginProtocolPolicy: "https-only"
@@ -46,6 +46,12 @@ Resources:
         HttpVersion: 'http1.1'
         Aliases:
           - !Ref PublicFqdn
+        PriceClass: "PriceClass_100"
+        ViewerCertificate:
+          AcmCertificateArn: !Ref CertificateArn
+          MinimumProtocolVersion: TLSv1
+          SslSupportMethod: sni-only
+
         DefaultCacheBehavior:
           AllowedMethods: [ GET, HEAD, OPTIONS ]
           TargetOriginId: Dynamic
@@ -54,6 +60,7 @@ Resources:
             Cookies:
               Forward: "all"
           ViewerProtocolPolicy: "redirect-to-https"
+
         CacheBehaviors:
         - AllowedMethods: [ GET, HEAD, OPTIONS ]
           TargetOriginId: Static
@@ -64,11 +71,6 @@ Resources:
           ViewerProtocolPolicy: "redirect-to-https"
           MinTTL: '50'
           PathPattern: static/*
-        PriceClass: "PriceClass_100"
-        ViewerCertificate:
-          AcmCertificateArn: !Ref CertificateArn
-          MinimumProtocolVersion: TLSv1
-          SslSupportMethod: sni-only
 
   DnsRecord:
     Type: AWS::Route53::RecordSet
@@ -82,5 +84,8 @@ Resources:
 
 Outputs:
   CloudFrontDistributionFqdn:
-    Description: "The FQDN of the CloudFront distribution serving this instance"
+    Description: "The FQDN of the CloudFront distribution serving this instance."
     Value: !GetAtt CloudFrontDistribution.DomainName
+  PublicFqdn:
+    Description: "The Aggregator API's URL."
+    Value: !Sub "https://${PublicFqdn}/"

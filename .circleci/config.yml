@@ -81,13 +81,12 @@ jobs:
         enum:
           - "staging"
           - "production"
-      dc-public-fqdn:
-        type: enum
-        enum:
-          - "developers.womblelabs.co.uk"
-          - "developers.democracyclub.org.uk"
+      dc-django-settings-module:
+        type: string
+        default: aggregator.settings.lambda_no_debug_merged_assets
     environment:
-      DJANGO_SETTINGS_MODULE: aggregator.settings.lambda_no_debug_merged_assets
+      DC_ENVIRONMENT: "<<parameters.dc-environment>>"
+      DJANGO_SETTINGS_MODULE: "<<parameters.dc-django-settings-module>>"
     steps:
       - checkout
       - attach_workspace:
@@ -97,20 +96,33 @@ jobs:
           - v2-dependencies-{{ checksum "Pipfile.lock" }}
           - v2-dependencies-
       - run: *install-pipenv
-      - run: printenv DJANGO_SETTINGS_MODULE
+      - run: printenv DC_ENVIRONMENT DJANGO_SETTINGS_MODULE PUBLIC_FQDN CERTIFICATE_ARN | tr a-z A-Z
+      - run: printenv SECRET_KEY | md5sum
+      - run: printenv AWS_ACCESS_KEY_ID | md5sum
       - run:
-          name: pipenv run sam deploy --config-env << parameters.dc-environment >>
+          name: pipenv run sam deploy --config-env <<parameters.dc-environment>>
           command: |
             pipenv run sam deploy \
-              --config-file ~/repo/samconfig.toml.d/<< parameters.dc-environment >>.toml \
-              --config-env << parameters.dc-environment >> \
+              --config-file ~/repo/samconfig.toml.d/${DC_ENVIRONMENT}.toml \
+              --config-env $DC_ENVIRONMENT \
               --template-file ~/repo/.aws-sam/build/template.yaml \
               --parameter-overrides " \
                  AppDjangoSettingsModule=$DJANGO_SETTINGS_MODULE \
                  AppSecretKey=$SECRET_KEY \
-                " \
-            | tee sam-deploy-output.txt
-      - run: make smoke-test-lambda-deploy
+                 AppIsBehindCloudFront=True \
+                "
+      - run:
+          name: pipenv run sam deploy --config-env <<parameters.dc-environment>>-public-access
+          command: |
+            pipenv run sam deploy \
+              --config-file ~/repo/samconfig.toml.d/${DC_ENVIRONMENT}.toml \
+              --config-env ${DC_ENVIRONMENT}-public-access \
+              --template-file ~/repo/public-access-template.yaml \
+              --parameter-overrides " \
+                 StackNameSuffix=$DC_ENVIRONMENT \
+                 CertificateArn=$CERTIFICATE_ARN \
+                 PublicFqdn=$PUBLIC_FQDN \
+                "
 
 workflows:
   version: 2
@@ -124,7 +136,6 @@ workflows:
       - sam_deploy:
           name: sam_deploy_staging
           dc-environment: staging
-          dc-public-fqdn: developers.womblelabs.co.uk
           requires: [ sam_build, test ]
           context: [ deployment-staging-aggregator-api ]
           filters:
@@ -133,7 +144,6 @@ workflows:
 #      - sam_deploy:
 #          name: sam_deploy_production
 #          dc-environment: production
-#          dc-public-fqdn: developers.democracyclub.org.uk
 #          requires: [ sam_deploy_staging ]
 #          context: [ deployment-production-aggregator-api ]
 #          filters:
