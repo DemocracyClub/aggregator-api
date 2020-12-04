@@ -96,9 +96,11 @@ jobs:
           - v2-dependencies-{{ checksum "Pipfile.lock" }}
           - v2-dependencies-
       - run: *install-pipenv
+
       - run: printenv DC_ENVIRONMENT DJANGO_SETTINGS_MODULE PUBLIC_FQDN CERTIFICATE_ARN | tr a-z A-Z
       - run: printenv SECRET_KEY | md5sum
       - run: printenv AWS_ACCESS_KEY_ID | md5sum
+
       - run:
           name: pipenv run sam deploy --config-env <<parameters.dc-environment>>
           command: |
@@ -111,6 +113,19 @@ jobs:
                  AppSecretKey=$SECRET_KEY \
                  AppIsBehindCloudFront=True \
                 "
+
+      - run:
+          name: Smoke test app \#FIXME make this runnable and maintainable by devs
+          command: |
+            set -euo pipefail # needed to catch aws CLI failures in the following subshell
+            sudo apt-get install --no-install-suggests --no-install-recommends --assume-yes --quiet awscli
+            APP=$(aws cloudformation describe-stacks \
+                    --region eu-west-2 \
+                    --stack-name AggregatorApiApp-$DC_ENVIRONMENT \
+                    --query "Stacks[0].Outputs[?OutputKey=='AggregatorApiFqdn'].OutputValue" \
+                    --output text)
+            curl --fail --verbose --silent -o/dev/null https://${APP}/Prod
+
       - run:
           name: pipenv run sam deploy --config-env <<parameters.dc-environment>>-public-access
           command: |
@@ -123,6 +138,10 @@ jobs:
                  CertificateArn=$CERTIFICATE_ARN \
                  PublicFqdn=$PUBLIC_FQDN \
                 "
+
+      - run:
+          name: Smoke test CDN \#FIXME make this runnable and maintainable by devs; also add cache-busting
+          command: curl --fail --verbose --silent -o/dev/null https://${PUBLIC_FQDN}/
 
 workflows:
   version: 2
