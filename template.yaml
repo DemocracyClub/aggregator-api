@@ -45,6 +45,7 @@ Resources:
   AggregatorApiFunction:
     Type: AWS::Serverless::Function
     Properties:
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
       CodeUri: .
       Handler: aggregator.lambda_awsgi.lambda_handler
       Layers:

@@ -78,9 +78,7 @@ jobs:
     parameters:
       dc-environment:
         type: enum
-        enum:
-          - "staging"
-          - "production"
+        enum: [ development, staging, production ]
       dc-django-settings-module:
         type: string
     environment:
@@ -144,6 +142,22 @@ workflows:
 
       - sam_build:
           requires: [ install_and_update_dependencies ]
+
+      # This deployment tracks the tip of the main branch in Github. It is not intended
+      # to block staging (hence production) deployments: staging is the testing ground for
+      # production. This deployment is intended to give developers a target in their main
+      # AWS account that they can debug against, read its logs, etc, without having to escalate
+      # their access to the staging account. This deployment should not be modified manually,
+      # but only through commits which also reach staging and then production.
+      # This deployment doesn't wait on the `test` job to succeed.
+      - sam_deploy:
+          name: sam_deploy_development
+          dc-environment: development
+          dc-django-settings-module: aggregator.settings.lambda_no_debug_merged_assets
+          requires: [ sam_build ]
+          context: [ deployment-development-aggregator-api ]
+          filters: { branches: { only: [ aws-ci-cd ] } }
+
       - sam_deploy:
           name: sam_deploy_staging
           dc-environment: staging
@@ -152,10 +166,10 @@ workflows:
           context: [ deployment-staging-aggregator-api ]
           filters: { branches: { only: [ aws-ci-cd ] } }
 
-#      - sam_deploy:
-#          name: sam_deploy_production
-#          dc-environment: production
-#          dc-django-settings-module: aggregator.settings.lambda_no_debug_merged_assets
-#          requires: [ sam_deploy_staging ]
-#          context: [ deployment-production-aggregator-api ]
-#          filters: { branches: { only: [ aws-ci-cd ] } }
+      - sam_deploy:
+          name: sam_deploy_production
+          dc-environment: production
+          dc-django-settings-module: aggregator.settings.lambda_no_debug_merged_assets
+          requires: [ sam_deploy_staging ]
+          context: [ deployment-production-aggregator-api ]
+          filters: { branches: { only: [ aws-ci-cd ] } }
