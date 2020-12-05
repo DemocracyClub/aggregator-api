@@ -75,7 +75,7 @@ def sam_cli_configuration():
     if skip_discovery():
         return None
 
-    config_file_path = os.environ.get("CONFIG_FILE", "samconfig.toml")
+    config_file_path = os.environ.get("SAM_CONFIG_FILE", "samconfig.toml")
     assert os.path.exists(config_file_path)
     config = TOMLFile(config_file_path).read()
 

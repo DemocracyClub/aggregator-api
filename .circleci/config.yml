@@ -87,6 +87,7 @@ jobs:
     environment:
       DC_ENVIRONMENT: "<<parameters.dc-environment>>"
       DJANGO_SETTINGS_MODULE: "<<parameters.dc-django-settings-module>>"
+      SAM_CONFIG_FILE: samconfig.toml.d/<<parameters.dc-environment>>.toml
     steps:
       - checkout
       - attach_workspace:
@@ -105,7 +106,7 @@ jobs:
           name: pipenv run sam deploy --config-env <<parameters.dc-environment>>
           command: |
             pipenv run sam deploy \
-              --config-file ~/repo/samconfig.toml.d/${DC_ENVIRONMENT}.toml \
+              --config-file ~/repo/${SAM_CONFIG_FILE} \
               --config-env $DC_ENVIRONMENT \
               --template-file ~/repo/.aws-sam/build/template.yaml \
               --parameter-overrides " \
@@ -118,7 +119,7 @@ jobs:
           name: pipenv run sam deploy --config-env <<parameters.dc-environment>>-public-access
           command: |
             pipenv run sam deploy \
-              --config-file ~/repo/samconfig.toml.d/${DC_ENVIRONMENT}.toml \
+              --config-file ~/repo/${SAM_CONFIG_FILE} \
               --config-env ${DC_ENVIRONMENT}-public-access \
               --template-file ~/repo/public-access-template.yaml \
               --parameter-overrides " \
@@ -127,7 +128,11 @@ jobs:
                  PublicFqdn=$PUBLIC_FQDN \
                 "
 
-      - run: CONFIG_FILE=samconfig.toml.d/<<parameters.dc-environment>>.toml APP_CONFIG_ENV=<<parameters.dc-environment>> CDN_CONFIG_ENV=<<parameters.dc-environment>>-public-access pipenv run pytest -vrP .circleci/
+      - run:
+          environment:
+            APP_CONFIG_ENV: <<parameters.dc-environment>>
+            CDN_CONFIG_ENV: <<parameters.dc-environment>>-public-access
+          command: pipenv run pytest -vrP --disable-warnings .circleci/tests/system/
 
 workflows:
   version: 2
