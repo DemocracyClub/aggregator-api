@@ -115,18 +115,6 @@ jobs:
                 "
 
       - run:
-          name: Smoke test app \#FIXME make this runnable and maintainable by devs
-          command: |
-            set -euo pipefail # needed to catch aws CLI failures in the following subshell
-            sudo apt-get install --no-install-suggests --no-install-recommends --assume-yes --quiet awscli
-            APP=$(aws cloudformation describe-stacks \
-                    --region eu-west-2 \
-                    --stack-name AggregatorApiApp-$DC_ENVIRONMENT \
-                    --query "Stacks[0].Outputs[?OutputKey=='AggregatorApiFqdn'].OutputValue" \
-                    --output text)
-            curl --fail --verbose --silent -o/dev/null https://${APP}/Prod
-
-      - run:
           name: pipenv run sam deploy --config-env <<parameters.dc-environment>>-public-access
           command: |
             pipenv run sam deploy \
@@ -139,9 +127,7 @@ jobs:
                  PublicFqdn=$PUBLIC_FQDN \
                 "
 
-      - run:
-          name: Smoke test CDN \#FIXME make this runnable and maintainable by devs; also add cache-busting
-          command: curl --fail --verbose --silent -o/dev/null https://${PUBLIC_FQDN}/
+      - run: CONFIG_FILE=samconfig.toml.d/<<parameters.dc-environment>>.toml APP_CONFIG_ENV=<<parameters.dc-environment>> CDN_CONFIG_ENV=<<parameters.dc-environment>>-public-access pipenv run pytest -vrP .circleci/
 
 workflows:
   version: 2
