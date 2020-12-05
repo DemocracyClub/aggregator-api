@@ -85,7 +85,7 @@ jobs:
         type: string
     environment:
       DJANGO_SETTINGS_MODULE: "<<parameters.dc-django-settings-module>>"
-      SAM_CONFIG_FILE: samconfig.toml.d/<<parameters.dc-environment>>.toml
+      SAM_CONFIG_FILE: samconfig.toml.d/ci-<<parameters.dc-environment>>.toml
       SAM_LAMBDA_CONFIG_ENV: <<parameters.dc-environment>>
       SAM_PUBLIC_CONFIG_ENV: <<parameters.dc-environment>>-public-access
     steps:
