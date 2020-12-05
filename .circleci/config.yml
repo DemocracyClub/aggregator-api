@@ -105,7 +105,7 @@ jobs:
       - run: printenv AWS_ACCESS_KEY_ID | md5sum
 
       - run:
-          name: pipenv run sam deploy # App: Lambda + API Gateway
+          name: "pipenv run sam deploy # App: Lambda + API Gateway"
           command: |
             pipenv run sam deploy \
               --config-file ~/repo/${SAM_CONFIG_FILE} \
@@ -118,7 +118,7 @@ jobs:
                 "
 
       - run:
-          name: pipenv run sam deploy # Public access: CDN + DNS
+          name: "pipenv run sam deploy # Public access: CDN + DNS"
           command: |
             pipenv run sam deploy \
               --config-file ~/repo/${SAM_CONFIG_FILE} \
