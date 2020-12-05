@@ -79,6 +79,6 @@ def sam_cli_configuration():
     assert os.path.exists(config_file_path)
     config = TOMLFile(config_file_path).read()
 
-    config_env = os.environ.get("CDN_CONFIG_ENV", "default-public-access")
+    config_env = os.environ.get("SAM_PUBLIC_CONFIG_ENV", "default-public-access")
     assert config.get(config_env)
     return config[config_env]

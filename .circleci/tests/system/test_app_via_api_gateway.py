@@ -63,6 +63,6 @@ def sam_cli_configuration():
     assert os.path.exists(config_file_path)
     config = TOMLFile(config_file_path).read()
 
-    config_env = os.environ.get("APP_CONFIG_ENV", "default")
+    config_env = os.environ.get("SAM_LAMBDA_CONFIG_ENV", "default")
     assert config.get(config_env)
     return config[config_env]

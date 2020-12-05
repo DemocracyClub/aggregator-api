@@ -83,11 +83,11 @@ jobs:
           - "production"
       dc-django-settings-module:
         type: string
-        default: aggregator.settings.lambda_no_debug_merged_assets
     environment:
-      DC_ENVIRONMENT: "<<parameters.dc-environment>>"
       DJANGO_SETTINGS_MODULE: "<<parameters.dc-django-settings-module>>"
       SAM_CONFIG_FILE: samconfig.toml.d/<<parameters.dc-environment>>.toml
+      SAM_LAMBDA_CONFIG_ENV: <<parameters.dc-environment>>
+      SAM_PUBLIC_CONFIG_ENV: <<parameters.dc-environment>>-public-access
     steps:
       - checkout
       - attach_workspace:
@@ -98,16 +98,18 @@ jobs:
           - v2-dependencies-
       - run: *install-pipenv
 
-      - run: printenv DC_ENVIRONMENT DJANGO_SETTINGS_MODULE PUBLIC_FQDN CERTIFICATE_ARN | tr a-z A-Z
+        # CircleCI envvars are obfuscated if echoed precisely, so we uppercase these non-secret ones
+      - run: printenv PUBLIC_FQDN CERTIFICATE_ARN | tr a-z A-Z
+      - run: printenv DJANGO_SETTINGS_MODULE SAM_CONFIG_FILE SAM_LAMBDA_CONFIG_ENV SAM_PUBLIC_CONFIG_ENV
       - run: printenv SECRET_KEY | md5sum
       - run: printenv AWS_ACCESS_KEY_ID | md5sum
 
       - run:
-          name: pipenv run sam deploy --config-env <<parameters.dc-environment>>
+          name: pipenv run sam deploy # App: Lambda + API Gateway
           command: |
             pipenv run sam deploy \
               --config-file ~/repo/${SAM_CONFIG_FILE} \
-              --config-env $DC_ENVIRONMENT \
+              --config-env $SAM_LAMBDA_CONFIG_ENV \
               --template-file ~/repo/.aws-sam/build/template.yaml \
               --parameter-overrides " \
                  AppDjangoSettingsModule=$DJANGO_SETTINGS_MODULE \
@@ -116,23 +118,19 @@ jobs:
                 "
 
       - run:
-          name: pipenv run sam deploy --config-env <<parameters.dc-environment>>-public-access
+          name: pipenv run sam deploy # Public access: CDN + DNS
           command: |
             pipenv run sam deploy \
               --config-file ~/repo/${SAM_CONFIG_FILE} \
-              --config-env ${DC_ENVIRONMENT}-public-access \
+              --config-env $SAM_PUBLIC_CONFIG_ENV \
               --template-file ~/repo/public-access-template.yaml \
               --parameter-overrides " \
-                 StackNameSuffix=$DC_ENVIRONMENT \
+                 StackNameSuffix=<<parameters.dc-environment>> \
                  CertificateArn=$CERTIFICATE_ARN \
                  PublicFqdn=$PUBLIC_FQDN \
                 "
 
-      - run:
-          environment:
-            APP_CONFIG_ENV: <<parameters.dc-environment>>
-            CDN_CONFIG_ENV: <<parameters.dc-environment>>-public-access
-          command: pipenv run pytest -vrP --disable-warnings .circleci/tests/system/
+      - run: pipenv run pytest -vrP --disable-warnings .circleci/tests/system/
 
 workflows:
   version: 2
@@ -146,6 +144,7 @@ workflows:
       - sam_deploy:
           name: sam_deploy_staging
           dc-environment: staging
+          dc-django-settings-module: aggregator.settings.lambda_no_debug_merged_assets
           requires: [ sam_build, test ]
           context: [ deployment-staging-aggregator-api ]
           filters:
@@ -154,6 +153,7 @@ workflows:
 #      - sam_deploy:
 #          name: sam_deploy_production
 #          dc-environment: production
+#          dc-django-settings-module: aggregator.settings.lambda_no_debug_merged_assets
 #          requires: [ sam_deploy_staging ]
 #          context: [ deployment-production-aggregator-api ]
 #          filters:
