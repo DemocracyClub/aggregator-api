@@ -136,9 +136,12 @@ workflows:
   version: 2
   test_build_deploy:
     jobs:
+
       - install_and_update_dependencies
+
       - test:
           requires: [ install_and_update_dependencies ]
+
       - sam_build:
           requires: [ install_and_update_dependencies ]
       - sam_deploy:
@@ -147,15 +150,12 @@ workflows:
           dc-django-settings-module: aggregator.settings.lambda_no_debug_merged_assets
           requires: [ sam_build, test ]
           context: [ deployment-staging-aggregator-api ]
-          filters:
-            branches:
-              only: [ aws-ci-cd ]
+          filters: { branches: { only: [ aws-ci-cd ] } }
+
 #      - sam_deploy:
 #          name: sam_deploy_production
 #          dc-environment: production
 #          dc-django-settings-module: aggregator.settings.lambda_no_debug_merged_assets
 #          requires: [ sam_deploy_staging ]
 #          context: [ deployment-production-aggregator-api ]
-#          filters:
-#            branches:
-#              only: [ aws-ci-cd ]
+#          filters: { branches: { only: [ aws-ci-cd ] } }
