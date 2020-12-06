@@ -68,8 +68,6 @@ Resources:
             Path: /
             Method: GET
       AutoPublishAlias: Live
-      DeploymentPreference:
-        Type: AllAtOnce
 
 Outputs:
   AggregatorApiFqdn:
