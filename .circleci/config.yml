@@ -66,7 +66,7 @@ jobs:
       - run: pip install --upgrade pip
       - run: pip install -r lambda-layers/DependenciesLayer/requirements.txt
       - run: make collectstatic
-      - run: sam build
+      - run: sam build ${DASH_DASH_DEBUG}
       - persist_to_workspace:
           root: ~/repo/
           paths: [ .aws-sam/build/ ]
@@ -107,7 +107,7 @@ jobs:
       - run:
           name: "pipenv run sam deploy # App: Lambda + API Gateway"
           command: |
-            pipenv run sam deploy \
+            pipenv run sam deploy ${DASH_DASH_DEBUG} \
               --config-file ~/repo/${SAM_CONFIG_FILE} \
               --config-env $SAM_LAMBDA_CONFIG_ENV \
               --template-file ~/repo/.aws-sam/build/template.yaml \
@@ -120,7 +120,7 @@ jobs:
       - run:
           name: "pipenv run sam deploy # Public access: CDN + DNS"
           command: |
-            pipenv run sam deploy \
+            pipenv run sam deploy ${DASH_DASH_DEBUG} \
               --config-file ~/repo/${SAM_CONFIG_FILE} \
               --config-env $SAM_PUBLIC_CONFIG_ENV \
               --template-file ~/repo/public-access-template.yaml \
