@@ -96,8 +96,6 @@ jobs:
           - v2-dependencies-
       - run: *install-pipenv
 
-        # CircleCI envvars are obfuscated if echoed precisely, so we uppercase these non-secret ones
-      - run: printenv PUBLIC_FQDN CERTIFICATE_ARN | tr a-z A-Z
       - run: printenv DJANGO_SETTINGS_MODULE SAM_CONFIG_FILE SAM_LAMBDA_CONFIG_ENV SAM_PUBLIC_CONFIG_ENV
       - run: printenv SECRET_KEY | md5sum
       - run: printenv AWS_ACCESS_KEY_ID | md5sum
@@ -114,6 +112,9 @@ jobs:
                  AppSecretKey=$SECRET_KEY \
                  AppIsBehindCloudFront=True \
                 "
+
+        # CircleCI envvars are obfuscated if echoed precisely, so we uppercase these non-secret ones
+      - run: printenv PUBLIC_FQDN CERTIFICATE_ARN | tr a-z A-Z
 
       - run:
           name: "pipenv run sam deploy # Public access: CDN + DNS"
