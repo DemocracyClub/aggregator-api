@@ -1,13 +1,10 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: >
-  aggregator-api-front-end
-
-  The TLS/custom-domain terminator for the DC Aggregator API
+Description: "Aggregator API public access: TLS, CDN, DNS"
 
 Parameters:
   StackNameSuffix:
-    Description: "The suffix which, when prepended by 'AggregatorApiApp-' is the name of the CloudFormation Stack that created the API Gateway & Lambda function that this Stack/deployment will wrap TLS, caching and a domain name around."
+    Description: "The suffix (automatically prefixed with 'AggregatorApiApp-') constructing the name of the CloudFormation Stack that created the API Gateway & Lambda function to which this Stack will attach TLS, CDN, and DNS."
     Type: String
 
   CertificateArn:
