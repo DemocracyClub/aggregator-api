@@ -65,7 +65,6 @@ Resources:
           Properties:
             Path: /
             Method: GET
-      AutoPublishAlias: Live
 
 Outputs:
   AggregatorApiFqdn:
