@@ -141,10 +141,13 @@ workflows:
       - install_and_update_dependencies
 
       - test:
-          requires: [ install_and_update_dependencies ]
+          requires:
+          - install_and_update_dependencies # tests need installed dev package set
 
       - sam_build:
-          requires: [ install_and_update_dependencies, test ]
+          requires:
+          - install_and_update_dependencies # DependenciesLayer build needs lambda-layers/DependenciesLayer/requirements.txt
+          - test                            # Function build needs aggregator/apps/api/v1/templates/api_docs_rendered.html
 
       # This deployment tracks the tip of the main branch in Github. It is not intended
       # to block staging (hence production) deployments: staging is the testing ground for
@@ -157,7 +160,9 @@ workflows:
           name: sam_deploy_development
           dc-environment: development
           dc-django-settings-module: aggregator.settings.lambda_no_debug_merged_assets
-          requires: [ sam_build ]
+          requires:
+          - install_and_update_dependencies # SAM CLI is in the dev package set
+          - sam_build                       # deploy needs .aws-sam/build/
           context: [ deployment-development-aggregator-api ]
           filters: { branches: { only: [ aws-ci-cd ] } }
 
@@ -165,7 +170,10 @@ workflows:
           name: sam_deploy_staging
           dc-environment: staging
           dc-django-settings-module: aggregator.settings.lambda_no_debug_merged_assets
-          requires: [ sam_build, test ]
+          requires:
+          - install_and_update_dependencies # SAM CLI is in the dev package set
+          - test                            # staging should only deploy if tests pass
+          - sam_build                       # deploy needs .aws-sam/build/
           context: [ deployment-staging-aggregator-api ]
           filters: { branches: { only: [ aws-ci-cd ] } }
 
@@ -173,6 +181,10 @@ workflows:
           name: sam_deploy_production
           dc-environment: production
           dc-django-settings-module: aggregator.settings.lambda_no_debug_merged_assets
-          requires: [ sam_deploy_staging ]
+          requires:
+          - install_and_update_dependencies # SAM CLI is in the dev package set
+          - test                            # production should only deploy if tests pass
+          - sam_build                       # deploy needs .aws-sam/build/
+          - sam_deploy_staging              # production should only deploy if staging deploys successfully
           context: [ deployment-production-aggregator-api ]
           filters: { branches: { only: [ aws-ci-cd ] } }
