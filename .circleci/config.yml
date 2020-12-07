@@ -17,7 +17,6 @@ jobs:
       - run: &install-pipenv sudo pip install pipenv --quiet --no-input
       - run: pipenv install --dev
       - run: pipenv check # before save_cache so an insecure cache is never saved
-      - run: mkdir -p ~/workspace
       - run: make lambda-layers/DependenciesLayer/requirements.txt
       - persist_to_workspace:
           root: ~/repo/
