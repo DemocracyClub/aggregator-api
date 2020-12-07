@@ -43,6 +43,9 @@ jobs:
       - run: pipenv run pytest --flakes
       - run: pipenv run pytest --cov-report= --cov=aggregator --junitxml=test-results/junit.xml
       - run: SECRET_KEY=notasecretkey pipenv run ./manage.py build_docs
+      - persist_to_workspace:
+          root: ~/repo/
+          paths: [ aggregator/apps/api/v1/templates/api_docs_rendered.html ]
       - run: |
           if [ -n "$COVERALLS_REPO_TOKEN" ]; then
             pipenv run coveralls
@@ -142,7 +145,7 @@ workflows:
           requires: [ install_and_update_dependencies ]
 
       - sam_build:
-          requires: [ install_and_update_dependencies ]
+          requires: [ install_and_update_dependencies, test ]
 
       # This deployment tracks the tip of the main branch in Github. It is not intended
       # to block staging (hence production) deployments: staging is the testing ground for
