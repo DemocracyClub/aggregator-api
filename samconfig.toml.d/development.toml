@@ -8,41 +8,40 @@ version = 0.1
 ###### This will help guard against accidentally targetting the wrong environment. #
 ####################################################################################
 
-[jcm1]
+[EXAMPLE]
 
-[jcm1.deploy]
-[jcm1.deploy.parameters]
-stack_name = "AggregatorApiApp-jcm1"
+[EXAMPLE.deploy]
+[EXAMPLE.deploy.parameters]
+stack_name = "AggregatorApiApp-EXAMPLE"
 s3_bucket = "aggregator-api-deployment-artifacts-development-075b482c18"
-s3_prefix = "jcm1"
+s3_prefix = "EXAMPLE"
 region = "eu-west-2"
 confirm_changeset = false
 capabilities = "CAPABILITY_IAM"
-tags = 'dc-product="aggregator-api" dc-environment="development" dc-instance="jcm1"'
+tags = 'dc-product="aggregator-api" dc-environment="development" dc-instance="EXAMPLE"'
 # These parameter overrides are *not* merged with those provided directly to the
 # `sam XXXX` CLI command: those provided at the CLI are the *only* ones used.
 parameter_overrides = """
   AppDjangoSettingsModule=aggregator.settings.lambda_no_debug_merged_assets \
   AppSecretKey=badf00d \
-  AppIsBehindCloudFront=True \
+  AppIsBehindCloudFront=False \
 """
-#  PublicFqdn=environments.womblelabs.co.uk \
 
-[jcm1-public-access]
-[jcm1-public-access.deploy]
-[jcm1-public-access.deploy.parameters]
+[EXAMPLE.logs]
+[EXAMPLE.logs.parameters]
+stack_name = "AggregatorApiApp-EXAMPLE"
+name = "AggregatorApiFunction"
+region = "eu-west-2"
+
+[EXAMPLE-public-access]
+[EXAMPLE-public-access.deploy]
+[EXAMPLE-public-access.deploy.parameters]
 template = "public-access-template.yaml"
-stack_name = "AggregatorApiPublicAccess-jcm1"
+stack_name = "AggregatorApiPublicAccess-EXAMPLE"
 region = "eu-west-2"
 capabilities "CAPABILITY_IAM"
 parameter_overrides = """
-  StackNameSuffix="jcm1" \
+  StackNameSuffix="EXAMPLE" \
   CertificateArn="arn:aws:acm:us-east-1:489559689862:certificate/5d0d7a82-4dd2-4264-955c-f9840701bfa2" \
-  PublicFqdn="jcm1-api.environments.womblelabs.co.uk" \
+  PublicFqdn="EXAMPLE.environments.womblelabs.co.uk" \
 """
-
-[jcm1.logs]
-[jcm1.logs.parameters]
-stack_name = "AggregatorApiApp-jcm1"
-name = "AggregatorApiFunction"
-region = "eu-west-2"
