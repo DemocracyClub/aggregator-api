@@ -211,6 +211,8 @@ During creation:
 
 After creation, copy the generated access key ID and secret access key, and paste them inside an appropriately-named CircleCI "Context", with each value stored under its relevant standard [AWS environment variable name](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html).
 
+**Make very, *very* sure that you capture the key ID and secret precisely! Ensure that, when you paste it into the CircleCI UI, you don't accidentally insert any leading or trailing whitespace, and that you've copied the entire string each time - even if the string contains word-break characters that stop your browser from selecting the whole string!**
+
 CircleCI Contexts have the concept of "Security Groups". We're not using them, yet, but they do merit some future investigation.
 
 ## S3 buckets
