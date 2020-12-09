@@ -6,76 +6,76 @@ jobs:
 
   install_and_update_dependencies:
     docker:
-      - image: circleci/python:3.6.12
+    - image: circleci/python:3.6.12
     working_directory: ~/repo
     steps:
-      - checkout
-      - restore_cache:
-          keys:
-          - v2-dependencies-{{ checksum "Pipfile.lock" }}
-          - v2-dependencies-
-      - run: &install-pipenv sudo pip install pipenv --quiet --no-input
-      - run: pipenv install --dev
-      - run: pipenv check # before save_cache so an insecure cache is never saved
-      - run: make lambda-layers/DependenciesLayer/requirements.txt
-      - persist_to_workspace:
-          root: ~/repo/
-          paths: [ lambda-layers/DependenciesLayer/requirements.txt ]
-      - save_cache:
-          when: on_success
-          paths:
-            - ~/.local/share/virtualenvs/
-          key: v2-dependencies-{{ checksum "Pipfile.lock" }}
+    - checkout
+    - restore_cache:
+        keys:
+        - v2-dependencies-{{ checksum "Pipfile.lock" }}
+        - v2-dependencies-
+    - run: &install-pipenv sudo pip install pipenv --quiet --no-input
+    - run: pipenv install --dev
+    - run: pipenv check # before save_cache so an insecure cache is never saved
+    - run: make lambda-layers/DependenciesLayer/requirements.txt
+    - persist_to_workspace:
+        root: ~/repo/
+        paths: [ lambda-layers/DependenciesLayer/requirements.txt ]
+    - save_cache:
+        when: on_success
+        paths:
+        - ~/.local/share/virtualenvs/
+        key: v2-dependencies-{{ checksum "Pipfile.lock" }}
 
   test:
     docker:
-      - image: circleci/python:3.6.12
+    - image: circleci/python:3.6.12
     working_directory: ~/repo
     steps:
-      - checkout
-      - restore_cache:
-          keys:
-          - v2-dependencies-{{ checksum "Pipfile.lock" }}
-          - v2-dependencies-
-      - run: *install-pipenv
-      - run: pipenv run black-check
-      - run: pipenv run pytest --flakes
-      - run: pipenv run pytest --cov-report= --cov=aggregator --junitxml=test-results/junit.xml
-      - run: SECRET_KEY=notasecretkey pipenv run ./manage.py build_docs
-      - persist_to_workspace:
-          root: ~/repo/
-          paths: [ aggregator/apps/api/v1/templates/api_docs_rendered.html ]
-      - run: |
-          if [ -n "$COVERALLS_REPO_TOKEN" ]; then
-            pipenv run coveralls
-          else
-            echo "skipping coverage for forked PR"
-          fi
-      - store_artifacts:
-          path: test-results
-          destination: test-results
-      - store_test_results:
-          path: test-results
+    - checkout
+    - restore_cache:
+        keys:
+        - v2-dependencies-{{ checksum "Pipfile.lock" }}
+        - v2-dependencies-
+    - run: *install-pipenv
+    - run: pipenv run black-check
+    - run: pipenv run pytest --flakes
+    - run: pipenv run pytest --cov-report= --cov=aggregator --junitxml=test-results/junit.xml
+    - run: SECRET_KEY=notasecretkey pipenv run ./manage.py build_docs
+    - persist_to_workspace:
+        root: ~/repo/
+        paths: [ aggregator/apps/api/v1/templates/api_docs_rendered.html ]
+    - run: |
+        if [ -n "$COVERALLS_REPO_TOKEN" ]; then
+          pipenv run coveralls
+        else
+          echo "skipping coverage for forked PR"
+        fi
+    - store_artifacts:
+        path: test-results
+        destination: test-results
+    - store_test_results:
+        path: test-results
 
   sam_build:
     docker:
-      - image: amazon/aws-sam-cli-build-image-python3.6:latest
+    - image: amazon/aws-sam-cli-build-image-python3.6:latest
     working_directory: ~/repo
     steps:
-      - checkout
-      - attach_workspace:
-          at: ~/repo/
-      - run: pip install --upgrade pip
-      - run: pip install -r lambda-layers/DependenciesLayer/requirements.txt
-      - run: make collectstatic
-      - run: sam build ${DASH_DASH_DEBUG}
-      - persist_to_workspace:
-          root: ~/repo/
-          paths: [ .aws-sam/build/ ]
+    - checkout
+    - attach_workspace:
+        at: ~/repo/
+    - run: pip install --upgrade pip
+    - run: pip install -r lambda-layers/DependenciesLayer/requirements.txt
+    - run: make collectstatic
+    - run: sam build ${DASH_DASH_DEBUG}
+    - persist_to_workspace:
+        root: ~/repo/
+        paths: [ .aws-sam/build/ ]
 
   sam_deploy:
     docker:
-      - image: circleci/python:3.6.12
+    - image: circleci/python:3.6.12
     working_directory: ~/repo/
     parameters:
       dc-environment:
@@ -89,102 +89,102 @@ jobs:
       SAM_LAMBDA_CONFIG_ENV: <<parameters.dc-environment>>
       SAM_PUBLIC_CONFIG_ENV: <<parameters.dc-environment>>-public-access
     steps:
-      - checkout
-      - attach_workspace:
-          at: ~/repo/
-      - restore_cache:
-          keys:
-          - v2-dependencies-{{ checksum "Pipfile.lock" }}
-          - v2-dependencies-
-      - run: *install-pipenv
+    - checkout
+    - attach_workspace:
+        at: ~/repo/
+    - restore_cache:
+        keys:
+        - v2-dependencies-{{ checksum "Pipfile.lock" }}
+        - v2-dependencies-
+    - run: *install-pipenv
 
-      - run: printenv DJANGO_SETTINGS_MODULE SAM_CONFIG_FILE SAM_LAMBDA_CONFIG_ENV SAM_PUBLIC_CONFIG_ENV
-      - run: printenv SECRET_KEY | md5sum
-      - run: printenv AWS_ACCESS_KEY_ID | md5sum
+    - run: printenv DJANGO_SETTINGS_MODULE SAM_CONFIG_FILE SAM_LAMBDA_CONFIG_ENV SAM_PUBLIC_CONFIG_ENV
+    - run: printenv SECRET_KEY | md5sum
+    - run: printenv AWS_ACCESS_KEY_ID | md5sum
 
-      - run:
-          name: "pipenv run sam deploy # App: Lambda + API Gateway"
-          command: |
-            pipenv run sam deploy ${DASH_DASH_DEBUG} \
-              --config-file ~/repo/${SAM_CONFIG_FILE} \
-              --config-env $SAM_LAMBDA_CONFIG_ENV \
-              --template-file ~/repo/.aws-sam/build/template.yaml \
-              --parameter-overrides " \
-                 AppDjangoSettingsModule=$DJANGO_SETTINGS_MODULE \
-                 AppSecretKey='$SECRET_KEY' \
-                 AppIsBehindCloudFront=True \
-                "
+    - run:
+        name: "pipenv run sam deploy # App: Lambda + API Gateway"
+        command: |
+          pipenv run sam deploy ${DASH_DASH_DEBUG} \
+            --config-file ~/repo/${SAM_CONFIG_FILE} \
+            --config-env $SAM_LAMBDA_CONFIG_ENV \
+            --template-file ~/repo/.aws-sam/build/template.yaml \
+            --parameter-overrides " \
+               AppDjangoSettingsModule=$DJANGO_SETTINGS_MODULE \
+               AppSecretKey='$SECRET_KEY' \
+               AppIsBehindCloudFront=True \
+              "
 
-        # CircleCI envvars are obfuscated if echoed precisely, so we uppercase these non-secret ones
-      - run: printenv PUBLIC_FQDN CERTIFICATE_ARN | tr a-z A-Z
+      # CircleCI envvars are obfuscated if echoed precisely, so we uppercase these non-secret ones
+    - run: printenv PUBLIC_FQDN CERTIFICATE_ARN | tr a-z A-Z
 
-      - run:
-          name: "pipenv run sam deploy # Public access: CDN + DNS"
-          command: |
-            pipenv run sam deploy ${DASH_DASH_DEBUG} \
-              --config-file ~/repo/${SAM_CONFIG_FILE} \
-              --config-env $SAM_PUBLIC_CONFIG_ENV \
-              --template-file ~/repo/public-access-template.yaml \
-              --parameter-overrides " \
-                 StackNameSuffix=<<parameters.dc-environment>> \
-                 CertificateArn=$CERTIFICATE_ARN \
-                 PublicFqdn=$PUBLIC_FQDN \
-                "
+    - run:
+        name: "pipenv run sam deploy # Public access: CDN + DNS"
+        command: |
+          pipenv run sam deploy ${DASH_DASH_DEBUG} \
+            --config-file ~/repo/${SAM_CONFIG_FILE} \
+            --config-env $SAM_PUBLIC_CONFIG_ENV \
+            --template-file ~/repo/public-access-template.yaml \
+            --parameter-overrides " \
+               StackNameSuffix=<<parameters.dc-environment>> \
+               CertificateArn=$CERTIFICATE_ARN \
+               PublicFqdn=$PUBLIC_FQDN \
+              "
 
-      - run: pipenv run pytest -vrP --disable-warnings .circleci/tests/system/
+    - run: pipenv run pytest -vrP --disable-warnings .circleci/tests/system/
 
 workflows:
   version: 2
   test_build_deploy:
     jobs:
 
-      - install_and_update_dependencies
+    - install_and_update_dependencies
 
-      - test:
-          requires:
-          - install_and_update_dependencies # tests need installed dev package set
+    - test:
+        requires:
+        - install_and_update_dependencies # tests need installed dev package set
 
-      - sam_build:
-          requires:
-          - install_and_update_dependencies # DependenciesLayer build needs lambda-layers/DependenciesLayer/requirements.txt
-          - test                            # Function build needs aggregator/apps/api/v1/templates/api_docs_rendered.html
+    - sam_build:
+        requires:
+        - install_and_update_dependencies # DependenciesLayer build needs lambda-layers/DependenciesLayer/requirements.txt
+        - test                            # Function build needs aggregator/apps/api/v1/templates/api_docs_rendered.html
 
-      # This deployment tracks the tip of the main branch in Github. It is not intended
-      # to block staging (hence production) deployments: staging is the testing ground for
-      # production. This deployment is intended to give developers a target in their main
-      # AWS account that they can debug against, read its logs, etc, without having to escalate
-      # their access to the staging account. This deployment should not be modified manually,
-      # but only through commits which also reach staging and then production.
-      # This deployment doesn't wait on the `test` job to succeed.
-      - sam_deploy:
-          name: sam_deploy_development
-          dc-environment: development
-          dc-django-settings-module: aggregator.settings.lambda_no_debug_merged_assets
-          requires:
-          - install_and_update_dependencies # SAM CLI is in the dev package set
-          - sam_build                       # deploy needs .aws-sam/build/
-          context: [ deployment-development-aggregator-api ]
-          filters: { branches: { only: [ aws-ci-cd ] } }
+    # This deployment tracks the tip of the main branch in Github. It is not intended
+    # to block staging (hence production) deployments: staging is the testing ground for
+    # production. This deployment is intended to give developers a target in their main
+    # AWS account that they can debug against, read its logs, etc, without having to escalate
+    # their access to the staging account. This deployment should not be modified manually,
+    # but only through commits which also reach staging and then production.
+    # This deployment doesn't wait on the `test` job to succeed.
+    - sam_deploy:
+        name: sam_deploy_development
+        dc-environment: development
+        dc-django-settings-module: aggregator.settings.lambda_no_debug_merged_assets
+        requires:
+        - install_and_update_dependencies # SAM CLI is in the dev package set
+        - sam_build                       # deploy needs .aws-sam/build/
+        context: [ deployment-development-aggregator-api ]
+        filters: { branches: { only: [ aws-ci-cd, main, master ] } }
 
-      - sam_deploy:
-          name: sam_deploy_staging
-          dc-environment: staging
-          dc-django-settings-module: aggregator.settings.lambda_no_debug_merged_assets
-          requires:
-          - install_and_update_dependencies # SAM CLI is in the dev package set
-          - test                            # staging should only deploy if tests pass
-          - sam_build                       # deploy needs .aws-sam/build/
-          context: [ deployment-staging-aggregator-api ]
-          filters: { branches: { only: [ aws-ci-cd ] } }
+    - sam_deploy:
+        name: sam_deploy_staging
+        dc-environment: staging
+        dc-django-settings-module: aggregator.settings.lambda_no_debug_merged_assets
+        requires:
+        - install_and_update_dependencies # SAM CLI is in the dev package set
+        - test                            # staging should only deploy if tests pass
+        - sam_build                       # deploy needs .aws-sam/build/
+        context: [ deployment-staging-aggregator-api ]
+        filters: { branches: { only: [ aws-ci-cd, main, master ] } }
 
-      - sam_deploy:
-          name: sam_deploy_production
-          dc-environment: production
-          dc-django-settings-module: aggregator.settings.lambda_no_debug_merged_assets
-          requires:
-          - install_and_update_dependencies # SAM CLI is in the dev package set
-          - test                            # production should only deploy if tests pass
-          - sam_build                       # deploy needs .aws-sam/build/
-          - sam_deploy_staging              # production should only deploy if staging deploys successfully
-          context: [ deployment-production-aggregator-api ]
-          filters: { branches: { only: [ aws-ci-cd ] } }
+    - sam_deploy:
+        name: sam_deploy_production
+        dc-environment: production
+        dc-django-settings-module: aggregator.settings.lambda_no_debug_merged_assets
+        requires:
+        - install_and_update_dependencies # SAM CLI is in the dev package set
+        - test                            # production should only deploy if tests pass
+        - sam_build                       # deploy needs .aws-sam/build/
+        - sam_deploy_staging              # production should only deploy if staging deploys successfully
+        context: [ deployment-production-aggregator-api ]
+        filters: { branches: { only: [ aws-ci-cd, main, master ] } }
