@@ -65,12 +65,12 @@ Resources:
           Type: Api
           Properties:
             Path: /{proxy+}
-            Method: GET
+            Method: ANY
         HTTPRequestRoots:
           Type: Api
           Properties:
             Path: /
-            Method: GET
+            Method: ANY
 
   AggregatorApiFunctionLogGroup:
     Type: AWS::Logs::LogGroup
