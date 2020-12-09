@@ -8,6 +8,8 @@ In [the AWS IAM web UI](https://console.aws.amazon.com/iam) create the following
 
 ### Policies
 
+#### AggregatorApiDeployer
+
 Create an IAM Policy named `AggregatorApiDeployer`.
 
 Set its description as `Allows deployment of the Aggregator API service`.
@@ -90,6 +92,8 @@ Set its Policy document as follows: **FIXME: can the Resources be scoped with ac
 }
 ```
 
+#### AggregatorApiPublicAccessDeployer
+
 Create an IAM Policy named `AggregatorApiPublicAccessDeployer`.
 
 Set its description as `Allows SAM CLI deployment of the CDN+DNS which provide public access to the Aggregator API`.
@@ -150,6 +154,8 @@ Set its Policy document as follows: **FIXME: can the Resources be scoped with ac
 
 ### Roles
 
+#### AggregatorApiLambdaExecutionRole
+
 Create an IAM role named `AggregatorApiLambdaExecutionRole`.
 
 During creation:
@@ -180,6 +186,8 @@ After creation, ensure the trust relationship looks like this:
 
 ### Groups
 
+#### AggregatorApiDeployers
+
 Create an IAM Group named `AggregatorApiDeployers`.
 
 During creation:
@@ -188,6 +196,8 @@ During creation:
    - `AggregatorApiPublicAccessDeployer`
 
 ### Users
+
+#### CircleCI
 
 Add an IAM User named `CircleCI`.
 
@@ -202,6 +212,8 @@ During creation:
 After creation, copy the generated access key ID and secret access key, and paste them inside an appropriately-named CircleCI "Context", with each value stored under its relevant standard [AWS environment variable name](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html).
 
 ## S3 buckets
+
+### Deployment artifact bucket
 
 In the [AWS S3 web UI](https://s3.console.aws.amazon.com/s3/home?region=eu-west-2), create an S3 bucket.
 
