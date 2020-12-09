@@ -1,14 +1,20 @@
-# This file and its quirks are documented here: https://github.com/aws/aws-sam-cli/blob/develop/docs/sam-config-docs.md
-
+# This file and its quirks are documented here:
+# https://github.com/aws/aws-sam-cli/blob/develop/docs/sam-config-docs.md
 version = 0.1
 
+####################################################################################
+## NB: Don't insert a "default" profile in this file! ##############################
+###### Only use named, per-environment profiles. ###################################
+###### This will help guard against accidentally targetting the wrong environment. #
+####################################################################################
+
 [production]
+
 [production.deploy]
 [production.deploy.parameters]
-stack_name = "aggregator-api-production"
-s3_bucket = "aggregator-api-production-deployment-via-sam-cli-lksjdfoiuwerm"
+stack_name = "AggregatorApiApp-production"
+s3_bucket = "aggregator-api-deployment-artifacts-production-87wsm34"
 s3_prefix = "production"
-#kms-key-id = "" # having this unset uses an AWS-managed key; it doesn't "not encrypt" files
 region = "eu-west-2"
 confirm_changeset = false
 capabilities = "CAPABILITY_IAM"
@@ -16,4 +22,26 @@ tags = "dc-product=\"aggregator-api\" dc-environment=\"production\""
 progressbar = false
 fail_on_empty_changeset = false
 force_upload = true
-# FIXME: explain why having a "parameter_overrides" setting here would prohibit using CI envvars
+# Using a "parameter_overrides" setting here would block using CI envvars, as only
+# one overrides source is used and this source doesn't pass through shell interpolation.
+
+[production.logs]
+[production.logs.parameters]
+stack_name = "AggregatorApiApp-production"
+name = "AggregatorApiFunction"
+region = "eu-west-2"
+
+[production-public-access]
+[production-public-access.deploy]
+[production-public-access.deploy.parameters]
+template = "public-access-template.yaml"
+stack_name = "AggregatorApiPublicAccess-production"
+region = "eu-west-2"
+confirm_changeset = false
+capabilities = "CAPABILITY_IAM"
+tags = "dc-product=\"aggregator-api\" dc-environment=\"production\""
+progressbar = false
+fail_on_empty_changeset = false
+force_upload = true
+# Using a "parameter_overrides" setting here would block using CI envvars, as only
+# one overrides source is used and this source doesn't pass through shell interpolation.
