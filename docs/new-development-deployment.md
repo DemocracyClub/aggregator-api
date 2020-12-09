@@ -23,9 +23,15 @@ After cloning the repo, use pipenv to install the dev packages. Avoid Pipenv ver
 
 ### Setting up the configuration file
 
-In `samconfig.toml.d/development`, clone the `[EXAMPLE]` top-level section, including all its subsections. For this deployment, only the `[EXAMPLE.deploy.parameters]` section *needs* to have each occurrence of the `EXAMPLE` text changed to an environment name of your choice, but you might as well change every instance right now. Just do a simple find'n'replace. If you choose a new environment name composed of the characters "a" through "z" and "0" through "9" then everything has the best chance of working. If you also use characters in the set `[-_A-Z]` then things _might_ work. Using periods will definitely break several DNS-based limitations: don't do that.
+Use the script `samconfig.toml.d/new-dev-env.py` to clone the `[EXAMPLE]` and `[EXAMPLE-public-access]` sections and subsections, substituting `EXAMPLE` for a new deployment name of your choice. If you choose a new environment name composed of the characters "a" through "z" and "0" through "9" then everything has the best chance of working. If you also use characters in the set `[-_A-Z]` then things _might_ work. Using periods will definitely break several DNS-based limitations: don't do that.
 
-You can commit your changes to `samconfig.toml.d/development`, so long as you've not included any sensitive parameters. At the time of writing, the AppSecretKey, CertificateArn and PublicFqdn settings aren't considered sensitive.
+```
+~/code/aggregator-api$ NEW_ENV_NAME=myenv pipenv run python samconfig.toml.d/new-dev-env.py >>samconfig.toml
+```
+
+To achieve the same result without using the script, edit `samconfig.toml.d/development`. Clone the `[EXAMPLE]` and `[EXAMPLE-public-access]` top-level sections, including all their subsections. For this deployment, only the `[EXAMPLE.deploy.parameters]` section *needs* to have each occurrence of the `EXAMPLE` text changed to an environment name of your choice, but you should change every instance right now. Just do a simple find'n'replace.
+
+You can commit your changes to `samconfig.toml.d/development`, so long as you've not included any sensitive parameters. At the time of writing, the AppSecretKey, CertificateArn and PublicFqdn settings aren't considered sensitive in development deployments.
 
 The `sam` CLI will be your main deployment tool. *Every* time you invoke it, you *must* pass it the name of the environment you just created in `samconfig.toml.d/development` as the `--config-env <new-env-name>` parameter. The config file is a) symlinked into the default `samconfig.toml` location in the repo for convenience and b) deliberately doesn't include a `default` environment, in order to avoid namespace collisions between DC devs in the event of anyone forgetting to provide the `--config-env <new-env-name>` parameter to `sam`.
 
