@@ -25,6 +25,12 @@ force_upload = true
 # Using a "parameter_overrides" setting here would block using CI envvars, as only
 # one overrides source is used and this source doesn't pass through shell interpolation.
 
+[staging.logs]
+[staging.logs.parameters]
+stack_name = "AggregatorApiApp-staging"
+name = "AggregatorApiFunction"
+region = "eu-west-2"
+
 [staging-public-access]
 [staging-public-access.deploy]
 [staging-public-access.deploy.parameters]
@@ -39,9 +45,3 @@ fail_on_empty_changeset = false
 force_upload = true
 # Using a "parameter_overrides" setting here would block using CI envvars, as only
 # one overrides source is used and this source doesn't pass through shell interpolation.
-
-[staging.logs]
-[staging.logs.parameters]
-stack_name = "AggregatorApiApp-staging"
-name = "AggregatorApiFunction"
-region = "eu-west-2"
