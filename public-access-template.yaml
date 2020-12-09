@@ -28,6 +28,12 @@ Resources:
             OriginPath: "/Prod"
             CustomOriginConfig:
               OriginProtocolPolicy: "https-only"
+            OriginCustomHeaders:
+              - HeaderName: X-Forwarded-Host
+                HeaderValue: !Ref PublicFqdn
+              - HeaderName: X-Forwarded-Proto
+                HeaderValue: https
+
             OriginShield:
               Enabled: true
               OriginShieldRegion: eu-west-2
@@ -38,6 +44,11 @@ Resources:
             OriginPath: "/Prod"
             CustomOriginConfig:
               OriginProtocolPolicy: "https-only"
+            OriginCustomHeaders:
+              - HeaderName: X-Forwarded-Host
+                HeaderValue: !Ref PublicFqdn
+              - HeaderName: X-Forwarded-Proto
+                HeaderValue: https
 
         Enabled: true
         HttpVersion: 'http1.1'
