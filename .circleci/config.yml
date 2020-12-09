@@ -111,7 +111,7 @@ jobs:
               --template-file ~/repo/.aws-sam/build/template.yaml \
               --parameter-overrides " \
                  AppDjangoSettingsModule=$DJANGO_SETTINGS_MODULE \
-                 AppSecretKey=$SECRET_KEY \
+                 AppSecretKey='$SECRET_KEY' \
                  AppIsBehindCloudFront=True \
                 "
 
