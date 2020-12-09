@@ -115,8 +115,14 @@ jobs:
                AppIsBehindCloudFront=True \
               "
 
-      # CircleCI envvars are obfuscated if echoed precisely, so we uppercase these non-secret ones
-    - run: printenv PUBLIC_FQDN CERTIFICATE_ARN | tr a-z A-Z
+    - run:  # these envvars are stored inside CircleCI, which "helpfully" masks them if they're echoed
+        name: printenv PUBLIC_FQDN CERTIFICATE_ARN
+        command: |
+          # NB Do *not* copy any of these string values!
+          #  -> In order to make them visible inside CircleCI, a null character
+          #  -> has been inserted between characters 1 and 2, which may have
+          #  -> unintended consequences if you copy & paste them.
+          printenv PUBLIC_FQDN CERTIFICATE_ARN | sed -E 's/^(.)(.)/\1\x00\2/'
 
     - run:
         name: "pipenv run sam deploy # Public access: CDN + DNS"
