@@ -57,7 +57,7 @@ Resources:
         PriceClass: "PriceClass_100"
         ViewerCertificate:
           AcmCertificateArn: !Ref CertificateArn
-          MinimumProtocolVersion: TLSv1
+          MinimumProtocolVersion: TLSv1.1_2016
           SslSupportMethod: sni-only
 
         DefaultCacheBehavior:
