@@ -51,7 +51,7 @@ Resources:
                 HeaderValue: https
 
         Enabled: true
-        HttpVersion: 'http1.1'
+        HttpVersion: 'http2'
         Aliases:
           - !Ref PublicFqdn
         PriceClass: "PriceClass_100"
