@@ -137,7 +137,7 @@ jobs:
                PublicFqdn=$PUBLIC_FQDN \
               "
 
-    - run: pipenv run pytest -vrP --disable-warnings .circleci/tests/system/
+    - run: pipenv run pytest -vrA --disable-warnings .circleci/tests/system/
 
 workflows:
   version: 2
