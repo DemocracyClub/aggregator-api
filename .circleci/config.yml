@@ -1,5 +1,11 @@
 # https://circleci.com/docs/2.0/configuration-reference/
 
+# NB https://circleci.com/docs/2.0/configuration-reference/#default-shell-options:
+#  * CircleCI explicitly sets `set -eo pipefail`, which several of this project's
+#    `run` steps rely on. The construct of `<failing-command> | <decorator-command>`
+#    is used throughout, and needs to be present in any shell environment this
+#    workflow evolves into.
+
 version: 2.1
 
 jobs:
@@ -101,6 +107,17 @@ jobs:
     - run: printenv DJANGO_SETTINGS_MODULE SAM_CONFIG_FILE SAM_LAMBDA_CONFIG_ENV SAM_PUBLIC_CONFIG_ENV
     - run: printenv SECRET_KEY | md5sum
     - run: printenv AWS_ACCESS_KEY_ID | md5sum
+    - run:
+        name: printenv DEVS_DC_API_KEY
+          # These envvars are stored inside CircleCI, which helpfully masks them if they're echoed.
+          # This command errors if the envvar isn't set, which is intentional. We don't want to
+          # /start/ deploying if we can't test the API immediately afterwards.
+        command: |
+          # NB Do *not* copy any of these string values!
+          #  -> In order to make them visible inside CircleCI, a null character
+          #  -> has been inserted between characters 1 and 2, which may have
+          #  -> unintended consequences if you copy & paste them.
+          printenv DEVS_DC_API_KEY | sed -E 's/^(.)(.)/\1\x00\2/'
 
     - run:
         name: "pipenv run sam deploy # App: Lambda + API Gateway"
@@ -115,8 +132,11 @@ jobs:
                AppIsBehindCloudFront=True \
               "
 
-    - run:  # these envvars are stored inside CircleCI, which "helpfully" masks them if they're echoed
+    - run: pipenv run pytest -vrA --disable-warnings .circleci/tests/system/test_app_via_api_gateway.py
+
+    - run:
         name: printenv PUBLIC_FQDN CERTIFICATE_ARN
+          # These envvars are stored inside CircleCI, which helpfully masks them if they're echoed.
         command: |
           # NB Do *not* copy any of these string values!
           #  -> In order to make them visible inside CircleCI, a null character
