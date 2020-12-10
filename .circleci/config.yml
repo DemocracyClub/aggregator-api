@@ -130,6 +130,7 @@ jobs:
                AppDjangoSettingsModule=$DJANGO_SETTINGS_MODULE \
                AppSecretKey='$SECRET_KEY' \
                AppIsBehindCloudFront=True \
+               AppLogRetentionDays=60 \
               "
 
     - run:
