@@ -11,6 +11,16 @@ def test_app_front_page_http_200(app_url):
     assert resp.status_code == 200
 
 
+@pytest.mark.skipif(
+    not os.environ.get("DEVS_DC_API_KEY"),
+    reason="DEVS_DC_API_KEY environment variable not set",
+)
+def test_api_postcode_can_include_urlencoded_spaces(app_url):
+    auth_token = os.environ["DEVS_DC_API_KEY"]
+    resp = requests.get(f"{app_url}/api/v1/postcode/OX3 7LR/?auth_token=${auth_token}")
+    assert resp.status_code == 200
+
+
 def skip_discovery():
     return bool(os.environ.get("APP_URL"))
 
