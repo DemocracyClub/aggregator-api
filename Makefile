@@ -1,4 +1,9 @@
-.DEFAULT_GOAL := please-explicitly-choose-a-target
+.PHONY: all
+all: clean collectstatic lambda-layers/DependenciesLayer/requirements.txt
+
+.PHONY: clean
+clean:
+	rm -rf aggregator/static_files/ lambda-layers/DependenciesLayer/requirements.txt
 
 .PHONY: collectstatic
 collectstatic: export SECRET_KEY?=badf00d
