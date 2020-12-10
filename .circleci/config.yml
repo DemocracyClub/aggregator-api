@@ -113,10 +113,12 @@ jobs:
           # This command errors if the envvar isn't set, which is intentional. We don't want to
           # /start/ deploying if we can't test the API immediately afterwards.
         command: |
+          #
           # NB Do *not* copy any of these string values!
           #  -> In order to make them visible inside CircleCI, a null character
           #  -> has been inserted between characters 1 and 2, which may have
           #  -> unintended consequences if you copy & paste them.
+          #
           printenv DEVS_DC_API_KEY | sed -E 's/^(.)(.)/\1\x00\2/'
 
     - run:
@@ -141,10 +143,12 @@ jobs:
         name: printenv PUBLIC_FQDN CERTIFICATE_ARN
           # These envvars are stored inside CircleCI, which helpfully masks them if they're echoed.
         command: |
+          #
           # NB Do *not* copy any of these string values!
           #  -> In order to make them visible inside CircleCI, a null character
           #  -> has been inserted between characters 1 and 2, which may have
           #  -> unintended consequences if you copy & paste them.
+          #
           printenv PUBLIC_FQDN CERTIFICATE_ARN | sed -E 's/^(.)(.)/\1\x00\2/'
 
     - run:
