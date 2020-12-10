@@ -12,6 +12,7 @@ pytest-flakes = ">=4.0.0,<5.0"
 coveralls = ">=1.6,<3.0"
 aws-sam-cli = "*"
 tomlkit = "*"
+importlib-metadata = "*"
 
 [packages]
 django = ">=1.11,<2.0"
