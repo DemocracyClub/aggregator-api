@@ -78,7 +78,7 @@ If your intention is to deploy the app and then *immediately* wrap it in TLS/CDN
 
 ### Validating your deployment template
 
-Validating the template contacts the AWS API, so can't be done offline. This one `sam` command doesn't seem to obey any sections in the `samconfig.toml.d/development` file, but it *does* need to know which AWS region to contact. Rather than inject the implict knowledge into future `sam` commands by exporting the `AWS_DEFAULT_REGION` environment variable for this entire session, or more permanently, here we can just prepend *this one* command with the variable. Don't use this method for any other `sam` commands.
+Validating the template contacts the AWS API, so can't be done offline. This one `sam` command doesn't seem to obey any sections in the `samconfig.toml.d/development` file, but it *does* need to know which AWS region to contact. Rather than inject the implict knowledge into future `sam` commands by exporting the `AWS_DEFAULT_REGION` environment variable for this entire session, or more permanently, here we can just prepend *this one command* with the variable. Don't use this method for any other `sam` commands.
 
 ```
 $ AWS_DEFAULT_REGION=eu-west-2 pipenv run sam validate
@@ -89,10 +89,10 @@ $ AWS_DEFAULT_REGION=eu-west-2 pipenv run sam validate
 
 Use the Makefile's default target to:
 
-- delete and recreate the static asset directory at `aggregator/static_files`
+- delete and recreate the static asset directory at `aggregator/static_files/`
 - generate `lambda-layers/DependenciesLayer/requirements.txt`
 
-The results of these steps are gitignored, and have to be re-done when you change either Pipfile/.lock or anything that alters how the static assets look.
+The results of these steps are gitignored, and have to be re-done when you change either `Pipfile`, `Pipfile.lock`, or anything that alters how the static assets look.
 
 ```
 $ pipenv run make
@@ -106,7 +106,9 @@ Post-processed 'css/styles.css' as 'css/styles.css'
 pipenv lock -r | sed "s/^-e //" >lambda-layers/DependenciesLayer/requirements.txt
 ```
 
-Build the Lambda deployment package (NB this will *destroy* the current contents of the `.aws-sam/build/` directory, which probably only contains your previous build):
+Now build the Lambda deployment package.
+
+NB **this will destroy the current contents of the `.aws-sam/build/` directory**; but it *should* only contain the generated result of your previous build. If you've modified any files under that path this command will revert their contents back to what's in your working directory.
 
 ```
 $ pipenv run sam build --config-env jcm1 --use-container
@@ -226,7 +228,9 @@ Value               uod8dodf03.execute-api.eu-west-2.amazonaws.com
 Successfully created/updated stack - AggregatorApiApp-jcm1 in eu-west-2
 ```
 
-Notice that the "AggregatorApiFqdn" CloudFormation Output is shown here: this is the Fully Qualified Domain Name ("FQDN") on which the app is available, but isn't the full *URL* that needs to be requested in order to reach the app. The app is only available over HTTPS (although an HTTP request will redirect to HTTPS), and only with the API Gatway "Stage" appended. In the case of deployments orchestrated by the `sam` CLI, which first modifies the template you provide and then asks CloudFormation to apply the [AWS Serverless Transform](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/transform-aws-serverless.html), this stage is always "Prod".
+Notice that the "AggregatorApiFqdn" CloudFormation Output is shown here: this is the Fully Qualified Domain Name ("FQDN") on which the function is available, but isn't the full *URL* that needs to be requested in order to reach the app.
+
+The app is only available over HTTPS (although an HTTP request will redirect to HTTPS), and only with the API Gateway "Stage" appended. In the case of deployments orchestrated by the `sam` CLI, which first modifies the template you provide and then asks CloudFormation to apply the [AWS Serverless Transform](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/transform-aws-serverless.html), this stage is always "Prod".
 
 Thus, the URL that reaches the app is `https://{AggregatorApiFqdn}/Prod`; in the example `jcm1` deployment's case this is `https://uod8dodf03.execute-api.eu-west-2.amazonaws.com/Prod`.
 
@@ -258,7 +262,7 @@ collected 1 item
 
 #### Viewing app logs
 
-App logs are shipped by Lambda into CloudWatch Logs, with a default retention of 2 months. To view them, make sure your environment in `samconfig.toml` has appropriately copied and modified `[<env-name>.logs]`/`[<env-name>.logs.parameters]` sections. Then, use the `sam` CLI to tail (with `--tail`) or view (without `--tail`) the most recent logs:
+App logs are shipped by Lambda into CloudWatch Logs, with a default retention of 2 months. To view them, make sure your environment in `samconfig.toml` contains appropriately copied and modified `[<env-name>.logs]`/`[<env-name>.logs.parameters]` sections. Then, use the `sam` CLI to tail (with `--tail`) or view (without `--tail`) the most recent logs:
 
 ```
 $ pipenv run sam logs --config-env jcm1
@@ -286,15 +290,16 @@ No rebuild is needed if moving between any of the 4 convenience settings shims p
 - `lambda_debug_merged_assets`: debug enabled
 - `lambda_debug_unmerged_assets`: debug enabled
 
-Both "merged assets" shims set `PIPELINE["PIPELINE_ENABLED"] = True`; "unmerged assets" configures the same setting as `False`.
+Both "merged assets" shims set `PIPELINE["PIPELINE_ENABLED"] = True`.
+Both "unmerged assets" shims configure the same setting as `False`.
 
 #### Lambda environment variables
 
 [Skip this section if you're deploying the existing codebase, and don't need to set a new environment variable]
 
-To set a new variable in your function's environment in Lambda, first decide if this parameter can be fixed across every environment (temporary developer deployments, and the 3 CI-managed deployments: developement, staging and production). If it can be, simply add a new key to the `Variables` section in `template.yaml`. This section is at the path `Resources >> AggregatorApiFunction >> Properties >> Environment >> Variables`. Add the key/value pair that you want the app to see, and rebuild+redeploy.
+To set a new variable in your function's environment in Lambda, first decide if this parameter can be fixed across every environment (temporary developer deployments, and the 3 CI-managed deployments: development, staging and production). If it can be static, simply add a new key to the `Variables` section in `template.yaml`. This section is located at the YaML path `Resources >> AggregatorApiFunction >> Properties >> Environment >> Variables`. Add the key/value pair that you want the app to see, and rebuild+redeploy, as detailed above.
 
-If using a fixed value isn't possible, then you'll need to use a CloudFormation "Parameter", and the `samconfig.toml` "parameter override" section to communicate the values to the CloudFormation template.
+If using a fixed value isn't possible, then you'll need to use a CloudFormation "Parameter", the `samconfig.toml` "parameter override" section to communicate the values to the CloudFormation template in developer deployments, and the `.circleci/config.yml` file to communicate the values to CI-managed deployments.
 
 Use the existing Parameter `AppDjangoSettingsModule` as a guide.
 
@@ -323,7 +328,7 @@ Once the Lambda deployment is working, you can optionally deploy a custom domain
 
 To begin, choose the Fully Qualified Domain Name ("FQDN") via which you want users to access this deployment.
 
-In the development environment, there is already infra set up to enable a direct subdomain of `environments.womblelabs.co.uk` and it makes sense for your FQDN to be a subdomain of that.
+In the development environment, infrastructure is already set up to enable deployments to be served over a direct subdomain of `environments.womblelabs.co.uk` and it makes sense for your FQDN to be such a subdomain.
 
 Unless you have a reason to do otherwise, choose an FQDN matching `<ENV>.environments.womblelabs.co.uk`, where `<ENV>` is your deployment's name. When you constructed that name (in [section 1](#setting-up-the-configuration-file) of this document) it was suggested to choose a name that only uses the characters `[a-z0-9]`. If you've also included a hyphen in your environment's name, things will probably still work, but consider removing it. If you've included any periods, *definitely* remove them as they won't work with the DNS guidance below.
 
@@ -331,11 +336,11 @@ In the example output below, the FQDN `jcm1.environments.womblelabs.co.uk` is sh
 
 ### Manual steps
 
-There are a couple of manual infra-related steps to perform, which don't make sense to include in the deployment automation. These only need to be performed once per development environment, and the ongoing cost of leaving this per-environment infra in place is minimal.
+There are a couple of manual infra-related steps to perform, which don't make sense to include in the deployment automation. These only need to be performed once per development deployment, and the ongoing cost of leaving this per-deployment infra in place is minimal.
 
 #### Create a domain
 
-For technical reasons around dev/prod environment parity when the app is be presented over the FQDN `a.b.c.d` the domain `a.b.c.d` needs to be created and delegated correctly from `b.c.d` (or a parent domain). If you feel this sounds subtly wrong, you're correct; it is, however, the easiest way to keep all environments' setups the same, whilst allowing DC to manage its top-level domains separately from any one product. It's a trade off; the cost of which is $6/year/environment (AWS prices are currently $0.50/month/domain) and the manual steps you have to perform, right now. Don't worry: they're painless and quick!
+For technical reasons around dev/prod environment parity when the app is be presented over the FQDN `a.b.c.d`, the **matching** domain `a.b.c.d` needs to be created and delegated correctly from `b.c.d` (or a parent domain). If you feel this sounds subtly wrong, you're correct! It is, however, the easiest way to keep all environments' setups the same, whilst allowing DC to manage its top-level domains separately from any one product. It's a trade off; the cost of which is $6/year/environment (AWS prices are currently $0.50/month/domain) and the manual steps you have to perform, right now. Don't worry: they're painless and quick!
 
 Sign in to AWS as a user who can create domains in Route53. Once logged in go to [the Route53 UI](https://console.aws.amazon.com/route53/home#hosted-zones:). Revert to the "old" user interface if the "new" one loads; the "new" one is a horrendous blight and should be avoided as long as the option is there to revert.
 
@@ -371,7 +376,7 @@ The account admin should have created a certificate that covers your domain. Kee
 * TLS wildcards can't be ignored. A certificate for `*.foo.com` can't protect `foo.com`.
 * If there are multiple certificates which could protect your deployment, then in the development environment it doesn't really matter which one you use. Another user can't delete a certificate while your deployment is using it so, apart from administrative tidyness, choosing any valid certificate is ok.
 
-If there's no valid certificate for your FQDN, but you believe there should be **double-check that you're looking at the us-east-1 region**. Certificates only exist in a single region: the one in which they were created.
+If there's no valid certificate for your FQDN, but you believe there should be, **double-check that you're looking at the us-east-1 region**. Certificates only exist in a single region: the one in which they were created.
 
 If there's *still* no valid certificate for your FQDN, you can create one. [Follow this guidance](https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-public.html#request-public-console), and choose "DNS validation" when asked. So long as you're in the same AWS account that owns the domain you created, above, you can use the ACM UI -- after creation and during the certificate's "Validation" step -- to "Create record in Route 53".
 
@@ -383,7 +388,7 @@ Find and copy the certificate's ARN (globally unique, internal AWS identifier), 
 
 Paste the certificate ARN into the `samconfig.toml` file. It needs to be placed in your `[<ENV>-public-access.deploy.parameters]` section, as the `parameter_overrides` value for the subkey `CertificateArn`. Keep that file open as you move on to the next section.
 
-Change your AWS UI's region selection back from US East to the region into which you're deploying. The region selection is stored in browser cookies, so if you forget to do this then you *will* be confused for 5 minutes when resource you know you've created aren't visible in the UI!
+Change your AWS UI's region selection back from US East to the region into which you're deploying. The region selection is stored in browser cookies, so if you forget to do this then you *will* be confused for 5 minutes when resources you know you've created aren't visible in the UI!
 
 ### Preparing for deployment
 
@@ -402,7 +407,7 @@ With everything in place, you can now deploy. NB the `config-env` specified here
 This deployment will take **around** 5 minutes; subsequent deployments should take less time (if any!) so long as the CloudFront distribution isn't modified as part of the deployment. Given that price of an unused CloudFront distribution is effectively zero, there's no immediate need to tear the environment down from a cost perspective.
 
 ```
-/code/aggregator-api$ pipenv run sam deploy --config-env jcm1-public-access
+$ pipenv run sam deploy --config-env jcm1-public-access
 
 	Deploying with following values
 	===============================
