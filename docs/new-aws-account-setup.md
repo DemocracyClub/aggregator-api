@@ -1,5 +1,18 @@
 # Setting up an AWS account for Aggregator API deployments
 
+* [IAM Entities](#iam-entities)
+   * [Policies](#policies)
+      * [AggregatorApiDeployer](#aggregatorapideployer)
+      * [AggregatorApiPublicAccessDeployer](#aggregatorapipublicaccessdeployer)
+   * [Roles](#roles)
+      * [AggregatorApiLambdaExecutionRole](#aggregatorapilambdaexecutionrole)
+   * [Groups](#groups)
+      * [AggregatorApiDeployers](#aggregatorapideployers)
+   * [Users](#users)
+      * [CircleCI](#circleci)
+* [S3 buckets](#s3-buckets)
+   * [Deployment artifact bucket](#deployment-artifact-bucket)
+
 This document describes the setup that an AWS account requires in order to have the Aggregator API deployed into it. This does not deal with the deployment of the API itself, but instead the per-account prerequisites that need to exist in order to support developer- and CI-originated deployments.
 
 ## IAM Entities

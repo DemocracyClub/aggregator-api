@@ -1,5 +1,28 @@
 # Deploying a development version of the Aggregator API
 
+* [Example output and AWS credentials](#example-output-and-aws-credentials)
+* [Deploying into AWS Lambda](#deploying-into-aws-lambda)
+   * [Installing local pre-requisites](#installing-local-pre-requisites)
+   * [Setting up the configuration file](#setting-up-the-configuration-file)
+   * [Validating your deployment template](#validating-your-deployment-template)
+   * [Building the deployment artifact](#building-the-deployment-artifact)
+   * [Deploying the built artifacts](#deploying-the-built-artifacts)
+   * [Testing the deployment](#testing-the-deployment)
+   * [Debugging problems](#debugging-problems)
+      * [Viewing app logs](#viewing-app-logs)
+      * [Enabling Django's DEBUG mode](#enabling-djangos-debug-mode)
+      * [Lambda environment variables](#lambda-environment-variables)
+* [Deploying TLS, CDN and DNS on top of an existing Lambda deployment](#deploying-tls-cdn-and-dns-on-top-of-an-existing-lambda-deployment)
+   * [Choose a "public"-facing FQDN](#choose-a-public-facing-fqdn)
+   * [Manual steps](#manual-steps)
+      * [Create a domain](#create-a-domain)
+      * [Delegate DNS authority to your new domain](#delegate-dns-authority-to-your-new-domain)
+      * [Find the ACM ARN of a certificate that's valid for your domain](#find-the-acm-arn-of-a-certificate-thats-valid-for-your-domain)
+   * [Preparing for deployment](#preparing-for-deployment)
+   * [Deploying DNS+TLS+CDN](#deploying-dnstlscdn)
+   * [Testing the deployment](#testing-the-deployment-1)
+* [Tearing down deployments](#tearing-down-deployments)
+
 This document describes 2 deployment scenarios, the second of which builds on the first:
 
 1) [App](#deploying-into-aws-lambda): the API deployed as an app in AWS Lambda, accessed directly via AWS API Gateway
@@ -64,15 +87,23 @@ Validating the template contacts the AWS API, so can't be done offline. This one
 
 ### Building the deployment artifact
 
-Use the Makefile target to invoke the Django `collectstatic` command:
+Use the Makefile's default target to:
+
+- delete and recreate the static asset directory at `aggregator/static_files`
+- generate `lambda-layers/DependenciesLayer/requirements.txt`
+
+The results of these steps are gitignored, and have to be re-done when you change either Pipfile/.lock or anything that alters how the static assets look.
 
 ```
-~/code/aggregator-api$ pipenv run make collectstatic
+~/code/aggregator-api$ pipenv run make
+rm -rf aggregator/static_files/ lambda-layers/DependenciesLayer/requirements.txt
 python manage.py collectstatic --noinput --clear
 Copying '/home/ubuntu/code/aggregator-api/aggregator/assets/images/dc-badge/black/badge.png'
 [ ... 133 "Copying" lines elided ... ]
 Post-processed 'css/styles.css' as 'css/styles.css'
 [ ... 111 "Post-processed" lines elided ... ]
+134 static files copied to '/home/ubuntu/code/aggregator-api/aggregator/static_files', 139 post-processed.
+pipenv lock -r | sed "s/^-e //" >lambda-layers/DependenciesLayer/requirements.txt
 ```
 
 Build the Lambda deployment package (NB this will *destroy* the current contents of the `.aws-sam/build/` directory, which probably only contains your previous build):
@@ -112,7 +143,7 @@ The build artifacts have been placed in the `.aws-sam/build/` directory. Note th
 
 ### Deploying the built artifacts
 
-Use the `sam` CLI to deploy the app. You'll need to have at least the AWS IAM permissions mentioned in the [CI account setup document](FIXME). Once you have seen the 3 uploads complete (currently: 3MB app; 28MB dependencies layer; 1KB template), the CloudFormation Stack creation should take no more than a minute - or something's not right.
+Use the `sam` CLI to deploy the app. You'll need to have at least the AWS IAM permissions mentioned in the [AWS account setup document](/docs/new-aws-account-setup.md#policies). Once you have seen the 3 uploads complete (currently: 3MB app; 28MB dependencies layer; 1KB template), the CloudFormation Stack creation should take no more than a minute - or something's not right.
 
 ```
 ~/code/aggregator-api$ pipenv run sam deploy --config-env jcm1
@@ -223,9 +254,11 @@ collected 1 item
 ================================================ 1 passed, 7 warnings in 5.43s ============================================
 ```
 
-### Viewing app logs
+### Debugging problems
 
-App logs are shipped by Lambda into CloudWatch Logs, with a default retention of 2 weeks. To view them, make sure your environment in `samconfig.toml` has appropriately copied and modified `[<env-name>.logs]`/`[<env-name>.logs.parameters]` sections. Then, use the `sam` CLI to tail (with `--tail`) or view (without `--tail`) the most recent logs:
+#### Viewing app logs
+
+App logs are shipped by Lambda into CloudWatch Logs, with a default retention of 2 months. To view them, make sure your environment in `samconfig.toml` has appropriately copied and modified `[<env-name>.logs]`/`[<env-name>.logs.parameters]` sections. Then, use the `sam` CLI to tail (with `--tail`) or view (without `--tail`) the most recent logs:
 
 ```
 ~/code/aggregator-api$ pipenv run sam logs --config-env jcm1
@@ -238,6 +271,49 @@ App logs are shipped by Lambda into CloudWatch Logs, with a default retention of
 ```
 
 Note that this example shows the default/HTTP-200/happy-path access logs; also note how unhelpful they are. The logs *do* receive stdout and stderr if any part of the app emits text there, including stack traces and exceptions. The logs appear to be more useful for debugging problems than for tracking usage or performance over time.
+
+#### Enabling Django's DEBUG mode
+
+Django's debug mode is trivially engaged by:
+
+- modifying an enviroment's `AppDjangoSettingsModule` parameter override setting in the appropriate `samconfig.toml` file
+- redeploying with `sam deploy`
+
+No rebuild is needed if moving between any of the 4 convenience settings shims present in `aggregator/settings/`, as they all (currently) produce the same superset of static assets on disk. The shims are:
+
+- `lambda_no_debug_merged_assets`: debug disabled; the default setting, present in all CI-deployed environments
+- `lambda_no_debug_unmerged_assets`: debug disabled
+- `lambda_debug_merged_assets`: debug enabled
+- `lambda_debug_unmerged_assets`: debug enabled
+
+Both "merged assets" shims set `PIPELINE["PIPELINE_ENABLED"] = True`; "unmerged assets" configures the same setting as `False`.
+
+#### Lambda environment variables
+
+[Skip this section if you're deploying the existing codebase, and don't need to set a new environment variable]
+
+To set a new variable in your function's environment in Lambda, first decide if this parameter can be fixed across every environment (temporary developer deployments, and the 3 CI-managed deployments: developement, staging and production). If it can be, simply add a new key to the `Variables` section in `template.yaml`. This section is at the path `Resources >> AggregatorApiFunction >> Properties >> Environment >> Variables`. Add the key/value pair that you want the app to see, and rebuild+redeploy.
+
+If using a fixed value isn't possible, then you'll need to use a CloudFormation "Parameter", and the `samconfig.toml` "parameter override" section to communicate the values to the CloudFormation template.
+
+Use the existing Parameter `AppDjangoSettingsModule` as a guide.
+
+Notice that:
+
+- It's named with an "App" prefix to give humans a visual indicator that it's a parameter that directly affects the app, and not some other component that's deployed alongside Lambda; the *Parameter* **name** is a reference for the developer/operator, and should be chosen to make their lives easier. It has nothing *directly* to do with the environment variable name that's passed to the app!
+- It's set in the `Parameters` top-level section of `template.yaml`
+- It's referenced in the `Variables` section (at `Resources >> AggregatorApiFunction >> Properties >> Environment >> Variables`)
+- It's configured externally in `samconfig.toml` for developer deployments
+- It's configured externally in `.circleci/config.yml` in the `sam_deploy` job **for CI-managed deployments**
+
+CloudFormation Parameters can have default values: see `AppLogRetentionDays` as an example of how this is specified.
+
+If you *don't* set a default, you must make sure that each CI deployment has a value injected (in the `sam_deploy` job) **or the deployment following your commit to `template.yaml` will fail**.
+
+Some things to note:
+
+1. Parameter defaults are sticky. The first time a default is used by a CloudFormation Stack, that default value becomes the Parameter value for the Stack. Changing *the default* won't affect currently-deployed Stacks: only explicitly setting a Parameter value will change the value in currently-deployed Stacks.
+1. If you choose not to set a default (which is a perfectly valid choice) then you're forcing every deployment to explicitly specify a value before they next deploy. Deployments will fail early if they lack such a value.
 
 ## Deploying TLS, CDN and DNS on top of an existing Lambda deployment
 

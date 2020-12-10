@@ -1,6 +1,15 @@
 # New automated deployments from CircleCI
 
-This process has been tested in the `development` env.
+* [In CircleCI and the AWS web UI](#in-circleci-and-the-aws-web-ui)
+* [In the Aggregator API codebase](#in-the-aggregator-api-codebase)
+   * [In .circleci/config.yml](#in-circleciconfigyml)
+   * [In samconfig.toml.d/](#in-samconfigtomld)
+* [Debugging CI failures](#debugging-ci-failures)
+   * [Viewing CI-managed deployment's logs](#viewing-ci-managed-deployments-logs)
+   * [CircleCI masks environment variables' values](#circleci-masks-environment-variables-values)
+   * [Deployment jobs show you their deployment variables](#deployment-jobs-show-you-their-deployment-variables)
+
+This process has been tested in the `development` and `production` environments.
 
 ## In CircleCI and the AWS web UI
 
@@ -49,6 +58,21 @@ However, if the Stack has failed to create and is in a "CREATE_FAILED" state the
 A common cause of problems is environment variables. You might have entered them subtly wrongly, or some part of the CI process might be distorting or passing them around in a modified form - but this is most likely to be the deployment scripts, not behind-the-scenes CircleCI breakage.
 
 Here are some techniques for figuring out if you've encountered any of these kinds of problems.
+
+### Viewing CI-managed deployment's logs
+
+Just as [developer deployments' logs can be accessed using the `sam` CLI](/docs/new-development-deployment.md#viewing-app-logs), so too can CI-managed deployments' logs.
+
+In order to access these logs, first [set up your local environment](/docs/new-development-deployment.md#example-output-and-aws-credentials) with access to the AWS account which contains the deployment.
+
+Next, identify the config file inside `samconfig.toml.d` that CI uses to manage the deployment.
+
+Fianlly, access the logs by pointing the `sam` CLI towards the config file and, within that file, to the config env it should use:
+
+```
+~/code/aggregator-api$ pipenv run sam logs --config-file samconfig.toml.d/ci-staging.toml --config-env staging
+[ ... some logs ... ]
+```
 
 ### CircleCI masks environment variables' values
 

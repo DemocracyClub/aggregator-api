@@ -16,6 +16,12 @@ Parameters:
     Type: String
 
   AppDjangoSettingsModule:
+    # NB This parameter (and how it reaches the app, and how it's set in
+    # developer and CI-managed deployments) is used in
+    # `docs/new-development-deployment.md` as a reference to demonstrate how to
+    # communicate variables to the app. If you modify this parameter, or remove
+    # it, please update the document so developers aren't left without
+    # guidance!
     Description: "The DJANGO_SETTINGS_MODULE environment variable passed to the app."
     Type: String
 
