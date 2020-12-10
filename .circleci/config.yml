@@ -132,7 +132,9 @@ jobs:
                AppIsBehindCloudFront=True \
               "
 
-    - run: pipenv run pytest -vrA --disable-warnings .circleci/tests/system/test_app_via_api_gateway.py
+    - run:
+        name:   "pipenv run pytest .circleci/tests/system/test_app_via_api_gateway.py # Smoke test Lambda deployment"
+        command: pipenv run pytest -vrA --disable-warnings .circleci/tests/system/test_app_via_api_gateway.py
 
     - run:
         name: printenv PUBLIC_FQDN CERTIFICATE_ARN
@@ -157,7 +159,9 @@ jobs:
                PublicFqdn=$PUBLIC_FQDN \
               "
 
-    - run: pipenv run pytest -vrA --disable-warnings .circleci/tests/system/
+    - run:
+        name:   "pipenv run pytest .circleci/tests/system/ # Smoke test CDN+DNS deployment"
+        command: pipenv run pytest -vrA --disable-warnings .circleci/tests/system/
 
 workflows:
   version: 2
