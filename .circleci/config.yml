@@ -148,6 +148,7 @@ jobs:
 
     - run:
         name: "pipenv run sam deploy # Public access: CDN + DNS"
+        no_output_timeout: 20m # CloudFront can take longer than CircleCI's 10m default
         command: |
           pipenv run sam deploy ${DASH_DASH_DEBUG} \
             --config-file ~/repo/${SAM_CONFIG_FILE} \
