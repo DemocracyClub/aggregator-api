@@ -49,7 +49,7 @@ After cloning the repo, use pipenv to install the dev packages. Avoid Pipenv ver
 Use the script `samconfig.toml.d/new-dev-env.py` to clone the `[EXAMPLE]` and `[EXAMPLE-public-access]` sections and subsections, substituting `EXAMPLE` for a new deployment name of your choice. If you choose a new environment name composed of the characters "a" through "z" and "0" through "9" then everything has the best chance of working. If you also use characters in the set `[-_A-Z]` then things _might_ work. Using periods will definitely break several DNS-based limitations: don't do that.
 
 ```
-~/code/aggregator-api$ NEW_ENV_NAME=myenv pipenv run python samconfig.toml.d/new-dev-env.py >>samconfig.toml
+$ NEW_ENV_NAME=myenv pipenv run python samconfig.toml.d/new-dev-env.py >>samconfig.toml
 ```
 
 To achieve the same result without using the script, edit `samconfig.toml.d/development`. Clone the `[EXAMPLE]` and `[EXAMPLE-public-access]` top-level sections, including all their subsections. For this deployment, only the `[EXAMPLE.deploy.parameters]` section *needs* to have each occurrence of the `EXAMPLE` text changed to an environment name of your choice, but you should change every instance right now. Just do a simple find'n'replace.
@@ -61,13 +61,13 @@ The `sam` CLI will be your main deployment tool. *Every* time you invoke it, you
 If you forget to provide the `--config-env` parameter, or provide an non-existent env name, then you'll see this unhelpful error:
 
 ```
-~/code/aggregator-api$ pipenv run sam deploy # missing: --config-env <anything>
+$ pipenv run sam deploy # missing: --config-env <anything>
 Usage: sam deploy [OPTIONS]
 Try 'sam deploy --help' for help.
 
 Error: Missing option '--stack-name', 'sam deploy --guided' can be used to provide and save needed parameters for future deploys.
 
-~/code/aggregator-api$ pipenv run sam deploy --config-env INVALID
+$ pipenv run sam deploy --config-env INVALID
 Usage: sam deploy [OPTIONS]
 Try 'sam deploy --help' for help.
 
@@ -81,7 +81,7 @@ If your intention is to deploy the app and then *immediately* wrap it in TLS/CDN
 Validating the template contacts the AWS API, so can't be done offline. This one `sam` command doesn't seem to obey any sections in the `samconfig.toml.d/development` file, but it *does* need to know which AWS region to contact. Rather than inject the implict knowledge into future `sam` commands by exporting the `AWS_DEFAULT_REGION` environment variable for this entire session, or more permanently, here we can just prepend *this one* command with the variable. Don't use this method for any other `sam` commands.
 
 ```
-~/code/aggregator-api$ AWS_DEFAULT_REGION=eu-west-2 pipenv run sam validate
+$ AWS_DEFAULT_REGION=eu-west-2 pipenv run sam validate
 /home/ubuntu/code/aggregator-api/template.yaml is a valid SAM Template
 ```
 
@@ -95,7 +95,7 @@ Use the Makefile's default target to:
 The results of these steps are gitignored, and have to be re-done when you change either Pipfile/.lock or anything that alters how the static assets look.
 
 ```
-~/code/aggregator-api$ pipenv run make
+$ pipenv run make
 rm -rf aggregator/static_files/ lambda-layers/DependenciesLayer/requirements.txt
 python manage.py collectstatic --noinput --clear
 Copying '/home/ubuntu/code/aggregator-api/aggregator/assets/images/dc-badge/black/badge.png'
@@ -109,7 +109,7 @@ pipenv lock -r | sed "s/^-e //" >lambda-layers/DependenciesLayer/requirements.tx
 Build the Lambda deployment package (NB this will *destroy* the current contents of the `.aws-sam/build/` directory, which probably only contains your previous build):
 
 ```
-~/code/aggregator-api$ pipenv run sam build --config-env jcm1 --use-container
+$ pipenv run sam build --config-env jcm1 --use-container
 Starting Build inside a container
 Building codeuri: . runtime: python3.6 metadata: {} functions: ['AggregatorApiFunction']
 Fetching amazon/aws-sam-cli-build-image-python3.6 Docker container image......
@@ -146,7 +146,7 @@ The build artifacts have been placed in the `.aws-sam/build/` directory. Note th
 Use the `sam` CLI to deploy the app. You'll need to have at least the AWS IAM permissions mentioned in the [AWS account setup document](/docs/new-aws-account-setup.md#policies). Once you have seen the 3 uploads complete (currently: 3MB app; 28MB dependencies layer; 1KB template), the CloudFormation Stack creation should take no more than a minute - or something's not right.
 
 ```
-~/code/aggregator-api$ pipenv run sam deploy --config-env jcm1
+$ pipenv run sam deploy --config-env jcm1
 	Deploying with following values
 	===============================
 	Stack name                   : AggregatorApiApp-jcm1
@@ -164,64 +164,64 @@ AggregatorApiFunction may not have authorization defined.
 Waiting for changeset to be created..
 CloudFormation stack changeset
 ---------------------------------------------------------------------------------------------------------------------------------------------
-Operation                           LogicalResourceId                   ResourceType                        Replacement                       
+Operation                           LogicalResourceId                   ResourceType                        Replacement
 ---------------------------------------------------------------------------------------------------------------------------------------------
-+ Add                               AggregatorApiFunctionHTTPRequestR   AWS::Lambda::Permission             N/A                               
-                                    ootsPermissionProd                                                                                        
-+ Add                               AggregatorApiFunctionHTTPRequests   AWS::Lambda::Permission             N/A                               
-                                    PermissionProd                                                                                            
-+ Add                               AggregatorApiFunction               AWS::Lambda::Function               N/A                               
-+ Add                               DependenciesLayera71d191a6f         AWS::Lambda::LayerVersion           N/A                               
-+ Add                               ServerlessRestApiDeploymentf33e89   AWS::ApiGateway::Deployment         N/A                               
-                                    2db2                                                                                                      
-+ Add                               ServerlessRestApiProdStage          AWS::ApiGateway::Stage              N/A                               
-+ Add                               ServerlessRestApi                   AWS::ApiGateway::RestApi            N/A                               
++ Add                               AggregatorApiFunctionHTTPRequestR   AWS::Lambda::Permission             N/A
+                                    ootsPermissionProd
++ Add                               AggregatorApiFunctionHTTPRequests   AWS::Lambda::Permission             N/A
+                                    PermissionProd
++ Add                               AggregatorApiFunction               AWS::Lambda::Function               N/A
++ Add                               DependenciesLayera71d191a6f         AWS::Lambda::LayerVersion           N/A
++ Add                               ServerlessRestApiDeploymentf33e89   AWS::ApiGateway::Deployment         N/A
+                                    2db2
++ Add                               ServerlessRestApiProdStage          AWS::ApiGateway::Stage              N/A
++ Add                               ServerlessRestApi                   AWS::ApiGateway::RestApi            N/A
 ---------------------------------------------------------------------------------------------------------------------------------------------
 Changeset created successfully. arn:aws:cloudformation:eu-west-2:489559689862:changeSet/samcli-deploy1607352403/13b8e28d-bc8c-43f6-a3da-20a6e42372d0
 2020-12-07 14:46:49 - Waiting for stack create/update to complete
 CloudFormation events from changeset
 ---------------------------------------------------------------------------------------------------------------------------------------------
-ResourceStatus                      ResourceType                        LogicalResourceId                   ResourceStatusReason              
+ResourceStatus                      ResourceType                        LogicalResourceId                   ResourceStatusReason
 ---------------------------------------------------------------------------------------------------------------------------------------------
-CREATE_IN_PROGRESS                  AWS::Lambda::LayerVersion           DependenciesLayera71d191a6f         -                                 
-CREATE_COMPLETE                     AWS::Lambda::LayerVersion           DependenciesLayera71d191a6f         -                                 
-CREATE_IN_PROGRESS                  AWS::Lambda::LayerVersion           DependenciesLayera71d191a6f         Resource creation Initiated       
-CREATE_IN_PROGRESS                  AWS::Lambda::Function               AggregatorApiFunction               -                                 
-CREATE_IN_PROGRESS                  AWS::Lambda::Function               AggregatorApiFunction               Resource creation Initiated       
-CREATE_COMPLETE                     AWS::Lambda::Function               AggregatorApiFunction               -                                 
-CREATE_IN_PROGRESS                  AWS::ApiGateway::RestApi            ServerlessRestApi                   Resource creation Initiated       
-CREATE_IN_PROGRESS                  AWS::ApiGateway::RestApi            ServerlessRestApi                   -                                 
-CREATE_COMPLETE                     AWS::ApiGateway::RestApi            ServerlessRestApi                   -                                 
-CREATE_IN_PROGRESS                  AWS::Lambda::Permission             AggregatorApiFunctionHTTPRequests   Resource creation Initiated       
-                                                                        PermissionProd                                                        
-CREATE_IN_PROGRESS                  AWS::Lambda::Permission             AggregatorApiFunctionHTTPRequests   -                                 
-                                                                        PermissionProd                                                        
-CREATE_IN_PROGRESS                  AWS::Lambda::Permission             AggregatorApiFunctionHTTPRequestR   -                                 
-                                                                        ootsPermissionProd                                                    
-CREATE_IN_PROGRESS                  AWS::ApiGateway::Deployment         ServerlessRestApiDeploymentf33e89   -                                 
-                                                                        2db2                                                                  
-CREATE_COMPLETE                     AWS::ApiGateway::Deployment         ServerlessRestApiDeploymentf33e89   -                                 
-                                                                        2db2                                                                  
-CREATE_IN_PROGRESS                  AWS::Lambda::Permission             AggregatorApiFunctionHTTPRequestR   Resource creation Initiated       
-                                                                        ootsPermissionProd                                                    
-CREATE_IN_PROGRESS                  AWS::ApiGateway::Deployment         ServerlessRestApiDeploymentf33e89   Resource creation Initiated       
-                                                                        2db2                                                                  
-CREATE_IN_PROGRESS                  AWS::ApiGateway::Stage              ServerlessRestApiProdStage          -                                 
-CREATE_IN_PROGRESS                  AWS::ApiGateway::Stage              ServerlessRestApiProdStage          Resource creation Initiated       
-CREATE_COMPLETE                     AWS::ApiGateway::Stage              ServerlessRestApiProdStage          -                                 
-CREATE_COMPLETE                     AWS::Lambda::Permission             AggregatorApiFunctionHTTPRequests   -                                 
-                                                                        PermissionProd                                                        
-CREATE_COMPLETE                     AWS::Lambda::Permission             AggregatorApiFunctionHTTPRequestR   -                                 
-                                                                        ootsPermissionProd                                                    
-CREATE_COMPLETE                     AWS::CloudFormation::Stack          AggregatorApiApp-jcm1               -                                 
+CREATE_IN_PROGRESS                  AWS::Lambda::LayerVersion           DependenciesLayera71d191a6f         -
+CREATE_COMPLETE                     AWS::Lambda::LayerVersion           DependenciesLayera71d191a6f         -
+CREATE_IN_PROGRESS                  AWS::Lambda::LayerVersion           DependenciesLayera71d191a6f         Resource creation Initiated
+CREATE_IN_PROGRESS                  AWS::Lambda::Function               AggregatorApiFunction               -
+CREATE_IN_PROGRESS                  AWS::Lambda::Function               AggregatorApiFunction               Resource creation Initiated
+CREATE_COMPLETE                     AWS::Lambda::Function               AggregatorApiFunction               -
+CREATE_IN_PROGRESS                  AWS::ApiGateway::RestApi            ServerlessRestApi                   Resource creation Initiated
+CREATE_IN_PROGRESS                  AWS::ApiGateway::RestApi            ServerlessRestApi                   -
+CREATE_COMPLETE                     AWS::ApiGateway::RestApi            ServerlessRestApi                   -
+CREATE_IN_PROGRESS                  AWS::Lambda::Permission             AggregatorApiFunctionHTTPRequests   Resource creation Initiated
+                                                                        PermissionProd
+CREATE_IN_PROGRESS                  AWS::Lambda::Permission             AggregatorApiFunctionHTTPRequests   -
+                                                                        PermissionProd
+CREATE_IN_PROGRESS                  AWS::Lambda::Permission             AggregatorApiFunctionHTTPRequestR   -
+                                                                        ootsPermissionProd
+CREATE_IN_PROGRESS                  AWS::ApiGateway::Deployment         ServerlessRestApiDeploymentf33e89   -
+                                                                        2db2
+CREATE_COMPLETE                     AWS::ApiGateway::Deployment         ServerlessRestApiDeploymentf33e89   -
+                                                                        2db2
+CREATE_IN_PROGRESS                  AWS::Lambda::Permission             AggregatorApiFunctionHTTPRequestR   Resource creation Initiated
+                                                                        ootsPermissionProd
+CREATE_IN_PROGRESS                  AWS::ApiGateway::Deployment         ServerlessRestApiDeploymentf33e89   Resource creation Initiated
+                                                                        2db2
+CREATE_IN_PROGRESS                  AWS::ApiGateway::Stage              ServerlessRestApiProdStage          -
+CREATE_IN_PROGRESS                  AWS::ApiGateway::Stage              ServerlessRestApiProdStage          Resource creation Initiated
+CREATE_COMPLETE                     AWS::ApiGateway::Stage              ServerlessRestApiProdStage          -
+CREATE_COMPLETE                     AWS::Lambda::Permission             AggregatorApiFunctionHTTPRequests   -
+                                                                        PermissionProd
+CREATE_COMPLETE                     AWS::Lambda::Permission             AggregatorApiFunctionHTTPRequestR   -
+                                                                        ootsPermissionProd
+CREATE_COMPLETE                     AWS::CloudFormation::Stack          AggregatorApiApp-jcm1               -
 ---------------------------------------------------------------------------------------------------------------------------------------------
 CloudFormation outputs from deployed stack
 ------------------------------------------------------------------------------------------------------------------------------------------------
-Outputs                                                                                                                                        
+Outputs
 ------------------------------------------------------------------------------------------------------------------------------------------------
-Key                 AggregatorApiFqdn                                                                                                          
-Description         API Gateway endpoint FQDN for Aggregator API function                                                                      
-Value               uod8dodf03.execute-api.eu-west-2.amazonaws.com                                                                             
+Key                 AggregatorApiFqdn
+Description         API Gateway endpoint FQDN for Aggregator API function
+Value               uod8dodf03.execute-api.eu-west-2.amazonaws.com
 ------------------------------------------------------------------------------------------------------------------------------------------------
 Successfully created/updated stack - AggregatorApiApp-jcm1 in eu-west-2
 ```
@@ -239,7 +239,7 @@ Use the pytests in `.circleci/tests/system/test_app_via_api_gateway.py` to check
 Teach the tests about your config env by setting the `SAM_LAMBDA_CONFIG_ENV` environment variable appropriately:
 
 ```
-~/code/aggregator-api$ SAM_LAMBDA_CONFIG_ENV=jcm1 pipenv run pytest -vrP --disable-warnings .circleci/tests/system/test_app_via_api_gateway.py 
+$ SAM_LAMBDA_CONFIG_ENV=jcm1 pipenv run pytest -vrP --disable-warnings .circleci/tests/system/test_app_via_api_gateway.py
 ================================================== test session starts ====================================================
 platform linux -- Python 3.8.5, pytest-6.1.2, py-1.9.0, pluggy-0.13.1 -- /home/ubuntu/.local/share/virtualenvs/8/bin/python
 cachedir: .pytest_cache
@@ -261,7 +261,7 @@ collected 1 item
 App logs are shipped by Lambda into CloudWatch Logs, with a default retention of 2 months. To view them, make sure your environment in `samconfig.toml` has appropriately copied and modified `[<env-name>.logs]`/`[<env-name>.logs.parameters]` sections. Then, use the `sam` CLI to tail (with `--tail`) or view (without `--tail`) the most recent logs:
 
 ```
-~/code/aggregator-api$ pipenv run sam logs --config-env jcm1
+$ pipenv run sam logs --config-env jcm1
 2020/12/07/[$LATEST]70e6068f1e704bdfad78fdd8eab994d3 2020-12-07T21:39:29.460000 START RequestId: 4b3d24d7-af3a-44f6-9f3b-89d1200d0030 Version: $LATEST
 2020/12/07/[$LATEST]70e6068f1e704bdfad78fdd8eab994d3 2020-12-07T21:39:34.455000 END RequestId: 4b3d24d7-af3a-44f6-9f3b-89d1200d0030
 2020/12/07/[$LATEST]70e6068f1e704bdfad78fdd8eab994d3 2020-12-07T21:39:34.455000 REPORT RequestId: 4b3d24d7-af3a-44f6-9f3b-89d1200d0030  Duration: 4994.93 ms Billed Duration: 4995 ms Memory Size: 192 MB     Max Memory Used: 99 MB  Init Duration: 1080.62 ms
@@ -468,7 +468,7 @@ Use the pytests in `.circleci/tests/system/` to check the deployment is working 
 Teach the tests about your config env by setting both the `SAM_LAMBDA_CONFIG_ENV` and `SAM_PUBLIC_CONFIG_ENV` environment variables appropriately:
 
 ```
-~/code/aggregator-api$ SAM_LAMBDA_CONFIG_ENV=jcm1 SAM_PUBLIC_CONFIG_ENV=jcm1-public-access pipenv run pytest -vrP --disable-warnings .circleci/tests/system/
+$ SAM_LAMBDA_CONFIG_ENV=jcm1 SAM_PUBLIC_CONFIG_ENV=jcm1-public-access pipenv run pytest -vrP --disable-warnings .circleci/tests/system/
 ========================================================== test session starts ==========================================================
 platform linux -- Python 3.8.5, pytest-6.1.2, py-1.9.0, pluggy-0.13.1 -- /home/ubuntu/.local/share/virtualenvs/aggregator-api-_ak-AzJ8/bin/python
 cachedir: .pytest_cache

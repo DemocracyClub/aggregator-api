@@ -70,7 +70,7 @@ Next, identify the config file inside `samconfig.toml.d` that CI uses to manage 
 Fianlly, access the logs by pointing the `sam` CLI towards the config file and, within that file, to the config env it should use:
 
 ```
-~/code/aggregator-api$ pipenv run sam logs --config-file samconfig.toml.d/ci-staging.toml --config-env staging
+$ pipenv run sam logs --config-file samconfig.toml.d/ci-staging.toml --config-env staging
 [ ... some logs ... ]
 ```
 
