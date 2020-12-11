@@ -24,7 +24,7 @@ def test_cdn_front_page_http_200(cdn_url):
 
 
 def skip_discovery():
-    return bool(os.environ.get("APP_URL"))
+    return bool(os.environ.get("CDN_URL") and os.environ.get("PUBLIC_URL"))
 
 
 def cfn_output_value(stack, output_name):
