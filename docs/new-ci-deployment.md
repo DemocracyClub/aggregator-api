@@ -63,7 +63,7 @@ Here are some techniques for figuring out if you've encountered any of these kin
 
 Just as [developer deployments' logs can be accessed using the `sam` CLI](/docs/new-development-deployment.md#viewing-app-logs), so too can CI-managed deployments' logs.
 
-In order to access these logs, first [set up your local environment](/docs/new-development-deployment.md#example-output-and-aws-credentials) with access to the AWS account which contains the deployment.
+In order to access these logs, first [set up your local environment](/docs/new-development-deployment.md#local-pre-requisites) with access to the AWS account which contains the deployment.
 
 Next, identify the config file inside `samconfig.toml.d` that CI uses to manage the deployment.
 

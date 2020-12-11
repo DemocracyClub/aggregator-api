@@ -59,30 +59,22 @@ In production, settings are obtained from environment variables. In production, 
 
 Development deployments are described in detail in [a separate document](/docs/new-development-deployment.md).
 
-Here are the happy-path steps to deploy to DC's development AWS account. You *will* want to change the "mynewenv" deployment name to [one of your own choosing](/docs/new-development-deployment.md#setting-up-the-configuration-file)!
+Here are the happy-path steps to create a deployment in DC's development AWS account.
+
+Before following these steps:
+
+* [Choose a deployment name](/docs/new-development-deployment.md#setting-up-the-configuration-file) and use it wherever these steps mention `<NAME>`
+* Install and configure [the local development prerequisites](/docs/new-development-deployment.md#local-pre-requisites)
+* Activate the Python virtualenv that contains the local development prerequisites you installed in the previous step
 
 ```shell
-# export AWS_ACCESS_KEY_ID
-# export AWS_SECRET_ACCESS_KEY
-# export AWS_SESSION_TOKEN
-git clone git@github.com:DemocracyClub/aggregator-api.git
-cd aggregator-api
-git checkout aws-ci-cd || true
-pipenv install --dev --python $(cat .python-version | cut -f-2 -d.)
-SBUC=""
-docker run hello-world 2>/dev/null >/dev/null && SBUC='--use-container'
-NEW_ENV_NAME=mynewenv pipenv run python samconfig.toml.d/new-dev-env.py >>samconfig.toml
-[ ! -z $AWS_ACCESS_KEY_ID ] || { echo "You've forgotten to export the 3 AWS_* environment variables mentioned above!" ; read -p "Hit Ctrl-C, export them, and then continue from this point ... "; }
+NEW_ENV_NAME=<NAME> python samconfig.toml.d/new-dev-env.py >>samconfig.toml
 AWS_DEFAULT_REGION=eu-west-2 pipenv run sam validate
-pipenv run make
-pipenv run sam build  --config-env mynewenv ${SBUC}
-pipenv run sam deploy --config-env mynewenv
-# The function is (hopefully!) now deployed to Lambda.
-# It's accessible via AWS API Gateway on the 'AggregatorApiFqdn' domain,
-# mentioned a few lines above, when accessed on the path '/Prod'.
-
+make
+sam build  --config-env <NAME> --use-container --cached
+sam deploy --config-env <NAME>
 ```
 
-These steps should have deployed the app to Lambda.
+These steps should have deployed the app to Lambda, accessible via AWS API Gateway on the 'AggregatorApiFqdn' domain mentioned near the end of the deployment output, but only **when accessed the path '/Prod'**.
 
 You can continue and add TLS, caching, and a custom domain to this deployment by following [the rest of the deployment document](/docs/new-development-deployment.md#deploying-tls-cdn-and-dns-on-top-of-an-existing-lambda-deployment).

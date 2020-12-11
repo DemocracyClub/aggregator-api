@@ -1,8 +1,8 @@
 # Deploying a development version of the Aggregator API
 
-* [Example output and AWS credentials](#example-output-and-aws-credentials)
+* [Example output in this document](#example-output-in-this-document)
 * [Deploying into AWS Lambda](#deploying-into-aws-lambda)
-   * [Installing local pre-requisites](#installing-local-pre-requisites)
+   * [Local pre-requisites](#local-pre-requisites)
    * [Setting up the configuration file](#setting-up-the-configuration-file)
    * [Validating your deployment template](#validating-your-deployment-template)
    * [Building the deployment artifact](#building-the-deployment-artifact)
@@ -32,17 +32,47 @@ In order to [deploy into Lambda](#deploying-into-aws-lambda) and then [deploy TL
 
 [Tearing down deployments](#tearing-down-deployments) is described at the end of this document.
 
-## Example output and AWS credentials
+## Example output in this document
 
 In this document, the `jcm1` environment will be deployed to show example output, using `pipenv run` as a prefix to activate a virtualenv containing the appropriate dev tools. You can activate or use such a virtualenv however suits you best.
 
-Make your AWS credentials available to the shell. Environment variables work well, as does having a setup baked into your user-level configuration files (https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html).
-
 ## Deploying into AWS Lambda
 
-### Installing local pre-requisites
+### Local pre-requisites
 
 After cloning the repo, use pipenv to install the dev packages. Avoid Pipenv version 11.9, unfortunately baked into recent Ubuntu releases, as it's broken in various Pipfile-processing ways (https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=945139).
+
+Make your AWS credentials available to the shell. Environment variables work well, as does having a setup baked into your user-level AWS configuration files (https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html).
+
+When acquiring your credentials, or configuring your AWS configuration files to acquire them automatically, choose the `AggregatorApiDeveloperAccess` role in the development account.
+
+Install Docker to a point where you can run the Docker hello-world test **without having to run the `docker` command via `sudo`**:
+
+```
+$ docker run hello-world
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+[ ... some lines elided ... ]
+```
+
+On Debian and Ubuntu machines, Docker can be installed from the Docker Engine repositories by following [Docker's installation steps](https://docs.docker.com/engine/install/ubuntu/). **NB the package called simply `docker` has nothing to do with the Docker product!**
+
+After installation, Debian and Ubuntu will still require the use of `sudo` to execute `docker`. To fix this, add your user to the `docker` unix group, and log out and log out of your machine. This is a one-time action; you won't need to do it again.
+
+If you can't afford to log out and in again, you can temporarily fake a new login in the current session, with `sudo`, and continue deploying inside the new shell. Your next **full** login will not need you to do this.
+
+```
+$ sudo adduser $USER docker
+Adding user `ubuntu' to group `docker' ...
+Adding user ubuntu to group docker
+Done.
+$ groups
+ubuntu adm dialout cdrom floppy sudo audio dip video plugdev netdev lxd
+$ sudo su - $USER
+$ groups
+ubuntu adm dialout cdrom floppy sudo audio dip video plugdev netdev lxd docker
+```
 
 ### Setting up the configuration file
 
@@ -145,7 +175,7 @@ The build artifacts have been placed in the `.aws-sam/build/` directory. Note th
 
 ### Deploying the built artifacts
 
-Use the `sam` CLI to deploy the app. You'll need to have at least the AWS IAM permissions mentioned in the [AWS account setup document](/docs/new-aws-account-setup.md#policies). Once you have seen the 3 uploads complete (currently: 3MB app; 28MB dependencies layer; 1KB template), the CloudFormation Stack creation should take no more than a minute - or something's not right.
+Use the `sam` CLI to deploy the app. Once you have seen the 3 uploads complete (currently: 3MB app; 28MB dependencies layer; 1KB template), the CloudFormation Stack creation should take no more than a minute - or something's not right.
 
 ```
 $ pipenv run sam deploy --config-env jcm1
