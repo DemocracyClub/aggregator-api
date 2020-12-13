@@ -145,7 +145,7 @@ Now build the Lambda deployment package.
 NB **this will destroy the current contents of the `.aws-sam/build/` directory**; but it *should* only contain the generated result of your previous build. If you've modified any files under that path this command will revert their contents back to what's in your working directory.
 
 ```
-$ pipenv run sam build --config-env jcm1 --use-container
+$ pipenv run sam build --config-env jcm1 --use-container --cached
 Starting Build inside a container
 Building codeuri: . runtime: python3.6 metadata: {} functions: ['AggregatorApiFunction']
 Fetching amazon/aws-sam-cli-build-image-python3.6 Docker container image......
@@ -173,9 +173,12 @@ Running CustomMakeBuilder:MakeBuild
 Current Artifacts Directory : /tmp/samcli/artifacts
 ```
 
-Note the use of `--use-container`, here. This is recommended for build/dev environment isolation, but isn't essential. It requires docker to be installed, and for your user to be able to start containers without the use of `sudo`. If that's not possible, you can build without `--use-container`.
+Note the use of 2 semi-optional flags passed to `sam build`, above:
 
-The build artifacts have been placed in the `.aws-sam/build/` directory. Note the presence of the file `.aws-sam/build/template.yaml`: this is the CloudFormation template that will be deployed in the next step; if you modify the source `template.yaml` file in the root of the repo and want to deploy those changes, you'll need to re-run the build. Whilst it's *possible* to make changes directly to `.aws-sam/build/template`, hence allowing a redeployment without a rebuild (sometimes useful when rapidly iterating on infra- or AWS-related changes), do keep in mind that **all your changes made this way will be lost the next time you build**!
+- `--use-container`: this is *strongly* recommended for build/dev environment isolation, but isn't absolutely essential. It requires docker to be installed, and for your user to be able to start containers without the use of `sudo`, as [documented above](#local-pre-requisites). If that's not possible, you can build without `--use-container`, but be aware that **your app is likely not to work inside AWS Lambda, and any changes you make to `Pipfile`/`Pipfile.lock` may not build correctly in CI**.
+- `--cached`: this is a time-saving flag, which first causes the `sam build` command to evaluate if it needs to rebuild either the DependenciesLayer or app function, based on if any files have changed since the last time you built *on this machine*; and secondly, as a knock-on effect, if it *doesn't* need to rebuild either, and you had already deployed either one to AWS, it doesn't upload the same, unmodified, packages again. There's no downside to using this flag.
+
+After building, the resulting artifacts appear in the `.aws-sam/build/` directory. Note the presence of the file `.aws-sam/build/template.yaml`: this is the CloudFormation template that will be deployed in the next step; if you modify the source `template.yaml` file in the root of the repo and want to deploy those changes, you'll need to re-run the build. Whilst it's *possible* to make changes directly to `.aws-sam/build/template`, hence allowing a redeployment without a rebuild (sometimes useful when rapidly iterating on infra- or AWS-related changes), do keep in mind that **all your changes made this way will be lost the next time you build**!
 
 ### Deploying the built artifacts
 
