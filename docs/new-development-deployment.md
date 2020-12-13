@@ -117,15 +117,18 @@ $ AWS_DEFAULT_REGION=eu-west-2 pipenv run sam validate
 
 ### Building the deployment artifact
 
-Use the Makefile's default target to:
+Use the Makefile's `all` target to:
 
 - delete and recreate the static asset directory at `aggregator/static_files/`
 - generate `lambda-layers/DependenciesLayer/requirements.txt`
+- build the API docs at `aggregator/apps/api/v1/templates/api_docs_rendered.html`
 
-The results of these steps are gitignored, and have to be re-done when you change either `Pipfile`, `Pipfile.lock`, or anything that alters how the static assets look.
+The results of the first 2 of these steps are gitignored. The rendered API docs **are** currently committed, and may well show git changes after you run this step. They exist as both template and rendered output for unclear reasons, possibly to do with the historic complexity of installing the API-doc-generating libraries. *Feel free to change this behaviour, and these docs, if you know this area!*.
+
+All these steps have to be re-done when you change either `Pipfile`, `Pipfile.lock`, or anything that alters how the static assets or the API docs look. All these files will be rebuilt inside CI before the CI-managed deployments are updated, but the results of this rebuild are not committed back to the repository.
 
 ```
-$ pipenv run make
+$ pipenv run make all
 rm -rf aggregator/static_files/ lambda-layers/DependenciesLayer/requirements.txt
 python manage.py collectstatic --noinput --clear
 Copying '/home/ubuntu/code/aggregator-api/aggregator/assets/images/dc-badge/black/badge.png'
@@ -134,6 +137,7 @@ Post-processed 'css/styles.css' as 'css/styles.css'
 [ ... 111 "Post-processed" lines elided ... ]
 134 static files copied to '/home/ubuntu/code/aggregator-api/aggregator/static_files', 139 post-processed.
 pipenv lock -r | sed "s/^-e //" >lambda-layers/DependenciesLayer/requirements.txt
+python manage.py build_docs
 ```
 
 Now build the Lambda deployment package.

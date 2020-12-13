@@ -70,7 +70,7 @@ Before following these steps:
 ```shell
 NEW_ENV_NAME=<NAME> python samconfig.toml.d/new-dev-env.py >>samconfig.toml
 AWS_DEFAULT_REGION=eu-west-2 pipenv run sam validate
-make
+make all
 sam build  --config-env <NAME> --use-container --cached
 sam deploy --config-env <NAME>
 ```
