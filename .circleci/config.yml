@@ -47,10 +47,6 @@ jobs:
     - run: pipenv run black-check
     - run: pipenv run pytest --flakes
     - run: pipenv run pytest --cov-report= --cov=aggregator --junitxml=test-results/junit.xml
-    - run: SECRET_KEY=notasecretkey pipenv run ./manage.py build_docs
-    - persist_to_workspace:
-        root: ~/repo/
-        paths: [ aggregator/apps/api/v1/templates/api_docs_rendered.html ]
     - run: |
         if [ -n "$COVERALLS_REPO_TOKEN" ]; then
           pipenv run coveralls
@@ -74,6 +70,7 @@ jobs:
     - run: pip install --upgrade pip
     - run: pip install -r lambda-layers/DependenciesLayer/requirements.txt
     - run: make collectstatic
+    - run: make aggregator/apps/api/v1/templates/api_docs_rendered.html APP_IS_BEHIND_CLOUDFRONT=True
     - run: sam build ${DASH_DASH_DEBUG}
     - persist_to_workspace:
         root: ~/repo/
