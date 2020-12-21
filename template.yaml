@@ -1,0 +1,93 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: "Aggregator API app: Lambda, API Gateway"
+
+Globals:
+  Function:
+    Timeout: 10
+  Api:
+    BinaryMediaTypes:
+      - "*/*"
+
+Parameters:
+
+  AppSecretKey:
+    Description: "The SECRET_KEY environment variable passed to the app."
+    Type: String
+
+  AppDjangoSettingsModule:
+    # NB This parameter (and how it reaches the app, and how it's set in
+    # developer and CI-managed deployments) is used in
+    # `docs/new-development-deployment.md` as a reference to demonstrate how to
+    # communicate variables to the app. If you modify this parameter, or remove
+    # it, please update the document so developers aren't left without
+    # guidance!
+    Description: "The DJANGO_SETTINGS_MODULE environment variable passed to the app."
+    Type: String
+
+  AppIsBehindCloudFront:
+    Description: "The APP_IS_BEHIND_CLOUDFRONT environment variable passed to the app, which modifies various path- and host-related settings."
+    Type: String
+    AllowedValues:
+    - "True"
+    - "False"
+    Default: "False"
+
+  AppLogRetentionDays:
+    Description: "The number of days that CloudWatch Logs will keep logs from the app."
+    Type: Number
+    Default: 60
+    AllowedValues: [ 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653 ]
+
+Resources:
+
+  DependenciesLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      ContentUri: ./lambda-layers/DependenciesLayer/
+      CompatibleRuntimes:
+        - python3.6
+    Metadata:
+      BuildMethod: makefile
+    RetentionPolicy: Delete
+
+  AggregatorApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
+      CodeUri: .
+      Handler: aggregator.lambda_awsgi.lambda_handler
+      Layers:
+        - !Ref DependenciesLayer
+      Runtime: python3.6
+      MemorySize: 192
+      Environment:
+        Variables:
+          SECRET_KEY: !Ref AppSecretKey
+          DJANGO_SETTINGS_MODULE: !Ref AppDjangoSettingsModule
+          APP_IS_BEHIND_CLOUDFRONT: !Ref AppIsBehindCloudFront
+      Events:
+        HTTPRequests:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+        HTTPRequestRoots:
+          Type: Api
+          Properties:
+            Path: /
+            Method: ANY
+
+  AggregatorApiFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DependsOn: [ AggregatorApiFunction ]
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${AggregatorApiFunction}
+      RetentionInDays: !Ref AppLogRetentionDays
+
+Outputs:
+  AggregatorApiFqdn:
+    Description: "API Gateway endpoint FQDN for Aggregator API function"
+    Value: !Sub "${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com"
+    Export:
+      Name: !Join [ ":", [ !Ref "AWS::StackName", "AggregatorApiFqdn" ] ]

@@ -45,10 +45,36 @@ In production, settings are obtained from environment variables. In production, 
 * `SECRET_KEY` - Django secret key.
 * `WDIV_API_KEY` - WDIV API key. For production usage, we must call WDIV with an API key to ensure we are not rate limited.
 * `SENTRY_DSN` - If set, exceptions will be logged here.
-* `ENV` - "prod" or "dev" - used by deploy script and sentry.
+* `ENV` - "prod" or "dev" - used by and sentry. FIXME: not currently propagated via the SAM CLI
 
 ## Deployment
 
-* The API is hosted on AWS Lambda and built with zappa
-* Deployment is handled by Circle CI: https://github.com/DemocracyClub/aggregator-api/blob/44d9b39fd32737e7f68d1019d14fbd932f7bb41a/.circleci/config.yml#L67
-* If you merge to master and all the tests pass, a deploy will be triggered
+* The API is hosted on AWS Lambda and built with [the AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
+* Deployment of 3 parallel environments is [handled by Circle CI](/.circleci/config.yml#L188)
+* If you merge to master and all the tests pass, deployments will be triggered:
+   - to `development` and `staging` in parallel
+   - to `production`, if `staging` smoke tests pass
+
+### Development deployments to AWS Lambda
+
+Development deployments are described in detail in [a separate document](/docs/new-development-deployment.md).
+
+Here are the happy-path steps to create a deployment in DC's development AWS account.
+
+Before following these steps:
+
+* [Choose a deployment name](/docs/new-development-deployment.md#setting-up-the-configuration-file) and use it wherever these steps mention `<NAME>`
+* Install and configure [the local development prerequisites](/docs/new-development-deployment.md#local-pre-requisites)
+* Activate the Python virtualenv that contains the local development prerequisites you installed in the previous step
+
+```shell
+NEW_ENV_NAME=<NAME> python samconfig.toml.d/new-dev-env.py >>samconfig.toml
+AWS_DEFAULT_REGION=eu-west-2 pipenv run sam validate
+make all
+sam build  --config-env <NAME> --use-container --cached
+sam deploy --config-env <NAME>
+```
+
+These steps should have deployed the app to Lambda, accessible via AWS API Gateway on the 'AggregatorApiFqdn' domain mentioned near the end of the deployment output, but only **when accessed the path '/Prod'**.
+
+You can continue and add TLS, caching, and a custom domain to this deployment by following [the rest of the deployment document](/docs/new-development-deployment.md#deploying-tls-cdn-and-dns-on-top-of-an-existing-lambda-deployment).

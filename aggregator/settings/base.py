@@ -13,17 +13,14 @@ SECRET_KEY = os.environ.get("SECRET_KEY", None)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
     "django.contrib.staticfiles",
     "apiblueprint_view",
     "corsheaders",
@@ -36,6 +33,7 @@ INSTALLED_APPS += PROJECT_APPS
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -70,12 +68,7 @@ WSGI_APPLICATION = "aggregator.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-    }
-}
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3"}}
 
 
 # Password validation
@@ -170,9 +163,20 @@ if sentry_dsn:
         },
     }
 
+# Lambda: https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html#configuration-envvars-runtime
+# CircleCI: https://circleci.com/docs/2.0/env-vars/#built-in-environment-variables
+# Make: https://docs.oracle.com/cd/E19504-01/802-5880/makeattapp-21/index.html
+def is_local_dev():
+    vars_to_check = ["AWS_LAMBDA_FUNCTION_NAME", "CI", "MAKEFLAGS"]
+    return not any(ev in os.environ for ev in vars_to_check)
+
 
 # .local.py overrides all the common settings.
-try:
-    from .local import *  # noqa
-except ImportError:
-    pass
+if is_local_dev():
+    print(
+        "Found nothing to indicate this is NOT an local development environment; including settings/local.py"
+    )  # FIXME: log?
+    try:
+        from .local import *  # noqa
+    except ImportError:
+        pass
