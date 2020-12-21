@@ -1,3 +1,6 @@
+import re
+import hashlib
+import urllib
 import boto3
 import os
 import pytest
@@ -17,8 +20,19 @@ def test_app_front_page_http_200(app_url):
 )
 def test_api_postcode_can_include_urlencoded_spaces(app_url):
     auth_token = os.environ["DEVS_DC_API_KEY"]
-    resp = requests.get(f"{app_url}/api/v1/postcode/OX3 7LR/?auth_token=${auth_token}")
+    base_url = urllib.parse.urljoin(app_url, "api/v1/postcode/OX3 7LR/")
+    resp = requests.get(f"{base_url}?auth_token=${auth_token}")
     assert resp.status_code == 200
+
+
+def test_api_docs_assets_style_css_filename_contains_md5_of_content(app_url):
+    resp = requests.get(urllib.parse.urljoin(app_url, "api/v1/"))
+    styles_path_re = re.search('"([^"]+/styles.[a-f0-9]{12}.css)', resp.text)
+    assert styles_path_re, "No CSS path found in content"
+    styles_path = styles_path_re.group(1)
+    styles_file = requests.get(app_url + styles_path)
+    content_md5_start = hashlib.md5(styles_file.content).hexdigest()[:12]
+    assert f".{content_md5_start}." in styles_path
 
 
 def skip_discovery():
@@ -40,7 +54,7 @@ def app_url(deployed_cfn_stack):
 
     app_fqdn = cfn_output_value(deployed_cfn_stack, "AggregatorApiFqdn")
     assert app_fqdn
-    return f"https://{app_fqdn}/Prod"
+    return f"https://{app_fqdn}/Prod/"
 
 
 @pytest.fixture(scope="session")
