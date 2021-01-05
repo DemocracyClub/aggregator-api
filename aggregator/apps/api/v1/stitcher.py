@@ -12,6 +12,7 @@ def ballot_charisma(ballot, sort_keys):
         "nia": {"default": 60},
         "gla": {"default": 60, "a": 55},
         "naw": {"default": 60, "r": 55},
+        "senedd": {"default": 60, "r": 55},
         "sp": {"default": 60, "r": 55},
         "pcc": {"default": 50},
         "local": {"default": 40},
