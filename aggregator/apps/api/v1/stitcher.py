@@ -21,7 +21,7 @@ def ballot_charisma(ballot, sort_keys):
     ballot_paper_id = ballot["ballot_paper_id"]
 
     # Look up the dict of possible weights for this election type
-    weights = charisma_map[ballot_paper_id.split(".")[0]]
+    weights = charisma_map.get(ballot_paper_id.split(".")[0], 30)
 
     # Extract the organisation type from the sort keys
     organisation_type = sort_keys.get(ballot_paper_id)
