@@ -16,6 +16,7 @@
     "url": "http://127.0.0.1:8001/api/beta/councils/E09000023/",
     "council_id": "E09000023",
     "name": "London Borough of Lewisham",
+    "nation": "England",
     "email": "electoral.services@lewisham.gov.uk",
     "phone": "020 8314 6086",
     "website": "http://www.lewisham.gov.uk/",
