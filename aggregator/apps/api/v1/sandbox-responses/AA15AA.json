@@ -54,6 +54,7 @@
   "electoral_services": {
     "council_id": "N09000007",
     "name": "",
+    "nation": "Northern Ireland",
     "email": "info@eoni.org.uk",
     "phone": "",
     "website": "http://www.eoni.org.uk/",
@@ -63,6 +64,7 @@
   "registration": {
     "council_id": "N09000007",
     "name": "",
+    "nation": "Northern Ireland",
     "email": "info@eoni.org.uk",
     "phone": "",
     "website": "http://www.eoni.org.uk/",

@@ -5,6 +5,7 @@
   "electoral_services": {
     "council_id": "E09000033",
     "name": "City of Westminster",
+    "nation": "England",
     "email": "electoralservices@westminster.gov.uk",
     "phone": "020 7641 2730",
     "website": "http://www.westminster.gov.uk/",
@@ -14,6 +15,7 @@
   "registration": {
     "council_id": "E09000033",
     "name": "City of Westminster",
+    "nation": "England",
     "email": "electoralservices@westminster.gov.uk",
     "phone": "020 7641 2730",
     "website": "http://www.westminster.gov.uk/",

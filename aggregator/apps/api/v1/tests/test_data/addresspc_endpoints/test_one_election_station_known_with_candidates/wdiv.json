@@ -16,6 +16,7 @@
     "url": "http://127.0.0.1:8001/api/beta/councils/E09000033/",
     "council_id": "E09000033",
     "name": "City of Westminster",
+    "nation": "England",
     "email": "electoralservices@westminster.gov.uk",
     "phone": "020 7641 2730",
     "website": "http://www.westminster.gov.uk/",

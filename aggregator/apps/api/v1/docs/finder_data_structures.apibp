@@ -1,6 +1,7 @@
 ## ElectoralServices (object)
 + `council_id`: `W06000015` (string) - GSS code for this council
 + name: `Cardiff Council` (string) - Name of this council
++ nation: `Wales` (string) - Name of nation
 + address: `Electoral Registration Officer\nCity of Cardiff Council\nCounty Hall Atlantic Wharf` (string) - Contact address for this council
 + postcode: `CF10 4UW` (string) - Postcode component of contact address for this council
 + email: `electoralservices@cardiff.gov.uk` (string) - Contact email address for this council's Electoral Services team
