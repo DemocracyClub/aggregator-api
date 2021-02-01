@@ -35,16 +35,17 @@ class PostcodeViewTests(TestCase):
         # iterate through the same set of expected inputs/outputs
         # we test against in test_stitcher.py
         for postcode, input_fixture in fixture_map.items():
-            mock = partial(mock_proxy_multiple_requests, input_fixture)
-            expected = load_sandbox_output(
-                postcode, base_url="http://testserver/api/v1/"
-            )
-            with patch("api.v1.api_client.proxy_multiple_requests", mock):
-                response = self.client.get(
-                    f"/api/v1/postcode/{postcode}/", HTTP_AUTHORIZATION="Token foo"
+            with self.subTest(postcode=postcode, input_fixture=input_fixture):
+                mock = partial(mock_proxy_multiple_requests, input_fixture)
+                expected = load_sandbox_output(
+                    postcode, base_url="http://testserver/api/v1/"
                 )
-                self.assertDictEqual(expected, response.json())
-                self.assertEqual(200, response.status_code)
+                with patch("api.v1.api_client.proxy_multiple_requests", mock):
+                    response = self.client.get(
+                        f"/api/v1/postcode/{postcode}/", HTTP_AUTHORIZATION="Token foo"
+                    )
+                    self.assertDictEqual(expected, response.json())
+                    self.assertEqual(200, response.status_code)
 
     def test_mock(self):
         mock = Mock(

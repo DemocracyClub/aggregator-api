@@ -29,25 +29,26 @@
       "address": "42 Leinster Gardens, London",
       "postcode": "AA13AA",
       "council": "http://127.0.0.1:8001/api/beta/councils/E09000033/",
-      "slug": "e09000033-2282254634585",
-      "polling_station_id": "foo",
-      "url": "http://127.0.0.1:8001/api/beta/address/e09000033-2282254634585"
+      "uprn": "10035187881",
+      "polling_station_id"
+      : "foo",
+      "url": "http://127.0.0.1:8001/api/beta/address/10035187881"
     },
     {
       "address": "19A Leinster Gardens, London",
       "postcode": "AA13AA",
       "council": "http://127.0.0.1:8001/api/beta/councils/E09000033/",
-      "slug": "e09000033-8531289123599",
+      "uprn": "10035187882",
       "polling_station_id": "bar",
-      "url": "http://127.0.0.1:8001/api/beta/address/e09000033-8531289123599"
+      "url": "http://127.0.0.1:8001/api/beta/address/10035187882"
     },
     {
       "address": "22 Leinster Gardens, London",
       "postcode": "AA13AA",
       "council": "http://127.0.0.1:8001/api/beta/councils/E09000033/",
-      "slug": "e09000033-7816246896787",
+      "uprn": "10035187883",
       "polling_station_id": "baz",
-      "url": "http://127.0.0.1:8001/api/beta/address/e09000033-7816246896787"
+      "url": "http://127.0.0.1:8001/api/beta/address/10035187883"
     }
   ],
   "report_problem_url": null,
