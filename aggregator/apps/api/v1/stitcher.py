@@ -126,7 +126,7 @@ class Stitcher:
         details = council.get("registration_contacts", None)
         if details:
             try:
-                details["phone"] = details.get("phone", [])[0]
+                details["phone"] = details.get("phone_numbers", [])[0]
             except IndexError:
                 details["phone"] = ""
         else:
