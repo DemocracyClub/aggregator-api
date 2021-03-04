@@ -17,20 +17,6 @@ def stitcher_error(*args, **kwargs):
 class PostcodeViewTests(TestCase):
     maxDiff = None
 
-    @patch(
-        "api.v1.api_client.proxy_multiple_requests",
-        partial(mock_proxy_multiple_requests, "addresspc_endpoints/test_no_elections"),
-    )
-    @patch("api.v1.stitcher.Stitcher.validate", stitcher_error)
-    def test_stitcher_error(self):
-        # we're mocking a valid set of WDIV/WCIVF responses here
-        # but when we try to parse them, Stitcher will throw an error
-        response = self.client.get(
-            "/api/v1/postcode/SW1A1AA/", HTTP_AUTHORIZATION="Token foo"
-        )
-        self.assertEqual(500, response.status_code)
-        self.assertDictEqual({"message": "Internal Server Error"}, response.json())
-
     def test_valid(self):
         # iterate through the same set of expected inputs/outputs
         # we test against in test_stitcher.py
@@ -59,3 +45,21 @@ class PostcodeViewTests(TestCase):
                 "/api/v1/postcode/SW1A1AA/?foo=bar", HTTP_AUTHORIZATION="Token foo"
             )
             mock.assert_called_with("SW1A1AA")
+
+    def test_wcivf_missing_ballot(self):
+        wcivf_data = load_fixture(
+            "addresspc_endpoints/test_multiple_elections", "wcivf"
+        )
+        del wcivf_data[0]
+        mock = Mock(
+            return_value=(
+                load_fixture("addresspc_endpoints/test_multiple_elections", "wdiv"),
+                wcivf_data,
+            )
+        )
+        with patch("api.v1.api_client.WdivWcivfApiClient.get_data_for_postcode", mock):
+            resp = self.client.get(
+                "/api/v1/postcode/SW1A1AA/?foo=bar", HTTP_AUTHORIZATION="Token foo"
+            )
+            self.assertEqual(resp.status_code, 200)
+            self.assertNotContains(resp, "mayor.lewisham.2018-05-03")

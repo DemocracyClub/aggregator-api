@@ -17,22 +17,6 @@ def stitcher_error(*args, **kwargs):
 class AddressViewTests(TestCase):
     maxDiff = None
 
-    @patch(
-        "api.v1.api_client.proxy_single_request",
-        partial(
-            mock_proxy_single_request, "addresspc_endpoints/test_multiple_elections"
-        ),
-    )
-    @patch("api.v1.stitcher.Stitcher.validate", stitcher_error)
-    def test_stitcher_error(self):
-        # we're mocking a valid set of WDIV/WCIVF responses here
-        # but when we try to parse them, Stitcher will throw an error
-        response = self.client.get(
-            "/api/v1/address/1-foo-street-bar-town/", HTTP_AUTHORIZATION="Token foo"
-        )
-        self.assertEqual(500, response.status_code)
-        self.assertDictEqual({"message": "Internal Server Error"}, response.json())
-
     def test_valid(self):
         # iterate through the subset of applicable expected inputs/outputs
         # we test against in test_stitcher.py

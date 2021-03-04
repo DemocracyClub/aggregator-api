@@ -97,19 +97,6 @@ class Stitcher:
         self.wcivf_ballots = self.make_wcivf_ballots()
         self.ballot_sort_keys = {}
         self.request = request
-        self.validate()
-
-    def validate(self):
-        for ballot in self.wdiv_resp["ballots"]:
-            if ballot["ballot_paper_id"] not in self.wcivf_ballots:
-                raise StitcherValidationError(
-                    f'Could not find expected ballot {ballot["ballot_paper_id"]}'
-                )
-
-        # TODO: define a schema and validate against it here to ensure
-        # the wdiv/wcivf responses we've got to work with make sense
-
-        return True
 
     def get_electoral_services(self):
         council = deepcopy(self.wdiv_resp["council"])
@@ -212,8 +199,11 @@ class Stitcher:
             )
 
         for date in results:
-            for ballot in date["ballots"]:
-                wcivf_ballot = self.wcivf_ballots[ballot["ballot_paper_id"]]
+            for i, ballot in enumerate(date["ballots"]):
+                wcivf_ballot = self.wcivf_ballots.get(ballot["ballot_paper_id"])
+                if not wcivf_ballot:
+                    del date["ballots"][i]
+                    continue
 
                 ballot["ballot_url"] = self.request.build_absolute_uri(
                     reverse("api:v1:elections_get", args=(ballot["ballot_paper_id"],))
@@ -232,7 +222,6 @@ class Stitcher:
                 self.ballot_sort_keys[ballot["ballot_paper_id"]] = wcivf_ballot[
                     "organisation_type"
                 ]
-
         if results:
             results[0]["polling_station"] = self.minimal_wdiv_response
         response = {
