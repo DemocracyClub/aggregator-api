@@ -8,9 +8,9 @@ The following test postcodes and address slugs are valid in the sandbox. Each on
 * postcode [AA12AA](http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA12AA) - One upcoming ballot, station known, with candidates
 * postcode [AA12AB](http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA12AB) - One upcoming ballot, station not known, with candidates
 * postcode [AA13AA](http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA13AA) - We need to show the user an address picker. Each of the following `/address` calls has different polling station info:
-    * address slug [e09000033-2282254634585](http://developers.democracyclub.org.uk/api/v1/sandbox/address/e09000033-2282254634585)
-    * address slug [e09000033-8531289123599](http://developers.democracyclub.org.uk/api/v1/sandbox/address/e09000033-8531289123599)
-    * address slug [e09000033-7816246896787](http://developers.democracyclub.org.uk/api/v1/sandbox/address/e09000033-7816246896787)
+    * address slug [10035187881](http://developers.democracyclub.org.uk/api/v1/sandbox/address/10035187881)
+    * address slug [10035187882](http://developers.democracyclub.org.uk/api/v1/sandbox/address/10035187882)
+    * address slug [10035187883](http://developers.democracyclub.org.uk/api/v1/sandbox/address/10035187883)
 * postcode [AA14AA](http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA14AA) - Four upcoming ballots across 3 future dates with a cancellation:
     * `mayor.lewisham.2018-05-03` - Mayoral election
     * `local.lewisham.blackheath.2018-05-03` - This election is cancelled and rescheduled on 2018-05-10
