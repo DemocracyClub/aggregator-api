@@ -104,11 +104,7 @@ class SandboxView(View):
                 )
             raise ApiError("Could not geocode from any source", status=400)
 
-        example_slugs = (
-            "e09000033-2282254634585",
-            "e09000033-8531289123599",
-            "e09000033-7816246896787",
-        )
+        example_slugs = ("10035187881", "10035187882", "10035187883")
         if "slug" in kwargs:
             if kwargs["slug"] in example_slugs:
                 return HttpResponse(
