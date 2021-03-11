@@ -76,10 +76,10 @@
   
   
   
-  
 
 
   <main>
+    
     <div class="container">
       
       
@@ -130,6 +130,7 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
   &quot;electoral_services&quot;: {
     &quot;council_id&quot;: &quot;W06000015&quot;,
     &quot;name&quot;: &quot;Cardiff Council&quot;,
+    &quot;nation&quot;: &quot;Wales&quot;,
     &quot;address&quot;: &quot;Electoral Registration Officer\\nCity of Cardiff Council\\nCounty Hall Atlantic Wharf&quot;,
     &quot;postcode&quot;: &quot;CF10 4UW&quot;,
     &quot;email&quot;: &quot;electoralservices@cardiff.gov.uk&quot;,
@@ -185,6 +186,10 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
         &quot;name&quot;: {
           &quot;type&quot;: &quot;string&quot;,
           &quot;description&quot;: &quot;Name of this council&quot;
+        },
+        &quot;nation&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Name of nation&quot;
         },
         &quot;address&quot;: {
           &quot;type&quot;: &quot;string&quot;,
@@ -407,6 +412,7 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
   &quot;electoral_services&quot;: {
     &quot;council_id&quot;: &quot;W06000015&quot;,
     &quot;name&quot;: &quot;Cardiff Council&quot;,
+    &quot;nation&quot;: &quot;Wales&quot;,
     &quot;address&quot;: &quot;Electoral Registration Officer\\nCity of Cardiff Council\\nCounty Hall Atlantic Wharf&quot;,
     &quot;postcode&quot;: &quot;CF10 4UW&quot;,
     &quot;email&quot;: &quot;electoralservices@cardiff.gov.uk&quot;,
@@ -778,6 +784,10 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
         &quot;name&quot;: {
           &quot;type&quot;: &quot;string&quot;,
           &quot;description&quot;: &quot;Name of this council&quot;
+        },
+        &quot;nation&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Name of nation&quot;
         },
         &quot;address&quot;: {
           &quot;type&quot;: &quot;string&quot;,
@@ -913,20 +923,21 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
     {
       &quot;address&quot;: &quot;16 DUNCAN CLOSE, ST. MELLONS, CARDIFF&quot;,
       &quot;postcode&quot;: &quot;CF3 1NP&quot;,
-      &quot;slug&quot;: &quot;w06000015-100100106448&quot;,
-      &quot;url&quot;: &quot;http://developers.democracyclub.org.uk/api/v1/address/w06000015-100100106448&quot;
+      &quot;slug&quot;: &quot;100100106448&quot;,
+      &quot;url&quot;: &quot;http://developers.democracyclub.org.uk/api/v1/address/100100106448&quot;
     },
     {
       &quot;address&quot;: &quot;26 DUNCAN CLOSE, ST. MELLONS, CARDIFF&quot;,
       &quot;postcode&quot;: &quot;CF3 1NP&quot;,
-      &quot;slug&quot;: &quot;w06000015-100100106458&quot;,
-      &quot;url&quot;: &quot;http://developers.democracyclub.org.uk/api/v1/address/w06000015-100100106448&quot;
+      &quot;slug&quot;: &quot;100100106458&quot;,
+      &quot;url&quot;: &quot;http://developers.democracyclub.org.uk/api/v1/address/100100106458&quot;
     }
   ],
   &quot;dates&quot;: [],
   &quot;electoral_services&quot;: {
     &quot;council_id&quot;: &quot;W06000015&quot;,
     &quot;name&quot;: &quot;Cardiff Council&quot;,
+    &quot;nation&quot;: &quot;Wales&quot;,
     &quot;address&quot;: &quot;Electoral Registration Officer\\nCity of Cardiff Council\\nCounty Hall Atlantic Wharf&quot;,
     &quot;postcode&quot;: &quot;CF10 4UW&quot;,
     &quot;email&quot;: &quot;electoralservices@cardiff.gov.uk&quot;,
@@ -1020,6 +1031,10 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
         &quot;name&quot;: {
           &quot;type&quot;: &quot;string&quot;,
           &quot;description&quot;: &quot;Name of this council&quot;
+        },
+        &quot;nation&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Name of nation&quot;
         },
         &quot;address&quot;: {
           &quot;type&quot;: &quot;string&quot;,
@@ -1129,7 +1144,7 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
         href="#address-search-3"
         class="permalink">&para;</a></h3><code>/address/{slug}</code><div class="api-action-example">
     Example:
-    <a href="https://developers.democracyclub.org.uk/api/v1/address/e07000223-527-5-truleigh-way-shoreham-by-sea-west-sussex-bn436hw"><code>https://developers.democracyclub.org.uk/api/v1/address/e07000223-527-5-truleigh-way-shoreham-by-sea-west-sussex-bn436hw</code></a></div><div class="api-parameters"><h4>Parameters</h4><ul><li><p><strong>slug</strong>&#32;
+    <a href="https://developers.democracyclub.org.uk/api/v1/address/60017560"><code>https://developers.democracyclub.org.uk/api/v1/address/60017560</code></a></div><div class="api-parameters"><h4>Parameters</h4><ul><li><p><strong>slug</strong>&#32;
 
                 <code>string</code>
 
@@ -1138,7 +1153,7 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                     required
                   )
                 
-              </p><p>A unique slug describing a residential address</p><p>Example: <code>e07000223-527-5-truleigh-way-shoreham-by-sea-west-sussex-bn436hw</code></p></li></ul></div><div class="api-description"><p>In the event that the same information is not applicable to all addresses described by a postcode, a call to <code>/postcode</code> will return an array of address objects, each of which corresponds to a call to the <code>/address</code> endpoint. A subsequent call to <code>/address</code> will return an object of the same format as a valid call to <code>/postcode</code>.</p></div><div class="api-action"><h4 id="address-search-4">
+              </p><p>A unique slug describing a residential address</p><p>Example: <code>60017560</code></p></li></ul></div><div class="api-description"><p>In the event that the same information is not applicable to all addresses described by a postcode, a call to <code>/postcode</code> will return an array of address objects, each of which corresponds to a call to the <code>/address</code> endpoint. A subsequent call to <code>/address</code> will return an object of the same format as a valid call to <code>/postcode</code>.</p></div><div class="api-action"><h4 id="address-search-4">
       Address search&nbsp;<a
         href="#address-search-4"
         class="permalink">&para;</a></h4><div class="api-action-transaction"><div class="api-action-request">
@@ -1245,6 +1260,7 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
   &quot;electoral_services&quot;: {
     &quot;council_id&quot;: &quot;W06000015&quot;,
     &quot;name&quot;: &quot;Cardiff Council&quot;,
+    &quot;nation&quot;: &quot;Wales&quot;,
     &quot;address&quot;: &quot;Electoral Registration Officer\\nCity of Cardiff Council\\nCounty Hall Atlantic Wharf&quot;,
     &quot;postcode&quot;: &quot;CF10 4UW&quot;,
     &quot;email&quot;: &quot;electoralservices@cardiff.gov.uk&quot;,
@@ -1616,6 +1632,10 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
         &quot;name&quot;: {
           &quot;type&quot;: &quot;string&quot;,
           &quot;description&quot;: &quot;Name of this council&quot;
+        },
+        &quot;nation&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;description&quot;: &quot;Name of nation&quot;
         },
         &quot;address&quot;: {
           &quot;type&quot;: &quot;string&quot;,
@@ -2551,7 +2571,7 @@ Each level above this is a group id. For example the ballot
           href="#sandbox-outputs-2"
           class="permalink">&para;</a></h2><div class="api-description"><p>At any time the live data we expose via the API reflects reality. This means that there are conditions which are important to model in your application but are difficult to replicate using live data.
 To make it easier to replicate a variety of behaviours in test/development we provide a 'sandbox API' at <a href="http://developers.democracyclub.org.uk/api/v1/sandbox">http://developers.democracyclub.org.uk/api/v1/sandbox</a> which serves fake but plausible data.
-The following test postcodes and address slugs are valid in the sandbox. Each one represents a different scenario:</p><ul><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA11AA">AA11AA</a> - No upcoming ballots</p></li><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA12AA">AA12AA</a> - One upcoming ballot, station known, with candidates</p></li><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA12AB">AA12AB</a> - One upcoming ballot, station not known, with candidates</p></li><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA13AA">AA13AA</a> - We need to show the user an address picker. Each of the following <code>/address</code> calls has different polling station info:</p><ul><li>address slug <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/address/e09000033-2282254634585">e09000033-2282254634585</a></li><li>address slug <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/address/e09000033-8531289123599">e09000033-8531289123599</a></li><li>address slug <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/address/e09000033-7816246896787">e09000033-7816246896787</a></li></ul></li><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA14AA">AA14AA</a> - Four upcoming ballots across 3 future dates with a cancellation:</p><ul><li><code>mayor.lewisham.2018-05-03</code> - Mayoral election</li><li><code>local.lewisham.blackheath.2018-05-03</code> - This election is cancelled and rescheduled on 2018-05-10</li><li><code>local.lewisham.blackheath.2018-05-10</code> - This election replaces the cancelled <code>local.lewisham.blackheath.2018-05-03</code></li><li><code>parl.lewisham-east.by.2018-06-14</code> - This election is scheduled but we don't know of any candidates yet</li></ul></li><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA15AA">AA15AA</a> - Northern Ireland. This example shows the <code>custom_finder</code> key in use. We can use this to redirect users to Electoral Office for Northern Ireland's website for polling station data.</p></li><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/EH11YJ">EH11YJ</a> - Scotland. This example shows different registration and electoral services contact details.</p></li></ul></div></div><div class="api-resource-group card"><h2 id="notes-and-tips-2">
+The following test postcodes and address slugs are valid in the sandbox. Each one represents a different scenario:</p><ul><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA11AA">AA11AA</a> - No upcoming ballots</p></li><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA12AA">AA12AA</a> - One upcoming ballot, station known, with candidates</p></li><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA12AB">AA12AB</a> - One upcoming ballot, station not known, with candidates</p></li><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA13AA">AA13AA</a> - We need to show the user an address picker. Each of the following <code>/address</code> calls has different polling station info:</p><ul><li>address slug <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/address/10035187881">10035187881</a></li><li>address slug <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/address/10035187882">10035187882</a></li><li>address slug <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/address/10035187883">10035187883</a></li></ul></li><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA14AA">AA14AA</a> - Four upcoming ballots across 3 future dates with a cancellation:</p><ul><li><code>mayor.lewisham.2018-05-03</code> - Mayoral election</li><li><code>local.lewisham.blackheath.2018-05-03</code> - This election is cancelled and rescheduled on 2018-05-10</li><li><code>local.lewisham.blackheath.2018-05-10</code> - This election replaces the cancelled <code>local.lewisham.blackheath.2018-05-03</code></li><li><code>parl.lewisham-east.by.2018-06-14</code> - This election is scheduled but we don't know of any candidates yet</li></ul></li><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA15AA">AA15AA</a> - Northern Ireland. This example shows the <code>custom_finder</code> key in use. We can use this to redirect users to Electoral Office for Northern Ireland's website for polling station data.</p></li><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/EH11YJ">EH11YJ</a> - Scotland. This example shows different registration and electoral services contact details.</p></li></ul></div></div><div class="api-resource-group card"><h2 id="notes-and-tips-2">
         Notes and Tips&nbsp;<a
           href="#notes-and-tips-2"
           class="permalink">&para;</a></h2><div class="api-description"><h3>Polling Stations</h3><ul><li>If we don't know a user's polling station, sometimes we may provide an external link for more info in <code>custom_finder</code>. This will always be populated for users in Northern Ireland where the Electoral Office for Northern Ireland run their own service. e.g:</li></ul><pre><code>{
@@ -2625,11 +2645,11 @@ is required will include this information in the <code>notifications</code> arra
       </ul>
     </nav>
 
-    <p>Copyright © 2020 Democracy Club Community Interest Company Company No: <a href="https://beta.companieshouse.gov.uk/company/09461226">09461226</a></p>
+    <p>Copyright © 2021 Democracy Club Community Interest Company Company No: <a href="https://beta.companieshouse.gov.uk/company/09461226">09461226</a></p>
     <p>
-      Contains OS data © Crown copyright and database right 2020<br>
-      Contains Royal Mail data © Royal Mail copyright and database right 2020<br>
-      Contains National Statistics data © Crown copyright and database right 2020<br>
+      Contains OS data © Crown copyright and database right 2021<br>
+      Contains Royal Mail data © Royal Mail copyright and database right 2021<br>
+      Contains National Statistics data © Crown copyright and database right 2021<br>
     </p>
 
   </div>
