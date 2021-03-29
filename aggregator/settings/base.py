@@ -130,10 +130,15 @@ from .constants import *  # noqa
 
 sentry_dsn = os.environ.get("SENTRY_DSN", None)
 if sentry_dsn:
-    import raven  # noqa
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
 
-    RAVEN_CONFIG = {"dsn": sentry_dsn, "environment": os.environ.get("ENV", None)}
-    INSTALLED_APPS.append("raven.contrib.django.raven_compat")
+    sentry_sdk.init(
+        dsn="https://examplePublicKey@o0.ingest.sentry.io/0",
+        integrations=[DjangoIntegration()],
+        traces_sample_rate=1.0,
+        send_default_pii=False,
+    )
 
     LOGGING = {
         "version": 1,
@@ -141,25 +146,9 @@ if sentry_dsn:
         "filters": {
             "require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}
         },
-        "handlers": {
-            "sentry": {
-                "level": "ERROR",
-                "class": "raven.contrib.django.raven_compat.handlers.SentryHandler",
-            },
-            "null": {"class": "logging.NullHandler"},
-        },
         "loggers": {
             # Silence DisallowedHost exception by setting null error handler
-            "django.security.DisallowedHost": {
-                "handlers": ["null"],
-                "propagate": False,
-            },
-            # Send middleware errors to sentry
-            "api.middleware": {
-                "level": "ERROR",
-                "handlers": ["sentry"],
-                "propagate": False,
-            },
+            "django.security.DisallowedHost": {"handlers": ["null"], "propagate": False}
         },
     }
 

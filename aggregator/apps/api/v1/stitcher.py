@@ -1,6 +1,7 @@
 import re
 from copy import deepcopy
 from django.urls import reverse
+from sentry_sdk import capture_message
 
 
 def ballot_charisma(ballot, sort_keys):
@@ -97,6 +98,19 @@ class Stitcher:
         self.wcivf_ballots = self.make_wcivf_ballots()
         self.ballot_sort_keys = {}
         self.request = request
+        self.validate()
+
+    def validate(self):
+        for ballot in self.wdiv_resp["ballots"]:
+            if ballot["ballot_paper_id"] not in self.wcivf_ballots:
+                message = f'Could not find expected ballot {ballot["ballot_paper_id"]}'
+                # Log the mismatched ballots to sentry, but don't raise an error
+                capture_message(message)
+
+        # TODO: define a schema and validate against it here to ensure
+        # the wdiv/wcivf responses we've got to work with make sense
+
+        return True
 
     def get_electoral_services(self):
         council = deepcopy(self.wdiv_resp["council"])
