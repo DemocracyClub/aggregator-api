@@ -106,6 +106,7 @@ class Stitcher:
                 message = f'Could not find expected ballot {ballot["ballot_paper_id"]}'
                 # Log the mismatched ballots to sentry, but don't raise an error
                 capture_message(message)
+                return False
 
         # TODO: define a schema and validate against it here to ensure
         # the wdiv/wcivf responses we've got to work with make sense
