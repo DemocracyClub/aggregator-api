@@ -1,17 +1,12 @@
 from functools import partial
 from unittest.mock import Mock, patch
 from django.test import TestCase
-from api.v1.stitcher import StitcherValidationError
 from api.v1.tests.helpers import (
     fixture_map,
     load_fixture,
     load_sandbox_output,
     mock_proxy_multiple_requests,
 )
-
-
-def stitcher_error(*args, **kwargs):
-    raise StitcherValidationError("foo")
 
 
 class PostcodeViewTests(TestCase):

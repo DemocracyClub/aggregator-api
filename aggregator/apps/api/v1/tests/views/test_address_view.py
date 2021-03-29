@@ -1,7 +1,6 @@
 from functools import partial
 from unittest.mock import Mock, patch
 from django.test import TestCase
-from api.v1.stitcher import StitcherValidationError
 from api.v1.tests.helpers import (
     fixture_map,
     load_fixture,

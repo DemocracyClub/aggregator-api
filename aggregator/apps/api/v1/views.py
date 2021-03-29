@@ -7,7 +7,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views import View
 from ..errors import ApiError
 from .api_client import EEApiClient, WdivWcivfApiClient, UpstreamApiError
-from .stitcher import Stitcher, StitcherValidationError
+from .stitcher import Stitcher
 
 
 class BaseView(View, metaclass=abc.ABCMeta):
@@ -37,10 +37,7 @@ class PostcodeView(BaseView):
         client = WdivWcivfApiClient(request)
         wdiv, wcivf = client.get_data_for_postcode(kwargs["postcode"])
 
-        try:
-            stitcher = Stitcher(wdiv, wcivf, request)
-        except StitcherValidationError:
-            raise ApiError("Internal Server Error")
+        stitcher = Stitcher(wdiv, wcivf, request)
 
         if not wdiv["polling_station_known"] and len(wdiv["addresses"]) > 0:
             result = stitcher.make_address_picker_response()
@@ -55,10 +52,7 @@ class AddressView(BaseView):
         client = WdivWcivfApiClient(request)
         wdiv, wcivf = client.get_data_for_address(kwargs["slug"])
 
-        try:
-            stitcher = Stitcher(wdiv, wcivf, request)
-        except StitcherValidationError:
-            raise ApiError("Internal Server Error")
+        stitcher = Stitcher(wdiv, wcivf, request)
 
         result = stitcher.make_result_known_response()
 

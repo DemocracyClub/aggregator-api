@@ -50,10 +50,6 @@ def sort_ballots(dates, sort_keys):
     return dates
 
 
-class StitcherValidationError(Exception):
-    pass
-
-
 class NotificationsMaker:
     def __init__(self, ballots):
         self.ballots = ballots
