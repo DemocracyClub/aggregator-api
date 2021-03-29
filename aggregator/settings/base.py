@@ -140,18 +140,6 @@ if sentry_dsn:
         send_default_pii=False,
     )
 
-    LOGGING = {
-        "version": 1,
-        "disable_existing_loggers": False,
-        "filters": {
-            "require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}
-        },
-        "loggers": {
-            # Silence DisallowedHost exception by setting null error handler
-            "django.security.DisallowedHost": {"handlers": ["null"], "propagate": False}
-        },
-    }
-
 # Lambda: https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html#configuration-envvars-runtime
 # CircleCI: https://circleci.com/docs/2.0/env-vars/#built-in-environment-variables
 # Make: https://docs.oracle.com/cd/E19504-01/802-5880/makeattapp-21/index.html
