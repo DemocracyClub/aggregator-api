@@ -67,3 +67,15 @@ class StitcherTests(TestCase):
         self.assertDictEqual(
             s.make_result_known_response(), load_sandbox_output(postcode)
         )
+
+    def test_validate_false_with_mismatched_balots(self):
+        postcode = "AA14AA"
+        wcivf = load_fixture(fixture_map[postcode], "wcivf")
+        s = Stitcher(load_fixture(fixture_map[postcode], "wdiv"), wcivf, self.request)
+        self.assertTrue(s.validate())
+
+        # Remove an election from WCIVF
+        wcivf.pop(0)
+
+        s = Stitcher(load_fixture(fixture_map[postcode], "wdiv"), wcivf, self.request)
+        self.assertFalse(s.validate())

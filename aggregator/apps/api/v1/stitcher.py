@@ -1,6 +1,7 @@
 import re
 from copy import deepcopy
 from django.urls import reverse
+from sentry_sdk import capture_message
 
 
 def ballot_charisma(ballot, sort_keys):
@@ -47,10 +48,6 @@ def sort_ballots(dates, sort_keys):
             date["ballots"], key=lambda k: ballot_charisma(k, sort_keys), reverse=True
         )
     return dates
-
-
-class StitcherValidationError(Exception):
-    pass
 
 
 class NotificationsMaker:
@@ -102,9 +99,10 @@ class Stitcher:
     def validate(self):
         for ballot in self.wdiv_resp["ballots"]:
             if ballot["ballot_paper_id"] not in self.wcivf_ballots:
-                raise StitcherValidationError(
-                    f'Could not find expected ballot {ballot["ballot_paper_id"]}'
-                )
+                message = f'Could not find expected ballot {ballot["ballot_paper_id"]}'
+                # Log the mismatched ballots to sentry, but don't raise an error
+                capture_message(message)
+                return False
 
         # TODO: define a schema and validate against it here to ensure
         # the wdiv/wcivf responses we've got to work with make sense
@@ -212,8 +210,11 @@ class Stitcher:
             )
 
         for date in results:
-            for ballot in date["ballots"]:
-                wcivf_ballot = self.wcivf_ballots[ballot["ballot_paper_id"]]
+            for i, ballot in enumerate(date["ballots"]):
+                wcivf_ballot = self.wcivf_ballots.get(ballot["ballot_paper_id"])
+                if not wcivf_ballot:
+                    del date["ballots"][i]
+                    continue
 
                 ballot["ballot_url"] = self.request.build_absolute_uri(
                     reverse("api:v1:elections_get", args=(ballot["ballot_paper_id"],))
@@ -232,7 +233,6 @@ class Stitcher:
                 self.ballot_sort_keys[ballot["ballot_paper_id"]] = wcivf_ballot[
                     "organisation_type"
                 ]
-
         if results:
             results[0]["polling_station"] = self.minimal_wdiv_response
         response = {
