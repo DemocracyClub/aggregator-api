@@ -24,6 +24,8 @@ tags = 'dc-product="aggregator-api" dc-environment="development" dc-instance="EX
 parameter_overrides = """
   AppDjangoSettingsModule=aggregator.settings.lambda_no_debug_merged_assets \
   AppSecretKey=badf00d \
+  AppSentryDSN=https://public@sentry.example.com/1 \
+  AppWdivApiKey=fake_WDIV_key \
   AppIsBehindCloudFront=False \
 """
 

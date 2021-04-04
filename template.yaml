@@ -19,6 +19,10 @@ Parameters:
     Description: "The SENTRY_DSN environment variable passed to the app."
     Type: String
 
+  AppWdivApiKey:
+    Description: "The WDIV_API_KEY environment variable passed to the app."
+    Type: String
+
   AppDjangoSettingsModule:
     # NB This parameter (and how it reaches the app, and how it's set in
     # developer and CI-managed deployments) is used in
@@ -69,6 +73,7 @@ Resources:
         Variables:
           SECRET_KEY: !Ref AppSecretKey
           SENTRY_DSN: !Ref AppSentryDSN
+          WDIV_API_KEY: !Ref AppWdivApiKey
           DJANGO_SETTINGS_MODULE: !Ref AppDjangoSettingsModule
           APP_IS_BEHIND_CLOUDFRONT: !Ref AppIsBehindCloudFront
       Events:
