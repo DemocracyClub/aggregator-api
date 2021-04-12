@@ -134,7 +134,7 @@ if sentry_dsn:
     from sentry_sdk.integrations.django import DjangoIntegration
 
     sentry_sdk.init(
-        dsn="https://examplePublicKey@o0.ingest.sentry.io/0",
+        dsn=sentry_dsn,
         integrations=[DjangoIntegration()],
         traces_sample_rate=1.0,
         send_default_pii=False,
