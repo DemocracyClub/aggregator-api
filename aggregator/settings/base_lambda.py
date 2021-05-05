@@ -55,7 +55,11 @@ STATICFILES_FINDERS = (
 PIPELINE["COMPILERS"] = ("aggregator.s3_lambda_storage.LambdaSASSCompiler",)  # noqa
 
 
-logger_boto3_session = Session(region_name="eu-west-2")
+logger_boto3_session = Session(
+    aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
+    aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY"),
+    region_name="eu-west-2",
+)
 
 LOGGING = {
     "version": 1,
