@@ -1,3 +1,5 @@
+from boto3 import Session
+
 from .base import *  # noqa
 import os
 
@@ -52,6 +54,9 @@ STATICFILES_FINDERS = (
 
 PIPELINE["COMPILERS"] = ("aggregator.s3_lambda_storage.LambdaSASSCompiler",)  # noqa
 
+
+logger_boto3_session = Session(region_name="eu-west-2")
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -73,7 +78,7 @@ LOGGING = {
             "boto3_session": logger_boto3_session,
             "log_group": "CodifiedMusings",
             # Different stream for each environment
-            "stream_name": f"devs-dc-Logs",
+            "stream_name": "devs-dc-Logs",
             "formatter": "aws",
         },
         "console": {"class": "logging.StreamHandler", "formatter": "aws"},
