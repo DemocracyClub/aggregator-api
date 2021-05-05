@@ -51,3 +51,35 @@ STATICFILES_FINDERS = (
 )
 
 PIPELINE["COMPILERS"] = ("aggregator.s3_lambda_storage.LambdaSASSCompiler",)  # noqa
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "aws": {
+            # you can add specific format for aws here
+            # if you want to change format, you can read:
+            #    https://stackoverflow.com/questions/533048/how-to-log-source-file-name-and-line-number-in-python/44401529
+            # "format": "%(asctime)s [%(levelname)-8s] [ENV: %(env)s] %(message)s [%(pathname)s:%(lineno)d]",
+            "format": "%(asctime)s [%(levelname)-8s] %(message)s [%(pathname)s:%(lineno)d]",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
+        },
+    },
+    "handlers": {
+        "watchtower": {
+            "level": "INFO",
+            "class": "watchtower.CloudWatchLogHandler",
+            "filters": ["aws"],
+            "boto3_session": logger_boto3_session,
+            "log_group": "CodifiedMusings",
+            # Different stream for each environment
+            "stream_name": f"devs-dc-Logs",
+            "formatter": "aws",
+        },
+        "console": {"class": "logging.StreamHandler", "formatter": "aws",},
+    },
+    "loggers": {
+        # Use this logger to send data just to Cloudwatch
+        "watchtower": {"level": "INFO", "handlers": ["watchtower"], "propogate": False,}
+    },
+}
