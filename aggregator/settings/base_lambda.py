@@ -63,7 +63,7 @@ LOGGING = {
             # "format": "%(asctime)s [%(levelname)-8s] [ENV: %(env)s] %(message)s [%(pathname)s:%(lineno)d]",
             "format": "%(asctime)s [%(levelname)-8s] %(message)s [%(pathname)s:%(lineno)d]",
             "datefmt": "%Y-%m-%d %H:%M:%S",
-        },
+        }
     },
     "handlers": {
         "watchtower": {
@@ -76,10 +76,10 @@ LOGGING = {
             "stream_name": f"devs-dc-Logs",
             "formatter": "aws",
         },
-        "console": {"class": "logging.StreamHandler", "formatter": "aws",},
+        "console": {"class": "logging.StreamHandler", "formatter": "aws"},
     },
     "loggers": {
         # Use this logger to send data just to Cloudwatch
-        "watchtower": {"level": "INFO", "handlers": ["watchtower"], "propogate": False,}
+        "watchtower": {"level": "INFO", "handlers": ["watchtower"], "propogate": False}
     },
 }
