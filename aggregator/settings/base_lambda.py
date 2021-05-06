@@ -55,11 +55,7 @@ STATICFILES_FINDERS = (
 PIPELINE["COMPILERS"] = ("aggregator.s3_lambda_storage.LambdaSASSCompiler",)  # noqa
 
 if os.environ.get("AWS_EXECUTION_ENV"):
-    logger_boto3_session = Session(
-        aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
-        aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY"),
-        region_name="eu-west-2",
-    )
+    logger_boto3_session = Session(region_name="eu-west-2")
 
     LOGGING = {
         "version": 1,
@@ -78,9 +74,8 @@ if os.environ.get("AWS_EXECUTION_ENV"):
             "watchtower": {
                 "level": "INFO",
                 "class": "watchtower.CloudWatchLogHandler",
-                "filters": ["aws"],
                 "boto3_session": logger_boto3_session,
-                "log_group": "CodifiedMusings",
+                "log_group": "AggregatorAPIAccessLogs",
                 # Different stream for each environment
                 "stream_name": "devs-dc-Logs",
                 "formatter": "aws",
