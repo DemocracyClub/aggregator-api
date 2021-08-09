@@ -136,7 +136,7 @@ if sentry_dsn:
     sentry_sdk.init(
         dsn=sentry_dsn,
         integrations=[DjangoIntegration()],
-        traces_sample_rate=1.0,
+        traces_sample_rate=0,
         send_default_pii=False,
     )
 
