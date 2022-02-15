@@ -22,7 +22,7 @@ django-apiblueprint-view = ">=2.3.0,<3.0"
 raven = ">=6.10,<7.0"
 django-cors-headers = ">=2.0.0,<3.3.0"
 aws-wsgi = {ref = "unquote_path_strings", git = "https://github.com/DemocracyClub/awsgi.git"}
-dc-base-theme = { ref = "0.3.13", git = "https://github.com/DemocracyClub/dc_base_theme.git" }
+dc-base-theme = { ref = "0.3.16", git = "https://github.com/DemocracyClub/dc_base_theme.git" }
 whitenoise = "*"
 sentry-sdk = "*"
 watchtower = "*"
