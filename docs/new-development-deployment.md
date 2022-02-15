@@ -147,15 +147,16 @@ NB **this will destroy the current contents of the `.aws-sam/build/` directory**
 ```
 $ pipenv run sam build --config-env jcm1 --use-container --cached
 Starting Build inside a container
-Building codeuri: . runtime: python3.6 metadata: {} functions: ['AggregatorApiFunction']
-Fetching amazon/aws-sam-cli-build-image-python3.6 Docker container image......
+Building codeuri: . runtime: python3.8 metadata: {} functions: 
+['AggregatorApiFunction']
+Fetching amazon/aws-sam-cli-build-image-python3.8 Docker container image......
 Mounting /home/ubuntu/code/aggregator-api as /tmp/samcli/source:ro,delegated inside runtime container
 Running PythonPipBuilder:ResolveDependencies
 Running PythonPipBuilder:CopySource
 Building layer 'DependenciesLayer'
 For container layer build, first compatible runtime is chosen as build target for container.
 
-Fetching amazon/aws-sam-cli-build-image-python3.6 Docker container image......
+Fetching amazon/aws-sam-cli-build-image-python3.8 Docker container image......
 Mounting /home/ubuntu/code/aggregator-api/lambda-layers/DependenciesLayer as /tmp/samcli/source:ro,delegated inside runtime container
 
 Build Succeeded

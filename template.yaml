@@ -54,7 +54,7 @@ Resources:
     Properties:
       ContentUri: ./lambda-layers/DependenciesLayer/
       CompatibleRuntimes:
-        - python3.6
+        - python3.8
     Metadata:
       BuildMethod: makefile
     RetentionPolicy: Delete
@@ -67,7 +67,7 @@ Resources:
       Handler: aggregator.lambda_awsgi.lambda_handler
       Layers:
         - !Ref DependenciesLayer
-      Runtime: python3.6
+      Runtime: python3.8
       MemorySize: 192
       Environment:
         Variables:

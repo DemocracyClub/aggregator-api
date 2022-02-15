@@ -12,15 +12,15 @@ jobs:
 
   install_and_update_dependencies:
     docker:
-    - image: circleci/python:3.6.12
+    - image: cimg/python:3.8.12
     working_directory: ~/repo
     steps:
     - checkout
     - restore_cache:
         keys:
-        - v2-dependencies-{{ checksum "Pipfile.lock" }}
-        - v2-dependencies-
-    - run: &install-pipenv sudo pip install -U pipenv urllib3 pip --quiet --no-input
+        - v3-dependencies-{{ checksum "Pipfile.lock" }}
+        - v3-dependencies-
+    - run: &install-pipenv pip install -U pipenv urllib3 pip --quiet --no-input
     - run: pipenv install --dev
     - run: pipenv run pipenv check # before save_cache so an insecure cache is never saved
     - run: make lambda-layers/DependenciesLayer/requirements.txt
@@ -31,18 +31,18 @@ jobs:
         when: on_success
         paths:
         - ~/.local/share/virtualenvs/
-        key: v2-dependencies-{{ checksum "Pipfile.lock" }}
+        key: v3-dependencies-{{ checksum "Pipfile.lock" }}
 
   test:
     docker:
-    - image: circleci/python:3.6.12
+    - image: cimg/python:3.8.12
     working_directory: ~/repo
     steps:
     - checkout
     - restore_cache:
         keys:
-        - v2-dependencies-{{ checksum "Pipfile.lock" }}
-        - v2-dependencies-
+        - v3-dependencies-{{ checksum "Pipfile.lock" }}
+        - v3-dependencies-
     - run: *install-pipenv
     - run: pipenv run black-check
     - run: pipenv run pytest --flakes
@@ -61,7 +61,7 @@ jobs:
 
   sam_build:
     docker:
-    - image: amazon/aws-sam-cli-build-image-python3.6:latest
+    - image: amazon/aws-sam-cli-build-image-python3.8:latest
     working_directory: ~/repo
     steps:
     - checkout
@@ -78,7 +78,7 @@ jobs:
 
   sam_deploy:
     docker:
-    - image: circleci/python:3.6.12
+    - image: cimg/python:3.8.12
     working_directory: ~/repo/
     parameters:
       dc-environment:
@@ -97,8 +97,8 @@ jobs:
         at: ~/repo/
     - restore_cache:
         keys:
-        - v2-dependencies-{{ checksum "Pipfile.lock" }}
-        - v2-dependencies-
+        - v3-dependencies-{{ checksum "Pipfile.lock" }}
+        - v3-dependencies-
     - run: *install-pipenv
 
     - run: printenv DJANGO_SETTINGS_MODULE SAM_CONFIG_FILE SAM_LAMBDA_CONFIG_ENV SAM_PUBLIC_CONFIG_ENV
