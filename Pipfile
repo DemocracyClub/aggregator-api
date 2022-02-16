@@ -28,6 +28,7 @@ sentry-sdk = "*"
 watchtower = "*"
 aws-sam-cli = "==1.37.0"
 werkzeug = "==2.0.3"
+psycopg2-binary = "*"
 
 [scripts]
 black = "black ."

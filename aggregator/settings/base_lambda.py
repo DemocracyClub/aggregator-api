@@ -21,7 +21,14 @@ else:
     STATIC_URL = FORCE_SCRIPT_NAME + WHITENOISE_STATIC_PREFIX
 
 DATABASES = {
-    "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": "/tmp/db.sqlite3"}
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "HOST": os.environ.get("DATABASE_HOST"),
+        "USER": "postgres",
+        "PORT": "5432",
+        "NAME": os.environ.get("POSTGRES_DATABASE_NAME"),
+        "PASSWORD": os.environ.get("DATABASE_PASS"),
+    }
 }
 
 AWS_S3_SECURE_URLS = False

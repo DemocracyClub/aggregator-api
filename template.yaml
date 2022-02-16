@@ -23,6 +23,21 @@ Parameters:
     Description: "The WDIV_API_KEY environment variable passed to the app."
     Type: String
 
+  AppPostgresHost:
+    Default: AppPostgresHost
+    Description: "The Postgres database host for this deploy."
+    Type: AWS::SSM::Parameter::Value<String>
+
+  AppPostgresDatabaseName:
+    Default: AppPostgresDatabaseName
+    Description: "The Postgres database name for this deploy."
+    Type: AWS::SSM::Parameter::Value<String>
+
+  AppPostgresPassword:
+    Default: AppPostgresPassword
+    Description: "The password for the postgres user"
+    Type: AWS::SSM::Parameter::Value<String>
+
   AppDjangoSettingsModule:
     # NB This parameter (and how it reaches the app, and how it's set in
     # developer and CI-managed deployments) is used in
@@ -76,6 +91,9 @@ Resources:
           WDIV_API_KEY: !Ref AppWdivApiKey
           DJANGO_SETTINGS_MODULE: !Ref AppDjangoSettingsModule
           APP_IS_BEHIND_CLOUDFRONT: !Ref AppIsBehindCloudFront
+          DATABASE_HOST: !Ref AppPostgresHost
+          POSTGRES_DATABASE_NAME: !Ref AppPostgresDatabaseName
+          DATABASE_PASS: !Ref AppPostgresPassword
       Events:
         HTTPRequests:
           Type: Api
