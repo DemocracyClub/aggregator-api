@@ -22,12 +22,13 @@ django-apiblueprint-view = ">=2.3.0,<3.0"
 raven = ">=6.10,<7.0"
 django-cors-headers = ">=2.0.0,<3.3.0"
 aws-wsgi = {ref = "unquote_path_strings", git = "https://github.com/DemocracyClub/awsgi.git"}
-dc-base-theme = { ref = "0.3.16", git = "https://github.com/DemocracyClub/dc_base_theme.git" }
 whitenoise = "*"
 sentry-sdk = "*"
 aws-sam-cli = "==1.37.0"
 werkzeug = "==2.0.3"
 psycopg2-binary = "*"
+dc-design-system = {file = "https://github.com/DemocracyClub/design-system/archive/refs/tags/0.1.6.tar.gz"}
+dc-django-utils = {file = "https://github.com/DemocracyClub/dc_django_utils/archive/refs/tags/0.1.8.tar.gz"}
 
 [scripts]
 black = "black ."

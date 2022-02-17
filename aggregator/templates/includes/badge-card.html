@@ -1,5 +1,7 @@
 {% load static %}
-<div class="card {{ class }}">
-  <img src="{% static path %}">
-  <code>https://developers.democracyclub.org.uk/static/{{ path }}</code>
+<div class="ds-card {{ class }}">
+  <div class="ds-card-body">
+    <img src="{% static path %}">
+    <code>https://developers.democracyclub.org.uk/static/{{ path }}</code>
+  </div>
 </div>

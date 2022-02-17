@@ -7,4 +7,4 @@ urlpatterns = [
     path(r"terms/", TemplateView.as_view(template_name="terms.html"), name="terms"),
 ]
 
-handler500 = "dc_theme.urls.dc_server_error"
+handler500 = "dc_utils.urls.dc_server_error"

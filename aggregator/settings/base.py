@@ -24,8 +24,9 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "apiblueprint_view",
     "corsheaders",
-    "dc_theme",
     "pipeline",
+    "dc_design_system",
+    "dc_utils",
 ]
 PROJECT_APPS = ["api", "api.v1"]
 INSTALLED_APPS += PROJECT_APPS
@@ -56,7 +57,6 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "dc_theme.context_processors.dc_theme_context",
             ]
         },
     }
@@ -101,18 +101,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = "/static/"
-
-from dc_theme.settings import (  # noqa
-    get_pipeline_settings,
-    STATICFILES_STORAGE,
-    STATICFILES_FINDERS,
-    SASS_INCLUDE_PATHS,
-)
+from dc_utils.settings.pipeline import *  # noqa
+from dc_utils.settings.pipeline import get_pipeline_settings
 
 PIPELINE = get_pipeline_settings(extra_css=["css/styles.scss"])
 
+import dc_design_system
 
+PIPELINE["SASS_ARGUMENTS"] += " -I " + dc_design_system.DC_SYSTEM_PATH + "/system"
+
+SASS_INCLUDE_PATHS = [dc_design_system.DC_SYSTEM_PATH + "/system"]
 STATIC_ROOT = os.path.join(BASE_DIR, "static_files")
 STATIC_URL = "/static/"
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "assets"),)

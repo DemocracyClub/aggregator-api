@@ -10,6 +10,8 @@ If you're interested in working with the data,
 [contact us](https://democracyclub.org.uk/contact/) for an API key.
 Usage must comply with our [terms of use](/terms).
 
+
+
 <!-- include(finder_endpoints.apibp) -->
 
 <!-- include(elections_endpoints.apibp) -->
@@ -18,6 +20,25 @@ Usage must comply with our [terms of use](/terms).
 
 <!-- include(notes.apibp) -->
 
+
+<h2>Errors</h2>
+<div class="ds-grid">
+<div>
+  <p>Errors will be reported using HTTP status codes. The body of the error will be formatted as valid JSON
+  and will give a description of the error</p>
+
+
+
+</div>
+<div class="ds-stack-smaller">
+  <figure>
+    <figcaption>Example error response</figcaption>
+    <pre>
+{ "detail": "Could not geocode from any source" }
+</pre>
+  </figure>
+</div>
+</div>
 
 # Data Structures
 
