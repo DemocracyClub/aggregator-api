@@ -22,7 +22,6 @@ An election object is described fully in the JSON schema, but broadly contains i
 
 ## List Elections [/elections/]
 
-List or filter all election objects.
 
 + Parameters
     + coords: `52.290719,-1.935395` (string, optional) - Pass a lat/lon string as `?coords={lat},{lon}` to find elections covering the given coordinates. For lookup by postcode/address, use the [/postcode](#postcode-search-2) endpoint.
@@ -35,6 +34,7 @@ List or filter all election objects.
         + Default: `0`
 
 ### List elections [GET]
+List or filter all election objects.
 
 + Response 200 (application/json)
 
@@ -42,17 +42,13 @@ List or filter all election objects.
 
 ## Single election [/elections/{id}]
 
-Retrieve a single election object by id.
 
 + Parameters
     + id: `naw.c.alyn-and-deeside.by.2018-02-06` (required, string) - A Democracy Club election ID
 
 ### Single election [GET]
+Retrieve a single election object by id.
 
 + Response 200 (application/json)
 
     + Attributes(Election)
-
-+ Response 404 (application/json)
-
-        { "detail": "Not found" }

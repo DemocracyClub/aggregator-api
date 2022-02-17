@@ -21,7 +21,14 @@ else:
     STATIC_URL = FORCE_SCRIPT_NAME + WHITENOISE_STATIC_PREFIX
 
 DATABASES = {
-    "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": "/tmp/db.sqlite3"}
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "HOST": os.environ.get("DATABASE_HOST"),
+        "USER": "postgres",
+        "PORT": "5432",
+        "NAME": os.environ.get("POSTGRES_DATABASE_NAME"),
+        "PASSWORD": os.environ.get("DATABASE_PASS"),
+    }
 }
 
 AWS_S3_SECURE_URLS = False
@@ -70,24 +77,8 @@ if os.environ.get("AWS_EXECUTION_ENV"):
                 "datefmt": "%Y-%m-%d %H:%M:%S",
             }
         },
-        "handlers": {
-            "watchtower": {
-                "level": "INFO",
-                "class": "watchtower.CloudWatchLogHandler",
-                "boto3_session": logger_boto3_session,
-                "log_group": "AggregatorAPIAccessLogs",
-                # Different stream for each environment
-                "stream_name": "devs-dc-Logs",
-                "formatter": "aws",
-            },
-            "console": {"class": "logging.StreamHandler", "formatter": "aws"},
-        },
+        "handlers": {"console": {"class": "logging.StreamHandler", "formatter": "aws"}},
         "loggers": {
-            # Use this logger to send data just to Cloudwatch
-            "watchtower": {
-                "level": "INFO",
-                "handlers": ["watchtower"],
-                "propogate": False,
-            }
+            "console": {"level": "INFO", "handlers": ["console"], "propogate": False}
         },
     }

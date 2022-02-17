@@ -10,22 +10,24 @@ pytest-cov = ">=2.6,<3.0"
 pytest-django = ">=3.4.4,<5.0"
 pytest-flakes = ">=4.0.0,<5.0"
 coveralls = ">=1.6,<4.0"
-aws-sam-cli = "*"
 tomlkit = "*"
 importlib-metadata = "*"
 
 [packages]
-django = ">=1.11,<2.0"
-aiohttp = ">=3.4"
-django-storages = "==1.9.1"
+django = "==3.2.12"
+aiohttp = ">=3.8.1"
+django-storages = "==1.12.3"
 django-apiblueprint-view = ">=2.3.0,<3.0"
 raven = ">=6.10,<7.0"
 django-cors-headers = ">=2.0.0,<3.3.0"
 aws-wsgi = {ref = "unquote_path_strings", git = "https://github.com/DemocracyClub/awsgi.git"}
-dc-base-theme = { ref = "0.3.12", git = "https://github.com/DemocracyClub/dc_base_theme.git" }
 whitenoise = "*"
 sentry-sdk = "*"
-watchtower = "*"
+aws-sam-cli = "==1.37.0"
+werkzeug = "==2.0.3"
+psycopg2-binary = "*"
+dc-design-system = {file = "https://github.com/DemocracyClub/design-system/archive/refs/tags/0.1.6.tar.gz"}
+dc-django-utils = {file = "https://github.com/DemocracyClub/dc_django_utils/archive/refs/tags/0.1.8.tar.gz"}
 
 [scripts]
 black = "black ."
@@ -36,4 +38,4 @@ coveralls = "coveralls"
 pytest = "pytest"
 
 [requires]
-python_version = "3.6"
+python_version = "3.8"
