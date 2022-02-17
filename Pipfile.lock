@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "e6edba37371919a5b147cc1013967de4f19d0e598ca7b3c63d87b9e8737d1048"
+            "sha256": "c9f419a2e369e3a84f1401f67a6ff37247481420f1d8abf67073e5cc8d0e5ee0"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -136,20 +136,20 @@
         },
         "aws-lambda-builders": {
             "hashes": [
-                "sha256:179a8cf387f1cdbc4cc3901df03c969bcce734d6072b731511c2c581fbfea085",
-                "sha256:b2d29cf25c7052900c9285ca6c42f1443766a8dff4ffa08a8c50e7d7a564354d",
-                "sha256:f14e2eeeaf6d84303795ba89c629c2e7676398e8b41a836c0fd6e98c86f3b1a7"
+                "sha256:301c0b2ff16c22bc5dcc6e59778bec74be2aae41c7c8f8e8bf037df3aa373118",
+                "sha256:4c2032f10380e763eb020311f282a9d64850ee21a5e71658e77cdb8e967def79",
+                "sha256:b907be49e72fbcc4b94a9290739737fd8ade9ed5eba9f1580139225874a22fc3"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==1.10.0"
+            "version": "==1.11.0"
         },
         "aws-sam-cli": {
             "hashes": [
-                "sha256:16a556bc5082bf8bb9da5d3f76537f58366725d7e92ad37389c649de20a236e0",
-                "sha256:5c4de0da62b0022689be2d1285549c9c22ab9b3eee8da42039e157b98c2d3f88"
+                "sha256:27a448bb9f0aa1f041aad7bf16e9bdfa4b6b251f2150ae8b49ab687a453c7a3c",
+                "sha256:9e07bf252ed8c14cf8fa23b829c1ecd2157ac6b179da918684bd6a46337a4bad"
             ],
             "index": "pypi",
-            "version": "==1.37.0"
+            "version": "==1.38.0"
         },
         "aws-sam-translator": {
             "hashes": [
@@ -1429,6 +1429,14 @@
             ],
             "markers": "python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==0.10.2"
+        },
+        "tomli": {
+            "hashes": [
+                "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc",
+                "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"
+            ],
+            "markers": "python_version >= '3.7'",
+            "version": "==2.0.1"
         },
         "tomlkit": {
             "hashes": [
