@@ -25,7 +25,6 @@ aws-wsgi = {ref = "unquote_path_strings", git = "https://github.com/DemocracyClu
 dc-base-theme = { ref = "0.3.16", git = "https://github.com/DemocracyClub/dc_base_theme.git" }
 whitenoise = "*"
 sentry-sdk = "*"
-watchtower = "*"
 aws-sam-cli = "==1.37.0"
 werkzeug = "==2.0.3"
 psycopg2-binary = "*"

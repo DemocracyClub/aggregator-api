@@ -77,24 +77,8 @@ if os.environ.get("AWS_EXECUTION_ENV"):
                 "datefmt": "%Y-%m-%d %H:%M:%S",
             }
         },
-        "handlers": {
-            "watchtower": {
-                "level": "INFO",
-                "class": "watchtower.CloudWatchLogHandler",
-                "boto3_session": logger_boto3_session,
-                "log_group": "AggregatorAPIAccessLogs",
-                # Different stream for each environment
-                "stream_name": "devs-dc-Logs",
-                "formatter": "aws",
-            },
-            "console": {"class": "logging.StreamHandler", "formatter": "aws"},
-        },
+        "handlers": {"console": {"class": "logging.StreamHandler", "formatter": "aws"}},
         "loggers": {
-            # Use this logger to send data just to Cloudwatch
-            "watchtower": {
-                "level": "INFO",
-                "handlers": ["watchtower"],
-                "propogate": False,
-            }
+            "console": {"level": "INFO", "handlers": ["console"], "propogate": False}
         },
     }
