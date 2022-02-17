@@ -9,7 +9,7 @@ DEBUG = os.environ.get("DEBUG", False)
 WHITENOISE_AUTOREFRESH = False
 WHITENOISE_STATIC_PREFIX = "/static/"
 
-PIPELINE["PIPELINE_ENABLED"] = False  # noqa
+PIPELINE["PIPELINE_ENABLED"] = os.environ.get("PIPELINE_ENABLED", False)  # noqa
 PIPELINE["PIPELINE_COLLECTOR_ENABLED"] = False  # noqa
 
 if os.environ.get("APP_IS_BEHIND_CLOUDFRONT", False) in [True, "true", "True", "TRUE"]:

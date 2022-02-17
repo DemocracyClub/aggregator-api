@@ -17,6 +17,7 @@
     <link rel="shortcut icon" href="{% static 'images/logo_icon.png' %}">
 
     {% stylesheet 'styles' %}
+    {% block extra_page_css %}{% endblock extra_page_css %}
   </head>
 
   <body class="ds-width-full">
@@ -78,17 +79,8 @@
             </div>
           </div>
         </footer>
-
-
-
-
-
-
-
-        
-        
-        
     </div>
   </body>
 {% javascript 'scripts' %}
+{% block in_page_javascript %}{% endblock in_page_javascript %}
 </html>

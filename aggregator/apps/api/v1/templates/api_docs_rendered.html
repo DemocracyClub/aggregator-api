@@ -16,7 +16,24 @@
     <link rel="mask-icon" href="/static/images/logo_icon.19bfe52330d5.png" color="#ec008c">
     <link rel="shortcut icon" href="/static/images/logo_icon.19bfe52330d5.png">
 
+    <link href="/static/scss/styles.d41d8cd98f00.css" rel="stylesheet" type="text/css" media="screen,projection,print" />
     
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+<style>
+    .api-action-request {
+        margin-top: 30px;
+    }
+    h4 {
+        margin-top: 30px;
+    }
+    a:link {
+        text-decoration: none;
+    }
+    p {
+        margin-bottom: 3px;
+    }
+</style>
+
   </head>
 
   <body class="ds-width-full">
@@ -2573,17 +2590,32 @@ is required will include this information in the `notifications` array. e.g:
             </div>
           </div>
         </footer>
-
-
-
-
-
-
-
-        
-        
-        
     </div>
   </body>
+<script type="text/javascript" src="/static/js/scripts.d5d180aba8b8.js" charset="utf-8"></script>
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script type="text/javascript">hljs.initHighlightingOnLoad();</script>
+  <script>
+      $().ready(function() {
+        handler = function(el) {
+          $(el).parent().children('.api-action-headers').toggle();
+          $(el).parent().children('.api-description').toggle();
+          $(el).parent().children('.api-action-body').toggle();
+          $(el).parent().children('.api-action-schema').toggle();
+        };
+        $('.api-http-code').on('click', function() {
+          handler(this);
+        });
+        $.each($('.api-http-code'), function() {
+          handler(this);
+        });
+        $('.api-http-code').wrapInner('<a></a>');
+
+        /* update the hash again after we've hidden stuff
+        so we end up in the right place on the page */
+        location.hash = location.hash;
+      });
+  </script>
 
 </html>
