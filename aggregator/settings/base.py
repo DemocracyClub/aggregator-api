@@ -104,7 +104,7 @@ USE_TZ = True
 from dc_utils.settings.pipeline import *  # noqa
 from dc_utils.settings.pipeline import get_pipeline_settings
 
-PIPELINE = get_pipeline_settings(extra_css=["css/styles.scss"])
+PIPELINE = get_pipeline_settings(extra_css=["scss/styles.scss"])
 
 import dc_design_system
 
