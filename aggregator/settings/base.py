@@ -3,6 +3,8 @@ import sys
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from dc_logging_client import DCWidePostcodeLoggingClient
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(BASE_DIR, "apps"))
 
@@ -137,6 +139,15 @@ if sentry_dsn:
         traces_sample_rate=0,
         send_default_pii=False,
     )
+
+
+FIREHOSE_ACCOUNT_ARN = os.environ.get("FIREHOSE_ACCOUNT_ARN", None)
+if FIREHOSE_ACCOUNT_ARN:
+    firehose_args = dict(assume_role_arn=FIREHOSE_ACCOUNT_ARN)
+else:
+    firehose_args = dict(fake=True)
+POSTCODE_LOGGER = DCWidePostcodeLoggingClient(**firehose_args)
+
 
 # Lambda: https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html#configuration-envvars-runtime
 # CircleCI: https://circleci.com/docs/2.0/env-vars/#built-in-environment-variables

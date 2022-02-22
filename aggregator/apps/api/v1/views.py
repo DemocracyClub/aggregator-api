@@ -3,6 +3,8 @@ import asyncio
 import aiohttp
 import os
 import re
+
+from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.views import View
 from ..errors import ApiError
@@ -17,12 +19,17 @@ class BaseView(View, metaclass=abc.ABCMeta):
 
     def get(self, request, *args, **kwargs):
 
-        auth_header = request.META.get("HTTP_AUTHORIZATION", None)
+        auth_header = request.META.get("HTTP_AUTHORIZATION", "")
+        auth_header_match = re.match(r"Token (.*)", auth_header)
+        if auth_header_match:
+            auth_header_token = auth_header_match.group(1)
+        else:
+            auth_header_token = None
         auth_param = request.GET.get("auth_token", None)
-        if (not auth_param and not auth_header) or (
-            auth_header and not re.match(r"Token .*", auth_header)
-        ):
+        api_tokens = [token for token in [auth_header_token, auth_param] if token]
+        if not api_tokens:
             raise ApiError("Invalid token.", status=401)
+        self.api_token = api_tokens[0]
 
         try:
             return self.get_response(request, *args, **kwargs)
@@ -38,6 +45,14 @@ class PostcodeView(BaseView):
         wdiv, wcivf = client.get_data_for_postcode(kwargs["postcode"])
 
         stitcher = Stitcher(wdiv, wcivf, request)
+
+        # Log to firehose
+        entry = settings.POSTCODE_LOGGER.entry_class(
+            postcode=kwargs["postcode"],
+            dc_product=settings.POSTCODE_LOGGER.dc_product.aggregator_api,
+            api_key=self.api_token,
+        )
+        settings.POSTCODE_LOGGER.log(entry)
 
         if not wdiv["polling_station_known"] and len(wdiv["addresses"]) > 0:
             result = stitcher.make_address_picker_response()

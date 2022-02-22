@@ -28,6 +28,7 @@ werkzeug = "==2.0.3"
 psycopg2-binary = "*"
 dc-design-system = {file = "https://github.com/DemocracyClub/design-system/archive/refs/tags/0.1.6.tar.gz"}
 dc-django-utils = {file = "https://github.com/DemocracyClub/dc_django_utils/archive/refs/tags/0.1.8.tar.gz"}
+dc-logging-utils = {file = "https://github.com/DemocracyClub/dc_logging/archive/refs/heads/main.zip"}
 
 [scripts]
 black = "black ."
