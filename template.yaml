@@ -38,6 +38,11 @@ Parameters:
     Description: "The password for the postgres user"
     Type: AWS::SSM::Parameter::Value<String>
 
+  AppLoggingAssumeRoleArn:
+    Default: AppLoggingAssumeRoleArn
+    Description: The ARN of the role needed by dc_logging
+    Type: AWS::SSM::Parameter::Value<String>
+
   AppDjangoSettingsModule:
     # NB This parameter (and how it reaches the app, and how it's set in
     # developer and CI-managed deployments) is used in
@@ -94,6 +99,7 @@ Resources:
           DATABASE_HOST: !Ref AppPostgresHost
           POSTGRES_DATABASE_NAME: !Ref AppPostgresDatabaseName
           DATABASE_PASS: !Ref AppPostgresPassword
+          FIREHOSE_ACCOUNT_ARN: !Ref AppLoggingAssumeRoleArn
       Events:
         HTTPRequests:
           Type: Api
