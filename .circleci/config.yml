@@ -191,15 +191,15 @@ workflows:
     # their access to the staging account. This deployment should not be modified manually,
     # but only through commits which also reach staging and then production.
     # This deployment doesn't wait on the `test` job to succeed.
-    - sam_deploy:
-        name: sam_deploy_development
-        dc-environment: development
-        dc-django-settings-module: aggregator.settings.lambda_no_debug_merged_assets
-        requires:
-        - install_and_update_dependencies # SAM CLI is in the dev package set
-        - sam_build                       # deploy needs .aws-sam/build/
-        context: [ deployment-development-aggregator-api ]
-        filters: { branches: { only: [ main, master ] } }
+#    - sam_deploy:
+#        name: sam_deploy_development
+#        dc-environment: development
+#        dc-django-settings-module: aggregator.settings.lambda_no_debug_merged_assets
+#        requires:
+#        - install_and_update_dependencies # SAM CLI is in the dev package set
+#        - sam_build                       # deploy needs .aws-sam/build/
+#        context: [ deployment-development-aggregator-api ]
+#        filters: { branches: { only: [ main, master ] } }
 
     - sam_deploy:
         name: sam_deploy_staging
