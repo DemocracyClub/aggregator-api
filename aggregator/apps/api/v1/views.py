@@ -4,7 +4,7 @@ import aiohttp
 import os
 import re
 
-# from django.conf import settings
+from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.views import View
 from ..errors import ApiError
@@ -47,12 +47,12 @@ class PostcodeView(BaseView):
         stitcher = Stitcher(wdiv, wcivf, request)
 
         # Log to firehose
-        # entry = settings.POSTCODE_LOGGER.entry_class(
-        #     postcode=kwargs["postcode"],
-        #     dc_product=settings.POSTCODE_LOGGER.dc_product.aggregator_api,
-        #     api_key=self.api_token,
-        # )
-        # settings.POSTCODE_LOGGER.log(entry)
+        entry = settings.POSTCODE_LOGGER.entry_class(
+            postcode=kwargs["postcode"],
+            dc_product=settings.POSTCODE_LOGGER.dc_product.aggregator_api,
+            api_key=self.api_token,
+        )
+        settings.POSTCODE_LOGGER.log(entry)
 
         if not wdiv["polling_station_known"] and len(wdiv["addresses"]) > 0:
             result = stitcher.make_address_picker_response()

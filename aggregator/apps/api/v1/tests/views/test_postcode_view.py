@@ -1,4 +1,4 @@
-# import logging
+import logging
 from functools import partial
 from unittest.mock import Mock, patch
 
@@ -62,25 +62,25 @@ class PostcodeViewTests(TestCase):
             self.assertNotContains(resp, "mayor.lewisham.2018-05-03")
 
 
-# def test_logging_working(client, caplog):
-#     caplog.set_level(logging.DEBUG)
-#
-#     wcivf_data = load_fixture("addresspc_endpoints/test_multiple_elections", "wcivf")
-#     del wcivf_data[0]
-#     mock = Mock(
-#         return_value=(
-#             load_fixture("addresspc_endpoints/test_multiple_elections", "wdiv"),
-#             wcivf_data,
-#         )
-#     )
-#     with patch("api.v1.api_client.WdivWcivfApiClient.get_data_for_postcode", mock):
-#         client.get("/api/v1/postcode/SW1A1AA/?foo=bar", HTTP_AUTHORIZATION="Token foo")
-#
-#     logging_message = None
-#     for record in caplog.records:
-#         if record.message.startswith("dc-postcode-searches"):
-#             logging_message = record
-#     assert logging_message
-#     assert '"postcode": "SW1A1AA"' in logging_message.message
-#     assert '"dc_product": "AGGREGATOR_API"' in logging_message.message
-#     assert '"api_key": "foo"' in logging_message.message
+def test_logging_working(client, caplog):
+    caplog.set_level(logging.DEBUG)
+
+    wcivf_data = load_fixture("addresspc_endpoints/test_multiple_elections", "wcivf")
+    del wcivf_data[0]
+    mock = Mock(
+        return_value=(
+            load_fixture("addresspc_endpoints/test_multiple_elections", "wdiv"),
+            wcivf_data,
+        )
+    )
+    with patch("api.v1.api_client.WdivWcivfApiClient.get_data_for_postcode", mock):
+        client.get("/api/v1/postcode/SW1A1AA/?foo=bar", HTTP_AUTHORIZATION="Token foo")
+
+    logging_message = None
+    for record in caplog.records:
+        if record.message.startswith("dc-postcode-searches"):
+            logging_message = record
+    assert logging_message
+    assert '"postcode": "SW1A1AA"' in logging_message.message
+    assert '"dc_product": "AGGREGATOR_API"' in logging_message.message
+    assert '"api_key": "foo"' in logging_message.message
