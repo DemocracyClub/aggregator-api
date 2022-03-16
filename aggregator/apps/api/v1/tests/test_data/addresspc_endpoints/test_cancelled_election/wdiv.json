@@ -1,0 +1,57 @@
+{
+    "polling_station_known": false,
+    "postcode_location": {
+        "type": "Feature",
+        "properties": null,
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -0.08183106999999999,
+                51.518112635
+            ]
+        }
+    },
+    "custom_finder": null,
+    "council": {
+        "url": "https://wheredoivote.co.uk/api/beta/councils/LND/",
+        "council_id": "LND",
+        "name": "City of London Corporation",
+        "email": "electoralservices@cityoflondon.gov.uk",
+        "phone": "0800 587 5537",
+        "website": "http://www.cityoflondon.gov.uk/",
+        "postcode": "EC2P 2EJ",
+        "address": "Electoral Registration Officer\nPO Box 270\nGuildhall",
+        "electoral_services_contacts": {
+            "phone_numbers": [
+                "0800 587 5537"
+            ],
+            "email": "electoralservices@cityoflondon.gov.uk",
+            "address": "Electoral Registration Officer\nPO Box 270\nGuildhall",
+            "postcode": "EC2P 2EJ",
+            "website": "http://www.cityoflondon.gov.uk/"
+        },
+        "registration_contacts": null,
+        "identifiers": [
+            "E09000001"
+        ],
+        "nation": "England"
+    },
+    "polling_station": null,
+    "addresses": [],
+    "report_problem_url": null,
+    "metadata": {
+        "cancelled_election": null
+    },
+    "ballots": [
+        {
+            "ballot_paper_id": "local.city-of-london.bishopsgate.2022-03-24",
+            "ballot_title": "City of London local election Bishopsgate",
+            "poll_open_date": "2022-03-24",
+            "elected_role": "Local Councillor",
+            "metadata": null,
+            "cancelled": true,
+            "replaced_by": null,
+            "replaces": null
+        }
+    ]
+}

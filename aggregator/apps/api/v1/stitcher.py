@@ -62,7 +62,7 @@ class NotificationsMaker:
         for b in self.ballots:
             if b["metadata"] and key in b["metadata"]:
                 return b["metadata"][key]
-        return None
+        return {}
 
     @property
     def all_ballots_cancelled(self):

@@ -1,0 +1,109 @@
+[
+    {
+        "ballot_paper_id": "local.city-of-london.bishopsgate.2022-03-24",
+        "absolute_url": "http://whocanivotefor.co.uk/elections/local.city-of-london.bishopsgate.2022-03-24/bishopsgate/",
+        "election_date": "2022-03-24",
+        "election_name": "City of London Common Council election",
+        "election_id": "local.city-of-london.2022-03-24",
+        "post": {
+            "post_name": "Bishopsgate",
+            "post_slug": "gss:E05009292"
+        },
+        "cancelled": true,
+        "ballot_locked": true,
+        "replaced_by": null,
+        "candidates": [
+            {
+                "list_position": null,
+                "party": {
+                    "party_id": "ynmp-party:2",
+                    "party_name": "Independent"
+                },
+                "person": {
+                    "ynr_id": 20318,
+                    "name": "Simon D'Olier Duckworth",
+                    "absolute_url": "http://whocanivotefor.co.uk/person/20318/simon-dolier-duckworth",
+                    "email": null,
+                    "photo_url": null
+                }
+            },
+            {
+                "list_position": null,
+                "party": {
+                    "party_id": "ynmp-party:2",
+                    "party_name": "Independent"
+                },
+                "person": {
+                    "ynr_id": 20320,
+                    "name": "Wendy Marilyn Hyde",
+                    "absolute_url": "http://whocanivotefor.co.uk/person/20320/wendy-marilyn-hyde",
+                    "email": null,
+                    "photo_url": null
+                }
+            },
+            {
+                "list_position": null,
+                "party": {
+                    "party_id": "ynmp-party:2",
+                    "party_name": "Independent"
+                },
+                "person": {
+                    "ynr_id": 35736,
+                    "name": "Shravan Jashvantrai Joshi",
+                    "absolute_url": "http://whocanivotefor.co.uk/person/35736/shravan-jashvantrai-joshi",
+                    "email": null,
+                    "photo_url": null
+                }
+            },
+            {
+                "list_position": null,
+                "party": {
+                    "party_id": "ynmp-party:2",
+                    "party_name": "Independent"
+                },
+                "person": {
+                    "ynr_id": 20321,
+                    "name": "Andrew Paul Mayer",
+                    "absolute_url": "http://whocanivotefor.co.uk/person/20321/andrew-paul-mayer",
+                    "email": "andy.mayer@bishopsgate.city",
+                    "photo_url": "https://static-candidates.democracyclub.org.uk/media/cache/ca/8c/ca8ccd09b532091e01ee0b81e1bde768.jpg"
+                }
+            },
+            {
+                "list_position": null,
+                "party": {
+                    "party_id": "ynmp-party:2",
+                    "party_name": "Independent"
+                },
+                "person": {
+                    "ynr_id": 35434,
+                    "name": "Benjamin Murphy",
+                    "absolute_url": "http://whocanivotefor.co.uk/person/35434/benjamin-murphy",
+                    "email": "ben@bishopsgatelife.com",
+                    "photo_url": "https://static-candidates.democracyclub.org.uk/media/cache/97/1d/971d47259dc5ad0cfc528dbcf09bf415.jpg"
+                }
+            },
+            {
+                "list_position": null,
+                "party": {
+                    "party_id": "ynmp-party:2",
+                    "party_name": "Independent"
+                },
+                "person": {
+                    "ynr_id": 20322,
+                    "name": "Thomas Charles Christopher Sleigh",
+                    "absolute_url": "http://whocanivotefor.co.uk/person/20322/thomas-charles-christopher-sleigh",
+                    "email": null,
+                    "photo_url": "https://static-candidates.democracyclub.org.uk/media/cache/94/31/94316292620844981408042cce20273f.jpg"
+                }
+            }
+        ],
+        "voting_system": {
+            "slug": "FPTP",
+            "name": "First-past-the-post",
+            "uses_party_lists": false
+        },
+        "seats_contested": 6,
+        "organisation_type": "local-authority"
+    }
+]

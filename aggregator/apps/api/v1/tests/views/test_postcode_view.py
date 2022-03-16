@@ -61,6 +61,27 @@ class PostcodeViewTests(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertNotContains(resp, "mayor.lewisham.2018-05-03")
 
+    def test_cancelled_election(self):
+        wcivf_data = load_fixture(
+            "addresspc_endpoints/test_cancelled_election", "wcivf"
+        )
+        del wcivf_data[0]
+        mock = Mock(
+            return_value=(
+                load_fixture("addresspc_endpoints/test_cancelled_election", "wdiv"),
+                wcivf_data,
+            )
+        )
+        with patch("api.v1.api_client.WdivWcivfApiClient.get_data_for_postcode", mock):
+            resp = self.client.get(
+                "/api/v1/postcode/EC2M7PY/?foo=bar", HTTP_AUTHORIZATION="Token foo"
+            )
+            self.assertEqual(resp.status_code, 200)
+            self.assertEquals(
+                resp.json()["dates"][0]["notifications"],
+                [{"type": "cancelled_election"}],
+            )
+
 
 def test_logging_working(client, caplog):
     caplog.set_level(logging.DEBUG)
