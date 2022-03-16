@@ -12,6 +12,7 @@ pytest-flakes = ">=4.0.0,<5.0"
 coveralls = ">=1.6,<4.0"
 tomlkit = "*"
 importlib-metadata = "*"
+ipdb = "*"
 
 [packages]
 django = "==3.2.12"
