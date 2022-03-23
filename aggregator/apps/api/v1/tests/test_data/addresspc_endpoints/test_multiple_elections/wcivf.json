@@ -15,6 +15,16 @@
       "name": "Supplementary Vote",
       "uses_party_lists": false
     },
+    "hustings": [
+      {
+        "title": "Local elections hustings",
+        "url": "https://example.com/hustings/",
+        "starts": "2018-04-28T18:00:00Z",
+        "ends": "2018-04-28T20:30:00Z",
+        "location": "Westminster Hall",
+        "postevent_url": "https://example.com/hustings/"
+      }
+    ],
     "seats_contested": 1,
     "organisation_type": "local-authority",
     "ballot_locked": true,
@@ -30,7 +40,8 @@
           "name": "Chris Maines",
           "absolute_url": "https://whocanivotefor.co.uk/person/36984/chris-maines",
           "email": null,
-          "photo_url": null
+          "photo_url": null,
+          "leaflets": null
         }
       },
       {
@@ -44,7 +55,8 @@
           "name": "Damien Egan",
           "absolute_url": "https://whocanivotefor.co.uk/person/2833/damien-egan",
           "email": "info@lewishamcentralhithergreen.co.uk",
-          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/2833.png"
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/2833.png",
+          "leaflets": null
         }
       },
       {
@@ -58,7 +70,8 @@
           "name": "Duwayne Brooks",
           "absolute_url": "https://whocanivotefor.co.uk/person/36178/duwayne-brooks",
           "email": null,
-          "photo_url": null
+          "photo_url": null,
+          "leaflets": null
         }
       },
       {
@@ -72,7 +85,8 @@
           "name": "John Coughlin",
           "absolute_url": "https://whocanivotefor.co.uk/person/5823/john-coughlin",
           "email": "john.coughlin@greenparty.org.uk",
-          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/554745e070823d2655a7c7a3.png"
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/554745e070823d2655a7c7a3.png",
+          "leaflets": null
         }
       },
       {
@@ -86,7 +100,8 @@
           "name": "John Nicholas Hamilton",
           "absolute_url": "https://whocanivotefor.co.uk/person/36983/john-nicholas-hamilton",
           "email": null,
-          "photo_url": null
+          "photo_url": null,
+          "leaflets": null
         }
       },
       {
@@ -100,7 +115,8 @@
           "name": "Ross Archer",
           "absolute_url": "https://whocanivotefor.co.uk/person/36547/ross-archer",
           "email": null,
-          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/36547.png"
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/36547.png",
+          "leaflets": null
         }
       },
       {
@@ -114,7 +130,8 @@
           "name": "Will Donnelly",
           "absolute_url": "https://whocanivotefor.co.uk/person/36973/will-donnelly",
           "email": null,
-          "photo_url": null
+          "photo_url": null,
+          "leaflets": null
         }
       }
     ],
@@ -136,6 +153,7 @@
       "name": "First-past-the-post",
       "uses_party_lists": false
     },
+    "hustings": null,
     "seats_contested": 1,
     "organisation_type": "local-authority",
     "ballot_locked": true,
@@ -151,7 +169,8 @@
           "name": "Abigail Phillips",
           "absolute_url": "https://whocanivotefor.co.uk/person/47267/abigail-phillips",
           "email": null,
-          "photo_url": null
+          "photo_url": null,
+          "leaflets": null
         }
       },
       {
@@ -165,7 +184,8 @@
           "name": "Amanda De Ryk",
           "absolute_url": "https://whocanivotefor.co.uk/person/47266/amanda-de-ryk",
           "email": "cllr_amanda.deryk@lewisham.gov.uk",
-          "photo_url": null
+          "photo_url": null,
+          "leaflets": null
         }
       },
       {
@@ -179,7 +199,8 @@
           "name": "Anthony Crowther",
           "absolute_url": "https://whocanivotefor.co.uk/person/47265/anthony-crowther",
           "email": null,
-          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/47265.png"
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/47265.png",
+          "leaflets": null
         }
       },
       {
@@ -193,7 +214,8 @@
           "name": "Chris Maines",
           "absolute_url": "https://whocanivotefor.co.uk/person/36984/chris-maines",
           "email": null,
-          "photo_url": null
+          "photo_url": null,
+          "leaflets": null
         }
       },
       {
@@ -207,7 +229,8 @@
           "name": "Jonathan Lee",
           "absolute_url": "https://whocanivotefor.co.uk/person/36550/jonathan-lee",
           "email": null,
-          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/36550.png"
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/36550.png",
+          "leaflets": null
         }
       },
       {
@@ -221,7 +244,8 @@
           "name": "Juliet Campbell",
           "absolute_url": "https://whocanivotefor.co.uk/person/47264/juliet-campbell",
           "email": null,
-          "photo_url": null
+          "photo_url": null,
+          "leaflets": null
         }
       },
       {
@@ -235,7 +259,24 @@
           "name": "Kevin Bonavia",
           "absolute_url": "https://whocanivotefor.co.uk/person/788/kevin-bonavia",
           "email": "kevin.bonavia@btinternet.com",
-          "photo_url": null
+          "photo_url": null,
+          "leaflets": [
+            {
+              "leaflet_id": 18145,
+              "thumb_url": "https://images.electionleaflets.org/thumbs/350x350/leaflets/GE19_LibDem_Swinson_Booklet_front.jpg",
+              "leaflet_url": "https://electionleaflets.org/leaflets/18145/"
+            },
+            {
+              "leaflet_id": 18211,
+              "thumb_url": "https://images.electionleaflets.org/thumbs/350x350/leaflets/image_qEe6p9N.jpg",
+              "leaflet_url": "https://electionleaflets.org/leaflets/18211/"
+            },
+            {
+              "leaflet_id": 18221,
+              "thumb_url": "https://images.electionleaflets.org/thumbs/350x350/leaflets/Image_624.jpg",
+              "leaflet_url": "https://electionleaflets.org/leaflets/18221/"
+            }
+          ]
         }
       },
       {
@@ -249,7 +290,8 @@
           "name": "Nadya Phoenix",
           "absolute_url": "https://whocanivotefor.co.uk/person/47268/nadya-phoenix",
           "email": null,
-          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/47268.png"
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/47268.png",
+          "leaflets": null
         }
       },
       {
@@ -263,7 +305,8 @@
           "name": "Nicola Peers",
           "absolute_url": "https://whocanivotefor.co.uk/person/36549/nicola-peers",
           "email": null,
-          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/36549.png"
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/36549.png",
+          "leaflets": null
         }
       },
       {
@@ -277,7 +320,8 @@
           "name": "Simon Nundy",
           "absolute_url": "https://whocanivotefor.co.uk/person/36548/simon-nundy",
           "email": null,
-          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/36548.png"
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/36548.png",
+          "leaflets": null
         }
       }
     ],
@@ -299,6 +343,7 @@
       "name": "First-past-the-post",
       "uses_party_lists": false
     },
+    "hustings": null,
     "seats_contested": 1,
     "organisation_type": "local-authority",
     "ballot_locked": false,
@@ -314,7 +359,8 @@
           "name": "Abigail Phillips",
           "absolute_url": "https://whocanivotefor.co.uk/person/47267/abigail-phillips",
           "email": null,
-          "photo_url": null
+          "photo_url": null,
+          "leaflets": null
         }
       },
       {
@@ -328,7 +374,8 @@
           "name": "Amanda De Ryk",
           "absolute_url": "https://whocanivotefor.co.uk/person/47266/amanda-de-ryk",
           "email": "cllr_amanda.deryk@lewisham.gov.uk",
-          "photo_url": null
+          "photo_url": null,
+          "leaflets": null
         }
       },
       {
@@ -342,7 +389,8 @@
           "name": "Anthony Crowther",
           "absolute_url": "https://whocanivotefor.co.uk/person/47265/anthony-crowther",
           "email": null,
-          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/47265.png"
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/47265.png",
+          "leaflets": null
         }
       },
       {
@@ -356,7 +404,8 @@
           "name": "Chris Maines",
           "absolute_url": "https://whocanivotefor.co.uk/person/36984/chris-maines",
           "email": null,
-          "photo_url": null
+          "photo_url": null,
+          "leaflets": null
         }
       },
       {
@@ -370,7 +419,8 @@
           "name": "Jonathan Lee",
           "absolute_url": "https://whocanivotefor.co.uk/person/36550/jonathan-lee",
           "email": null,
-          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/36550.png"
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/36550.png",
+          "leaflets": null
         }
       },
       {
@@ -384,7 +434,8 @@
           "name": "Juliet Campbell",
           "absolute_url": "https://whocanivotefor.co.uk/person/47264/juliet-campbell",
           "email": null,
-          "photo_url": null
+          "photo_url": null,
+          "leaflets": null
         }
       },
       {
@@ -398,7 +449,24 @@
           "name": "Kevin Bonavia",
           "absolute_url": "https://whocanivotefor.co.uk/person/788/kevin-bonavia",
           "email": "kevin.bonavia@btinternet.com",
-          "photo_url": null
+          "photo_url": null,
+          "leaflets": [
+            {
+              "leaflet_id": 18145,
+              "thumb_url": "https://images.electionleaflets.org/thumbs/350x350/leaflets/GE19_LibDem_Swinson_Booklet_front.jpg",
+              "leaflet_url": "https://electionleaflets.org/leaflets/18145/"
+            },
+            {
+              "leaflet_id": 18211,
+              "thumb_url": "https://images.electionleaflets.org/thumbs/350x350/leaflets/image_qEe6p9N.jpg",
+              "leaflet_url": "https://electionleaflets.org/leaflets/18211/"
+            },
+            {
+              "leaflet_id": 18221,
+              "thumb_url": "https://images.electionleaflets.org/thumbs/350x350/leaflets/Image_624.jpg",
+              "leaflet_url": "https://electionleaflets.org/leaflets/18221/"
+            }
+          ]
         }
       },
       {
@@ -412,7 +480,8 @@
           "name": "Nadya Phoenix",
           "absolute_url": "https://whocanivotefor.co.uk/person/47268/nadya-phoenix",
           "email": null,
-          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/47268.png"
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/47268.png",
+          "leaflets": null
         }
       },
       {
@@ -426,7 +495,8 @@
           "name": "Nicola Peers",
           "absolute_url": "https://whocanivotefor.co.uk/person/36549/nicola-peers",
           "email": null,
-          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/36549.png"
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/36549.png",
+          "leaflets": null
         }
       },
       {
@@ -440,7 +510,8 @@
           "name": "Simon Nundy",
           "absolute_url": "https://whocanivotefor.co.uk/person/36548/simon-nundy",
           "email": null,
-          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/36548.png"
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/36548.png",
+          "leaflets": null
         }
       }
     ],
@@ -462,6 +533,7 @@
       "name": "First-past-the-post",
       "uses_party_lists": false
     },
+    "hustings": null,
     "seats_contested": 1,
     "organisation_type": "parl",
     "ballot_locked": false,

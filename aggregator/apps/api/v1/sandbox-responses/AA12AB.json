@@ -31,6 +31,16 @@
             "name": "First-past-the-post",
             "uses_party_lists": false
           },
+          "hustings": [
+            {
+              "title": "Local elections hustings",
+              "url": "https://example.com/hustings/",
+              "starts": "2018-04-28T18:00:00Z",
+              "ends": "2018-04-28T20:30:00Z",
+              "location": "Westminster Hall",
+              "postevent_url": "https://example.com/hustings/"
+            }
+          ],
           "seats_contested": 1,
           "candidates": [
             {
@@ -44,7 +54,24 @@
                 "name": "Angela Patricia Piddock",
                 "absolute_url": "https://whocanivotefor.co.uk/person/42253/angela-patricia-piddock",
                 "email": null,
-                "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/42253.png"
+                "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/42253.png",
+                "leaflets": [
+                  {
+                    "leaflet_id": 18145,
+                    "thumb_url": "https://images.electionleaflets.org/thumbs/350x350/leaflets/GE19_LibDem_Swinson_Booklet_front.jpg",
+                    "leaflet_url": "https://electionleaflets.org/leaflets/18145/"
+                  },
+                  {
+                    "leaflet_id": 18211,
+                    "thumb_url": "https://images.electionleaflets.org/thumbs/350x350/leaflets/image_qEe6p9N.jpg",
+                    "leaflet_url": "https://electionleaflets.org/leaflets/18211/"
+                  },
+                  {
+                    "leaflet_id": 18221,
+                    "thumb_url": "https://images.electionleaflets.org/thumbs/350x350/leaflets/Image_624.jpg",
+                    "leaflet_url": "https://electionleaflets.org/leaflets/18221/"
+                  }
+                ]
               }
             },
             {
@@ -58,7 +85,8 @@
                 "name": "Margot Joan Bright",
                 "absolute_url": "https://whocanivotefor.co.uk/person/42681/margot-joan-bright",
                 "email": "lancastergate@westminsterconservatives.com",
-                "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/42681.png"
+                "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/42681.png",
+                "leaflets": null
               }
             },
             {
@@ -72,7 +100,8 @@
                 "name": "Sally Elizabeth Gray",
                 "absolute_url": "https://whocanivotefor.co.uk/person/42252/sally-elizabeth-gray",
                 "email": null,
-                "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/42252.png"
+                "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/42252.png",
+                "leaflets": null
               }
             },
             {
@@ -86,7 +115,8 @@
                 "name": "Zack Polanski",
                 "absolute_url": "https://whocanivotefor.co.uk/person/7505/zack-polanski",
                 "email": "info@zackpolanski.com",
-                "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/7505.png"
+                "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/7505.png",
+                "leaflets": null
               }
             }
           ],

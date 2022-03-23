@@ -10,13 +10,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="canonical" href="/foo/bar/" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/static/images/logo_icon.19bfe52330d5.png">
-    <link rel="icon" type="image/png" href="/static/images/logo_icon.19bfe52330d5.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="/static/images/logo_icon.19bfe52330d5.png" sizes="16x16">
-    <link rel="mask-icon" href="/static/images/logo_icon.19bfe52330d5.png" color="#ec008c">
-    <link rel="shortcut icon" href="/static/images/logo_icon.19bfe52330d5.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/images/logo_icon.png">
+    <link rel="icon" type="image/png" href="/static/images/logo_icon.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/static/images/logo_icon.png" sizes="16x16">
+    <link rel="mask-icon" href="/static/images/logo_icon.png" color="#ec008c">
+    <link rel="shortcut icon" href="/static/images/logo_icon.png">
 
-    <link href="/static/css/styles.60279479c1fe.css" rel="stylesheet" type="text/css" media="screen,projection,print" />
+    <link href="/static/scss/styles.css" rel="stylesheet" type="text/css" media="screen,projection,print" />
     
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
 <style>
@@ -42,7 +42,7 @@
       
         <header class="ds-header">
           <a class="ds-logo" href="/">
-            <img src="/static/images/logo_icon.f6d00edbdf1e.svg" alt="" />
+            <img src="/static/images/logo_icon.svg" alt="" />
             <span>Democracy Club<br>for Developers<br></span>
           </a>
         </header>
@@ -330,6 +330,16 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
             &quot;name&quot;: &quot;First-past-the-post&quot;,
             &quot;uses_party_lists&quot;: false
           },
+          &quot;hustings&quot;: [
+            {
+              &quot;title&quot;: &quot;&quot;,
+              &quot;url&quot;: &quot;&quot;,
+              &quot;starts&quot;: &quot;&quot;,
+              &quot;ends&quot;: &quot;&quot;,
+              &quot;location&quot;: &quot;&quot;,
+              &quot;postevent_url&quot;: &quot;&quot;
+            }
+          ],
           &quot;seats_contested&quot;: 1,
           &quot;candidates&quot;: [
             {
@@ -343,7 +353,14 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                 &quot;name&quot;: &quot;David Keigwin&quot;,
                 &quot;absolute_url&quot;: &quot;https://whocanivotefor.co.uk/person/23417/david-keigwin&quot;,
                 &quot;email&quot;: &quot;dave@example.com&quot;,
-                &quot;photo_url&quot;: null
+                &quot;photo_url&quot;: null,
+                &quot;leaflets&quot;: [
+                  {
+                    &quot;leaflet_id&quot;: 0,
+                    &quot;thumb_url&quot;: &quot;&quot;,
+                    &quot;leaflet_url&quot;: &quot;&quot;
+                  }
+                ]
               }
             },
             {
@@ -603,6 +620,42 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                   },
                   &quot;description&quot;: &quot;The voting system used in this election&quot;
                 },
+                &quot;hustings&quot;: {
+                  &quot;type&quot;: [
+                    &quot;array&quot;,
+                    &quot;null&quot;
+                  ],
+                  &quot;items&quot;: {
+                    &quot;type&quot;: &quot;object&quot;,
+                    &quot;properties&quot;: {
+                      &quot;title&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;Title of the event&quot;
+                      },
+                      &quot;url&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;URL to the event or event sign up page&quot;
+                      },
+                      &quot;starts&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;Start datetime&quot;
+                      },
+                      &quot;ends&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;End datetime&quot;
+                      },
+                      &quot;location&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;Address of the event&quot;
+                      },
+                      &quot;postevent_url&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;Any post-event URL, e.g a YouTube recording of the event&quot;
+                      }
+                    }
+                  },
+                  &quot;description&quot;: &quot;Hustings related to this election&quot;
+                },
                 &quot;seats_contested&quot;: {
                   &quot;type&quot;: &quot;number&quot;
                 },
@@ -656,6 +709,30 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                                 &quot;null&quot;
                               ],
                               &quot;description&quot;: &quot;URL for a photo of this candidate, if we hold one&quot;
+                            },
+                            &quot;leaflets&quot;: {
+                              &quot;type&quot;: [
+                                &quot;array&quot;,
+                                &quot;null&quot;
+                              ],
+                              &quot;items&quot;: {
+                                &quot;type&quot;: &quot;object&quot;,
+                                &quot;properties&quot;: {
+                                  &quot;leaflet_id&quot;: {
+                                    &quot;type&quot;: &quot;number&quot;,
+                                    &quot;description&quot;: &quot;The electionleaflets.org ID for this leaflet&quot;
+                                  },
+                                  &quot;thumb_url&quot;: {
+                                    &quot;type&quot;: &quot;string&quot;,
+                                    &quot;description&quot;: &quot;URL to the thumbnail image of this leaflet&quot;
+                                  },
+                                  &quot;leaflet_url&quot;: {
+                                    &quot;type&quot;: &quot;string&quot;,
+                                    &quot;description&quot;: &quot;URL to the leaflet page on electionleaflets.org&quot;
+                                  }
+                                }
+                              },
+                              &quot;description&quot;: &quot;Leaflets uploaded to electionleaflets.org and tagged with this person&quot;
                             }
                           }
                         }
@@ -1151,6 +1228,16 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
             &quot;name&quot;: &quot;First-past-the-post&quot;,
             &quot;uses_party_lists&quot;: false
           },
+          &quot;hustings&quot;: [
+            {
+              &quot;title&quot;: &quot;&quot;,
+              &quot;url&quot;: &quot;&quot;,
+              &quot;starts&quot;: &quot;&quot;,
+              &quot;ends&quot;: &quot;&quot;,
+              &quot;location&quot;: &quot;&quot;,
+              &quot;postevent_url&quot;: &quot;&quot;
+            }
+          ],
           &quot;seats_contested&quot;: 1,
           &quot;candidates&quot;: [
             {
@@ -1164,7 +1251,14 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                 &quot;name&quot;: &quot;David Keigwin&quot;,
                 &quot;absolute_url&quot;: &quot;https://whocanivotefor.co.uk/person/23417/david-keigwin&quot;,
                 &quot;email&quot;: &quot;dave@example.com&quot;,
-                &quot;photo_url&quot;: null
+                &quot;photo_url&quot;: null,
+                &quot;leaflets&quot;: [
+                  {
+                    &quot;leaflet_id&quot;: 0,
+                    &quot;thumb_url&quot;: &quot;&quot;,
+                    &quot;leaflet_url&quot;: &quot;&quot;
+                  }
+                ]
               }
             },
             {
@@ -1424,6 +1518,42 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                   },
                   &quot;description&quot;: &quot;The voting system used in this election&quot;
                 },
+                &quot;hustings&quot;: {
+                  &quot;type&quot;: [
+                    &quot;array&quot;,
+                    &quot;null&quot;
+                  ],
+                  &quot;items&quot;: {
+                    &quot;type&quot;: &quot;object&quot;,
+                    &quot;properties&quot;: {
+                      &quot;title&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;Title of the event&quot;
+                      },
+                      &quot;url&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;URL to the event or event sign up page&quot;
+                      },
+                      &quot;starts&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;Start datetime&quot;
+                      },
+                      &quot;ends&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;End datetime&quot;
+                      },
+                      &quot;location&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;Address of the event&quot;
+                      },
+                      &quot;postevent_url&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;Any post-event URL, e.g a YouTube recording of the event&quot;
+                      }
+                    }
+                  },
+                  &quot;description&quot;: &quot;Hustings related to this election&quot;
+                },
                 &quot;seats_contested&quot;: {
                   &quot;type&quot;: &quot;number&quot;
                 },
@@ -1477,6 +1607,30 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                                 &quot;null&quot;
                               ],
                               &quot;description&quot;: &quot;URL for a photo of this candidate, if we hold one&quot;
+                            },
+                            &quot;leaflets&quot;: {
+                              &quot;type&quot;: [
+                                &quot;array&quot;,
+                                &quot;null&quot;
+                              ],
+                              &quot;items&quot;: {
+                                &quot;type&quot;: &quot;object&quot;,
+                                &quot;properties&quot;: {
+                                  &quot;leaflet_id&quot;: {
+                                    &quot;type&quot;: &quot;number&quot;,
+                                    &quot;description&quot;: &quot;The electionleaflets.org ID for this leaflet&quot;
+                                  },
+                                  &quot;thumb_url&quot;: {
+                                    &quot;type&quot;: &quot;string&quot;,
+                                    &quot;description&quot;: &quot;URL to the thumbnail image of this leaflet&quot;
+                                  },
+                                  &quot;leaflet_url&quot;: {
+                                    &quot;type&quot;: &quot;string&quot;,
+                                    &quot;description&quot;: &quot;URL to the leaflet page on electionleaflets.org&quot;
+                                  }
+                                }
+                              },
+                              &quot;description&quot;: &quot;Leaflets uploaded to electionleaflets.org and tagged with this person&quot;
                             }
                           }
                         }
@@ -2484,36 +2638,12 @@ The following test postcodes and address slugs are valid in the sandbox. Each on
 ...
   "custom_finder": "http://www.eoni.org.uk/Offices/Postcode-Search-Results?postcode=BT28%202EY"
 }
-</code></pre>
-
-* If we don't know a user's polling station and `custom_finder` is not populated, the contact details in the `electoral_services` or `registration` object can be used to provide contact details for the user's local electoral services or registration team.
-
-### Contact details
-
-We provide two types of contact details; "electoral services" and "registration". This is because in Scotland and Northern Ireland the local authority doesn't handle electoral registration. If you are using the data to deal with electoral registration, use the `registration` contact details. Please make sure you are using the correct contact details for your users needs.
-
-### Ballots and Candidates
-
-* It is possible for more than one ballot to occur on the same date, so a `ballots` array may contain many objects. For example, a user may vote in a local council election and mayoral election on the same day.
-* Occasionally a ballot needs to be cancelled. The most common reason for this is if one of the candidates dies between close of nominations and polling day, but there are other situations where this may happen. Remember to check the `cancelled` flag on ballot objects.
-* In an election using party lists, candidates should be shown to users grouped by party and ordered by `list_position` within parties. In an election which uses party lists, the `candidates` array is sorted by party and `list_position` within parties. For other election types it is sorted alphabetically by candidate name.
-
-### Notifications
-
-We'll use the `notifications` array to provide additional info
+</code></pre><ul><li>If we don't know a user's polling station and <code>custom_finder</code> is not populated, the contact details in the <code>electoral_services</code> or <code>registration</code> object can be used to provide contact details for the user's local electoral services or registration team.</li></ul><h3>Contact details</h3><p>We provide two types of contact details; "electoral services" and "registration". This is because in Scotland and Northern Ireland the local authority doesn't handle electoral registration. If you are using the data to deal with electoral registration, use the <code>registration</code> contact details. Please make sure you are using the correct contact details for your users needs.</p><h3>Ballots and Candidates</h3><ul><li><p>It is possible for more than one ballot to occur on the same date, so a <code>ballots</code> array may contain many objects. For example, a user may vote in a local council election and mayoral election on the same day.</p></li><li><p>Occasionally a ballot needs to be cancelled. The most common reason for this is if one of the candidates dies between close of nominations and polling day, but there are other situations where this may happen. Remember to check the <code>cancelled</code> flag on ballot objects.</p></li><li><p>In an election using party lists, candidates should be shown to users grouped by party and ordered by <code>list_position</code> within parties. In an election which uses party lists, the <code>candidates</code> array is sorted by party and <code>list_position</code> within parties. For other election types it is sorted alphabetically by candidate name.</p></li></ul><h3>Notifications</h3><p>We'll use the <code>notifications</code> array to provide additional info
 to be shown to the user about special conditions to be aware of on this date
-e.g: identification requirements, or a cancelled poll.
-
-#### ID Requirements
-
-All voters in Northern Ireland must present photo ID to vote at a polling station.
-
-Additionally, there have been several trials in England
+e.g: identification requirements, or a cancelled poll.</p><h4>ID Requirements</h4><p>All voters in Northern Ireland must present photo ID to vote at a polling station.</p><p>Additionally, there have been several trials in England
 to test introducing ID requirements more widely.
 API responses for a postcode or address in an authority where identification
-is required will include this information in the `notifications` array. e.g:
-
-<pre><code>{
+is required will include this information in the <code>notifications</code> array. e.g:</p><pre><code>{
 ...
   "notifications": [
     {
@@ -2524,22 +2654,14 @@ is required will include this information in the `notifications` array. e.g:
     }
   ]
 }
-</code></pre>
-
-This information will be provided in all responses from the
-`/address` and `/postcode` API endpoints,
+</code></pre><p>This information will be provided in all responses from the
+<code>/address</code> and <code>/postcode</code> API endpoints,
 even if we are not able to provide a polling station result.
 We encourage our API consumers to provide users in these areas with
-information about the pilots.
-
-#### Cancelled Polls
-
-Sometimes a scheduled poll may be cancelled. This is usuaully either because
+information about the pilots.</p><h4>Cancelled Polls</h4><p>Sometimes a scheduled poll may be cancelled. This is usuaully either because
 the election is uncontested or due to death of a candidate.
 API responses for a postcode or address in an authority where identification
-is required will include this information in the `notifications` array. e.g:
-
-<pre><code>{
+is required will include this information in the <code>notifications</code> array. e.g:</p><pre><code>{
 ...
   "notifications": [
     {
@@ -2550,10 +2672,10 @@ is required will include this information in the `notifications` array. e.g:
     }
   ]
 }
-</code></pre><h2>Errors</h2><div class="ds-grid"><div><p>Errors will be reported using HTTP status codes. The body of the error will be formatted as valid JSON
-  and will give a description of the error</p></div><div class="ds-stack-smaller"><figure><figcaption>Example error response</figcaption><pre>
-{ "detail": "Could not geocode from any source" }
-</pre><p></figure></div></div></p></div></div>
+</code></pre><h2>Errors</h2><div class="ds-grid"><div><p>
+Errors will be reported using HTTP status codes. The body of the error will be formatted as valid JSON and will give a description of the error
+</p></div><div class="ds-stack-smaller"><figure><figcaption>
+Example error response</figcaption><pre>{ "detail": "Could not geocode from any source" }</pre></figure></div></div></div></div>
 
       </main>
         <footer class="ds-footer">
@@ -2575,7 +2697,7 @@ is required will include this information in the `notifications` array. e.g:
             </div>
             <div class="ds-copyright">
               <a class="ds-logo" href="https://democracyclub.org.uk/">
-                <img src="/static/images/logo_icon.f6d00edbdf1e.svg" alt="" />
+                <img src="/static/images/logo_icon.svg" alt="" />
                 <span>democracy<br>club<br></span>
               </a>
               <p>Copyright © 2022 Democracy Club Community Interest Company Company No: <a href="https://beta.companieshouse.gov.uk/company/09461226">09461226</a></p>
@@ -2592,7 +2714,7 @@ is required will include this information in the `notifications` array. e.g:
         </footer>
     </div>
   </body>
-<script type="text/javascript" src="/static/js/scripts.d5d180aba8b8.js" charset="utf-8"></script>
+
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
   <script type="text/javascript">hljs.initHighlightingOnLoad();</script>

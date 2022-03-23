@@ -227,6 +227,7 @@ class Stitcher:
                 ballot["wcivf_url"] = wcivf_ballot["absolute_url"]
                 ballot["voting_system"] = wcivf_ballot["voting_system"]
                 ballot["seats_contested"] = wcivf_ballot["seats_contested"]
+                ballot["hustings"] = wcivf_ballot.get("hustings", None)
 
                 # We only sort by organisation_type at the moment, but we
                 # could add more values here to sort by more fields

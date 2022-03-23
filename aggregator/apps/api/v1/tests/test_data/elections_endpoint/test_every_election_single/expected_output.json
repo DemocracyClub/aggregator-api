@@ -46,6 +46,7 @@
     "name": "First-past-the-post",
     "uses_party_lists": false
   },
+  "hustings": null,
   "current": false,
   "metadata": null,
   "cancelled": false,

@@ -21,24 +21,12 @@ Usage must comply with our [terms of use](/terms).
 <!-- include(notes.apibp) -->
 
 
-<h2>Errors</h2>
-<div class="ds-grid">
-<div>
-  <p>Errors will be reported using HTTP status codes. The body of the error will be formatted as valid JSON
-  and will give a description of the error</p>
+## Errors
 
-
-
-</div>
-<div class="ds-stack-smaller">
-  <figure>
-    <figcaption>Example error response</figcaption>
-    <pre>
-{ "detail": "Could not geocode from any source" }
-</pre>
-  </figure>
-</div>
-</div>
+<div class="ds-grid"><div><p>
+Errors will be reported using HTTP status codes. The body of the error will be formatted as valid JSON and will give a description of the error
+</p></div><div class="ds-stack-smaller"><figure><figcaption>
+Example error response</figcaption><pre>{ "detail": "Could not geocode from any source" }</pre></figure></div></div>
 
 # Data Structures
 
