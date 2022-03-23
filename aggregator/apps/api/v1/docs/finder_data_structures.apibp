@@ -96,6 +96,13 @@
                             + `absolute_url`: `https://whocanivotefor.co.uk/person/23417/david-keigwin` (string) - Link for more (human-readable) information about this candidate
                             + `email`: `dave@example.com` (string, nullable) - Email address for this candidate, if we hold it
                             + `photo_url`: (string, nullable) - URL for a photo of this candidate, if we hold one
+                            + leaflets: (array[object], fixed-type, nullable) - Leaflets uploaded to electionleaflets.org and tagged with this person
+                                + (object)
+                                    + `leaflet_id`: (number) - The electionleaflets.org ID for this leaflet
+                                    + `thumb_url`: (string) - URL to the thumbnail image of this leaflet
+                                    + `leaflet_url`: (string) - URL to the leaflet page on electionleaflets.org
+
+
                     + (object)
                         + `list_position`: (number, nullable) - Numeric position in party list. This value is only relevant to elections using party lists. It will always be null in First-Past-The-post elections.
                         + party: (object)

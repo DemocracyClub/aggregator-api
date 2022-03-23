@@ -353,7 +353,14 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                 &quot;name&quot;: &quot;David Keigwin&quot;,
                 &quot;absolute_url&quot;: &quot;https://whocanivotefor.co.uk/person/23417/david-keigwin&quot;,
                 &quot;email&quot;: &quot;dave@example.com&quot;,
-                &quot;photo_url&quot;: null
+                &quot;photo_url&quot;: null,
+                &quot;leaflets&quot;: [
+                  {
+                    &quot;leaflet_id&quot;: 0,
+                    &quot;thumb_url&quot;: &quot;&quot;,
+                    &quot;leaflet_url&quot;: &quot;&quot;
+                  }
+                ]
               }
             },
             {
@@ -702,6 +709,30 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                                 &quot;null&quot;
                               ],
                               &quot;description&quot;: &quot;URL for a photo of this candidate, if we hold one&quot;
+                            },
+                            &quot;leaflets&quot;: {
+                              &quot;type&quot;: [
+                                &quot;array&quot;,
+                                &quot;null&quot;
+                              ],
+                              &quot;items&quot;: {
+                                &quot;type&quot;: &quot;object&quot;,
+                                &quot;properties&quot;: {
+                                  &quot;leaflet_id&quot;: {
+                                    &quot;type&quot;: &quot;number&quot;,
+                                    &quot;description&quot;: &quot;The electionleaflets.org ID for this leaflet&quot;
+                                  },
+                                  &quot;thumb_url&quot;: {
+                                    &quot;type&quot;: &quot;string&quot;,
+                                    &quot;description&quot;: &quot;URL to the thumbnail image of this leaflet&quot;
+                                  },
+                                  &quot;leaflet_url&quot;: {
+                                    &quot;type&quot;: &quot;string&quot;,
+                                    &quot;description&quot;: &quot;URL to the leaflet page on electionleaflets.org&quot;
+                                  }
+                                }
+                              },
+                              &quot;description&quot;: &quot;Leaflets uploaded to electionleaflets.org and tagged with this person&quot;
                             }
                           }
                         }
@@ -1220,7 +1251,14 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                 &quot;name&quot;: &quot;David Keigwin&quot;,
                 &quot;absolute_url&quot;: &quot;https://whocanivotefor.co.uk/person/23417/david-keigwin&quot;,
                 &quot;email&quot;: &quot;dave@example.com&quot;,
-                &quot;photo_url&quot;: null
+                &quot;photo_url&quot;: null,
+                &quot;leaflets&quot;: [
+                  {
+                    &quot;leaflet_id&quot;: 0,
+                    &quot;thumb_url&quot;: &quot;&quot;,
+                    &quot;leaflet_url&quot;: &quot;&quot;
+                  }
+                ]
               }
             },
             {
@@ -1569,6 +1607,30 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                                 &quot;null&quot;
                               ],
                               &quot;description&quot;: &quot;URL for a photo of this candidate, if we hold one&quot;
+                            },
+                            &quot;leaflets&quot;: {
+                              &quot;type&quot;: [
+                                &quot;array&quot;,
+                                &quot;null&quot;
+                              ],
+                              &quot;items&quot;: {
+                                &quot;type&quot;: &quot;object&quot;,
+                                &quot;properties&quot;: {
+                                  &quot;leaflet_id&quot;: {
+                                    &quot;type&quot;: &quot;number&quot;,
+                                    &quot;description&quot;: &quot;The electionleaflets.org ID for this leaflet&quot;
+                                  },
+                                  &quot;thumb_url&quot;: {
+                                    &quot;type&quot;: &quot;string&quot;,
+                                    &quot;description&quot;: &quot;URL to the thumbnail image of this leaflet&quot;
+                                  },
+                                  &quot;leaflet_url&quot;: {
+                                    &quot;type&quot;: &quot;string&quot;,
+                                    &quot;description&quot;: &quot;URL to the leaflet page on electionleaflets.org&quot;
+                                  }
+                                }
+                              },
+                              &quot;description&quot;: &quot;Leaflets uploaded to electionleaflets.org and tagged with this person&quot;
                             }
                           }
                         }
