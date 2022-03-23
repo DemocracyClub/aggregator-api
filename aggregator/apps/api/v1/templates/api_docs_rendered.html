@@ -10,13 +10,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="canonical" href="/foo/bar/" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/static/images/logo_icon.19bfe52330d5.png">
-    <link rel="icon" type="image/png" href="/static/images/logo_icon.19bfe52330d5.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="/static/images/logo_icon.19bfe52330d5.png" sizes="16x16">
-    <link rel="mask-icon" href="/static/images/logo_icon.19bfe52330d5.png" color="#ec008c">
-    <link rel="shortcut icon" href="/static/images/logo_icon.19bfe52330d5.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/images/logo_icon.png">
+    <link rel="icon" type="image/png" href="/static/images/logo_icon.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/static/images/logo_icon.png" sizes="16x16">
+    <link rel="mask-icon" href="/static/images/logo_icon.png" color="#ec008c">
+    <link rel="shortcut icon" href="/static/images/logo_icon.png">
 
-    <link href="/static/css/styles.60279479c1fe.css" rel="stylesheet" type="text/css" media="screen,projection,print" />
+    <link href="/static/scss/styles.css" rel="stylesheet" type="text/css" media="screen,projection,print" />
     
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
 <style>
@@ -42,7 +42,7 @@
       
         <header class="ds-header">
           <a class="ds-logo" href="/">
-            <img src="/static/images/logo_icon.f6d00edbdf1e.svg" alt="" />
+            <img src="/static/images/logo_icon.svg" alt="" />
             <span>Democracy Club<br>for Developers<br></span>
           </a>
         </header>
@@ -2480,40 +2480,18 @@ To make it easier to replicate a variety of behaviours in test/development we pr
 The following test postcodes and address slugs are valid in the sandbox. Each one represents a different scenario:</p><ul><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA11AA">AA11AA</a> - No upcoming ballots</p></li><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA12AA">AA12AA</a> - One upcoming ballot, station known, with candidates</p></li><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA12AB">AA12AB</a> - One upcoming ballot, station not known, with candidates</p></li><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA13AA">AA13AA</a> - We need to show the user an address picker. Each of the following <code>/address</code> calls has different polling station info:</p><ul><li>address slug <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/address/10035187881">10035187881</a></li><li>address slug <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/address/10035187882">10035187882</a></li><li>address slug <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/address/10035187883">10035187883</a></li></ul></li><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA14AA">AA14AA</a> - Four upcoming ballots across 3 future dates with a cancellation:</p><ul><li><code>mayor.lewisham.2018-05-03</code> - Mayoral election</li><li><code>local.lewisham.blackheath.2018-05-03</code> - This election is cancelled and rescheduled on 2018-05-10</li><li><code>local.lewisham.blackheath.2018-05-10</code> - This election replaces the cancelled <code>local.lewisham.blackheath.2018-05-03</code></li><li><code>parl.lewisham-east.by.2018-06-14</code> - This election is scheduled but we don't know of any candidates yet</li></ul></li><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA15AA">AA15AA</a> - Northern Ireland. This example shows the <code>custom_finder</code> key in use. We can use this to redirect users to Electoral Office for Northern Ireland's website for polling station data.</p></li><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/EH11YJ">EH11YJ</a> - Scotland. This example shows different registration and electoral services contact details.</p></li></ul></div></div><div class="api-resource-group card"><h2 id="notes-and-tips-2">
         Notes and Tips&nbsp;<a
           href="#notes-and-tips-2"
-          class="permalink">&para;</a></h2><div class="api-description"><h3>Polling Stations</h3><ul><li>If we don't know a user's polling station, sometimes we may provide an external link for more info in <code>custom_finder</code>. This will always be populated for users in Northern Ireland where the Electoral Office for Northern Ireland run their own service. e.g:</li></ul><pre><code>{
+          class="permalink">&para;</a></h2><div class="api-description"><h3>Polling Stations</h3><p>If we don't know a user's polling station, sometimes we may provide an external link for more info in <code>custom_finder</code>.
+This will always be populated for users in Northern Ireland where the Electoral Office for Northern Ireland run their own service. e.g:</p><pre><code>{
 ...
   "custom_finder": "http://www.eoni.org.uk/Offices/Postcode-Search-Results?postcode=BT28%202EY"
 }
-</code></pre>
-
-* If we don't know a user's polling station and `custom_finder` is not populated, the contact details in the `electoral_services` or `registration` object can be used to provide contact details for the user's local electoral services or registration team.
-
-### Contact details
-
-We provide two types of contact details; "electoral services" and "registration". This is because in Scotland and Northern Ireland the local authority doesn't handle electoral registration. If you are using the data to deal with electoral registration, use the `registration` contact details. Please make sure you are using the correct contact details for your users needs.
-
-### Ballots and Candidates
-
-* It is possible for more than one ballot to occur on the same date, so a `ballots` array may contain many objects. For example, a user may vote in a local council election and mayoral election on the same day.
-* Occasionally a ballot needs to be cancelled. The most common reason for this is if one of the candidates dies between close of nominations and polling day, but there are other situations where this may happen. Remember to check the `cancelled` flag on ballot objects.
-* In an election using party lists, candidates should be shown to users grouped by party and ordered by `list_position` within parties. In an election which uses party lists, the `candidates` array is sorted by party and `list_position` within parties. For other election types it is sorted alphabetically by candidate name.
-
-### Notifications
-
-We'll use the `notifications` array to provide additional info
+</code></pre><ul><li>If we don't know a user's polling station and <code>custom_finder</code> is not populated, the contact details in the <code>electoral_services</code> or
+<code>registration</code> object can be used to provide contact details for the user's local electoral services or registration team.</li></ul><h3>Contact details</h3><p>We provide two types of contact details; "electoral services" and "registration". This is because in Scotland and Northern Ireland the local authority doesn't handle electoral registration. If you are using the data to deal with electoral registration, use the <code>registration</code> contact details. Please make sure you are using the correct contact details for your users needs.</p><h3>Ballots and Candidates</h3><ul><li><p>It is possible for more than one ballot to occur on the same date, so a <code>ballots</code> array may contain many objects. For example, a user may vote in a local council election and mayoral election on the same day.</p></li><li><p>Occasionally a ballot needs to be cancelled. The most common reason for this is if one of the candidates dies between close of nominations and polling day, but there are other situations where this may happen. Remember to check the <code>cancelled</code> flag on ballot objects.</p></li><li><p>In an election using party lists, candidates should be shown to users grouped by party and ordered by <code>list_position</code> within parties. In an election which uses party lists, the <code>candidates</code> array is sorted by party and <code>list_position</code> within parties. For other election types it is sorted alphabetically by candidate name.</p></li></ul><h3>Notifications</h3><p>We'll use the <code>notifications</code> array to provide additional info
 to be shown to the user about special conditions to be aware of on this date
-e.g: identification requirements, or a cancelled poll.
-
-#### ID Requirements
-
-All voters in Northern Ireland must present photo ID to vote at a polling station.
-
-Additionally, there have been several trials in England
+e.g: identification requirements, or a cancelled poll.</p><h4>ID Requirements</h4><p>All voters in Northern Ireland must present photo ID to vote at a polling station.</p><p>Additionally, there have been several trials in England
 to test introducing ID requirements more widely.
 API responses for a postcode or address in an authority where identification
-is required will include this information in the `notifications` array. e.g:
-
-<pre><code>{
+is required will include this information in the <code>notifications</code> array. e.g:</p><pre><code>{
 ...
   "notifications": [
     {
@@ -2524,22 +2502,14 @@ is required will include this information in the `notifications` array. e.g:
     }
   ]
 }
-</code></pre>
-
-This information will be provided in all responses from the
-`/address` and `/postcode` API endpoints,
+</code></pre><p>This information will be provided in all responses from the
+<code>/address</code> and <code>/postcode</code> API endpoints,
 even if we are not able to provide a polling station result.
 We encourage our API consumers to provide users in these areas with
-information about the pilots.
-
-#### Cancelled Polls
-
-Sometimes a scheduled poll may be cancelled. This is usuaully either because
+information about the pilots.</p><h4>Cancelled Polls</h4><p>Sometimes a scheduled poll may be cancelled. This is usuaully either because
 the election is uncontested or due to death of a candidate.
 API responses for a postcode or address in an authority where identification
-is required will include this information in the `notifications` array. e.g:
-
-<pre><code>{
+is required will include this information in the <code>notifications</code> array. e.g:</p><pre><code>{
 ...
   "notifications": [
     {
@@ -2550,10 +2520,10 @@ is required will include this information in the `notifications` array. e.g:
     }
   ]
 }
-</code></pre><h2>Errors</h2><div class="ds-grid"><div><p>Errors will be reported using HTTP status codes. The body of the error will be formatted as valid JSON
-  and will give a description of the error</p></div><div class="ds-stack-smaller"><figure><figcaption>Example error response</figcaption><pre>
-{ "detail": "Could not geocode from any source" }
-</pre><p></figure></div></div></p></div></div>
+</code></pre><h2>Errors</h2><div class="ds-grid"><div><p>
+Errors will be reported using HTTP status codes. The body of the error will be formatted as valid JSON and will give a description of the error
+</p></div><div class="ds-stack-smaller"><figure><figcaption>
+Example error response</figcaption><pre>{ "detail": "Could not geocode from any source" }</pre></figure></div></div></div></div>
 
       </main>
         <footer class="ds-footer">
@@ -2575,7 +2545,7 @@ is required will include this information in the `notifications` array. e.g:
             </div>
             <div class="ds-copyright">
               <a class="ds-logo" href="https://democracyclub.org.uk/">
-                <img src="/static/images/logo_icon.f6d00edbdf1e.svg" alt="" />
+                <img src="/static/images/logo_icon.svg" alt="" />
                 <span>democracy<br>club<br></span>
               </a>
               <p>Copyright © 2022 Democracy Club Community Interest Company Company No: <a href="https://beta.companieshouse.gov.uk/company/09461226">09461226</a></p>
@@ -2592,7 +2562,7 @@ is required will include this information in the `notifications` array. e.g:
         </footer>
     </div>
   </body>
-<script type="text/javascript" src="/static/js/scripts.d5d180aba8b8.js" charset="utf-8"></script>
+
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
   <script type="text/javascript">hljs.initHighlightingOnLoad();</script>
