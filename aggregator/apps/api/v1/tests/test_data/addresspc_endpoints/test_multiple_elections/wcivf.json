@@ -15,6 +15,16 @@
       "name": "Supplementary Vote",
       "uses_party_lists": false
     },
+    "hustings": [
+      {
+        "title": "Local elections hustings",
+        "url": "https://example.com/hustings/",
+        "starts": "2018-04-28T18:00:00Z",
+        "ends": "2018-04-28T20:30:00Z",
+        "location": "Westminster Hall",
+        "postevent_url": "https://example.com/hustings/"
+      }
+    ],
     "seats_contested": 1,
     "organisation_type": "local-authority",
     "ballot_locked": true,
@@ -136,6 +146,7 @@
       "name": "First-past-the-post",
       "uses_party_lists": false
     },
+    "hustings": null,
     "seats_contested": 1,
     "organisation_type": "local-authority",
     "ballot_locked": true,
@@ -299,6 +310,7 @@
       "name": "First-past-the-post",
       "uses_party_lists": false
     },
+    "hustings": null,
     "seats_contested": 1,
     "organisation_type": "local-authority",
     "ballot_locked": false,
@@ -462,6 +474,7 @@
       "name": "First-past-the-post",
       "uses_party_lists": false
     },
+    "hustings": null,
     "seats_contested": 1,
     "organisation_type": "parl",
     "ballot_locked": false,

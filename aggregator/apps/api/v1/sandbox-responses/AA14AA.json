@@ -31,6 +31,16 @@
             "name": "Supplementary Vote",
             "uses_party_lists": false
           },
+          "hustings": [
+            {
+              "title": "Local elections hustings",
+              "url": "https://example.com/hustings/",
+              "starts": "2018-04-28T18:00:00Z",
+              "ends": "2018-04-28T20:30:00Z",
+              "location": "Westminster Hall",
+              "postevent_url": "https://example.com/hustings/"
+            }
+          ],
           "seats_contested": 1,
           "candidates": [
             {
@@ -153,6 +163,7 @@
             "name": "First-past-the-post",
             "uses_party_lists": false
           },
+          "hustings": null,
           "seats_contested": 1,
           "replaced_by": "local.lewisham.blackheath.2018-05-10",
           "replaces": null,
@@ -332,6 +343,7 @@
             "slug": "FPTP",
             "uses_party_lists": false
           },
+          "hustings": null,
           "election_id": "local.lewisham.2018-05-10",
           "election_name": "Lewisham local election",
           "post_name": "Blackheath",
@@ -511,6 +523,7 @@
             "name": "First-past-the-post",
             "uses_party_lists": false
           },
+          "hustings": null,
           "seats_contested": 1,
           "candidates": [],
           "wcivf_url": "https://whocanivotefor.co.uk/elections/parl.2018-06-14/post-WMC:E14000787/lewisham-east"

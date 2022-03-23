@@ -330,6 +330,16 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
             &quot;name&quot;: &quot;First-past-the-post&quot;,
             &quot;uses_party_lists&quot;: false
           },
+          &quot;hustings&quot;: [
+            {
+              &quot;title&quot;: &quot;&quot;,
+              &quot;url&quot;: &quot;&quot;,
+              &quot;starts&quot;: &quot;&quot;,
+              &quot;ends&quot;: &quot;&quot;,
+              &quot;location&quot;: &quot;&quot;,
+              &quot;postevent_url&quot;: &quot;&quot;
+            }
+          ],
           &quot;seats_contested&quot;: 1,
           &quot;candidates&quot;: [
             {
@@ -602,6 +612,42 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                     }
                   },
                   &quot;description&quot;: &quot;The voting system used in this election&quot;
+                },
+                &quot;hustings&quot;: {
+                  &quot;type&quot;: [
+                    &quot;array&quot;,
+                    &quot;null&quot;
+                  ],
+                  &quot;items&quot;: {
+                    &quot;type&quot;: &quot;object&quot;,
+                    &quot;properties&quot;: {
+                      &quot;title&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;Title of the event&quot;
+                      },
+                      &quot;url&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;URL to the event or event sign up page&quot;
+                      },
+                      &quot;starts&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;Start datetime&quot;
+                      },
+                      &quot;ends&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;End datetime&quot;
+                      },
+                      &quot;location&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;Address of the event&quot;
+                      },
+                      &quot;postevent_url&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;Any post-event URL, e.g a YouTube recording of the event&quot;
+                      }
+                    }
+                  },
+                  &quot;description&quot;: &quot;Hustings related to this election&quot;
                 },
                 &quot;seats_contested&quot;: {
                   &quot;type&quot;: &quot;number&quot;
@@ -1151,6 +1197,16 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
             &quot;name&quot;: &quot;First-past-the-post&quot;,
             &quot;uses_party_lists&quot;: false
           },
+          &quot;hustings&quot;: [
+            {
+              &quot;title&quot;: &quot;&quot;,
+              &quot;url&quot;: &quot;&quot;,
+              &quot;starts&quot;: &quot;&quot;,
+              &quot;ends&quot;: &quot;&quot;,
+              &quot;location&quot;: &quot;&quot;,
+              &quot;postevent_url&quot;: &quot;&quot;
+            }
+          ],
           &quot;seats_contested&quot;: 1,
           &quot;candidates&quot;: [
             {
@@ -1423,6 +1479,42 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                     }
                   },
                   &quot;description&quot;: &quot;The voting system used in this election&quot;
+                },
+                &quot;hustings&quot;: {
+                  &quot;type&quot;: [
+                    &quot;array&quot;,
+                    &quot;null&quot;
+                  ],
+                  &quot;items&quot;: {
+                    &quot;type&quot;: &quot;object&quot;,
+                    &quot;properties&quot;: {
+                      &quot;title&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;Title of the event&quot;
+                      },
+                      &quot;url&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;URL to the event or event sign up page&quot;
+                      },
+                      &quot;starts&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;Start datetime&quot;
+                      },
+                      &quot;ends&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;End datetime&quot;
+                      },
+                      &quot;location&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;Address of the event&quot;
+                      },
+                      &quot;postevent_url&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;Any post-event URL, e.g a YouTube recording of the event&quot;
+                      }
+                    }
+                  },
+                  &quot;description&quot;: &quot;Hustings related to this election&quot;
                 },
                 &quot;seats_contested&quot;: {
                   &quot;type&quot;: &quot;number&quot;
@@ -2480,13 +2572,11 @@ To make it easier to replicate a variety of behaviours in test/development we pr
 The following test postcodes and address slugs are valid in the sandbox. Each one represents a different scenario:</p><ul><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA11AA">AA11AA</a> - No upcoming ballots</p></li><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA12AA">AA12AA</a> - One upcoming ballot, station known, with candidates</p></li><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA12AB">AA12AB</a> - One upcoming ballot, station not known, with candidates</p></li><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA13AA">AA13AA</a> - We need to show the user an address picker. Each of the following <code>/address</code> calls has different polling station info:</p><ul><li>address slug <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/address/10035187881">10035187881</a></li><li>address slug <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/address/10035187882">10035187882</a></li><li>address slug <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/address/10035187883">10035187883</a></li></ul></li><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA14AA">AA14AA</a> - Four upcoming ballots across 3 future dates with a cancellation:</p><ul><li><code>mayor.lewisham.2018-05-03</code> - Mayoral election</li><li><code>local.lewisham.blackheath.2018-05-03</code> - This election is cancelled and rescheduled on 2018-05-10</li><li><code>local.lewisham.blackheath.2018-05-10</code> - This election replaces the cancelled <code>local.lewisham.blackheath.2018-05-03</code></li><li><code>parl.lewisham-east.by.2018-06-14</code> - This election is scheduled but we don't know of any candidates yet</li></ul></li><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA15AA">AA15AA</a> - Northern Ireland. This example shows the <code>custom_finder</code> key in use. We can use this to redirect users to Electoral Office for Northern Ireland's website for polling station data.</p></li><li><p>postcode <a href="http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/EH11YJ">EH11YJ</a> - Scotland. This example shows different registration and electoral services contact details.</p></li></ul></div></div><div class="api-resource-group card"><h2 id="notes-and-tips-2">
         Notes and Tips&nbsp;<a
           href="#notes-and-tips-2"
-          class="permalink">&para;</a></h2><div class="api-description"><h3>Polling Stations</h3><p>If we don't know a user's polling station, sometimes we may provide an external link for more info in <code>custom_finder</code>.
-This will always be populated for users in Northern Ireland where the Electoral Office for Northern Ireland run their own service. e.g:</p><pre><code>{
+          class="permalink">&para;</a></h2><div class="api-description"><h3>Polling Stations</h3><ul><li>If we don't know a user's polling station, sometimes we may provide an external link for more info in <code>custom_finder</code>. This will always be populated for users in Northern Ireland where the Electoral Office for Northern Ireland run their own service. e.g:</li></ul><pre><code>{
 ...
   "custom_finder": "http://www.eoni.org.uk/Offices/Postcode-Search-Results?postcode=BT28%202EY"
 }
-</code></pre><ul><li>If we don't know a user's polling station and <code>custom_finder</code> is not populated, the contact details in the <code>electoral_services</code> or
-<code>registration</code> object can be used to provide contact details for the user's local electoral services or registration team.</li></ul><h3>Contact details</h3><p>We provide two types of contact details; "electoral services" and "registration". This is because in Scotland and Northern Ireland the local authority doesn't handle electoral registration. If you are using the data to deal with electoral registration, use the <code>registration</code> contact details. Please make sure you are using the correct contact details for your users needs.</p><h3>Ballots and Candidates</h3><ul><li><p>It is possible for more than one ballot to occur on the same date, so a <code>ballots</code> array may contain many objects. For example, a user may vote in a local council election and mayoral election on the same day.</p></li><li><p>Occasionally a ballot needs to be cancelled. The most common reason for this is if one of the candidates dies between close of nominations and polling day, but there are other situations where this may happen. Remember to check the <code>cancelled</code> flag on ballot objects.</p></li><li><p>In an election using party lists, candidates should be shown to users grouped by party and ordered by <code>list_position</code> within parties. In an election which uses party lists, the <code>candidates</code> array is sorted by party and <code>list_position</code> within parties. For other election types it is sorted alphabetically by candidate name.</p></li></ul><h3>Notifications</h3><p>We'll use the <code>notifications</code> array to provide additional info
+</code></pre><ul><li>If we don't know a user's polling station and <code>custom_finder</code> is not populated, the contact details in the <code>electoral_services</code> or <code>registration</code> object can be used to provide contact details for the user's local electoral services or registration team.</li></ul><h3>Contact details</h3><p>We provide two types of contact details; "electoral services" and "registration". This is because in Scotland and Northern Ireland the local authority doesn't handle electoral registration. If you are using the data to deal with electoral registration, use the <code>registration</code> contact details. Please make sure you are using the correct contact details for your users needs.</p><h3>Ballots and Candidates</h3><ul><li><p>It is possible for more than one ballot to occur on the same date, so a <code>ballots</code> array may contain many objects. For example, a user may vote in a local council election and mayoral election on the same day.</p></li><li><p>Occasionally a ballot needs to be cancelled. The most common reason for this is if one of the candidates dies between close of nominations and polling day, but there are other situations where this may happen. Remember to check the <code>cancelled</code> flag on ballot objects.</p></li><li><p>In an election using party lists, candidates should be shown to users grouped by party and ordered by <code>list_position</code> within parties. In an election which uses party lists, the <code>candidates</code> array is sorted by party and <code>list_position</code> within parties. For other election types it is sorted alphabetically by candidate name.</p></li></ul><h3>Notifications</h3><p>We'll use the <code>notifications</code> array to provide additional info
 to be shown to the user about special conditions to be aware of on this date
 e.g: identification requirements, or a cancelled poll.</p><h4>ID Requirements</h4><p>All voters in Northern Ireland must present photo ID to vote at a polling station.</p><p>Additionally, there have been several trials in England
 to test introducing ID requirements more widely.
