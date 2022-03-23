@@ -44,6 +44,7 @@
       "address": "York Room, Lancaster Hall Hotel\n35 Craven Terrace\nLondon"
     }
   },
+  "advance_voting_station": null,
   "addresses": [],
   "report_problem_url": "http://wheredoivote.co.uk/report_problem/?source=testing&source_url=testing",
   "metadata": null,

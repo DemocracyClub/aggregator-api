@@ -24,6 +24,7 @@
     "address": "Electoral Registration Officer\nLewisham Town Hall\nCatford Road\nCatford"
   },
   "polling_station": null,
+  "advance_voting_station": null,
   "addresses": [],
   "report_problem_url": null,
   "metadata": null,
