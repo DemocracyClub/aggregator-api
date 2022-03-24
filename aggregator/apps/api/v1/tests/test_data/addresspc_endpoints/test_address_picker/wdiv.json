@@ -24,6 +24,7 @@
     "address": "Electoral Registration Officer\nWestminster City Council\n2nd Floor, City Hall\n5 Strand"
   },
   "polling_station": null,
+  "advance_voting_station": null,
   "addresses": [
     {
       "address": "42 Leinster Gardens, London",

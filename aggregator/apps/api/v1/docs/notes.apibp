@@ -75,3 +75,45 @@ is required will include this information in the `notifications` array. e.g:
   ]
 }
 </code></pre>
+
+### Advance Voting Stations
+
+For the 2022 local elections in Wales, four councils are piloting "Advance Voting". This means people in the pilot areas
+will be able to cast their vote in the days before polling day.
+
+We support this pilot, and have an extra key in the API in the `dates` array.
+
+<pre><code>{
+...
+"advance\_voting\_station": {
+    "name": "Exeter Guildhall",
+    "address": "Exeter City Council\nCivic Centre\nParis Street\nExeter\nDevon",
+    "postcode": "EX1 1JN",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        -3.524551005678706,
+        50.72486002944331
+      ]
+    },
+    "opening\_times": [
+      [
+        "2018-11-20",
+        "10:00:00",
+        "16:00:00"
+      ],
+      [
+        "2018-11-21",
+        "10:00:00",
+        "16:00:00"
+      ]
+    ]
+  },
+}</pre></code>
+
+If this object exists in the API response, it's _highly recommended_ to display it to the user.
+
+Each Advance Voting Station has a name, address, postcode and location. Opening times are given as an ordered list of
+lists, containing:
+
+`[date, open time, close time]`

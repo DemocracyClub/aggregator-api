@@ -204,6 +204,7 @@ class Stitcher:
                         "report_problem_url": None,
                         "station": None,
                     },
+                    "advance_voting_station": None,
                     "notifications": nm.notifications,
                     "ballots": ballots,
                 }
@@ -236,6 +237,10 @@ class Stitcher:
                 ]
         if results:
             results[0]["polling_station"] = self.minimal_wdiv_response
+            if results[0]["polling_station"]["polling_station_known"]:
+                results[0]["advance_voting_station"] = self.wdiv_resp.get(
+                    "advance_voting_station", None
+                )
         response = {
             "address_picker": False,
             "addresses": [],

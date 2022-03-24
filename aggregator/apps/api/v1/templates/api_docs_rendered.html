@@ -302,6 +302,25 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
           }
         }
       },
+      &quot;advance_voting_station&quot;: {
+        &quot;name&quot;: &quot;&quot;,
+        &quot;address&quot;: &quot;&quot;,
+        &quot;postcode&quot;: &quot;&quot;,
+        &quot;location&quot;: {
+          &quot;type&quot;: &quot;Point&quot;,
+          &quot;coordinates&quot;: [
+            -3.119229,
+            51.510885
+          ]
+        },
+        &quot;opening_times&quot;: [
+          [
+            &quot;date&quot;,
+            &quot;open&quot;,
+            &quot;close&quot;
+          ]
+        ]
+      },
       &quot;notifications&quot;: [
         {
           &quot;title&quot;: &quot;Some unexpected event is happening&quot;,
@@ -508,6 +527,61 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
               }
             },
             &quot;description&quot;: &quot;Results for polling station search&quot;
+          },
+          &quot;advance_voting_station&quot;: {
+            &quot;type&quot;: [
+              &quot;object&quot;,
+              &quot;null&quot;
+            ],
+            &quot;properties&quot;: {
+              &quot;name&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;The name of the Advance Voting Station&quot;
+              },
+              &quot;address&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;The address of the Advance Voting Station&quot;
+              },
+              &quot;postcode&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;The postcode of the Advance Voting Station&quot;
+              },
+              &quot;location&quot;: {
+                &quot;type&quot;: &quot;object&quot;,
+                &quot;properties&quot;: {
+                  &quot;type&quot;: {
+                    &quot;type&quot;: &quot;string&quot;
+                  },
+                  &quot;coordinates&quot;: {
+                    &quot;type&quot;: &quot;array&quot;,
+                    &quot;items&quot;: [
+                      {
+                        &quot;type&quot;: &quot;number&quot;
+                      },
+                      {
+                        &quot;type&quot;: &quot;number&quot;
+                      }
+                    ]
+                  }
+                },
+                &quot;description&quot;: &quot;A GeoJSON [Point object](https://tools.ietf.org/html/rfc7946#section-3.1.2) object describing the location of this Advance Voting Station.&quot;
+              },
+              &quot;opening_times&quot;: {
+                &quot;type&quot;: &quot;array&quot;,
+                &quot;items&quot;: {
+                  &quot;type&quot;: &quot;array&quot;
+                }
+              }
+            },
+            &quot;required&quot;: [
+              &quot;name&quot;,
+              &quot;address&quot;,
+              &quot;postcode&quot;,
+              &quot;location&quot;,
+              &quot;opening_times&quot;
+            ],
+            &quot;additionalProperties&quot;: false,
+            &quot;description&quot;: &quot;Advance Voting Stations&quot;
           },
           &quot;notifications&quot;: {
             &quot;type&quot;: &quot;array&quot;,
@@ -1200,6 +1274,25 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
           }
         }
       },
+      &quot;advance_voting_station&quot;: {
+        &quot;name&quot;: &quot;&quot;,
+        &quot;address&quot;: &quot;&quot;,
+        &quot;postcode&quot;: &quot;&quot;,
+        &quot;location&quot;: {
+          &quot;type&quot;: &quot;Point&quot;,
+          &quot;coordinates&quot;: [
+            -3.119229,
+            51.510885
+          ]
+        },
+        &quot;opening_times&quot;: [
+          [
+            &quot;date&quot;,
+            &quot;open&quot;,
+            &quot;close&quot;
+          ]
+        ]
+      },
       &quot;notifications&quot;: [
         {
           &quot;title&quot;: &quot;Some unexpected event is happening&quot;,
@@ -1406,6 +1499,61 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
               }
             },
             &quot;description&quot;: &quot;Results for polling station search&quot;
+          },
+          &quot;advance_voting_station&quot;: {
+            &quot;type&quot;: [
+              &quot;object&quot;,
+              &quot;null&quot;
+            ],
+            &quot;properties&quot;: {
+              &quot;name&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;The name of the Advance Voting Station&quot;
+              },
+              &quot;address&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;The address of the Advance Voting Station&quot;
+              },
+              &quot;postcode&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;The postcode of the Advance Voting Station&quot;
+              },
+              &quot;location&quot;: {
+                &quot;type&quot;: &quot;object&quot;,
+                &quot;properties&quot;: {
+                  &quot;type&quot;: {
+                    &quot;type&quot;: &quot;string&quot;
+                  },
+                  &quot;coordinates&quot;: {
+                    &quot;type&quot;: &quot;array&quot;,
+                    &quot;items&quot;: [
+                      {
+                        &quot;type&quot;: &quot;number&quot;
+                      },
+                      {
+                        &quot;type&quot;: &quot;number&quot;
+                      }
+                    ]
+                  }
+                },
+                &quot;description&quot;: &quot;A GeoJSON [Point object](https://tools.ietf.org/html/rfc7946#section-3.1.2) object describing the location of this Advance Voting Station.&quot;
+              },
+              &quot;opening_times&quot;: {
+                &quot;type&quot;: &quot;array&quot;,
+                &quot;items&quot;: {
+                  &quot;type&quot;: &quot;array&quot;
+                }
+              }
+            },
+            &quot;required&quot;: [
+              &quot;name&quot;,
+              &quot;address&quot;,
+              &quot;postcode&quot;,
+              &quot;location&quot;,
+              &quot;opening_times&quot;
+            ],
+            &quot;additionalProperties&quot;: false,
+            &quot;description&quot;: &quot;Advance Voting Stations&quot;
           },
           &quot;notifications&quot;: {
             &quot;type&quot;: &quot;array&quot;,
@@ -2672,7 +2820,35 @@ is required will include this information in the <code>notifications</code> arra
     }
   ]
 }
-</code></pre><h2>Errors</h2><div class="ds-grid"><div><p>
+</code></pre><h3>Advance Voting Stations</h3><p>For the 2022 local elections in Wales, four councils are piloting "Advance Voting". This means people in the pilot areas
+will be able to cast their vote in the days before polling day.</p><p>We support this pilot, and have an extra key in the API in the <code>dates</code> array.</p><p><pre><code>{
+...
+"advance_voting_station": {
+    "name": "Exeter Guildhall",
+    "address": "Exeter City Council\nCivic Centre\nParis Street\nExeter\nDevon",
+    "postcode": "EX1 1JN",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        -3.524551005678706,
+        50.72486002944331
+      ]
+    },
+    "opening_times": [
+      [
+        "2018-11-20",
+        "10:00:00",
+        "16:00:00"
+      ],
+      [
+        "2018-11-21",
+        "10:00:00",
+        "16:00:00"
+      ]
+    ]
+  },
+}</pre></code></p><p>If this object exists in the API response, it's <em>highly recommended</em> to display it to the user.</p><p>Each Advance Voting Station has a name, address, postcode and location. Opening times are given as an ordered list of
+lists, containing:</p><p><code>[date, open time, close time]</code></p><h2>Errors</h2><div class="ds-grid"><div><p>
 Errors will be reported using HTTP status codes. The body of the error will be formatted as valid JSON and will give a description of the error
 </p></div><div class="ds-stack-smaller"><figure><figcaption>
 Example error response</figcaption><pre>{ "detail": "Could not geocode from any source" }</pre></figure></div></div></div></div>
