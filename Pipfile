@@ -24,7 +24,7 @@ aws-wsgi = {ref = "unquote_path_strings", git = "https://github.com/DemocracyClu
 whitenoise = "*"
 sentry-sdk = "*"
 aws-sam-cli = "==1.37.0"
-werkzeug = "==2.0.3"
+werkzeug = "==2.1.0"
 psycopg2-binary = "*"
 dc-design-system = {file = "https://github.com/DemocracyClub/design-system/archive/refs/tags/0.1.6.tar.gz"}
 dc-django-utils = {file = "https://github.com/DemocracyClub/dc_django_utils/archive/refs/tags/0.1.8.tar.gz"}
