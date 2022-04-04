@@ -74,6 +74,8 @@ class NotificationsMaker:
     def notifications(self):
         if self.all_ballots_cancelled:
             notification = self.get_metadata_by_key("cancelled_election")
+            if not notification:
+                return None
             notification["type"] = "cancelled_election"
             return [notification]
 
