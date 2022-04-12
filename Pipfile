@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [dev-packages]
-black = "==18.9b0"
+black = "==22.3.0"
 pytest = ">=4.0.1,<7.0"
 pytest-cov = ">=2.6,<3.0"
 pytest-django = ">=3.4.4,<5.0"
@@ -23,7 +23,6 @@ django-cors-headers = ">=2.0.0,<3.3.0"
 aws-wsgi = {ref = "unquote_path_strings", git = "https://github.com/DemocracyClub/awsgi.git"}
 whitenoise = "*"
 sentry-sdk = "*"
-aws-sam-cli = "==1.37.0"
 werkzeug = "==2.0.3"
 psycopg2-binary = "*"
 dc-design-system = {file = "https://github.com/DemocracyClub/design-system/archive/refs/tags/0.1.6.tar.gz"}
