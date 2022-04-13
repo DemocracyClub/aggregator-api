@@ -101,6 +101,7 @@ jobs:
         - v3-dependencies-{{ checksum "Pipfile.lock" }}
         - v3-dependencies-
     - run: *install-pipenv
+    - run: pipenv run pip install click==7.1.1 --no-warn-conflicts
 
     - run: printenv DJANGO_SETTINGS_MODULE SAM_CONFIG_FILE SAM_LAMBDA_CONFIG_ENV SAM_PUBLIC_CONFIG_ENV
     - run: printenv SECRET_KEY | md5sum
