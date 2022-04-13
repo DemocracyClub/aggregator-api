@@ -50,6 +50,7 @@
                 "party_id": "party:53",
                 "party_name": "Labour Party"
               },
+              "previous_party_affiliations": null,
               "person": {
                 "ynr_id": 42253,
                 "name": "Angela Patricia Piddock",
@@ -81,6 +82,7 @@
                 "party_id": "party:52",
                 "party_name": "Conservative and Unionist Party"
               },
+              "previous_party_affiliations": null,
               "person": {
                 "ynr_id": 42681,
                 "name": "Margot Joan Bright",
@@ -96,6 +98,7 @@
                 "party_id": "party:90",
                 "party_name": "Liberal Democrats"
               },
+              "previous_party_affiliations": null,
               "person": {
                 "ynr_id": 42252,
                 "name": "Sally Elizabeth Gray",
@@ -111,6 +114,7 @@
                 "party_id": "party:63",
                 "party_name": "Green Party"
               },
+              "previous_party_affiliations": null,
               "person": {
                 "ynr_id": 7505,
                 "name": "Zack Polanski",

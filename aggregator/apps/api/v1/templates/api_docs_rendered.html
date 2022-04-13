@@ -367,6 +367,12 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                 &quot;party_id&quot;: &quot;party:90&quot;,
                 &quot;party_name&quot;: &quot;Liberal Democrats&quot;
               },
+              &quot;previous_party_affiliations&quot;: [
+                {
+                  &quot;party_id&quot;: &quot;party:90&quot;,
+                  &quot;party_name&quot;: &quot;Liberal Democrats&quot;
+                }
+              ],
               &quot;person&quot;: {
                 &quot;ynr_id&quot;: 23417,
                 &quot;name&quot;: &quot;David Keigwin&quot;,
@@ -754,6 +760,23 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                             },
                             &quot;party_name&quot;: {
                               &quot;type&quot;: &quot;string&quot;
+                            }
+                          }
+                        },
+                        &quot;previous_party_affiliations&quot;: {
+                          &quot;type&quot;: [
+                            &quot;array&quot;,
+                            &quot;null&quot;
+                          ],
+                          &quot;items&quot;: {
+                            &quot;type&quot;: &quot;object&quot;,
+                            &quot;properties&quot;: {
+                              &quot;party_id&quot;: {
+                                &quot;type&quot;: &quot;string&quot;
+                              },
+                              &quot;party_name&quot;: {
+                                &quot;type&quot;: &quot;string&quot;
+                              }
                             }
                           }
                         },
@@ -1339,6 +1362,12 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                 &quot;party_id&quot;: &quot;party:90&quot;,
                 &quot;party_name&quot;: &quot;Liberal Democrats&quot;
               },
+              &quot;previous_party_affiliations&quot;: [
+                {
+                  &quot;party_id&quot;: &quot;party:90&quot;,
+                  &quot;party_name&quot;: &quot;Liberal Democrats&quot;
+                }
+              ],
               &quot;person&quot;: {
                 &quot;ynr_id&quot;: 23417,
                 &quot;name&quot;: &quot;David Keigwin&quot;,
@@ -1726,6 +1755,23 @@ A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="
                             },
                             &quot;party_name&quot;: {
                               &quot;type&quot;: &quot;string&quot;
+                            }
+                          }
+                        },
+                        &quot;previous_party_affiliations&quot;: {
+                          &quot;type&quot;: [
+                            &quot;array&quot;,
+                            &quot;null&quot;
+                          ],
+                          &quot;items&quot;: {
+                            &quot;type&quot;: &quot;object&quot;,
+                            &quot;properties&quot;: {
+                              &quot;party_id&quot;: {
+                                &quot;type&quot;: &quot;string&quot;
+                              },
+                              &quot;party_name&quot;: {
+                                &quot;type&quot;: &quot;string&quot;
+                              }
                             }
                           }
                         },
@@ -2848,7 +2894,12 @@ will be able to cast their vote in the days before polling day.</p><p>We support
     ]
   },
 }</pre></code></p><p>If this object exists in the API response, it's <em>highly recommended</em> to display it to the user.</p><p>Each Advance Voting Station has a name, address, postcode and location. Opening times are given as an ordered list of
-lists, containing:</p><p><code>[date, open time, close time]</code></p><h2>Errors</h2><div class="ds-grid"><div><p>
+lists, containing:</p><p><code>[date, open time, close time]</code></p><h3>Previous Party Affiliations</h3><p>The <a href="https://www.legislation.gov.uk/wsi/2021/1459/made">Local Elections (Principal Areas) (Wales) Rules 2021</a> Statutory Instrument,
+among other things introduced a requirement for candidates to list any other political party membership in the last 12
+months on the Statement Of Persons Nominated.</p><p>We store this information, and present it for candidates in Welsh run elections. The field exists on the <code>candidate</code>
+object in the <code>candidates</code> list on each ballot. It wil be <code>null</code> unless the candidate has declared affiliation with anoher
+party in the last 12 months.</p><p>Note that this is <em>not</em> the same as previous candidacies for this person. We also track this, but a person must declare
+parties they have beem members of in the previous 12 months before the date of the election.</p><p>When data exists, it's a list of parties. This information is transcribed from the Statement of Persons Nominated.</p><h2>Errors</h2><div class="ds-grid"><div><p>
 Errors will be reported using HTTP status codes. The body of the error will be formatted as valid JSON and will give a description of the error
 </p></div><div class="ds-stack-smaller"><figure><figcaption>
 Example error response</figcaption><pre>{ "detail": "Could not geocode from any source" }</pre></figure></div></div></div></div>

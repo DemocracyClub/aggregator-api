@@ -117,3 +117,18 @@ Each Advance Voting Station has a name, address, postcode and location. Opening 
 lists, containing:
 
 `[date, open time, close time]`
+
+### Previous Party Affiliations
+
+The [Local Elections (Principal Areas) (Wales) Rules 2021](https://www.legislation.gov.uk/wsi/2021/1459/made) Statutory Instrument,
+among other things introduced a requirement for candidates to list any other political party membership in the last 12
+months on the Statement Of Persons Nominated.
+
+We store this information, and present it for candidates in Welsh run elections. The field exists on the `candidate`
+object in the `candidates` list on each ballot. It wil be `null` unless the candidate has declared affiliation with anoher
+party in the last 12 months.
+
+Note that this is _not_ the same as previous candidacies for this person. We also track this, but a person must declare
+parties they have beem members of in the previous 12 months before the date of the election.
+
+When data exists, it's a list of parties. This information is transcribed from the Statement of Persons Nominated.
