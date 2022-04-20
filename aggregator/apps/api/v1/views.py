@@ -38,6 +38,13 @@ class BaseView(View, metaclass=abc.ABCMeta):
         except (asyncio.TimeoutError, aiohttp.ClientConnectorError):
             raise ApiError("Backend Connection Error")
 
+    def utm_dict(self):
+        return {
+            "utm_source": self.request.GET.get("utm_source"),
+            "utm_campaign": self.request.GET.get("utm_campaign"),
+            "utm_medium": self.request.GET.get("utm_medium"),
+        }
+
 
 class PostcodeView(BaseView):
     def get_response(self, request, *args, **kwargs):
@@ -51,6 +58,7 @@ class PostcodeView(BaseView):
             postcode=kwargs["postcode"],
             dc_product=settings.POSTCODE_LOGGER.dc_product.aggregator_api,
             api_key=self.api_token,
+            **self.utm_dict(),
         )
         settings.POSTCODE_LOGGER.log(entry)
 

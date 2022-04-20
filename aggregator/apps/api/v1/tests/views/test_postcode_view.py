@@ -74,7 +74,16 @@ def test_logging_working(client, caplog):
         )
     )
     with patch("api.v1.api_client.WdivWcivfApiClient.get_data_for_postcode", mock):
-        client.get("/api/v1/postcode/SW1A1AA/?foo=bar", HTTP_AUTHORIZATION="Token foo")
+        client.get(
+            "/api/v1/postcode/SW1A1AA/",
+            {
+                "foo": "bar",
+                "utm_source": "test",
+                "utm_campaign": "better_tracking",
+                "utm_medium": "pytest",
+            },
+            HTTP_AUTHORIZATION="Token foo",
+        )
 
     logging_message = None
     for record in caplog.records:
@@ -84,3 +93,6 @@ def test_logging_working(client, caplog):
     assert '"postcode": "SW1A1AA"' in logging_message.message
     assert '"dc_product": "AGGREGATOR_API"' in logging_message.message
     assert '"api_key": "foo"' in logging_message.message
+    assert '"utm_source": "test"' in logging_message.message
+    assert '"utm_campaign": "better_tracking"' in logging_message.message
+    assert '"utm_medium": "pytest"' in logging_message.message
