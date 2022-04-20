@@ -6,7 +6,7 @@ name = "pypi"
 [dev-packages]
 black = "==22.3.0"
 pytest = ">=4.0.1,<7.0"
-pytest-cov = ">=2.6,<3.0"
+pytest-cov = ">=2.6,<4.0"
 pytest-django = ">=3.4.4,<5.0"
 pytest-flakes = ">=4.0.0,<5.0"
 coveralls = ">=1.6,<4.0"
