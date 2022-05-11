@@ -19,7 +19,7 @@ aiohttp = ">=3.8.1"
 django-storages = "==1.12.3"
 django-apiblueprint-view = ">=2.3.0,<3.0"
 raven = ">=6.10,<7.0"
-django-cors-headers = ">=2.0.0,<3.3.0"
+django-cors-headers = ">=2.0.0,<3.13.0"
 aws-wsgi = {ref = "unquote_path_strings", git = "https://github.com/DemocracyClub/awsgi.git"}
 whitenoise = "*"
 sentry-sdk = "*"
