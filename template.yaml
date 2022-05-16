@@ -79,6 +79,21 @@ Resources:
       BuildMethod: makefile
     RetentionPolicy: Delete
 
+  FastAPIPostcodeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
+      CodeUri: ./endpoints/v1/
+      Handler: postcodes.handler
+      Runtime: python3.8
+      MemorySize: 192
+      Events:
+        HTTPRequests:
+          Type: Api
+          Properties:
+            Path: /api/v2/postcode/
+            Method: GET
+
   AggregatorApiFunction:
     Type: AWS::Serverless::Function
     Properties:

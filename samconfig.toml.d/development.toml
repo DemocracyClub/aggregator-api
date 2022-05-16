@@ -47,3 +47,44 @@ parameter_overrides = """
   CertificateArn="arn:aws:acm:us-east-1:489559689862:certificate/5d0d7a82-4dd2-4264-955c-f9840701bfa2" \
   PublicFqdn="EXAMPLE.environments.womblelabs.co.uk" \
 """
+
+
+[SYMDEV]
+
+[SYMDEV.deploy]
+[SYMDEV.deploy.parameters]
+stack_name = "AggregatorApiApp-SYMDEV"
+s3_bucket = "aggregator-api-deployment-artifacts-development-075b482c18"
+s3_prefix = "SYMDEV"
+region = "eu-west-2"
+confirm_changeset = false
+capabilities = "CAPABILITY_IAM"
+tags = 'dc-product="aggregator-api" dc-environment="development" dc-instance="SYMDEV"'
+# These parameter overrides are *not* merged with those provided directly to the
+# `sam XXXX` CLI command: those provided at the CLI are the *only* ones used.
+parameter_overrides = """
+  AppDjangoSettingsModule=aggregator.settings.lambda_debug_merged_assets \
+  AppSecretKey=badf00d \
+  AppSentryDSN=https://public@sentry.SYMDEV.com/1 \
+  AppWdivApiKey=8bf1538def32429ed10a2badba000bc455a75154 \
+  AppIsBehindCloudFront=True \
+"""
+
+[SYMDEV.logs]
+[SYMDEV.logs.parameters]
+stack_name = "AggregatorApiApp-SYMDEV"
+name = "AggregatorApiFunction"
+region = "eu-west-2"
+
+[SYMDEV-public-access]
+[SYMDEV-public-access.deploy]
+[SYMDEV-public-access.deploy.parameters]
+template = "public-access-template.yaml"
+stack_name = "AggregatorApiPublicAccess-SYMDEV"
+region = "eu-west-2"
+capabilities "CAPABILITY_IAM"
+parameter_overrides = """
+  StackNameSuffix="SYMDEV" \
+  CertificateArn="arn:aws:acm:us-east-1:489559689862:certificate/5d0d7a82-4dd2-4264-955c-f9840701bfa2" \
+  PublicFqdn="symdev.environments.womblelabs.co.uk" \
+"""
