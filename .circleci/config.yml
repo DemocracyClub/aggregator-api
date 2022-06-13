@@ -46,7 +46,7 @@ jobs:
     - run: *install-pipenv
     - run: pipenv run black-check
     - run: pipenv run pytest --flakes
-    - run: pipenv run pytest --cov-report= --cov=aggregator --junitxml=test-results/junit.xml
+    - run: pipenv run pytest --cov-report= --cov=frontend --junitxml=test-results/junit.xml
     - run: |
         if [ -n "$COVERALLS_REPO_TOKEN" ]; then
           pipenv run coveralls
@@ -70,7 +70,7 @@ jobs:
     - run: pip install --upgrade pip
     - run: pip install -r lambda-layers/DependenciesLayer/requirements.txt
     - run: make collectstatic
-    - run: make aggregator/apps/api/v1/templates/api_docs_rendered.html APP_IS_BEHIND_CLOUDFRONT=True
+    - run: make frontend/apps/api/v1/templates/api_docs_rendered.html APP_IS_BEHIND_CLOUDFRONT=True
     - run: sam build ${DASH_DASH_DEBUG}
     - persist_to_workspace:
         root: ~/repo/
@@ -183,7 +183,7 @@ workflows:
     - sam_build:
         requires:
         - install_and_update_dependencies # DependenciesLayer build needs lambda-layers/DependenciesLayer/requirements.txt
-        - test                            # Function build needs aggregator/apps/api/v1/templates/api_docs_rendered.html
+        - test                            # Function build needs frontend/apps/api/v1/templates/api_docs_rendered.html
 
     # This deployment tracks the tip of the main branch in Github. It is not intended
     # to block staging (hence production) deployments: staging is the testing ground for
@@ -195,7 +195,7 @@ workflows:
 #    - sam_deploy:
 #        name: sam_deploy_development
 #        dc-environment: development
-#        dc-django-settings-module: aggregator.settings.lambda_no_debug_merged_assets
+#        dc-django-settings-module: frontend.settings.lambda_no_debug_merged_assets
 #        requires:
 #        - install_and_update_dependencies # SAM CLI is in the dev package set
 #        - sam_build                       # deploy needs .aws-sam/build/
@@ -205,7 +205,7 @@ workflows:
     - sam_deploy:
         name: sam_deploy_staging
         dc-environment: staging
-        dc-django-settings-module: aggregator.settings.lambda_no_debug_merged_assets
+        dc-django-settings-module: frontend.settings.lambda_no_debug_merged_assets
         requires:
         - install_and_update_dependencies # SAM CLI is in the dev package set
         - test                            # staging should only deploy if tests pass
@@ -216,7 +216,7 @@ workflows:
     - sam_deploy:
         name: sam_deploy_production
         dc-environment: production
-        dc-django-settings-module: aggregator.settings.lambda_no_debug_merged_assets
+        dc-django-settings-module: frontend.settings.lambda_no_debug_merged_assets
         requires:
         - install_and_update_dependencies # SAM CLI is in the dev package set
         - test                            # production should only deploy if tests pass

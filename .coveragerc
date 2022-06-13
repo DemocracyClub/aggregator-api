@@ -3,5 +3,5 @@ omit =
     */tests/*
     */apps.py
     */migrations/*
-    aggregator/wsgi.py
-    aggregator/settings/*
+    frontend/wsgi.py
+    frontend/settings/*

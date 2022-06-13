@@ -45,11 +45,11 @@ AWS_S3_CUSTOM_DOMAIN = (
 
 MEDIAFILES_LOCATION = "media"
 MEDIA_URL = "http://{}/{}/".format(AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
-DEFAULT_FILE_STORAGE = "aggregator.s3_lambda_storage.MediaStorage"
+DEFAULT_FILE_STORAGE = "frontend.s3_lambda_storage.MediaStorage"
 
 AWS_DEFAULT_ACL = "public-read"
 STATICFILES_LOCATION = "static"
-STATICFILES_STORAGE = "aggregator.s3_lambda_storage.StaticStorage"
+STATICFILES_STORAGE = "frontend.s3_lambda_storage.StaticStorage"
 
 STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
@@ -59,7 +59,7 @@ STATICFILES_FINDERS = (
     "pipeline.finders.ManifestFinder",
 )
 
-PIPELINE["COMPILERS"] = ("aggregator.s3_lambda_storage.LambdaSASSCompiler",)  # noqa
+PIPELINE["COMPILERS"] = ("frontend.s3_lambda_storage.LambdaSASSCompiler",)  # noqa
 
 if os.environ.get("AWS_EXECUTION_ENV"):
     logger_boto3_session = Session(region_name="eu-west-2")

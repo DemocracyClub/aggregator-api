@@ -1,19 +1,19 @@
 .DEFAULT_GOAL := help
 
 export SECRET_KEY?=badf00d
-export DJANGO_SETTINGS_MODULE?=aggregator.settings.base_lambda
+export DJANGO_SETTINGS_MODULE?=frontend.settings.base_lambda
 export APP_IS_BEHIND_CLOUDFRONT?=False
 
 REQUIREMENTS = "lambda-layers/DependenciesLayer/requirements.txt"
 
 
 .PHONY: all
-all: clean collectstatic lambda-layers/DependenciesLayer/requirements.txt aggregator/apps/api/v1/templates/api_docs_rendered.html ## Rebuild everything this Makefile knows how to build
+all: clean collectstatic lambda-layers/DependenciesLayer/requirements.txt frontend/apps/api/v1/templates/api_docs_rendered.html ## Rebuild everything this Makefile knows how to build
 
 .PHONY: clean
 clean: ## Delete any generated static asset or req.txt files and git-restore the rendered API documentation file
-	rm -rf aggregator/static_files/ lambda-layers/DependenciesLayer/requirements.txt
-	git checkout aggregator/apps/api/v1/templates/api_docs_rendered.html
+	rm -rf frontend/static_files/ lambda-layers/DependenciesLayer/requirements.txt
+	git checkout frontend/apps/api/v1/templates/api_docs_rendered.html
 
 .PHONY: collectstatic
 collectstatic: ## Rebuild the static assets
@@ -30,8 +30,8 @@ check_empty: ## Check if the requirements.txt file is empty
 lambda-layers/DependenciesLayer/requirements.txt: Pipfile Pipfile.lock ## Update the requirements.txt file used to build this Lambda function's DependenciesLayer
 	pipenv requirements | sed "s/^-e //" >lambda-layers/DependenciesLayer/requirements.txt
 
-.PHONY: aggregator/apps/api/v1/templates/api_docs_rendered.html
-aggregator/apps/api/v1/templates/api_docs_rendered.html: ## Rebuild the API documentation page
+.PHONY: frontend/apps/api/v1/templates/api_docs_rendered.html
+frontend/apps/api/v1/templates/api_docs_rendered.html: ## Rebuild the API documentation page
 	PIPELINE_ENABLED=True python manage.py build_docs
 
 .PHONY: help

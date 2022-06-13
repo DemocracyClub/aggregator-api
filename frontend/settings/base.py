@@ -46,7 +46,7 @@ MIDDLEWARE = [
     "api.middleware.ErrorHandlerMiddleware",
 ]
 
-ROOT_URLCONF = "aggregator.urls"
+ROOT_URLCONF = "frontend.urls"
 
 TEMPLATES = [
     {
@@ -64,7 +64,7 @@ TEMPLATES = [
     }
 ]
 
-WSGI_APPLICATION = "aggregator.wsgi.application"
+WSGI_APPLICATION = "frontend.wsgi.application"
 
 
 # Database

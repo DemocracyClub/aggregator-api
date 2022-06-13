@@ -99,7 +99,7 @@ Resources:
     Properties:
       Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
       CodeUri: .
-      Handler: aggregator.lambda_awsgi.lambda_handler
+      Handler: frontend.lambda_awsgi.lambda_handler
       Layers:
         - !Ref DependenciesLayer
       Runtime: python3.8
