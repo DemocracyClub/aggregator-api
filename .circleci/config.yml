@@ -70,7 +70,6 @@ jobs:
     - run: pip install --upgrade pip
     - run: pip install -r lambda-layers/DependenciesLayer/requirements.txt
     - run: make collectstatic
-    - run: make frontend/apps/api/v1/templates/api_docs_rendered.html APP_IS_BEHIND_CLOUDFRONT=True
     - run: sam build ${DASH_DASH_DEBUG}
     - persist_to_workspace:
         root: ~/repo/
@@ -183,7 +182,7 @@ workflows:
     - sam_build:
         requires:
         - install_and_update_dependencies # DependenciesLayer build needs lambda-layers/DependenciesLayer/requirements.txt
-        - test                            # Function build needs frontend/apps/api/v1/templates/api_docs_rendered.html
+        - test
 
     # This deployment tracks the tip of the main branch in Github. It is not intended
     # to block staging (hence production) deployments: staging is the testing ground for

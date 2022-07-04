@@ -7,7 +7,6 @@ from pathlib import Path
 
 from dc_logging_client import DCWidePostcodeLoggingClient
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = Path(__file__).parent.parent
 sys.path.insert(0, os.path.join(BASE_DIR, "apps"))
 sys.path.insert(0, os.path.join(BASE_DIR.parent, "api"))
@@ -29,16 +28,14 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.staticfiles",
     "apiblueprint_view",
-    "corsheaders",
     "pipeline",
     "dc_design_system",
     "dc_utils",
 ]
-PROJECT_APPS = ["api", "api.v1"]
+PROJECT_APPS = []
 INSTALLED_APPS += PROJECT_APPS
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -47,7 +44,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "api.middleware.ErrorHandlerMiddleware",
 ]
 
 ROOT_URLCONF = "frontend.urls"
