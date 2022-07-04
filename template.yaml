@@ -79,20 +79,63 @@ Resources:
       BuildMethod: makefile
     RetentionPolicy: Delete
 
-  FastAPIPostcodeFunction:
+  V1VotingInformationFunction:
     Type: AWS::Serverless::Function
     Properties:
       Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
-      CodeUri: ./endpoints/v1/
-      Handler: postcodes.handler
+      CodeUri: ./api/endpoints/v1/voting_information/
+      Handler: app.handler
       Runtime: python3.8
-      MemorySize: 192
+      MemorySize: 512
       Events:
-        HTTPRequests:
+        PostcodeRequests:
           Type: Api
           Properties:
-            Path: /api/v2/postcode/
+            Path: /api/v1/postcode/{proxy+}
             Method: GET
+        AddressRequests:
+          Type: Api
+          Properties:
+            Path: /api/v1/address/{proxy+}
+            Method: GET
+  V1ElectionsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
+      CodeUri: ./api/endpoints/v1/elections/
+      Handler: app.handler
+      Runtime: python3.8
+      MemorySize: 512
+      Events:
+        ElectionListRequests:
+          Type: Api
+          Properties:
+            Path: /api/v1/elections/
+            Method: GET
+        SingleElectionRequests:
+          Type: Api
+          Properties:
+            Path: /api/v1/elections/{proxy+}
+            Method: GET
+  V1SandboxFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
+      CodeUri: ./api/endpoints/v1/sandbox/
+      Handler: app.handler
+      Runtime: python3.8
+      MemorySize: 512
+      Events:
+        SandboxRequests:
+          Type: Api
+          Properties:
+            Path: /api/v1/sandbox/{proxy+}
+            Method: GET
+        SandboxOptionsRequests:
+          Type: Api
+          Properties:
+            Path: /api/v1/sandbox/{proxy+}
+            Method: OPTIONS
 
   AggregatorApiFunction:
     Type: AWS::Serverless::Function

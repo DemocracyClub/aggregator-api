@@ -41,7 +41,7 @@ region = "eu-west-2"
 template = "public-access-template.yaml"
 stack_name = "AggregatorApiPublicAccess-EXAMPLE"
 region = "eu-west-2"
-capabilities "CAPABILITY_IAM"
+capabilities = "CAPABILITY_IAM"
 parameter_overrides = """
   StackNameSuffix="EXAMPLE" \
   CertificateArn="arn:aws:acm:us-east-1:489559689862:certificate/5d0d7a82-4dd2-4264-955c-f9840701bfa2" \
@@ -82,7 +82,7 @@ region = "eu-west-2"
 template = "public-access-template.yaml"
 stack_name = "AggregatorApiPublicAccess-SYMDEV"
 region = "eu-west-2"
-capabilities "CAPABILITY_IAM"
+capabilities = "CAPABILITY_IAM"
 parameter_overrides = """
   StackNameSuffix="SYMDEV" \
   CertificateArn="arn:aws:acm:us-east-1:489559689862:certificate/5d0d7a82-4dd2-4264-955c-f9840701bfa2" \
