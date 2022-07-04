@@ -1,0 +1,32 @@
+{
+  "polling_station_known": false,
+  "postcode_location": {
+    "type": "Feature",
+    "properties": null,
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -0.13447605,
+        51.489488200000004
+      ]
+    }
+  },
+  "custom_finder": null,
+  "council": {
+    "url": "http://wheredoivote.co.uk/api/beta/councils/E09000033/",
+    "council_id": "E09000033",
+    "name": "City of Westminster",
+    "nation": "England",
+    "email": "electoralservices@westminster.gov.uk",
+    "phone": "020 7641 2730",
+    "website": "http://www.westminster.gov.uk/",
+    "postcode": "WC2N 5HR",
+    "address": "Electoral Registration Officer\nWestminster City Council\n2nd Floor, City Hall\n5 Strand"
+  },
+  "polling_station": null,
+  "advance_voting_station": null,
+  "addresses": [],
+  "report_problem_url": null,
+  "metadata": null,
+  "ballots": []
+}

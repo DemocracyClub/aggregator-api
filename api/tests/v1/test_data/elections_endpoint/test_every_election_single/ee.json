@@ -1,0 +1,65 @@
+{
+  "election_id": "local.cardiff.ely.by.2019-02-21",
+  "tmp_election_id": null,
+  "election_title": "Cardiff local election Ely by-election",
+  "poll_open_date": "2019-02-21",
+  "election_type": {
+    "name": "Local elections",
+    "election_type": "local"
+  },
+  "election_subtype": null,
+  "organisation": {
+    "url": "https://elections.democracyclub.org.uk/api/organisations/local-authority/CRF/1996-04-01.json",
+    "official_identifier": "CRF",
+    "organisation_type": "local-authority",
+    "organisation_subtype": "UA",
+    "official_name": "City of Cardiff Council",
+    "common_name": "Cardiff",
+    "slug": "cardiff",
+    "territory_code": "WLS",
+    "election_name": "Cardiff local election",
+    "start_date": "1996-04-01",
+    "end_date": null
+  },
+  "group": "local.cardiff.2019-02-21",
+  "group_type": null,
+  "identifier_type": "ballot",
+  "children": [],
+  "elected_role": "Local Councillor",
+  "seats_contested": 1,
+  "division": {
+    "divisionset": {
+      "start_date": "2017-05-04",
+      "end_date": null,
+      "legislation_url": "http://www.legislation.gov.uk/wsi/2016/1155/made",
+      "consultation_url": "http://ldbc.gov.wales/reviews/communityreviews/currreviews/58272053/?lang=en",
+      "short_title": "The City and County of Cardiff (Communities) Order 2016",
+      "mapit_generation_id": "",
+      "notes": ""
+    },
+    "name": "Ely",
+    "official_identifier": "gss:W05000860",
+    "geography_curie": "gss:W05000860",
+    "slug": "ely",
+    "division_type": "UTE",
+    "division_subtype": "",
+    "division_election_sub_type": "",
+    "seats_total": 3,
+    "mapit_generation_low": null,
+    "mapit_generation_high": null,
+    "territory_code": ""
+  },
+  "voting_system": {
+    "slug": "FPTP",
+    "name": "First-past-the-post",
+    "uses_party_lists": false
+  },
+  "hustings": null,
+  "current": false,
+  "explanation": null,
+  "metadata": null,
+  "deleted": false,
+  "cancelled": false,
+  "replaces": null,
+  "replaced_by": null
+}

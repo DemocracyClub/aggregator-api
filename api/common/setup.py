@@ -9,8 +9,12 @@ setup(
     author="Sym Roe",
     author_email="sym.roe@democracyclub.org.uk",
     setup_requires=["wheel"],
+<<<<<<< HEAD
     packages=["common"],
     package_dir={"common": "."},
+=======
+    packages=["."],
+>>>>>>> 90caa5a (New Starlette based APIs)
     install_requires=[
         "httpx==0.23.0",
         "mangum==0.15.0",

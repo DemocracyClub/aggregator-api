@@ -1,0 +1,570 @@
+[
+  {
+    "election_date": "2018-05-03",
+    "absolute_url": "https://whocanivotefor.co.uk/elections/mayor.lewisham.2018-05-03/post-lewisham/london-borough-of-lewisham",
+    "replaced_by": null,
+    "election_name": "Mayor of Lewisham election",
+    "election_id": "mayor.lewisham.2018-05-03",
+    "post": {
+      "post_slug": "lewisham",
+      "post_name": "London Borough of Lewisham"
+    },
+    "cancelled": false,
+    "voting_system": {
+      "slug": "sv",
+      "name": "Supplementary Vote",
+      "uses_party_lists": false
+    },
+    "hustings": [
+      {
+        "title": "Local elections hustings",
+        "url": "https://example.com/hustings/",
+        "starts": "2018-04-28T18:00:00Z",
+        "ends": "2018-04-28T20:30:00Z",
+        "location": "Westminster Hall",
+        "postevent_url": "https://example.com/hustings/"
+      }
+    ],
+    "seats_contested": 1,
+    "organisation_type": "local-authority",
+    "ballot_locked": true,
+    "candidates": [
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:90",
+          "party_name": "Liberal Democrats"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 36984,
+          "name": "Chris Maines",
+          "absolute_url": "https://whocanivotefor.co.uk/person/36984/chris-maines",
+          "email": null,
+          "photo_url": null,
+          "leaflets": null
+        }
+      },
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "joint-party:53-119",
+          "party_name": "Labour and Co-operative Party"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 2833,
+          "name": "Damien Egan",
+          "absolute_url": "https://whocanivotefor.co.uk/person/2833/damien-egan",
+          "email": "info@lewishamcentralhithergreen.co.uk",
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/2833.png",
+          "leaflets": null
+        }
+      },
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "ynmp-party:2",
+          "party_name": "Independent"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 36178,
+          "name": "Duwayne Brooks",
+          "absolute_url": "https://whocanivotefor.co.uk/person/36178/duwayne-brooks",
+          "email": null,
+          "photo_url": null,
+          "leaflets": null
+        }
+      },
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:63",
+          "party_name": "Green Party"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 5823,
+          "name": "John Coughlin",
+          "absolute_url": "https://whocanivotefor.co.uk/person/5823/john-coughlin",
+          "email": "john.coughlin@greenparty.org.uk",
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/554745e070823d2655a7c7a3.png",
+          "leaflets": null
+        }
+      },
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:789",
+          "party_name": "Lewisham People Before Profit"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 36983,
+          "name": "John Nicholas Hamilton",
+          "absolute_url": "https://whocanivotefor.co.uk/person/36983/john-nicholas-hamilton",
+          "email": null,
+          "photo_url": null,
+          "leaflets": null
+        }
+      },
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:52",
+          "party_name": "Conservative and Unionist Party"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 36547,
+          "name": "Ross Archer",
+          "absolute_url": "https://whocanivotefor.co.uk/person/36547/ross-archer",
+          "email": null,
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/36547.png",
+          "leaflets": null
+        }
+      },
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:6662",
+          "party_name": "Democrats and Veterans Party"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 36973,
+          "name": "Will Donnelly",
+          "absolute_url": "https://whocanivotefor.co.uk/person/36973/will-donnelly",
+          "email": null,
+          "photo_url": null,
+          "leaflets": null
+        }
+      }
+    ],
+    "ballot_paper_id": "mayor.lewisham.2018-05-03"
+  },
+  {
+    "election_date": "2018-05-03",
+    "absolute_url": "https://whocanivotefor.co.uk/elections/local.lewisham.2018-05-03/post-LBW:E05000438/blackheath",
+    "replaced_by": "local.lewisham.blackheath.2018-05-10",
+    "election_name": "Lewisham local election",
+    "election_id": "local.lewisham.2018-05-03",
+    "post": {
+      "post_slug": "LBW:E05000438",
+      "post_name": "Blackheath"
+    },
+    "cancelled": true,
+    "voting_system": {
+      "slug": "FPTP",
+      "name": "First-past-the-post",
+      "uses_party_lists": false
+    },
+    "hustings": null,
+    "seats_contested": 1,
+    "organisation_type": "local-authority",
+    "ballot_locked": true,
+    "candidates": [
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:63",
+          "party_name": "Green Party"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 47267,
+          "name": "Abigail Phillips",
+          "absolute_url": "https://whocanivotefor.co.uk/person/47267/abigail-phillips",
+          "email": null,
+          "photo_url": null,
+          "leaflets": null
+        }
+      },
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:53",
+          "party_name": "Labour Party"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 47266,
+          "name": "Amanda De Ryk",
+          "absolute_url": "https://whocanivotefor.co.uk/person/47266/amanda-de-ryk",
+          "email": "cllr_amanda.deryk@lewisham.gov.uk",
+          "photo_url": null,
+          "leaflets": null
+        }
+      },
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:90",
+          "party_name": "Liberal Democrats"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 47265,
+          "name": "Anthony Crowther",
+          "absolute_url": "https://whocanivotefor.co.uk/person/47265/anthony-crowther",
+          "email": null,
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/47265.png",
+          "leaflets": null
+        }
+      },
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:90",
+          "party_name": "Liberal Democrats"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 36984,
+          "name": "Chris Maines",
+          "absolute_url": "https://whocanivotefor.co.uk/person/36984/chris-maines",
+          "email": null,
+          "photo_url": null,
+          "leaflets": null
+        }
+      },
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:52",
+          "party_name": "Conservative and Unionist Party"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 36550,
+          "name": "Jonathan Lee",
+          "absolute_url": "https://whocanivotefor.co.uk/person/36550/jonathan-lee",
+          "email": null,
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/36550.png",
+          "leaflets": null
+        }
+      },
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:53",
+          "party_name": "Labour Party"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 47264,
+          "name": "Juliet Campbell",
+          "absolute_url": "https://whocanivotefor.co.uk/person/47264/juliet-campbell",
+          "email": null,
+          "photo_url": null,
+          "leaflets": null
+        }
+      },
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:53",
+          "party_name": "Labour Party"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 788,
+          "name": "Kevin Bonavia",
+          "absolute_url": "https://whocanivotefor.co.uk/person/788/kevin-bonavia",
+          "email": "kevin.bonavia@btinternet.com",
+          "photo_url": null,
+          "leaflets": [
+            {
+              "leaflet_id": 18145,
+              "thumb_url": "https://images.electionleaflets.org/thumbs/350x350/leaflets/GE19_LibDem_Swinson_Booklet_front.jpg",
+              "leaflet_url": "https://electionleaflets.org/leaflets/18145/"
+            },
+            {
+              "leaflet_id": 18211,
+              "thumb_url": "https://images.electionleaflets.org/thumbs/350x350/leaflets/image_qEe6p9N.jpg",
+              "leaflet_url": "https://electionleaflets.org/leaflets/18211/"
+            },
+            {
+              "leaflet_id": 18221,
+              "thumb_url": "https://images.electionleaflets.org/thumbs/350x350/leaflets/Image_624.jpg",
+              "leaflet_url": "https://electionleaflets.org/leaflets/18221/"
+            }
+          ]
+        }
+      },
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:90",
+          "party_name": "Liberal Democrats"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 47268,
+          "name": "Nadya Phoenix",
+          "absolute_url": "https://whocanivotefor.co.uk/person/47268/nadya-phoenix",
+          "email": null,
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/47268.png",
+          "leaflets": null
+        }
+      },
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:52",
+          "party_name": "Conservative and Unionist Party"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 36549,
+          "name": "Nicola Peers",
+          "absolute_url": "https://whocanivotefor.co.uk/person/36549/nicola-peers",
+          "email": null,
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/36549.png",
+          "leaflets": null
+        }
+      },
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:52",
+          "party_name": "Conservative and Unionist Party"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 36548,
+          "name": "Simon Nundy",
+          "absolute_url": "https://whocanivotefor.co.uk/person/36548/simon-nundy",
+          "email": null,
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/36548.png",
+          "leaflets": null
+        }
+      }
+    ],
+    "ballot_paper_id": "local.lewisham.blackheath.2018-05-03"
+  },
+  {
+    "election_date": "2018-05-10",
+    "absolute_url": "https://whocanivotefor.co.uk/elections/local.lewisham.2018-05-10/post-LBW:E05000438/blackheath",
+    "replaced_by": null,
+    "election_name": "Lewisham local election",
+    "election_id": "local.lewisham.2018-05-10",
+    "post": {
+      "post_slug": "LBW:E05000438",
+      "post_name": "Blackheath"
+    },
+    "cancelled": false,
+    "voting_system": {
+      "slug": "FPTP",
+      "name": "First-past-the-post",
+      "uses_party_lists": false
+    },
+    "hustings": null,
+    "seats_contested": 1,
+    "organisation_type": "local-authority",
+    "ballot_locked": false,
+    "candidates": [
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:63",
+          "party_name": "Green Party"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 47267,
+          "name": "Abigail Phillips",
+          "absolute_url": "https://whocanivotefor.co.uk/person/47267/abigail-phillips",
+          "email": null,
+          "photo_url": null,
+          "leaflets": null
+        }
+      },
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:53",
+          "party_name": "Labour Party"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 47266,
+          "name": "Amanda De Ryk",
+          "absolute_url": "https://whocanivotefor.co.uk/person/47266/amanda-de-ryk",
+          "email": "cllr_amanda.deryk@lewisham.gov.uk",
+          "photo_url": null,
+          "leaflets": null
+        }
+      },
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:90",
+          "party_name": "Liberal Democrats"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 47265,
+          "name": "Anthony Crowther",
+          "absolute_url": "https://whocanivotefor.co.uk/person/47265/anthony-crowther",
+          "email": null,
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/47265.png",
+          "leaflets": null
+        }
+      },
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:90",
+          "party_name": "Liberal Democrats"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 36984,
+          "name": "Chris Maines",
+          "absolute_url": "https://whocanivotefor.co.uk/person/36984/chris-maines",
+          "email": null,
+          "photo_url": null,
+          "leaflets": null
+        }
+      },
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:52",
+          "party_name": "Conservative and Unionist Party"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 36550,
+          "name": "Jonathan Lee",
+          "absolute_url": "https://whocanivotefor.co.uk/person/36550/jonathan-lee",
+          "email": null,
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/36550.png",
+          "leaflets": null
+        }
+      },
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:53",
+          "party_name": "Labour Party"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 47264,
+          "name": "Juliet Campbell",
+          "absolute_url": "https://whocanivotefor.co.uk/person/47264/juliet-campbell",
+          "email": null,
+          "photo_url": null,
+          "leaflets": null
+        }
+      },
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:53",
+          "party_name": "Labour Party"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 788,
+          "name": "Kevin Bonavia",
+          "absolute_url": "https://whocanivotefor.co.uk/person/788/kevin-bonavia",
+          "email": "kevin.bonavia@btinternet.com",
+          "photo_url": null,
+          "leaflets": [
+            {
+              "leaflet_id": 18145,
+              "thumb_url": "https://images.electionleaflets.org/thumbs/350x350/leaflets/GE19_LibDem_Swinson_Booklet_front.jpg",
+              "leaflet_url": "https://electionleaflets.org/leaflets/18145/"
+            },
+            {
+              "leaflet_id": 18211,
+              "thumb_url": "https://images.electionleaflets.org/thumbs/350x350/leaflets/image_qEe6p9N.jpg",
+              "leaflet_url": "https://electionleaflets.org/leaflets/18211/"
+            },
+            {
+              "leaflet_id": 18221,
+              "thumb_url": "https://images.electionleaflets.org/thumbs/350x350/leaflets/Image_624.jpg",
+              "leaflet_url": "https://electionleaflets.org/leaflets/18221/"
+            }
+          ]
+        }
+      },
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:90",
+          "party_name": "Liberal Democrats"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 47268,
+          "name": "Nadya Phoenix",
+          "absolute_url": "https://whocanivotefor.co.uk/person/47268/nadya-phoenix",
+          "email": null,
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/47268.png",
+          "leaflets": null
+        }
+      },
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:52",
+          "party_name": "Conservative and Unionist Party"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 36549,
+          "name": "Nicola Peers",
+          "absolute_url": "https://whocanivotefor.co.uk/person/36549/nicola-peers",
+          "email": null,
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/36549.png",
+          "leaflets": null
+        }
+      },
+      {
+        "list_position": null,
+        "party": {
+          "party_id": "party:52",
+          "party_name": "Conservative and Unionist Party"
+        },
+        "previous_party_affiliations": null,
+        "person": {
+          "ynr_id": 36548,
+          "name": "Simon Nundy",
+          "absolute_url": "https://whocanivotefor.co.uk/person/36548/simon-nundy",
+          "email": null,
+          "photo_url": "https://static-candidates.democracyclub.org.uk/media/images/images/36548.png",
+          "leaflets": null
+        }
+      }
+    ],
+    "ballot_paper_id": "local.lewisham.blackheath.2018-05-10"
+  },
+  {
+    "election_date": "2018-06-14",
+    "absolute_url": "https://whocanivotefor.co.uk/elections/parl.2018-06-14/post-WMC:E14000787/lewisham-east",
+    "replaced_by": null,
+    "election_name": "UK Parliament elections",
+    "election_id": "parl.2018-06-14",
+    "post": {
+      "post_slug": "WMC:E14000787",
+      "post_name": "Lewisham East"
+    },
+    "cancelled": false,
+    "voting_system": {
+      "slug": "FPTP",
+      "name": "First-past-the-post",
+      "uses_party_lists": false
+    },
+    "hustings": null,
+    "seats_contested": 1,
+    "organisation_type": "parl",
+    "ballot_locked": false,
+    "candidates": [],
+    "ballot_paper_id": "parl.lewisham-east.by.2018-06-14"
+  }
+]

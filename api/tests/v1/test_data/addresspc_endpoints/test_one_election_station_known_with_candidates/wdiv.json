@@ -1,0 +1,86 @@
+{
+  "polling_station_known": true,
+  "postcode_location": {
+    "type": "Feature",
+    "properties": null,
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -0.1804843,
+        51.5113775
+      ]
+    }
+  },
+  "custom_finder": null,
+  "council": {
+    "url": "http://127.0.0.1:8001/api/beta/councils/E09000033/",
+    "council_id": "E09000033",
+    "name": "City of Westminster",
+    "nation": "England",
+    "email": "electoralservices@westminster.gov.uk",
+    "phone": "020 7641 2730",
+    "website": "http://www.westminster.gov.uk/",
+    "postcode": "WC2N 5HR",
+    "address": "Electoral Registration Officer\nWestminster City Council\n2nd Floor, City Hall\n5 Strand"
+  },
+  "polling_station": {
+    "id": "E09000033.39-york-room-lancaster-hall-hotel",
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -0.1785134375,
+        51.512779025
+      ]
+    },
+    "properties": {
+      "urls": {
+        "detail": "http://127.0.0.1:8001/api/beta/pollingstations/?council_id=E09000033&station_id=39-york-room-lancaster-hall-hotel",
+        "geo": "http://127.0.0.1:8001/api/beta/pollingstations/geo/?council_id=E09000033&station_id=39-york-room-lancaster-hall-hotel"
+      },
+      "council": "http://127.0.0.1:8001/api/beta/councils/E09000033/",
+      "station_id": "39-york-room-lancaster-hall-hotel",
+      "postcode": "W2 3EL",
+      "address": "York Room, Lancaster Hall Hotel\n35 Craven Terrace\nLondon"
+    }
+  },
+  "advance_voting_station": {
+    "name": "Exeter Guildhall",
+    "address": "Exeter City Council\nCivic Centre\nParis Street\nExeter\nDevon",
+    "postcode": "EX1 1JN",
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        -3.524551005678706,
+        50.72486002944331
+      ]
+    },
+    "opening_times": [
+      [
+        "2018-11-20",
+        "10:00:00",
+        "16:00:00"
+      ],
+      [
+        "2018-11-21",
+        "10:00:00",
+        "16:00:00"
+      ]
+    ]
+  },
+  "addresses": [],
+  "report_problem_url": "http://wheredoivote.co.uk/report_problem/?source=testing&source_url=testing",
+  "metadata": null,
+  "ballots": [
+    {
+      "ballot_paper_id": "local.westminster.lancaster-gate.by.2018-11-22",
+      "ballot_title": "Westminster local election Lancaster Gate by-election",
+      "poll_open_date": "2018-11-22",
+      "elected_role": "Local Councillor",
+      "metadata": null,
+      "cancelled": false,
+      "replaced_by": null,
+      "replaces": null
+    }
+  ]
+}

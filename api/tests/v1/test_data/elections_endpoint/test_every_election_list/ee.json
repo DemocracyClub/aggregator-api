@@ -1,0 +1,126 @@
+{
+  "count": 200,
+  "next": "https://elections.democracyclub.org.uk/api/elections/?limit=2&offset=6",
+  "previous": "https://elections.democracyclub.org.uk/api/elections/?limit=2&offset=2",
+  "results": [
+    {
+      "election_id": "local.adur.2016-05-05",
+      "tmp_election_id": null,
+      "election_title": "Adur local election",
+      "poll_open_date": "2016-05-05",
+      "election_type": {
+        "name": "Local elections",
+        "election_type": "local"
+      },
+      "election_subtype": null,
+      "organisation": {
+        "url": "https://elections.democracyclub.org.uk/api/organisations/local-authority/ADU/1974-04-01.json",
+        "official_identifier": "ADU",
+        "organisation_type": "local-authority",
+        "organisation_subtype": "NMD",
+        "official_name": "Adur District Council",
+        "common_name": "Adur",
+        "slug": "adur",
+        "territory_code": "ENG",
+        "election_name": "Adur local election",
+        "start_date": "1974-04-01",
+        "end_date": null
+      },
+      "group": "local.2016-05-05",
+      "group_type": "organisation",
+      "identifier_type": "organisation",
+      "children": [
+        "local.adur.buckingham.2016-05-05",
+        "local.adur.churchill.2016-05-05",
+        "local.adur.cokeham.2016-05-05",
+        "local.adur.eastbrook.2016-05-05",
+        "local.adur.hillside.2016-05-05",
+        "local.adur.manor.2016-05-05",
+        "local.adur.marine.2016-05-05",
+        "local.adur.mash-barn.2016-05-05",
+        "local.adur.peverel.2016-05-05",
+        "local.adur.southlands.2016-05-05",
+        "local.adur.southwick-green.2016-05-05",
+        "local.adur.st-marys.2016-05-05",
+        "local.adur.st-nicolas.2016-05-05",
+        "local.adur.widewater.2016-05-05"
+      ],
+      "elected_role": "Local Councillor",
+      "seats_contested": null,
+      "division": null,
+      "voting_system": {
+        "slug": "FPTP",
+        "name": "First-past-the-post",
+        "uses_party_lists": false
+      },
+      "hustings": null,
+      "current": false,
+      "explanation": null,
+      "metadata": null,
+      "deleted": false,
+      "cancelled": false,
+      "replaces": null,
+      "replaced_by": null
+    },
+    {
+      "election_id": "local.amber-valley.2018-05-03",
+      "tmp_election_id": null,
+      "election_title": "Amber Valley local election",
+      "poll_open_date": "2018-05-03",
+      "election_type": {
+        "name": "Local elections",
+        "election_type": "local"
+      },
+      "election_subtype": null,
+      "organisation": {
+        "url": "https://elections.democracyclub.org.uk/api/organisations/local-authority/AMB/1974-04-01.json",
+        "official_identifier": "AMB",
+        "organisation_type": "local-authority",
+        "organisation_subtype": "NMD",
+        "official_name": "Amber Valley Borough Council",
+        "common_name": "Amber Valley",
+        "slug": "amber-valley",
+        "territory_code": "ENG",
+        "election_name": "Amber Valley local election",
+        "start_date": "1974-04-01",
+        "end_date": null
+      },
+      "group": "local.2018-05-03",
+      "group_type": "organisation",
+      "identifier_type": "organisation",
+      "children": [
+        "local.amber-valley.alfreton.2018-05-03",
+        "local.amber-valley.belper-east.2018-05-03",
+        "local.amber-valley.belper-south.2018-05-03",
+        "local.amber-valley.codnor-and-waingroves.2018-05-03",
+        "local.amber-valley.duffield.2018-05-03",
+        "local.amber-valley.heanor-and-loscoe.2018-05-03",
+        "local.amber-valley.heanor-east.2018-05-03",
+        "local.amber-valley.heanor-west.2018-05-03",
+        "local.amber-valley.ironville-and-riddings.2018-05-03",
+        "local.amber-valley.kilburn-denby-and-holbrook.2018-05-03",
+        "local.amber-valley.langley-mill-and-aldercar.2018-05-03",
+        "local.amber-valley.ripley.2018-05-03",
+        "local.amber-valley.shipley-park-horsley-and-horsley-woodhouse.2018-05-03",
+        "local.amber-valley.somercotes.2018-05-03",
+        "local.amber-valley.swanwick.2018-05-03"
+      ],
+      "elected_role": "Local Councillor",
+      "seats_contested": null,
+      "division": null,
+      "voting_system": {
+        "slug": "FPTP",
+        "name": "First-past-the-post",
+        "uses_party_lists": false
+      },
+      "hustings": null,
+      "current": false,
+      "explanation": null,
+      "metadata": null,
+      "deleted": false,
+      "cancelled": false,
+      "replaces": null,
+      "replaced_by": null
+    }
+  ]
+}
