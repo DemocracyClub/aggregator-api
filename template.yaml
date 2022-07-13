@@ -69,10 +69,10 @@ Parameters:
 
 Resources:
 
-  DependenciesLayer:
+  APICommonLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
-      ContentUri: ./lambda-layers/DependenciesLayer/
+      ContentUri: ./lambda-layers/APICommonLayer/
       CompatibleRuntimes:
         - python3.8
     Metadata:
@@ -85,6 +85,8 @@ Resources:
       Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
       CodeUri: ./api/endpoints/v1/voting_information/
       Handler: app.handler
+      Layers:
+        - !Ref APICommonLayer
       Runtime: python3.8
       MemorySize: 512
       Events:
@@ -143,8 +145,8 @@ Resources:
       Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
       CodeUri: .
       Handler: frontend.lambda_awsgi.lambda_handler
-      Layers:
-        - !Ref DependenciesLayer
+#      Layers:
+#        - !Ref DependenciesLayer
       Runtime: python3.8
       MemorySize: 512
       Environment:
