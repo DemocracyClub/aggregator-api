@@ -139,14 +139,24 @@ Resources:
             Path: /api/v1/sandbox/{proxy+}
             Method: OPTIONS
 
+  FrontendDependenciesLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      ContentUri: ./lambda-layers/FrontendDependenciesLayer/
+      CompatibleRuntimes:
+        - python3.8
+    Metadata:
+      BuildMethod: makefile
+    RetentionPolicy: Delete
+
   AggregatorApiFunction:
     Type: AWS::Serverless::Function
     Properties:
       Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
       CodeUri: .
       Handler: frontend.lambda_awsgi.lambda_handler
-#      Layers:
-#        - !Ref DependenciesLayer
+      Layers:
+        - !Ref FrontendDependenciesLayer
       Runtime: python3.8
       MemorySize: 512
       Environment:

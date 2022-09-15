@@ -8,15 +8,15 @@ REQUIREMENTS = "lambda-layers/DependenciesLayer/requirements.txt"
 
 
 .PHONY: all
-all: clean collectstatic lambda-layers/DependenciesLayer/requirements.txt ## Rebuild everything this Makefile knows how to build
+all: clean collectstatic lambda-layers/FrontendDependenciesLayer ## Rebuild everything this Makefile knows how to build
 
 .PHONY: clean
 clean: ## Delete any generated static asset or req.txt files and git-restore the rendered API documentation file
-	rm -rf frontend/static_files/ lambda-layers/DependenciesLayer/requirements.txt
+	rm -rf frontend/static_files/ lambda-layers/FrontendDependenciesLayer/requirements.txt
 
 .PHONY: collectstatic
 collectstatic: ## Rebuild the static assets
-	pipenv run collectstatic
+	python manage.py collectstatic --noinput --clear
 
 .PHONY: check_empty
 check_empty: ## Check if the requirements.txt file is empty
@@ -26,8 +26,9 @@ check_empty: ## Check if the requirements.txt file is empty
 		echo "File is not empty"
 	fi
 
-lambda-layers/DependenciesLayer/requirements.txt: Pipfile Pipfile.lock ## Update the requirements.txt file used to build this Lambda function's DependenciesLayer
-	pipenv requirements | sed "s/^-e //" >lambda-layers/DependenciesLayer/requirements.txt
+lambda-layers/FrontendDependenciesLayer/requirements.txt: Pipfile Pipfile.lock ## Update the requirements.txt file used to build this Lambda function's FrontendDependenciesLayer
+	pipenv requirements | sed "s/^-e //" | sed "s/^\.\/api.*//" >lambda-layers/FrontendDependenciesLayer/requirements.txt
+
 
 .PHONY: help
 # gratuitously adapted from https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html

@@ -9,4 +9,4 @@ frontend/static_files/
 
 /.aws-sam/
 /test-results
-/lambda-layers/DependenciesLayer/requirements.txt
+/lambda-layers/FrontendDependenciesLayer/requirements.txt
