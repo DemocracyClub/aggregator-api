@@ -16,7 +16,7 @@ clean: ## Delete any generated static asset or req.txt files and git-restore the
 
 .PHONY: collectstatic
 collectstatic: ## Rebuild the static assets
-	python manage.py collectstatic --noinput --clear
+	pipenv run collectstatic
 
 .PHONY: check_empty
 check_empty: ## Check if the requirements.txt file is empty
