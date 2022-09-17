@@ -24,9 +24,12 @@ jobs:
     - run: pipenv install --dev
       #- run: pipenv run pipenv check # before save_cache so an insecure cache is never saved
     - run: make lambda-layers/FrontendDependenciesLayer/requirements.txt
+    - run: pipenv run collectstatic
     - persist_to_workspace:
         root: ~/repo/
-        paths: [ lambda-layers/FrontendDependenciesLayer/requirements.txt ]
+        paths:
+          - lambda-layers/FrontendDependenciesLayer/requirements.txt
+          - frontend/static_files/
     - save_cache:
         when: on_success
         paths:
@@ -71,7 +74,6 @@ jobs:
     - run: pip install -r lambda-layers/DependenciesLayer/requirements.txt
     - run: &install-sam pip install aws-sam-cli==1.43.0
     - run: pip install -r lambda-layers/FrontendDependenciesLayer/requirements.txt
-    - run: python manage.py collectstatic --noinput --clear
     - run: sam build ${DASH_DASH_DEBUG}
     - persist_to_workspace:
         root: ~/repo/
