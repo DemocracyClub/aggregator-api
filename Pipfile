@@ -14,6 +14,7 @@ tomlkit = "*"
 importlib-metadata = "*"
 respx = "*"
 pytest-asyncio = "*"
+moto = {extras = ["dynamodb"], version = "*"}
 
 [packages]
 aiohttp = "==3.8.3"
@@ -33,6 +34,7 @@ dc-logging-utils = {file = "https://github.com/DemocracyClub/dc_logging/archive/
 Django = "==4.1.2"
 django-localflavor = "==3.1"
 dc-api-common = {path = "./api/common"}
+mypy-boto3-dynamodb = "*"
 
 [scripts]
 black = "black ."

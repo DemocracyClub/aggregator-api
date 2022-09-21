@@ -6,6 +6,7 @@ from elections_api_client import WdivWcivfApiClient
 
 
 async def get_postcode(request: Request):
+    print(request.scope)
     postcode = request.path_params["postcode"]
     client = WdivWcivfApiClient()
     wdiv, wcivf = await client.get_data_for_postcode(postcode)

@@ -18,10 +18,10 @@ def test_app_front_page_http_200(app_url):
     not os.environ.get("DEVS_DC_API_KEY"),
     reason="DEVS_DC_API_KEY environment variable not set",
 )
-def test_api_postcode_can_include_urlencoded_spaces(app_url):
+def test_api_postcode_can_include_urlencoded_spaces(app_url, tmp_api_user):
     auth_token = os.environ["DEVS_DC_API_KEY"]
     base_url = urllib.parse.urljoin(app_url, "api/v1/postcode/OX3 7LR/")
-    resp = requests.get(f"{base_url}?auth_token=${auth_token}")
+    resp = requests.get(f"{base_url}?auth_token=${tmp_api_user.api_key}")
     assert resp.status_code == 200
 
 

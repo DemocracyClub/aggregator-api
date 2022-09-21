@@ -69,6 +69,35 @@ Parameters:
 
 Resources:
 
+  UsersDynamoDBTable:
+    Type: AWS::DynamoDB::Table
+
+    Properties:
+      TableName: "users"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        -
+          AttributeName: api_key
+          AttributeType: S
+      KeySchema:
+        -
+          AttributeName: api_key
+          KeyType: HASH
+
+  DCAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Auth:
+        DefaultAuthorizer: APIAuthFunction
+        Authorizers:
+          APIAuthFunction:
+            FunctionArn: !GetAtt APIAuthFunction.Arn
+            FunctionPayloadType: REQUEST
+            Identity:
+              QueryStrings:
+                - auth_token
+
   APICommonLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
@@ -78,6 +107,16 @@ Resources:
     Metadata:
       BuildMethod: makefile
     RetentionPolicy: Delete
+
+  APIAuthFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
+      CodeUri: ./api/api_auth
+      Handler: handler.lambda_handler
+      Layers:
+        - !Ref APICommonLayer
+      Runtime: python3.8
 
   V1VotingInformationFunction:
     Type: AWS::Serverless::Function
@@ -93,11 +132,13 @@ Resources:
         PostcodeRequests:
           Type: Api
           Properties:
+            RestApiId: !Ref DCAPI
             Path: /api/v1/postcode/{proxy+}
             Method: GET
         AddressRequests:
           Type: Api
           Properties:
+            RestApiId: !Ref DCAPI
             Path: /api/v1/address/{proxy+}
             Method: GET
   V1ElectionsFunction:
@@ -112,11 +153,13 @@ Resources:
         ElectionListRequests:
           Type: Api
           Properties:
+            RestApiId: !Ref DCAPI
             Path: /api/v1/elections/
             Method: GET
         SingleElectionRequests:
           Type: Api
           Properties:
+            RestApiId: !Ref DCAPI
             Path: /api/v1/elections/{proxy+}
             Method: GET
   V1SandboxFunction:
@@ -149,7 +192,7 @@ Resources:
       BuildMethod: makefile
     RetentionPolicy: Delete
 
-  AggregatorApiFunction:
+  ApiFrontendFunction:
     Type: AWS::Serverless::Function
     Properties:
       Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
@@ -182,11 +225,11 @@ Resources:
             Path: /
             Method: ANY
 
-  AggregatorApiFunctionLogGroup:
+  ApiFrontendFunctionLogGroup:
     Type: AWS::Logs::LogGroup
-    DependsOn: [ AggregatorApiFunction ]
+    DependsOn: [ ApiFrontendFunction ]
     Properties:
-      LogGroupName: !Sub /aws/lambda/${AggregatorApiFunction}
+      LogGroupName: !Sub /aws/lambda/${ApiFrontendFunction}
       RetentionInDays: !Ref AppLogRetentionDays
 
 Outputs:
