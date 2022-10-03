@@ -233,8 +233,13 @@ Resources:
       RetentionInDays: !Ref AppLogRetentionDays
 
 Outputs:
-  AggregatorApiFqdn:
+  AggregatorApiFrontendFqdn:
     Description: "API Gateway endpoint FQDN for Aggregator API function"
     Value: !Sub "${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com"
+    Export:
+      Name: !Join [ ":", [ !Ref "AWS::StackName", "AggregatorApiFrontendFqdn" ] ]
+  AggregatorApiFqdn:
+    Description: "API Gateway endpoint FQDN for Aggregator API function"
+    Value: !Sub "${DCAPI}.execute-api.${AWS::Region}.amazonaws.com"
     Export:
       Name: !Join [ ":", [ !Ref "AWS::StackName", "AggregatorApiFqdn" ] ]
