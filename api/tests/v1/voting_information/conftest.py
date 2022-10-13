@@ -6,4 +6,5 @@ from voting_information.app import app
 
 @pytest.fixture(scope="function")
 def vi_app_client() -> TestClient:
-    return TestClient(app=app)
+    with TestClient(app=app) as client:
+        yield client
