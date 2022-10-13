@@ -19,5 +19,6 @@ setup(
         "httpx==0.23.0",
         "mangum==0.15.0",
         "starlette==0.19.1",
+        "dc_logging_utils@https://github.com/DemocracyClub/dc_logging/archive/refs/tags/0.0.9.tar.gz",
     ],
 )
