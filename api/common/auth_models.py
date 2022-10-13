@@ -46,3 +46,31 @@ class User:
         if "Item" not in item:
             raise UserDoesNotExist
         return cls(**item["Item"])
+
+    @classmethod
+    def from_authorizer_data(cls, auth_data):
+        """
+        The AWS Authorizer adds to the requestContext.
+
+        The data looks like this:
+
+        ```
+        "authorizer": {
+            "is_active": "true",
+            "api_key": "qliSZ4PY8qXL7DmN5LyuNA",
+            "user_id": "5fJzZ0KLvCJgg40lzfqXoA",
+            "principalId": "sym",
+            "integrationLatency": 1804,
+            "rate_limit_warn": "false",
+        },
+        ```
+
+        This in turn is added by calling the `__dict__` method of User, so it
+        should reflect the model, with some additional data, so we can use
+        the dataclass __dataclass_fields__ method to create the model.
+        """
+
+        kwargs = {}
+        for key in cls.__dataclass_fields__.keys():
+            kwargs[key] = auth_data.get(key, None)
+        return cls(**kwargs)
