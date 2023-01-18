@@ -30,6 +30,7 @@ dc-design-system = {file = "https://github.com/DemocracyClub/design-system/archi
 dc-django-utils = {file = "https://github.com/DemocracyClub/dc_django_utils/archive/refs/tags/2.1.2.tar.gz"}
 dc-logging-utils = {file = "https://github.com/DemocracyClub/dc_logging/archive/refs/tags/0.0.6.tar.gz"}
 Django = "==4.1.2"
+django-localflavor = "==3.1"
 
 [scripts]
 black = "black ."
