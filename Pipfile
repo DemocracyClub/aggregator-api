@@ -26,6 +26,7 @@ sentry-sdk = "*"
 werkzeug = "==2.0.3"
 psycopg2-binary = "*"
 wheel = "==0.38.4"
+certifi = "==2022.12.07"
 dc-design-system = {file = "https://github.com/DemocracyClub/design-system/archive/refs/tags/0.1.6.tar.gz"}
 dc-django-utils = {file = "https://github.com/DemocracyClub/dc_django_utils/archive/refs/tags/0.1.8.tar.gz"}
 dc-logging-utils = {file = "https://github.com/DemocracyClub/dc_logging/archive/refs/tags/0.0.6.tar.gz"}
