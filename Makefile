@@ -17,7 +17,7 @@ collectstatic: ## Rebuild the static assets
 	python manage.py collectstatic --noinput --clear
 
 lambda-layers/DependenciesLayer/requirements.txt: Pipfile Pipfile.lock ## Update the requirements.txt file used to build this Lambda function's DependenciesLayer
-	pipenv lock -r | sed "s/^-e //" >lambda-layers/DependenciesLayer/requirements.txt
+	pipenv requirements | sed "s/^-e //" >lambda-layers/DependenciesLayer/requirements.txt
 
 .PHONY: aggregator/apps/api/v1/templates/api_docs_rendered.html
 aggregator/apps/api/v1/templates/api_docs_rendered.html: ## Rebuild the API documentation page
