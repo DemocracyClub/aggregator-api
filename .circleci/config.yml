@@ -68,7 +68,6 @@ jobs:
     - attach_workspace:
         at: ~/repo/
     - run: pip install --upgrade pip
-    - run: pip install aws-sam-cli==1.43.0
     - run: pip install -r lambda-layers/DependenciesLayer/requirements.txt
     - run: make collectstatic
     - run: make aggregator/apps/api/v1/templates/api_docs_rendered.html APP_IS_BEHIND_CLOUDFRONT=True
@@ -102,7 +101,7 @@ jobs:
         - v3-dependencies-
     - run: *install-pipenv
     - run: pipenv run pip install click==7.1.1 --no-warn-conflicts
-
+    - run: pipenv run pip install aws-sam-cli==1.43.0
     - run: printenv DJANGO_SETTINGS_MODULE SAM_CONFIG_FILE SAM_LAMBDA_CONFIG_ENV SAM_PUBLIC_CONFIG_ENV
     - run: printenv SECRET_KEY | md5sum
     - run: printenv AWS_ACCESS_KEY_ID | md5sum

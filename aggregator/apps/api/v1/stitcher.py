@@ -85,6 +85,9 @@ class NotificationsMaker:
         if notification:
             notification["type"] = "voter_id"
             return [notification]
+        if notification := self.get_metadata_by_key("pre_eco"):
+            notification["type"] = "pre_eco"
+            return [notification]
 
         return []
 
