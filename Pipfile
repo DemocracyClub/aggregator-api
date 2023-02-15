@@ -22,7 +22,7 @@ django-cors-headers = "==3.13.0"
 aws-wsgi = {ref = "unquote_path_strings", git = "https://github.com/DemocracyClub/awsgi.git"}
 whitenoise = "*"
 sentry-sdk = "*"
-werkzeug = "==2.0.3"
+werkzeug = "==2.2.3"
 psycopg2-binary = "*"
 wheel = "==0.38.4"
 certifi = "==2022.12.07"
