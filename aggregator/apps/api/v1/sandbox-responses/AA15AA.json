@@ -34,6 +34,7 @@
             }
           },
           "cancelled": false,
+          "cancellation_reason": null,
           "replaced_by": null,
           "replaces": null,
           "election_id": "parl.2018-05-03",

@@ -58,6 +58,7 @@
           "elected_role": "Local Councillor",
           "metadata": null,
           "cancelled": false,
+          "cancellation_reason": null,
           "replaced_by": null,
           "replaces": null,
           "election_id": "local.westminster.2018-11-22",
