@@ -28,33 +28,6 @@ We'll use the `notifications` array to provide additional info
 to be shown to the user about special conditions to be aware of on this date
 e.g: identification requirements, or a cancelled poll.
 
-#### ID Requirements
-
-All voters in Northern Ireland must present photo ID to vote at a polling station.
-
-Additionally, there have been several trials in England
-to test introducing ID requirements more widely.
-API responses for a postcode or address in an authority where identification
-is required will include this information in the `notifications` array. e.g:
-
-<pre><code>{
-...
-  "notifications": [
-    {
-      "url": "http://www.eoni.org.uk/Vote/Voting-at-a-polling-place",
-      "title": "You need to show photographic ID to vote in this election",
-      "detail": "Voters in Northern Ireland are required to show one form of photo ID, like a passport or driving licence.",
-      "type": "voter_id"
-    }
-  ]
-}
-</code></pre>
-
-This information will be provided in all responses from the
-`/address` and `/postcode` API endpoints,
-even if we are not able to provide a polling station result.
-We encourage our API consumers to provide users in these areas with
-information about the pilots.
 
 #### Cancelled Polls
 
