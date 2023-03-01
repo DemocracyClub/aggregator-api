@@ -2,7 +2,9 @@
 
 ### Polling Stations
 
-* If we don't know a user's polling station, sometimes we may provide an external link for more info in `custom_finder`. This will always be populated for users in Northern Ireland where the Electoral Office for Northern Ireland run their own service. e.g:
+* If we don't know a user's polling station, sometimes we may provide an external link for more info in `custom_finder`.
+This will always be populated for users in Northern Ireland where the Electoral Office for Northern Ireland run
+their own service. e.g:
 
 <pre><code>{
 ...
@@ -10,17 +12,27 @@
 }
 </code></pre>
 
-* If we don't know a user's polling station and `custom_finder` is not populated, the contact details in the `electoral_services` or `registration` object can be used to provide contact details for the user's local electoral services or registration team.
+* If we don't know a user's polling station and `custom_finder` is not populated, the contact details in the
+`electoral_services` or `registration` object can be used to provide contact details for the user's local electoral
+services or registration team.
 
 ### Contact details
 
-We provide two types of contact details; "electoral services" and "registration". This is because in Scotland and Northern Ireland the local authority doesn't handle electoral registration. If you are using the data to deal with electoral registration, use the `registration` contact details. Please make sure you are using the correct contact details for your users needs.
+We provide two types of contact details; "electoral services" and "registration". This is because in Scotland and
+Northern Ireland the local authority doesn't handle electoral registration. If you are using the data to deal with
+electoral registration, use the `registration` contact details. Please make sure you are using the correct contact
+details for your users needs.
 
 ### Ballots and Candidates
 
-* It is possible for more than one ballot to occur on the same date, so a `ballots` array may contain many objects. For example, a user may vote in a local council election and mayoral election on the same day.
-* Occasionally a ballot needs to be cancelled. The most common reason for this is if one of the candidates dies between close of nominations and polling day, but there are other situations where this may happen. Remember to check the `cancelled` flag on ballot objects.
-* In an election using party lists, candidates should be shown to users grouped by party and ordered by `list_position` within parties. In an election which uses party lists, the `candidates` array is sorted by party and `list_position` within parties. For other election types it is sorted alphabetically by candidate name.
+* It is possible for more than one ballot to occur on the same date, so a `ballots` array may contain many objects.
+  For example, a user may vote in a local council election and mayoral election on the same day.
+* Occasionally a ballot needs to be cancelled. The most common reason for this is if one of the candidates dies between
+  close of nominations and polling day, but there are other situations where this may happen. Remember to check the
+  `cancelled` flag on ballot objects.
+* In an election using party lists, candidates should be shown to users grouped by party and ordered by `list_position`
+  within parties. In an election which uses party lists, the `candidates` array is sorted by party and `list_position`
+  within parties. For other election types it is sorted alphabetically by candidate name.
 
 ### Notifications
 
@@ -28,13 +40,46 @@ We'll use the `notifications` array to provide additional info
 to be shown to the user about special conditions to be aware of on this date
 e.g: identification requirements, or a cancelled poll.
 
+**If there is something in the notifications array, we *highly* recommend you show it to your users**
+
+#### Formatting notifications
+
+In general we will provide sensible defaults that you can show to your users directly.
+
+You should iterate over the notifications array and show the `title` and `detail` fields in a way that will be 
+obvious to your users.
+
+The URL field can be `null`, but if it exists then it will be a link to some more detail that the user should be
+directed to.
+
+It's possible for there to be more than one notification, however if all polls are cancelled we will only ever return
+a single `cancelled_election` notification in the list.
+
+#### Types of notification
+
+If you want to handle each case differently to the default (for example to change our wording, or to translate the
+message)
+then you can look at the `type` key.
+
+The values for this are:
+
+* `cancelled_election`: See below
+* `pre_eco`: The council is due to have a boundary change meaning we can't create the full elections until it's
+  finished. This response is a placeholder.
+* (deprecated) `voter_id_pilot`: over 2018 and 19 some English councils conducted pilots of the voter ID scheme.
+  We have replaced this notification with a value per ballot.
+
 
 #### Cancelled Polls
 
-Sometimes a scheduled poll may be cancelled. This is usuaully either because
+Sometimes a scheduled poll may be cancelled. This is usually either because
 the election is uncontested or due to death of a candidate.
-API responses for a postcode or address in an authority where identification
-is required will include this information in the `notifications` array. e.g:
+
+If the user has more than one ballot and only one of them is cancelled, we will not add a notification. In this case,
+you should look at the `cancelled` value on each ballot.
+
+If every ballot for a date is cancelled (meaning the user has no election to vote in) then we will add a notification 
+alerting them that they don't have to vote on that day, e.g:
 
 <pre><code>{
 ...
@@ -48,6 +93,33 @@ is required will include this information in the `notifications` array. e.g:
   ]
 }
 </code></pre>
+
+
+In some cases we will know the reason for the cancellation(s). In this case we will add a key to the notification:
+
+<pre><code>{
+...
+  "notifications": [
+    {
+       "type": "cancelled_election",
+       "title": "Cancelled Election",
+       "url": null, 
+       "detail": "The poll for this election will not take place",
+       "cancelled_ballots": [
+           {
+               "ballot_paper_id": "local.foo.2023-02-24",
+               "detail": "Uncontested election with fewer candidates than seats"
+           },
+           {
+               "ballot_paper_id": "pcc.foo.2023-02-24",
+               "detail": "Uncontested election with equal candidates to seats"
+           }
+       ]
+   }
+  ]
+}
+</code></pre>
+
 
 ### Advance Voting Stations
 
@@ -93,13 +165,13 @@ lists, containing:
 
 ### Previous Party Affiliations
 
-The [Local Elections (Principal Areas) (Wales) Rules 2021](https://www.legislation.gov.uk/wsi/2021/1459/made) Statutory Instrument,
-among other things introduced a requirement for candidates to list any other political party membership in the last 12
-months on the Statement Of Persons Nominated.
+The [Local Elections (Principal Areas) (Wales) Rules 2021](https://www.legislation.gov.uk/wsi/2021/1459/made) Statutory
+Instrument, among other things introduced a requirement for candidates to list any other political party membership in
+the last 12 months on the Statement Of Persons Nominated.
 
 We store this information, and present it for candidates in Welsh run elections. The field exists on the `candidate`
-object in the `candidates` list on each ballot. It wil be `null` unless the candidate has declared affiliation with anoher
-party in the last 12 months.
+object in the `candidates` list on each ballot. It wil be `null` unless the candidate has declared affiliation with
+another party in the last 12 months.
 
 Note that this is _not_ the same as previous candidacies for this person. We also track this, but a person must declare
 parties they have beem members of in the previous 12 months before the date of the election.
