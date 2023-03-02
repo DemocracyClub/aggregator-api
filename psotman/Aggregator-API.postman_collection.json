@@ -1,0 +1,136 @@
+{
+	"info": {
+		"_postman_id": "70fe4694-e4f8-4c77-890a-924882acb24d",
+		"name": "Aggregator API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23702323"
+	},
+	"item": [
+		{
+			"name": "/elections/",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{api_auth_token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "auth_token",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "query",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{protocol}}://{{api_url}}:{{port}}/api/{{api_version}}/elections/",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{api_url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"{{api_version}}",
+						"elections",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/postcode/{{postcode}}",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "test",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "auth_token",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "query",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{protocol}}://{{api_url}}:{{port}}/api/{{api_version}}/postcode/{{api_postcode}}",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{api_url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"{{api_version}}",
+						"postcode",
+						"{{api_postcode}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/address/{{address_slug}}",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{api_auth_token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "auth_token",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "query",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{protocol}}://{{api_url}}:{{port}}/api/{{api_version}}/address/{{api_address_slug}}",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{api_url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"{{api_version}}",
+						"address",
+						"{{api_address_slug}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
