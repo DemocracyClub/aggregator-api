@@ -1,4 +1,5 @@
 import re
+from typing import Dict, List, Optional
 from copy import deepcopy
 from django.urls import reverse
 from sentry_sdk import capture_message
@@ -50,19 +51,72 @@ def sort_ballots(dates, sort_keys):
     return dates
 
 
+def get_ballot_cancellation_reason(ballot: Dict) -> Optional[str]:
+    """
+    Given a cancelled ballot, determine the reason for cancellation
+    and return it as a friendly string :) (or None)
+    :param ballot: Dict representing a ballot object
+    :return: str or None
+    """
+    if ballot["cancelled"]:
+        ballot_candidate_count = len(ballot.get("candidates", []))
+        ballot_seats_contested = ballot.get("seats_contested", 0)
+
+        if ballot_candidate_count == ballot_seats_contested:
+            return "Uncontested election with equal candidates to seats"
+
+        if ballot_candidate_count < ballot_seats_contested:
+            if ballot_candidate_count != 0:
+                return "Uncontested election with fewer candidates than seats"
+            else:
+                return "Uncontested election with no candidates"
+
+    return None
+
+
 class NotificationsMaker:
     def __init__(self, ballots):
         self.ballots = ballots
         self.cancelled_ballots = self.get_cancelled_ballots()
 
     def get_cancelled_ballots(self):
-        return [b for b in self.ballots if b["cancelled"]]
+        return [b for b in self.ballots if b.get("cancelled", False)]
 
     def get_metadata_by_key(self, key):
         for b in self.ballots:
-            if b["metadata"] and key in b["metadata"]:
+            if b.get("metadata") and key in b["metadata"]:
                 return b["metadata"][key]
         return None
+
+    def get_cancelled_ballot_details(self) -> List[Dict]:
+        """
+        Iterate through cancelled ballots and create a list of objects
+        containing cancelled ballot's IDs and reasons for cancellation
+        :return: List
+        """
+        cancelled_ballot_details = []
+        for ballot in self.cancelled_ballots:
+            cancelled_ballot = {
+                "ballot_paper_id": ballot["ballot_paper_id"],
+                "detail": get_ballot_cancellation_reason(ballot),
+            }
+            cancelled_ballot_details.append(cancelled_ballot)
+
+        return cancelled_ballot_details
+
+    def generate_cancelled_notification(self) -> Dict:
+        """
+        Create an object representing a notification about a cancelled election
+        :return: Dict
+        """
+        notification = {
+            "type": "cancelled_election",
+            "title": "Cancelled Election",
+            "url": None,  # Backwards compatibility measure
+            "detail": "The poll for this election will not take place",
+            "cancelled_ballots": self.get_cancelled_ballot_details(),
+        }
+        return notification
 
     @property
     def all_ballots_cancelled(self):
@@ -73,23 +127,27 @@ class NotificationsMaker:
     @property
     def notifications(self):
         if self.all_ballots_cancelled:
-            notification = self.get_metadata_by_key("cancelled_election")
-            if not notification:
-                return None
-            notification["type"] = "cancelled_election"
+            if notification := self.get_metadata_by_key("cancelled_election"):
+                notification["type"] = "cancelled_election"
+            else:
+                notification = self.generate_cancelled_notification()
+
             return [notification]
 
+        notifications = []
         notification = self.get_metadata_by_key(
             "2019-05-02-id-pilot"
         ) or self.get_metadata_by_key("ni-voter-id")
+
         if notification:
             notification["type"] = "voter_id"
-            return [notification]
+            notifications.append(notification)
+
         if notification := self.get_metadata_by_key("pre_eco"):
             notification["type"] = "pre_eco"
-            return [notification]
+            notifications.append(notification)
 
-        return []
+        return notifications
 
 
 class Stitcher:
@@ -174,11 +232,25 @@ class Stitcher:
         return sorted(list(set(dates)))
 
     def get_ballots_for_date(self, date):
-        ballots = [
-            ballot
-            for ballot in self.wdiv_resp["ballots"]
-            if ballot["poll_open_date"] == date
-        ]
+        ballots = []
+        for wdiv_ballot in self.wdiv_resp["ballots"]:
+            if wdiv_ballot["poll_open_date"] == date:
+                wcivf_ballot = next(
+                    (
+                        ballot
+                        for ballot in self.wcivf_resp
+                        if ballot.get("ballot_paper_id")
+                        == wdiv_ballot["ballot_paper_id"]
+                    ),
+                    {},
+                )
+                wdiv_ballot["seats_contested"] = wcivf_ballot.get("seats_contested", 0)
+                wdiv_ballot["candidates"] = wcivf_ballot.get("candidates", [])
+                wdiv_ballot["cancellation_reason"] = get_ballot_cancellation_reason(
+                    wdiv_ballot
+                )
+                ballots.append(wdiv_ballot)
+
         return ballots
 
     @property
@@ -246,6 +318,7 @@ class Stitcher:
                 results[0]["advance_voting_station"] = self.wdiv_resp.get(
                     "advance_voting_station", None
                 )
+
         response = {
             "address_picker": False,
             "addresses": [],
