@@ -21,7 +21,6 @@
           "elected_role": "Mayor of Lewisham",
           "metadata": null,
           "cancelled": false,
-          "cancellation_reason": null,
           "replaced_by": null,
           "replaces": null,
           "election_id": "mayor.lewisham.2018-05-03",
@@ -174,7 +173,6 @@
               }
           },
           "cancelled": true,
-          "cancellation_reason": null,
           "voting_system": {
             "slug": "FPTP",
             "name": "First-past-the-post",
@@ -389,7 +387,6 @@
           "elected_role": "Local Councillor",
           "metadata": null,
           "cancelled": false,
-          "cancellation_reason": null,
           "replaced_by": null,
           "replaces": "local.lewisham.blackheath.2018-05-03",
           "seats_contested": 1,
@@ -604,7 +601,6 @@
           "elected_role": "Member of Parliament",
           "metadata": null,
           "cancelled": false,
-          "cancellation_reason": null,
           "replaced_by": null,
           "replaces": null,
           "election_id": "parl.2018-06-14",

@@ -1,5 +1,5 @@
 import pytest
-from api.v1.stitcher import NotificationsMaker, get_ballot_cancellation_reason
+from api.v1.stitcher import NotificationsMaker, get_ballot_cancellation_reason_metadata
 
 nometa = {
     "ballot_paper_id": "local.nometa.2018-05-03",
@@ -189,8 +189,9 @@ def test_northern_ireland():
     ],
 )
 def test_get_ballot_cancellation_reason(ballot, expected_reason):
-    reason = get_ballot_cancellation_reason(ballot)
-    assert reason == expected_reason
+    reason = get_ballot_cancellation_reason_metadata(ballot)
+    assert reason["title"] == "Uncontested election"
+    assert reason["detail"] == expected_reason
 
 
 @pytest.mark.parametrize(

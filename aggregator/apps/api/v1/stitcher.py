@@ -51,27 +51,37 @@ def sort_ballots(dates, sort_keys):
     return dates
 
 
-def get_ballot_cancellation_reason(ballot: Dict) -> Optional[str]:
+def get_ballot_cancellation_reason_metadata(ballot: Dict) -> Optional[Dict]:
     """
     Given a cancelled ballot, determine the reason for cancellation
     and return it as a friendly string :) (or None)
     :param ballot: Dict representing a ballot object
     :return: str or None
     """
+    metadata = None
     if ballot["cancelled"]:
         ballot_candidate_count = len(ballot.get("candidates", []))
         ballot_seats_contested = ballot.get("seats_contested", 0)
 
-        if ballot_candidate_count == ballot_seats_contested:
-            return "Uncontested election with equal candidates to seats"
+        if ballot_candidate_count <= ballot_seats_contested:
+            metadata = {
+                "title": "Uncontested election",
+                "detail": "This election is uncontested",
+                "url": None,
+            }
+            if ballot_candidate_count == ballot_seats_contested:
+                metadata[
+                    "detail"
+                ] = "Uncontested election with equal candidates to seats"
+            if ballot_candidate_count < ballot_seats_contested:
+                if ballot_candidate_count != 0:
+                    metadata[
+                        "detail"
+                    ] = "Uncontested election with fewer candidates than seats"
+                else:
+                    metadata["detail"] = "Uncontested election with no candidates"
 
-        if ballot_candidate_count < ballot_seats_contested:
-            if ballot_candidate_count != 0:
-                return "Uncontested election with fewer candidates than seats"
-            else:
-                return "Uncontested election with no candidates"
-
-    return None
+    return metadata
 
 
 class NotificationsMaker:
@@ -96,9 +106,10 @@ class NotificationsMaker:
         """
         cancelled_ballot_details = []
         for ballot in self.cancelled_ballots:
+            reason_metadata = get_ballot_cancellation_reason_metadata(ballot)
             cancelled_ballot = {
                 "ballot_paper_id": ballot["ballot_paper_id"],
-                "detail": get_ballot_cancellation_reason(ballot),
+                "detail": reason_metadata["detail"] or None,
             }
             cancelled_ballot_details.append(cancelled_ballot)
 
@@ -244,11 +255,21 @@ class Stitcher:
                     ),
                     {},
                 )
+
+                # Look for existing cancellation metadata (e.g, we've added "cancelled_election" metadata
+                # in EE) and if it doesn't exist, add our own cancellation reason as a metadata object.
+                # We do this because this is the first time we know about the number of candidates, so we can
+                # infer the reason for the cancellation
                 wdiv_ballot["seats_contested"] = wcivf_ballot.get("seats_contested", 0)
                 wdiv_ballot["candidates"] = wcivf_ballot.get("candidates", [])
-                wdiv_ballot["cancellation_reason"] = get_ballot_cancellation_reason(
-                    wdiv_ballot
-                )
+                existing_metadata = wdiv_ballot["metadata"] or {}
+                existing_cancellation = "cancelled_election" in existing_metadata
+                if not existing_cancellation:
+                    cancelled_metadata = get_ballot_cancellation_reason_metadata(
+                        wdiv_ballot
+                    )
+                    if cancelled_metadata:
+                        wdiv_ballot["metadata"] = cancelled_metadata
                 ballots.append(wdiv_ballot)
 
         return ballots
