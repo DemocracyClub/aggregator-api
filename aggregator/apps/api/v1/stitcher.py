@@ -106,10 +106,10 @@ class NotificationsMaker:
         """
         cancelled_ballot_details = []
         for ballot in self.cancelled_ballots:
-            reason_metadata = get_ballot_cancellation_reason_metadata(ballot)
+            reason_metadata = get_ballot_cancellation_reason_metadata(ballot) or {}
             cancelled_ballot = {
                 "ballot_paper_id": ballot["ballot_paper_id"],
-                "detail": reason_metadata["detail"] or None,
+                "detail": reason_metadata.get("detail"),
             }
             cancelled_ballot_details.append(cancelled_ballot)
 
