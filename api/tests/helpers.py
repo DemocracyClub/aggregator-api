@@ -6,7 +6,9 @@ from common import settings
 
 def load_fixture(testname, fixture, api_version="v1"):
     dirname = Path(__file__).parent
-    file_path: Path = dirname / api_version / "test_data" / testname / f"{fixture}.json"
+    file_path: Path = (
+        dirname / api_version / "test_data" / testname / f"{fixture}.json"
+    )
     with file_path.open("r") as f:
         return json.loads(f.read())
 
@@ -30,7 +32,8 @@ def load_sandbox_output(filename, base_url=None, api_version="v1"):
         json_str = f.read()
         if base_url:
             json_str = json_str.replace(
-                "https://developers.democracyclub.org.uk/api/v1/sandbox/", base_url
+                "https://developers.democracyclub.org.uk/api/v1/sandbox/",
+                base_url,
             )
         return json.loads(json_str)
 

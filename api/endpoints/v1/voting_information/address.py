@@ -1,8 +1,7 @@
+from elections_api_client import WdivWcivfApiClient
 from starlette.requests import Request
 from starlette.responses import JSONResponse
-
 from stitcher import Stitcher
-from elections_api_client import WdivWcivfApiClient
 
 
 async def get_address(request: Request):

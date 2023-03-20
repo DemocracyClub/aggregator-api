@@ -1,11 +1,10 @@
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import parse_qs, urlparse
 
-from httpx import QueryParams
-
-from common.url_resolver import build_absolute_url
 from common import settings
 from common.api_client import BaseAPIClient
 from common.async_requests import AsyncRequester
+from common.url_resolver import build_absolute_url
+from httpx import QueryParams
 
 
 class EEApiClient(BaseAPIClient):
@@ -38,8 +37,9 @@ class EEApiClient(BaseAPIClient):
             "metadata",
             "identifier_type",
         ]
-        q = QueryParams({k: v for k, v in params.items() if k in allowed_query_params})
-        return q
+        return QueryParams(
+            {k: v for k, v in params.items() if k in allowed_query_params}
+        )
 
     async def get_single_election(self, slug):
         ee_url = f"{settings.EE_BASE_URL}elections/{slug}/"
@@ -87,7 +87,8 @@ class EEApiClient(BaseAPIClient):
 
         # list of election objects
         response["results"] = [
-            self.filter_single_election(election) for election in response["results"]
+            self.filter_single_election(election)
+            for election in response["results"]
         ]
 
         return response

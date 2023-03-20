@@ -6,7 +6,9 @@ def test_sorter():
         {
             "poll_open_date": "2020-02-27",
             "ballots": [
-                {"ballot_paper_id": "local.manchester.clayton-openshaw.2020-02-27"},
+                {
+                    "ballot_paper_id": "local.manchester.clayton-openshaw.2020-02-27"
+                },
                 {"ballot_paper_id": "mayor.greater-manchester-ca.2020-02-27"},
                 {"ballot_paper_id": "parl.manchester-central.2020-02-27"},
                 {"ballot_paper_id": "parl.manchester-central.by.2020-02-27"},
@@ -28,7 +30,9 @@ def test_sorter():
                 {"ballot_paper_id": "parl.manchester-central.2020-02-27"},
                 {"ballot_paper_id": "parl.manchester-central.by.2020-02-27"},
                 {"ballot_paper_id": "mayor.greater-manchester-ca.2020-02-27"},
-                {"ballot_paper_id": "local.manchester.clayton-openshaw.2020-02-27"},
+                {
+                    "ballot_paper_id": "local.manchester.clayton-openshaw.2020-02-27"
+                },
             ],
         },
         {

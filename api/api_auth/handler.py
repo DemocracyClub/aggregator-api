@@ -25,7 +25,6 @@ def dynamodb_auth(api_key: str, region_name="eu-west-2"):
 
 
 def lambda_handler(event, context):
-
     api_key = event["queryStringParameters"].get("auth_token", None)
     if not api_key:
         raise Exception("Unauthorized")
@@ -39,7 +38,11 @@ def lambda_handler(event, context):
         "policyDocument": {
             "Version": "2012-10-17",
             "Statement": [
-                {"Action": "execute-api:Invoke", "Effect": "Allow", "Resource": "*"}
+                {
+                    "Action": "execute-api:Invoke",
+                    "Effect": "Allow",
+                    "Resource": "*",
+                }
             ],
         },
         "context": authentication["data"],

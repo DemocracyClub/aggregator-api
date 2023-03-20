@@ -1,10 +1,8 @@
-from mangum import Mangum
-from starlette.applications import Starlette
-
-from starlette.routing import Route
-
 from common.middleware import MIDDLEWARE
 from election_views import get_election_list, get_single_election
+from mangum import Mangum
+from starlette.applications import Starlette
+from starlette.routing import Route
 
 routes = [
     Route(
@@ -14,7 +12,10 @@ routes = [
         name="single_election",
     ),
     Route(
-        "/api/v1/elections/", get_election_list, methods=["GET"], name="election_list"
+        "/api/v1/elections/",
+        get_election_list,
+        methods=["GET"],
+        name="election_list",
     ),
 ]
 app = Starlette(debug=True, routes=routes, middleware=MIDDLEWARE)

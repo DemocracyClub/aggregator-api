@@ -1,5 +1,4 @@
 import httpx
-
 from tests.helpers import (
     fixture_map,
     load_fixture,
@@ -17,7 +16,9 @@ def test_no_stitcher_error_with_mismatched_ballots(respx_mock, vi_app_client):
     ).mock(
         return_value=httpx.Response(
             200,
-            json=load_fixture("addresspc_endpoints/test_multiple_elections", "wcivf"),
+            json=load_fixture(
+                "addresspc_endpoints/test_multiple_elections", "wcivf"
+            ),
         )
     )
 
@@ -26,7 +27,9 @@ def test_no_stitcher_error_with_mismatched_ballots(respx_mock, vi_app_client):
     ).mock(
         return_value=httpx.Response(
             200,
-            json=load_fixture("addresspc_endpoints/test_multiple_elections", "wdiv"),
+            json=load_fixture(
+                "addresspc_endpoints/test_multiple_elections", "wdiv"
+            ),
         )
     )
 
@@ -59,7 +62,9 @@ def test_valid(vi_app_client, respx_mock):
                 200, json=load_fixture(fixture_map[postcode], "wcivf")
             )
         )
-        expected = load_sandbox_output(postcode, base_url="http://testserver/api/v1/")
+        expected = load_sandbox_output(
+            postcode, base_url="http://testserver/api/v1/"
+        )
         response = vi_app_client.get(
             "/api/v1/address/1-foo-street-bar-town/",
         )

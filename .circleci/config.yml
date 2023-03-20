@@ -48,8 +48,7 @@ jobs:
         - v3-dependencies-
     - run: *install-pipenv
     - run: pipenv run black-check
-    - run: pipenv run pytest --flakes
-    - run: pipenv run pytest --cov-report= --cov=frontend --junitxml=test-results/junit.xml
+    - run: pipenv run pytest --ruff --cov-report= --cov=frontend --cov=api --junitxml=test-results/junit.xml
     - run: |
         if [ -n "$COVERALLS_REPO_TOKEN" ]; then
           pipenv run coveralls

@@ -1,6 +1,6 @@
+import contextlib
 import os
 import sys
-
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from pathlib import Path
@@ -82,7 +82,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"
+    },
 ]
 
 
@@ -104,13 +106,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 from dc_utils.settings.pipeline import *  # noqa
-from dc_utils.settings.pipeline import get_pipeline_settings
+from dc_utils.settings.pipeline import get_pipeline_settings  # noqa
 
 PIPELINE = get_pipeline_settings(extra_css=["scss/styles.scss"])
 
-import dc_design_system
+import dc_design_system  # noqa
 
-PIPELINE["SASS_ARGUMENTS"] += " -I " + dc_design_system.DC_SYSTEM_PATH + "/system"
+PIPELINE["SASS_ARGUMENTS"] += (
+    " -I " + dc_design_system.DC_SYSTEM_PATH + "/system"
+)
 
 SASS_INCLUDE_PATHS = [dc_design_system.DC_SYSTEM_PATH + "/system"]
 STATIC_ROOT = os.path.join(BASE_DIR, "static_files")
@@ -143,9 +147,9 @@ if sentry_dsn:
 
 FIREHOSE_ACCOUNT_ARN = os.environ.get("FIREHOSE_ACCOUNT_ARN", None)
 if FIREHOSE_ACCOUNT_ARN:
-    firehose_args = dict(assume_role_arn=FIREHOSE_ACCOUNT_ARN)
+    firehose_args = {"assume_role_arn": FIREHOSE_ACCOUNT_ARN}
 else:
-    firehose_args = dict(fake=True)
+    firehose_args = {"fake": True}
 POSTCODE_LOGGER = DCWidePostcodeLoggingClient(**firehose_args)
 
 
@@ -162,7 +166,5 @@ if is_local_dev():
     print(
         "Found nothing to indicate this is NOT an local development environment; including settings/local.py"
     )  # FIXME: log?
-    try:
+    with contextlib.suppress(ImportError):
         from .local import *  # noqa
-    except ImportError:
-        pass

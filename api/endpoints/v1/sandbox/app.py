@@ -1,12 +1,10 @@
 from pathlib import Path
 
+from common.middleware import MIDDLEWARE
 from mangum import Mangum
 from starlette.applications import Starlette
-
-from starlette.routing import Route
 from starlette.responses import FileResponse
-
-from common.middleware import MIDDLEWARE
+from starlette.routing import Route
 
 
 def sandbox_content(filename):
@@ -14,7 +12,9 @@ def sandbox_content(filename):
 
 
 async def sandbox_postcode(request):
-    return FileResponse(sandbox_content(request.path_params["postcode"].upper()))
+    return FileResponse(
+        sandbox_content(request.path_params["postcode"].upper())
+    )
 
 
 async def sandbox_address(request):

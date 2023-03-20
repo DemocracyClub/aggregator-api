@@ -2,11 +2,10 @@ import os
 
 import boto3
 import pytest
-from moto import mock_dynamodb
-from mypy_boto3_dynamodb import DynamoDBServiceResource
-
 from api_auth.handler import dynamodb_auth
 from common.auth_models import User
+from moto import mock_dynamodb
+from mypy_boto3_dynamodb import DynamoDBServiceResource
 
 
 @pytest.fixture(scope="function")
@@ -47,28 +46,28 @@ def test_auth_active_key(dynamodb):
     user = User(api_key="12345", user_id="1")
     user.save()
     resp = dynamodb_auth("12345")
-    assert resp["authenticated"] == True
+    assert resp["authenticated"] is True
     assert resp["data"]["user_id"] == "1"
 
 
 def test_auth_incorrect_key(dynamodb):
     resp = dynamodb_auth("12345")
-    assert resp["authenticated"] == False
+    assert resp["authenticated"] is False
 
 
 def test_auth_inactive_key(dynamodb):
     user = User(api_key="12345", user_id="1", is_active=False)
     user.save()
     resp = dynamodb_auth("12345")
-    assert resp["authenticated"] == False
-    assert resp["data"]["is_active"] == False
+    assert resp["authenticated"] is False
+    assert resp["data"]["is_active"] is False
 
 
 def test_auth_rate_limit_warn(dynamodb):
     user = User(api_key="12345", user_id="1", rate_limit_warn=True)
     user.save()
     resp = dynamodb_auth("12345")
-    assert resp["authenticated"] == True
+    assert resp["authenticated"] is True
     assert resp["warnings"] == ["Rate limit exceeded"]
 
 
@@ -76,8 +75,8 @@ def test_auth_delete_user(dynamodb):
     user = User(api_key="12345", user_id="1", rate_limit_warn=True)
     user.save()
     resp = dynamodb_auth("12345")
-    assert resp["authenticated"] == True
+    assert resp["authenticated"] is True
     user.delete()
     resp = dynamodb_auth("12345")
-    assert resp["authenticated"] == False
+    assert resp["authenticated"] is False
     assert resp["error"] == "API key not found"

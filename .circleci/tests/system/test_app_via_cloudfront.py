@@ -1,9 +1,5 @@
-import boto3
-import os
 import pytest
 import requests
-from tomlkit.toml_document import TOMLDocument
-from tomlkit.toml_file import TOMLFile
 
 
 @pytest.mark.skip("Until docs are back")

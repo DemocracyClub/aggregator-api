@@ -1,6 +1,5 @@
-from starlette.testclient import TestClient
-
 from sandbox import app
+from starlette.testclient import TestClient
 
 
 def test_cors_header():

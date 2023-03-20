@@ -1,12 +1,10 @@
 import httpx
 import pytest
-from httpx import QueryParams
-
-from tests.helpers import load_fixture
-from starlette.testclient import TestClient
-
 from endpoints.v1.elections import app
 from endpoints.v1.elections.voting_information_api_client import EEApiClient
+from httpx import QueryParams
+from starlette.testclient import TestClient
+from tests.helpers import load_fixture
 
 
 @pytest.fixture(scope="function")
@@ -46,9 +44,14 @@ def test_clean_query_params(elections_app_client):
 
 @pytest.mark.asyncio
 async def test_get_election_list(respx_mock, elections_app_client):
-    respx_mock.get("https://elections.democracyclub.org.uk/api/elections/").mock(
+    respx_mock.get(
+        "https://elections.democracyclub.org.uk/api/elections/"
+    ).mock(
         return_value=httpx.Response(
-            200, json=load_fixture("elections_endpoint/test_every_election_list", "ee")
+            200,
+            json=load_fixture(
+                "elections_endpoint/test_every_election_list", "ee"
+            ),
         )
     )
     response = elections_app_client.get("/api/v1/elections/")
@@ -64,7 +67,9 @@ def test_get_single_election(respx_mock, elections_app_client):
     ).mock(
         return_value=httpx.Response(
             200,
-            json=load_fixture("elections_endpoint/test_every_election_single", "ee"),
+            json=load_fixture(
+                "elections_endpoint/test_every_election_single", "ee"
+            ),
         )
     )
 

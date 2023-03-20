@@ -1,7 +1,7 @@
 import typing
 
 from starlette.datastructures import URLPath
-from starlette.routing import Route, NoMatchFound
+from starlette.routing import NoMatchFound, Route
 
 
 class FakeRoute(Route):
@@ -27,11 +27,15 @@ class FakeRoute(Route):
 
 ALL_ROUTES = {
     "v1/elections": [
-        FakeRoute("/api/v1/elections/{slug}/", methods=["GET"], name="single_election"),
+        FakeRoute(
+            "/api/v1/elections/{slug}/", methods=["GET"], name="single_election"
+        ),
         FakeRoute("/api/v1/elections/", methods=["GET"], name="election_list"),
     ],
     "v1/voting_information": [
-        FakeRoute("/api/v1/postcode/{postcode}/", methods=["GET"], name="postcode"),
+        FakeRoute(
+            "/api/v1/postcode/{postcode}/", methods=["GET"], name="postcode"
+        ),
         FakeRoute("/api/v1/address/{uprn}/", methods=["GET"], name="address"),
     ],
     "v1/sandbox": [
@@ -41,10 +45,14 @@ ALL_ROUTES = {
             name="sandbox_postcode",
         ),
         FakeRoute(
-            "/api/v1/sandbox/address/{uprn}/", methods=["GET"], name="sandbox_address"
+            "/api/v1/sandbox/address/{uprn}/",
+            methods=["GET"],
+            name="sandbox_address",
         ),
         FakeRoute(
-            "/api/v1/sandbox/elections/", methods=["GET"], name="sandbox_election_list"
+            "/api/v1/sandbox/elections/",
+            methods=["GET"],
+            name="sandbox_election_list",
         ),
         FakeRoute(
             "/api/v1/sandbox/elections/{slug}/",

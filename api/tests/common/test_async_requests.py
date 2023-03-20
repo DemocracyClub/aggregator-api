@@ -1,6 +1,5 @@
 import httpx
 import pytest
-
 from common.async_requests import AsyncRequester, UpstreamApiError
 
 
@@ -22,8 +21,13 @@ async def test_async_requester(respx_mock):
     await async_requester.get_urls()
     assert wcivf.called
     assert wdiv.called
-    assert async_requester.request_dict["wcivf"]["response"].text == "WhoCanIVoteFor"
-    assert async_requester.request_dict["wdiv"]["response"].text == "WhereDoIVote"
+    assert (
+        async_requester.request_dict["wcivf"]["response"].text
+        == "WhoCanIVoteFor"
+    )
+    assert (
+        async_requester.request_dict["wdiv"]["response"].text == "WhereDoIVote"
+    )
 
 
 @pytest.mark.asyncio

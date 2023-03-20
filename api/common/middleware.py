@@ -1,8 +1,7 @@
+from common.auth_models import User
 from starlette.datastructures import Headers, QueryParams
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
-
-from common.auth_models import User
 
 
 class ForwardedForMiddleware:
@@ -15,7 +14,9 @@ class ForwardedForMiddleware:
     async def __call__(self, scope, receive, send):
         if scope["type"] == "http":
             headers = Headers(scope=scope)
-            forwarded_for = headers.get("x-forwarded-host", "").split(":")[0].encode()
+            forwarded_for = (
+                headers.get("x-forwarded-host", "").split(":")[0].encode()
+            )
             if forwarded_for:
                 for i, header in enumerate(scope["headers"]):
                     if header[0] == b"host":
@@ -37,7 +38,6 @@ class UTMParamsMiddleware:
         self.app = app
 
     async def __call__(self, scope, receive, send):
-
         utm_dict = {}
         params = QueryParams(scope.get("query_string"))
 
@@ -72,14 +72,18 @@ class APIGatewayAuthenticatorContextMiddleware:
 
     async def __call__(self, scope, receive, send):
         aws_event = scope.get("aws.event", {})
-        authorizer_data = aws_event.get("requestContext", {}).get("authorizer", {})
+        authorizer_data = aws_event.get("requestContext", {}).get(
+            "authorizer", {}
+        )
 
         if authorizer_data:
             # We've been passed through an authorizer so we can create a User model
             user = User.from_authorizer_data(authorizer_data)
         elif aws_event:
             # We're on AWS Lambda, but this isn't a function with an authorizer
-            user = User(user_id="unauthenticated_user", api_key="unauthenticated_user")
+            user = User(
+                user_id="unauthenticated_user", api_key="unauthenticated_user"
+            )
         else:
             # We're not on AWS Lambda
             user = User(user_id="direct_access", api_key="local-dev")

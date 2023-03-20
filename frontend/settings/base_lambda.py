@@ -1,7 +1,8 @@
+import os
+
 from boto3 import Session
 
 from .base import *  # noqa
-import os
 
 ALLOWED_HOSTS = ["*"]
 DEBUG = os.environ.get("DEBUG", False)
@@ -12,7 +13,12 @@ WHITENOISE_STATIC_PREFIX = "/static/"
 PIPELINE["PIPELINE_ENABLED"] = os.environ.get("PIPELINE_ENABLED", False)  # noqa
 PIPELINE["PIPELINE_COLLECTOR_ENABLED"] = False  # noqa
 
-if os.environ.get("APP_IS_BEHIND_CLOUDFRONT", False) in [True, "true", "True", "TRUE"]:
+if os.environ.get("APP_IS_BEHIND_CLOUDFRONT", False) in [
+    True,
+    "true",
+    "True",
+    "TRUE",
+]:
     USE_X_FORWARDED_HOST = True
     STATIC_URL = WHITENOISE_STATIC_PREFIX
 else:
@@ -37,7 +43,8 @@ AWS_S3_REGION_NAME = "eu-west-2"
 AWS_QUERYSTRING_AUTH = False
 
 AWS_STORAGE_BUCKET_NAME = os.environ.get(
-    "AWS_STORAGE_BUCKET_NAME", "aggregator-api-static-assets-development-7e3eabce9c"
+    "AWS_STORAGE_BUCKET_NAME",
+    "aggregator-api-static-assets-development-7e3eabce9c",
 )
 AWS_S3_CUSTOM_DOMAIN = (
     f"{AWS_STORAGE_BUCKET_NAME}.s3-website.{AWS_S3_REGION_NAME}.amazonaws.com"
@@ -59,7 +66,9 @@ STATICFILES_FINDERS = (
     "pipeline.finders.ManifestFinder",
 )
 
-PIPELINE["COMPILERS"] = ("frontend.s3_lambda_storage.LambdaSASSCompiler",)  # noqa
+PIPELINE["COMPILERS"] = (  # noqa
+    "frontend.s3_lambda_storage.LambdaSASSCompiler",
+)
 
 if os.environ.get("AWS_EXECUTION_ENV"):
     logger_boto3_session = Session(region_name="eu-west-2")
@@ -77,8 +86,14 @@ if os.environ.get("AWS_EXECUTION_ENV"):
                 "datefmt": "%Y-%m-%d %H:%M:%S",
             }
         },
-        "handlers": {"console": {"class": "logging.StreamHandler", "formatter": "aws"}},
+        "handlers": {
+            "console": {"class": "logging.StreamHandler", "formatter": "aws"}
+        },
         "loggers": {
-            "console": {"level": "INFO", "handlers": ["console"], "propogate": False}
+            "console": {
+                "level": "INFO",
+                "handlers": ["console"],
+                "propogate": False,
+            }
         },
     }

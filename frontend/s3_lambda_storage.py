@@ -1,9 +1,10 @@
-from pipeline.compilers.sass import SASSCompiler
-
 from django.conf import settings
-from django.contrib.staticfiles.storage import staticfiles_storage
+from django.contrib.staticfiles.storage import (
+    ManifestStaticFilesStorage,
+    staticfiles_storage,
+)
+from pipeline.compilers.sass import SASSCompiler
 from pipeline.storage import PipelineMixin
-from django.contrib.staticfiles.storage import ManifestStaticFilesStorage
 
 
 class StaticStorage(PipelineMixin, ManifestStaticFilesStorage):
@@ -21,7 +22,8 @@ class LambdaSASSCompiler(SASSCompiler):
 
     def compile_file(self, infile, outfile, outdated=False, force=False):
         if not outdated:
-            return open(outfile).read()
+            with open(outfile) as f:
+                return f.read()
         import sass
 
         out_value = sass.compile(

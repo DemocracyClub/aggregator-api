@@ -1,16 +1,15 @@
 import pytest
 from starlette.testclient import TestClient
-
-from tests.helpers import load_fixture, load_sandbox_output, fixture_map
-
-from voting_information.stitcher import Stitcher
-
+from tests.helpers import fixture_map, load_fixture, load_sandbox_output
 from voting_information.app import app
+from voting_information.stitcher import Stitcher
 
 
 @pytest.fixture(scope="function")
 def stitcher_client():
-    return TestClient(app=app, base_url="https://developers.democracyclub.org.uk/")
+    return TestClient(
+        app=app, base_url="https://developers.democracyclub.org.uk/"
+    )
 
 
 def test_no_ballots(stitcher_client):
@@ -70,11 +69,15 @@ def test_multiple_elections(stitcher_client):
 def test_validate_false_with_mismatched_ballots(stitcher_client):
     postcode = "AA14AA"
     wcivf = load_fixture(fixture_map[postcode], "wcivf")
-    s = Stitcher(load_fixture(fixture_map[postcode], "wdiv"), wcivf, stitcher_client)
+    s = Stitcher(
+        load_fixture(fixture_map[postcode], "wdiv"), wcivf, stitcher_client
+    )
     assert s.validate()
 
     # Remove an election from WCIVF
     wcivf.pop(0)
 
-    s = Stitcher(load_fixture(fixture_map[postcode], "wdiv"), wcivf, stitcher_client)
-    assert s.validate() == False
+    s = Stitcher(
+        load_fixture(fixture_map[postcode], "wdiv"), wcivf, stitcher_client
+    )
+    assert s.validate() is False

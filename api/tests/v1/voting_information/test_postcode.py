@@ -1,9 +1,7 @@
 import logging
-from unittest.mock import Mock
 
 import httpx
 import pytest
-
 from tests.helpers import (
     fixture_map,
     load_fixture,
@@ -26,27 +24,32 @@ def test_valid(vi_app_client, respx_mock, postcode, input_fixture):
         )
     )
 
-    respx_mock.get(f"http://wheredoivote.co.uk/api/beta/postcode/{postcode}/").mock(
+    respx_mock.get(
+        f"http://wheredoivote.co.uk/api/beta/postcode/{postcode}/"
+    ).mock(
         return_value=httpx.Response(
             200,
             json=load_fixture(input_fixture, "wdiv"),
         )
     )
 
-    expected = load_sandbox_output(postcode, base_url="http://testserver/api/v1/")
+    expected = load_sandbox_output(
+        postcode, base_url="http://testserver/api/v1/"
+    )
     response = vi_app_client.get(f"/api/v1/postcode/{postcode}/")
     assert response.status_code == 200
     assert response.json() == expected
 
 
 def test_wcivf_missing_ballot(respx_mock, vi_app_client):
-    wcivf_data = load_fixture("addresspc_endpoints/test_multiple_elections", "wcivf")
-    # del wcivf_data[0]
+    load_fixture("addresspc_endpoints/test_multiple_elections", "wcivf")
 
     respx_mock.get("http://wheredoivote.co.uk/api/beta/postcode/SW1A1AA/").mock(
         return_value=httpx.Response(
             200,
-            json=load_fixture("addresspc_endpoints/test_multiple_elections", "wdiv"),
+            json=load_fixture(
+                "addresspc_endpoints/test_multiple_elections", "wdiv"
+            ),
         )
     )
     respx_mock.get(
@@ -54,7 +57,9 @@ def test_wcivf_missing_ballot(respx_mock, vi_app_client):
     ).mock(
         return_value=httpx.Response(
             200,
-            json=load_fixture("addresspc_endpoints/test_multiple_elections", "wcivf"),
+            json=load_fixture(
+                "addresspc_endpoints/test_multiple_elections", "wcivf"
+            ),
         )
     )
     resp = vi_app_client.get(
@@ -72,15 +77,17 @@ def test_logging_working(respx_mock, vi_app_client, caplog):
     ).mock(
         return_value=httpx.Response(
             200,
-            json=load_fixture("addresspc_endpoints/test_multiple_elections", "wcivf"),
+            json=load_fixture(
+                "addresspc_endpoints/test_multiple_elections", "wcivf"
+            ),
         )
     )
-    respx_mock.get(
-        "http://wheredoivote.co.uk/api/beta/postcode/SW1A1AA/"
-    ).mock(
+    respx_mock.get("http://wheredoivote.co.uk/api/beta/postcode/SW1A1AA/").mock(
         return_value=httpx.Response(
             200,
-            json=load_fixture("addresspc_endpoints/test_multiple_elections", "wdiv"),
+            json=load_fixture(
+                "addresspc_endpoints/test_multiple_elections", "wdiv"
+            ),
         )
     )
 

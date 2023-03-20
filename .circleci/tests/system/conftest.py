@@ -3,9 +3,8 @@ import secrets
 
 import boto3
 import pytest
-from tomlkit.toml_file import TOMLFile
-
 from common.auth_models import User
+from tomlkit.toml_file import TOMLFile
 
 
 @pytest.fixture(scope="function")
@@ -27,6 +26,7 @@ def cfn_output_value(stack, output_name):
         if op["OutputKey"] == output_name:
             # Cfn Outputs have unique per-stack names
             return op["OutputValue"]
+    return None
 
 
 @pytest.fixture(scope="session")
@@ -35,7 +35,9 @@ def frontend_url(deployed_api_gateway_stack):
         # FIXME: assert something about the format of APP_URL, e.g. matching 'https?://'
         return os.environ["APP_URL"]
 
-    app_fqdn = cfn_output_value(deployed_api_gateway_stack, "AggregatorApiFrontendFqdn")
+    app_fqdn = cfn_output_value(
+        deployed_api_gateway_stack, "AggregatorApiFrontendFqdn"
+    )
     assert app_fqdn
     return f"https://{app_fqdn}/Prod/"
 
@@ -65,10 +67,12 @@ def deployed_public_cfn_stack(sam_cli_public_access_configuration):
 
     # 'region' /can/ be absent from the config file, in which case it'll
     # need to be present in the env (AWS_DEFAULT_REGION) or the user's AWS config files
-    stack = boto3.resource("cloudformation", region_name=params.get("region")).Stack(
-        stack_name
-    )
-    assert stack.stack_status  # 'assert stack' doesn't actually check stack presence!
+    stack = boto3.resource(
+        "cloudformation", region_name=params.get("region")
+    ).Stack(stack_name)
+    assert (
+        stack.stack_status
+    )  # 'assert stack' doesn't actually check stack presence!
     return stack
 
 
@@ -86,10 +90,12 @@ def deployed_api_gateway_stack(sam_cli_api_gateway_configuration):
 
     # 'region' /can/ be absent from the config file, in which case it'll
     # need to be present in the env (AWS_DEFAULT_REGION) or the user's AWS config files
-    stack = boto3.resource("cloudformation", region_name=params.get("region")).Stack(
-        stack_name
-    )
-    assert stack.stack_status  # 'assert stack' doesn't actually check stack presence!
+    stack = boto3.resource(
+        "cloudformation", region_name=params.get("region")
+    ).Stack(stack_name)
+    assert (
+        stack.stack_status
+    )  # 'assert stack' doesn't actually check stack presence!
     return stack
 
 
@@ -110,7 +116,9 @@ def cdn_url(deployed_cfn_stack):
         # FIXME: assert something about the format of CDN_URL, e.g. matching 'https?://'
         return os.environ["CDN_URL"]
 
-    cdn_fqdn = cfn_output_value(deployed_cfn_stack, "CloudFrontDistributionFqdn")
+    cdn_fqdn = cfn_output_value(
+        deployed_cfn_stack, "CloudFrontDistributionFqdn"
+    )
     assert cdn_fqdn
     return f"https://{cdn_fqdn}"
 
@@ -129,10 +137,12 @@ def deployed_cfn_stack(sam_cli_public_access_configuration):
 
     # 'region' /can/ be absent from the config file, in which case it'll
     # need to be present in the env (AWS_DEFAULT_REGION) or the user's AWS config files
-    stack = boto3.resource("cloudformation", region_name=params.get("region")).Stack(
-        stack_name
-    )
-    assert stack.stack_status  # 'assert stack' doesn't actually check stack presence!
+    stack = boto3.resource(
+        "cloudformation", region_name=params.get("region")
+    ).Stack(stack_name)
+    assert (
+        stack.stack_status
+    )  # 'assert stack' doesn't actually check stack presence!
     return stack
 
 
@@ -145,7 +155,9 @@ def sam_cli_public_access_configuration():
     assert os.path.exists(config_file_path)
     config = TOMLFile(config_file_path).read()
 
-    config_env = os.environ.get("SAM_PUBLIC_CONFIG_ENV", "default-public-access")
+    config_env = os.environ.get(
+        "SAM_PUBLIC_CONFIG_ENV", "default-public-access"
+    )
     assert config.get(config_env)
     return config[config_env]
 

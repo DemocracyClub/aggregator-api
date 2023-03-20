@@ -1,6 +1,5 @@
 from starlette.requests import Request
 from starlette.responses import JSONResponse
-
 from voting_information_api_client import EEApiClient
 
 

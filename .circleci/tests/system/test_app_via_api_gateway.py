@@ -1,7 +1,6 @@
-import re
 import hashlib
+import re
 import urllib
-import os
 from urllib.parse import urljoin
 
 import requests
@@ -18,7 +17,9 @@ def test_api_postcode_can_include_urlencoded_spaces(api_url, tmp_api_user):
     assert resp.status_code == 200
 
 
-def test_api_docs_assets_style_css_filename_contains_md5_of_content(frontend_url):
+def test_api_docs_assets_style_css_filename_contains_md5_of_content(
+    frontend_url,
+):
     resp = requests.get(urllib.parse.urljoin(frontend_url, "api/v1/"))
     styles_path_re = re.search('"([^"]+/styles.[a-f0-9]{12}.css)', resp.text)
     assert styles_path_re, "No CSS path found in content"

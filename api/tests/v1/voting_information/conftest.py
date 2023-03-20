@@ -1,6 +1,5 @@
 import pytest
 from starlette.testclient import TestClient
-
 from voting_information.app import app
 
 
