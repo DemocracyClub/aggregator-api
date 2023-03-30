@@ -61,4 +61,5 @@ fixture_map = {
     "AA12AB": "addresspc_endpoints/test_one_election_station_not_known_with_candidates",
     "AA13AA": "addresspc_endpoints/test_address_picker",
     "AA14AA": "addresspc_endpoints/test_multiple_elections",
+    "AB12CD": "addresspc_endpoints/test_elections_for_date",
 }
