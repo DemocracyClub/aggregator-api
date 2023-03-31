@@ -13,10 +13,20 @@
       "advance_voting_station": null,
       "notifications": [
         {
-          "title": "Uncontested election",
-          "detail": "Uncontested election with no candidates",
+          "type": "cancelled_election",
+          "title": "Cancelled Election",
           "url": null,
-          "type": "cancelled_election"
+          "detail": "The poll for this election will not take place",
+          "cancelled_ballots": [
+            {
+              "ballot_paper_id": "mayor.lewisham.2018-05-03",
+              "detail": "Uncontested election with no candidates"
+            },
+            {
+              "ballot_paper_id": "local.lewisham.blackheath.2018-05-03",
+              "detail": "The election for a Borough Councillor to represent the Blackheath Ward has now been postponed due to leaves on the line."
+            }
+          ]
         }
       ],
       "ballots": [
@@ -29,8 +39,7 @@
             "cancelled_election": {
               "title": "Uncontested election",
               "detail": "Uncontested election with no candidates",
-              "url": null,
-              "type": "cancelled_election"
+              "url": null
             }
           },
           "cancelled": true,
