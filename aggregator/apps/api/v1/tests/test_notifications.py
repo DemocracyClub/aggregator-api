@@ -90,7 +90,7 @@ def test_multiple_cancelled_elections():
     assert len(notifications) == 1
     assert notifications[0]["title"] == "Cancelled Election"
     assert notifications[0]["type"] == "cancelled_election"
-    assert notifications[0]["url"] == cancelled["metadata"]["cancelled_election"]["url"]
+    assert len(notifications[0]["cancelled_ballots"]) == 2
 
 
 def test_cancelled_with_pilot():

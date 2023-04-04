@@ -101,15 +101,21 @@ class NotificationsMaker:
     def get_cancelled_ballot_details(self) -> List[Dict]:
         """
         Iterate through cancelled ballots and create a list of objects
-        containing cancelled ballot's IDs and reasons for cancellation
+        containing cancelled ballots' IDs and reasons for cancellation
         :return: List
         """
         cancelled_ballot_details = []
         for ballot in self.cancelled_ballots:
-            reason_metadata = get_ballot_cancellation_reason_metadata(ballot) or {}
+            cancelled_election_metadata = ballot.get("metadata", {}).get(
+                "cancelled_election", {}
+            )
+            if not cancelled_election_metadata:
+                cancelled_election_metadata = (
+                    get_ballot_cancellation_reason_metadata(ballot) or {}
+                )
             cancelled_ballot = {
                 "ballot_paper_id": ballot["ballot_paper_id"],
-                "detail": reason_metadata.get("detail"),
+                "detail": cancelled_election_metadata.get("detail"),
             }
             cancelled_ballot_details.append(cancelled_ballot)
 
@@ -138,12 +144,13 @@ class NotificationsMaker:
     @property
     def notifications(self):
         if self.all_ballots_cancelled:
-            if notification := self.get_metadata_by_key("cancelled_election"):
-                notification["type"] = "cancelled_election"
+            cancelled_election_metadata = self.get_metadata_by_key("cancelled_election")
+            if len(self.ballots) == 1 and cancelled_election_metadata:
+                cancelled_election_metadata["type"] = "cancelled_election"
             else:
-                notification = self.generate_cancelled_notification()
+                cancelled_election_metadata = self.generate_cancelled_notification()
 
-            return [notification]
+            return [cancelled_election_metadata]
 
         notifications = []
         notification = self.get_metadata_by_key(
@@ -269,7 +276,10 @@ class Stitcher:
                         wdiv_ballot
                     )
                     if cancelled_metadata:
-                        wdiv_ballot["metadata"] = cancelled_metadata
+                        wdiv_ballot["metadata"] = {
+                            "cancelled_election": cancelled_metadata
+                        }
+
                 ballots.append(wdiv_ballot)
 
         return ballots

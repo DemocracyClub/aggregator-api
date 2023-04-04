@@ -68,7 +68,7 @@ class StitcherTests(TestCase):
             s.make_result_known_response(), load_sandbox_output(postcode)
         )
 
-    def test_validate_false_with_mismatched_balots(self):
+    def test_validate_false_with_mismatched_ballots(self):
         postcode = "AA14AA"
         wcivf = load_fixture(fixture_map[postcode], "wcivf")
         s = Stitcher(load_fixture(fixture_map[postcode], "wdiv"), wcivf, self.request)
@@ -79,3 +79,16 @@ class StitcherTests(TestCase):
 
         s = Stitcher(load_fixture(fixture_map[postcode], "wdiv"), wcivf, self.request)
         self.assertFalse(s.validate())
+
+    def test_get_ballots_for_date(self):
+        postcode = "AB12CD"
+        s = Stitcher(
+            load_fixture(fixture_map[postcode], "wdiv"),
+            load_fixture(fixture_map[postcode], "wcivf"),
+            self.request,
+        )
+
+        ballots_for_date = s.get_ballots_for_date("2018-05-03")
+        self.assertEqual(len(ballots_for_date), 2)
+        for ballot in ballots_for_date:
+            self.assertIsNotNone(ballot["metadata"].get("cancelled_election"))
