@@ -269,6 +269,7 @@ class Stitcher:
                 # infer the reason for the cancellation
                 wdiv_ballot["seats_contested"] = wcivf_ballot.get("seats_contested", 0)
                 wdiv_ballot["candidates"] = wcivf_ballot.get("candidates", [])
+                wdiv_ballot["cancelled"] = wcivf_ballot.get("cancelled", False)
                 existing_metadata = wdiv_ballot["metadata"] or {}
                 existing_cancellation = "cancelled_election" in existing_metadata
                 if not existing_cancellation:
