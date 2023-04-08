@@ -16,12 +16,14 @@ class UpstreamApiError(Exception):
 
 async def get_url(key, url_data, request_urls):
     async with httpx.AsyncClient() as client:
-        response = client.get(
+        response: httpx.Response = client.get(
             url=url_data["url"],
             params=url_data.get("params", {}),
             headers=url_data.get("headers", {}),
         )
         request_urls[key]["response"] = await response
+        request_urls[key]["response"].raise_for_status()
+
 
 
 async def async_get_urls(requst_urls) -> Dict[str, httpx.Response]:

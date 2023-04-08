@@ -16,7 +16,7 @@ def test_valid(vi_app_client, respx_mock, postcode, input_fixture):
     # iterate through the same set of expected inputs/outputs
     # we test against in test_stitcher.py
     respx_mock.get(
-        f"http://whocanivotefor.co.uk/api/candidates_for_postcode/?postcode={postcode}"
+        f"https://whocanivotefor.co.uk/api/candidates_for_postcode/?postcode={postcode}"
     ).mock(
         return_value=httpx.Response(
             200,
@@ -53,7 +53,7 @@ def test_wcivf_missing_ballot(respx_mock, vi_app_client):
         )
     )
     respx_mock.get(
-        "http://whocanivotefor.co.uk/api/candidates_for_postcode/?postcode=SW1A1AA"
+        "https://whocanivotefor.co.uk/api/candidates_for_postcode/?postcode=SW1A1AA"
     ).mock(
         return_value=httpx.Response(
             200,
@@ -73,7 +73,7 @@ def test_logging_working(respx_mock, vi_app_client, caplog):
     caplog.set_level(logging.DEBUG)
 
     respx_mock.get(
-        "http://whocanivotefor.co.uk/api/candidates_for_postcode/?postcode=SW1A1AA"
+        "https://whocanivotefor.co.uk/api/candidates_for_postcode/?postcode=SW1A1AA"
     ).mock(
         return_value=httpx.Response(
             200,

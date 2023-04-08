@@ -4,7 +4,7 @@ from common.async_requests import AsyncRequester
 from httpx import QueryParams
 
 # WDIV_BASE_URL = "http://wheredoivote.co.uk"
-# WCIVF_BASE_URL = "http://whocanivotefor.co.uk"
+# WCIVF_BASE_URL = "https://whocanivotefor.co.uk"
 # EE_BASE_URL = "https://elections.democracyclub.org.uk"
 
 

@@ -1,6 +1,6 @@
 import httpx
 import pytest
-from common.async_requests import AsyncRequester, UpstreamApiError
+from common.async_requests import AsyncRequester
 
 
 @pytest.mark.asyncio
@@ -45,9 +45,6 @@ async def test_async_requester_with_500_error_raises(respx_mock):
             "wdiv": {"url": "https://wheredoivote.co.uk/"},
         }
     )
-    with pytest.raises(UpstreamApiError) as error:
+    with pytest.raises(httpx.HTTPStatusError) as error:
         await async_requester.get_urls()
-    assert (
-        str(error.value)
-        == "{'url': 'https://whocanivotefor.co.uk/', 'response': <Response [500 Internal Server Error]>}"
-    )
+    assert "500 Internal Server Error" in str(error.value)

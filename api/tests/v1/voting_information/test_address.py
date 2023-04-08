@@ -12,7 +12,7 @@ def test_no_stitcher_error_with_mismatched_ballots(respx_mock, vi_app_client):
 
     """
     respx_mock.get(
-        "http://whocanivotefor.co.uk/api/candidates_for_ballots/?utm_medium=devs.DC+API&ballot_ids=mayor.lewisham.2018-05-03%2Clocal.lewisham.blackheath.2018-05-03%2Clocal.lewisham.blackheath.2018-05-10%2Cparl.lewisham-east.by.2018-06-14"
+        "https://whocanivotefor.co.uk/api/candidates_for_ballots/?utm_medium=devs.DC+API&ballot_ids=mayor.lewisham.2018-05-03%2Clocal.lewisham.blackheath.2018-05-03%2Clocal.lewisham.blackheath.2018-05-10%2Cparl.lewisham-east.by.2018-06-14"
     ).mock(
         return_value=httpx.Response(
             200,
@@ -49,14 +49,14 @@ def test_valid(vi_app_client, respx_mock):
             )
         )
         respx_mock.get(
-            "http://whocanivotefor.co.uk/api/candidates_for_ballots/?utm_medium=devs.DC+API&ballot_ids=mayor.lewisham.2018-05-03%2Clocal.lewisham.blackheath.2018-05-03,local.lewisham.blackheath.2018-05-10,parl.lewisham-east.by.2018-06-14"
+            "https://whocanivotefor.co.uk/api/candidates_for_ballots/?utm_medium=devs.DC+API&ballot_ids=mayor.lewisham.2018-05-03%2Clocal.lewisham.blackheath.2018-05-03,local.lewisham.blackheath.2018-05-10,parl.lewisham-east.by.2018-06-14"
         ).mock(
             return_value=httpx.Response(
                 200, json=load_fixture(fixture_map[postcode], "wcivf")
             )
         )
         respx_mock.get(
-            "http://whocanivotefor.co.uk/api/candidates_for_ballots/?utm_medium=devs.DC+API&ballot_ids=local.westminster.lancaster-gate.by.2018-11-22"
+            "https://whocanivotefor.co.uk/api/candidates_for_ballots/?utm_medium=devs.DC+API&ballot_ids=local.westminster.lancaster-gate.by.2018-11-22"
         ).mock(
             return_value=httpx.Response(
                 200, json=load_fixture(fixture_map[postcode], "wcivf")
