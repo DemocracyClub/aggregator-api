@@ -17,24 +17,26 @@ pytest-asyncio = "*"
 moto = {extras = ["dynamodb"], version = "*"}
 pytest-ruff = "*"
 
-[packages]
+[api]
 aiohttp = "==3.8.3"
-django-apiblueprint-view = "==2.4.0"
-django-storages = "==1.13.2"
-raven = ">=6.10,<7.0"
-aws-wsgi = {ref = "unquote_path_strings", git = "https://github.com/DemocracyClub/awsgi.git"}
-whitenoise = "*"
 sentry-sdk = "*"
-werkzeug = "==2.0.3"
-psycopg2-binary = "*"
-wheel = "==0.38.4"
-certifi = "==2022.12.07"
+dc-api-common = {path = "./api/common"}
+mypy-boto3-dynamodb = "*"
+
+[frontend]
 dc-design-system = {file = "https://github.com/DemocracyClub/design-system/archive/refs/tags/0.1.6.tar.gz"}
 dc-django-utils = {file = "https://github.com/DemocracyClub/dc_django_utils/archive/refs/tags/2.1.2.tar.gz"}
 Django = "==4.1.2"
 django-localflavor = "==3.1"
-dc-api-common = {path = "./api/common"}
-mypy-boto3-dynamodb = "*"
+psycopg2-binary = "*"
+django-apiblueprint-view = "==2.4.0"
+django-storages = "==1.13.2"
+aws-wsgi = {ref = "unquote_path_strings", git = "https://github.com/DemocracyClub/awsgi.git"}
+whitenoise = "*"
+sentry-sdk = "*"
+
+
+
 
 [scripts]
 black = "black ."

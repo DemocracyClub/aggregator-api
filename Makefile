@@ -27,7 +27,7 @@ check_empty: ## Check if the requirements.txt file is empty
 	fi
 
 lambda-layers/FrontendDependenciesLayer/requirements.txt: Pipfile Pipfile.lock ## Update the requirements.txt file used to build this Lambda function's FrontendDependenciesLayer
-	pipenv requirements | sed "s/^-e //" | sed "s/^\.\/api.*//" >lambda-layers/FrontendDependenciesLayer/requirements.txt
+	pipenv requirements --categories frontend | sed "s/^-e //" | sed "s/^\.\/api.*//" >lambda-layers/FrontendDependenciesLayer/requirements.txt
 
 
 .PHONY: help
