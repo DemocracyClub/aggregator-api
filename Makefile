@@ -4,7 +4,7 @@ export SECRET_KEY?=badf00d
 export DJANGO_SETTINGS_MODULE?=frontend.settings.base_lambda
 export APP_IS_BEHIND_CLOUDFRONT?=False
 
-REQUIREMENTS = "lambda-layers/DependenciesLayer/requirements.txt"
+REQUIREMENTS = "lambda-layers/FrontendDependenciesLayer/requirements.txt"
 
 
 .PHONY: all

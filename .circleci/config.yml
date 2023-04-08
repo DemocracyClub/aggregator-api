@@ -70,7 +70,7 @@ jobs:
     - attach_workspace:
         at: ~/repo/
     - run: pip install --upgrade pip pipenv
-    - run: pip install -r lambda-layers/DependenciesLayer/requirements.txt
+    - run: pip install -r lambda-layers/FrontendDependenciesLayer/requirements.txt
     - run: &install-sam pip install aws-sam-cli==1.43.0
     - run: pip install -r lambda-layers/FrontendDependenciesLayer/requirements.txt
     - run: sam build ${DASH_DASH_DEBUG}

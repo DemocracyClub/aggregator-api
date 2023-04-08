@@ -120,7 +120,7 @@ $ AWS_DEFAULT_REGION=eu-west-2 pipenv run sam validate
 Use the Makefile's `all` target to:
 
 - delete and recreate the static asset directory at `aggregator/static_files/`
-- generate `lambda-layers/DependenciesLayer/requirements.txt`
+- generate `lambda-layers/FrontendDependenciesLayer/requirements.txt`
 
 The results of the first 2 of these steps are gitignored. The rendered API docs **are** currently committed, and may well show git changes after you run this step. They exist as both template and rendered output for unclear reasons, possibly to do with the historic complexity of installing the API-doc-generating libraries. *Feel free to change this behaviour, and these docs, if you know this area!*.
 
@@ -128,14 +128,14 @@ All these steps have to be re-done when you change either `Pipfile`, `Pipfile.lo
 
 ```
 $ pipenv run make all
-rm -rf aggregator/static_files/ lambda-layers/DependenciesLayer/requirements.txt
+rm -rf aggregator/static_files/ lambda-layers/FrontendDependenciesLayer/requirements.txt
 python manage.py collectstatic --noinput --clear
 Copying '/home/ubuntu/code/aggregator-api/aggregator/assets/images/dc-badge/black/badge.png'
 [ ... 133 "Copying" lines elided ... ]
 Post-processed 'css/styles.css' as 'css/styles.css'
 [ ... 111 "Post-processed" lines elided ... ]
 134 static files copied to '/home/ubuntu/code/aggregator-api/aggregator/static_files', 139 post-processed.
-pipenv lock -r | sed "s/^-e //" >lambda-layers/DependenciesLayer/requirements.txt
+pipenv lock -r | sed "s/^-e //" >lambda-layers/FrontendDependenciesLayer/requirements.txt
 ```
 
 Now build the Lambda deployment package.
