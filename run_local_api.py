@@ -5,8 +5,8 @@ from pathlib import Path
 
 import uvicorn
 
-ENDPOINTS_ROOT = "api/endpoints/v1/"
 COMMON_ROOT = "api/"
+ENDPOINTS_ROOT = "api/endpoints/v1"
 sys.path.insert(0, COMMON_ROOT)
 
 
