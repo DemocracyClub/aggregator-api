@@ -128,6 +128,9 @@ Resources:
         - !Ref APICommonLayer
       Runtime: python3.8
       MemorySize: 512
+      Environment:
+        Variables:
+          FIREHOSE_ACCOUNT_ARN: !Ref AppLoggingAssumeRoleArn
       Events:
         PostcodeRequests:
           Type: Api
