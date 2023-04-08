@@ -1,0 +1,101 @@
+## Group Postcode search
+
+The `/postcode` and `/address` endpoints find details of ballots, candidates and polling stations based on the user's registered address. This allows you to present Democracy Club's data to users in your website or app.
+
+The entry point to a polling station search is a call to the `/postcode` endpoint.
+A valid postcode search may result in one of 3 outcomes:
+* <a href="#postcode-search-no-upcoming-ballots-3">No upcoming ballots</a>: There are no upcoming ballots relevant to this area.
+* <a href="#postcode-search-results-found-3">Results found</a>: We hold data for this area and the same ballots, candidates and polling station data is relevant to all registered addresses with this postcode.
+* <a href="#postcode-search-address-picker-3">Address picker</a>: We hold data for this area but different information is applicable to different addresses with this postcode. To find relevant data, we must show the user an address picker and make a second API call to the <a href="#address-search-2">`/address` endpoint</a>.
+
+
+## Postcode search: No upcoming ballots [/postcode/{postcode}]
+
+
++ Parameters
+    + postcode: `SW1A1AA` (required, string) - Whitespace in postcodes is ignored, so format may be `SW1A1AA` or `SW1A 1AA`
+
+
+### Postcode search: No upcoming ballots [GET]
+
+Example of a response when there are no upcoming ballots.
+
+In this case `address_picker` is `false` and `dates` is an empty array.
+
+
+
++ Response 200 (application/json)
+
+    + Attributes
+        + `address_picker`: `false` (boolean) - True if we need to show this user an address picker
+        + addresses (array[object]) - An array of address objects containing the addresses applicable to this request (if necessary)
+        + dates (array[object]) - An array of date objects containing details of relevant ballots, candidates and polling station information
+        + `electoral_services` (ElectoralServices, nullable) - Contact details for the user's local Electoral Services team. If we do not know the user's polling station, this can be used to provide contact info for their local council. This may be `null` if we are not able to determine the user's council.
+        + `registration` (Registration, nullable) - Sometimes the contact information for registration and proxy voting is different to the electoral services contact details. Use these if they exist and your users might have questions about voter registration. If this key is null, assume the electoral services contact details can be used for electoral registration related enquiries.
+        + `postcode_location` (PostcodeLocation) - A [GeoJSON Feature](https://tools.ietf.org/html/rfc7946#section-3.2) containing a [Point object](https://tools.ietf.org/html/rfc7946#section-3.1.2) describing the centroid of the input postcode. If providing a map or directions for a polling station journey, use this as the start point. This may be `null` if we are not able to accurately geocode.
+
+
+## Postcode search: Results found [/postcode/{postcode}]
+
++ Parameters
+    + postcode: `SW1A1AA` (required, string) - Whitespace in postcodes is ignored, so format may be `SW1A1AA` or `SW1A 1AA`
+
+### Postcode search: Results found [GET]
+
+Example of a response when we hold data for this area and the same ballots, candidates and polling station data is relevant to all registered addresses with this postcode.
+
+In this case `address_picker` is `false` and `dates` is an array of date objects.
+
+
++ Response 200 (application/json)
+
+    + Attributes(ValidFinderResponse)
+
+
+
+## Postcode search: Address picker [/postcode/{postcode}]
+
+
++ Parameters
+    + postcode: `SW1A1AA` (required, string) - Whitespace in postcodes is ignored, so format may be `SW1A1AA` or `SW1A 1AA`
+
+
+### Postcode search: Address picker [GET]
+Example of a response when we must show the user an address picker. This should be followed by a second API call to the `/address` endpoint.
+
+In this case `address_picker` is `true` and `dates` is an empty array. `addresses` is an array of address objects.
+
++ Response 200 (application/json)
+
+    + Attributes
+        + `address_picker`: `true` (boolean) - True if we need to show this user an address picker
+        + addresses (array[object], fixed-type) - An array of address objects containing the addresses applicable to this request (if necessary)
+            + (object)
+                + address: `16 DUNCAN CLOSE, ST. MELLONS, CARDIFF`
+                + postcode: `CF3 1NP`
+                + slug: `100100106448`
+                + url: `http://developers.democracyclub.org.uk/api/v1/address/100100106448` - Call this URL to get data for this registered address
+            + (object)
+                + address: `26 DUNCAN CLOSE, ST. MELLONS, CARDIFF`
+                + postcode: `CF3 1NP`
+                + slug: `100100106458`
+                + url: `http://developers.democracyclub.org.uk/api/v1/address/100100106458` - Call this URL to get data for this registered address
+        + dates (array[object]) - An array of date objects containing details of relevant ballots, candidates and polling station information
+        + `electoral_services` (ElectoralServices, nullable) - Contact details for the user's local Electoral Services team. If we do not know the user's polling station, this can be used to provide contact info for their local council. This may be `null` if we are not able to determine the user's council.
+        + `registration` (Registration, nullable) - Sometimes the contact information for registration and proxy voting is different to the electoral services contact details. Use these if they exist and your users might have questions about voter registration. If this key is null, assume the electoral services contact details can be used for electoral registration related enquiries.
+        + `postcode_location` (PostcodeLocation) - A [GeoJSON Feature](https://tools.ietf.org/html/rfc7946#section-3.2) containing a [Point object](https://tools.ietf.org/html/rfc7946#section-3.1.2) describing the centroid of the input postcode. If providing a map or directions for a polling station journey, use this as the start point. This may be `null` if we are not able to accurately geocode.
+
+
+## Address search [/address/{slug}]
+
++ Parameters
+    + slug: `60017560` (required, string) - A unique slug describing a residential address
+
+
+
+### Address search [GET]
+In the event that the same information is not applicable to all addresses described by a postcode, a call to `/postcode` will return an array of address objects, each of which corresponds to a call to the `/address` endpoint. A subsequent call to `/address` will return an object of the same format as a valid call to `/postcode`.
+
++ Response 200 (application/json)
+
+    + Attributes(ValidFinderResponse)

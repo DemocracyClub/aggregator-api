@@ -2,7 +2,6 @@ import pytest
 import requests
 
 
-@pytest.mark.skip("Until docs are back")
 def test_api_docs_assets_dont_contain_prod_path_prefix(public_url):
     resp = requests.get(public_url + "/api/v1/")
     assert resp.status_code == 200

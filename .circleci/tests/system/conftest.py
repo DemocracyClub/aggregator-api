@@ -158,7 +158,6 @@ def sam_cli_public_access_configuration():
     config_env = os.environ.get(
         "SAM_PUBLIC_CONFIG_ENV", "default-public-access"
     )
-    assert config.get(config_env)
     return config[config_env]
 
 
@@ -172,5 +171,4 @@ def sam_cli_api_gateway_configuration():
     config = TOMLFile(config_file_path).read()
 
     config_env = os.environ.get("SAM_LAMBDA_CONFIG_ENV", "default")
-    assert config.get(config_env)
     return config[config_env]

@@ -73,6 +73,7 @@ jobs:
     - run: pip install -r lambda-layers/FrontendDependenciesLayer/requirements.txt
     - run: &install-sam pip install aws-sam-cli==1.43.0
     - run: pip install -r lambda-layers/FrontendDependenciesLayer/requirements.txt
+    - run: make aggregator/apps/api_docs/v1/templates/api_docs_rendered.html APP_IS_BEHIND_CLOUDFRONT=True
     - run: sam build ${DASH_DASH_DEBUG}
     - persist_to_workspace:
         root: ~/repo/

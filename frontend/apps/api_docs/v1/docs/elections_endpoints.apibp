@@ -1,0 +1,54 @@
+## Group Elections
+
+
+The `/elections/` endpoint gives access to Democracy Club's full database of elections.
+
+Each election object is assigned an [Election Identifier](https://elections.democracyclub.org.uk/reference_definition/)
+
+Democracy Club's election model is hierarchical.
+The lowest level (or most detailed) election object is called the ballot id and describes a single ballot paper.
+Each level above this is a group id. For example the ballot
+`local.worcestershire.bewdley.2017-05-04` is a child of the (organisation) group
+`local.worcestershire.2017-05-04` which is in turn a child of the (election) group
+`local.2017-05-04`.
+
+An election object is described fully in the JSON schema, but broadly contains information about:
+
+* The election or group itself
+* The object's position in the hierarchy
+* The organisation (e.g: parliament or council) holding the election
+* The division (e.g: constituency or ward) that a candidate will be elected to represent
+
+
+## List Elections [/elections/]
+
+
++ Parameters
+    + coords: `52.290719,-1.935395` (string, optional) - Pass a lat/lon string as `?coords={lat},{lon}` to find elections covering the given coordinates. For lookup by postcode/address, use the [/postcode](#postcode-search-2) endpoint.
+    + current: `1` (string, optional) - Pass `?current=1` to return only elections which will happen in the near future (we may hold info on candidates or polling stations) or happened in the recent past (we may hold results). Usually this is an election whose polling date is either in the next 90 days or was in the last 20 days, but we may sometimes make an editorial decision that a major election (e.g: a scheduled general election) is "current" for a wider window than this.
+    + future: `1` (string, optional) - Pass `?future=1` to return only elections whose polling date is in the future
+    + `identifier_type`: `ballot` (string, optional) - Pass `?identifier_type=election`, `?identifier_type=organisation` or `?identifier_type=ballot` to return only election groups, organisation groups or ballot objects.
+    + limit: 20 (number, optional) - Pass `?limit={num}` to specify number of election objects to return. Use with `offset` to page over results
+        + Default: `100`
+    + offset: 20 (number, optional) - Pass `?offset={num}` to specify Election object to start from. Use with `limit` to page over results
+        + Default: `0`
+
+### List elections [GET]
+List or filter all election objects.
+
++ Response 200 (application/json)
+
+    + Attributes(ElectionList)
+
+## Single election [/elections/{id}]
+
+
++ Parameters
+    + id: `naw.c.alyn-and-deeside.by.2018-02-06` (required, string) - A Democracy Club election ID
+
+### Single election [GET]
+Retrieve a single election object by id.
+
++ Response 200 (application/json)
+
+    + Attributes(Election)

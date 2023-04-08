@@ -98,6 +98,18 @@ Resources:
           ViewerProtocolPolicy: "redirect-to-https"
           MinTTL: '50'
         - AllowedMethods: [ GET, HEAD, OPTIONS ]
+          PathPattern: api/v1/
+          TargetOriginId: FrontendApp
+          ForwardedValues:
+            QueryString: true
+            Cookies:
+              Forward: none
+            Headers:
+              - Authorization
+              - Origin
+          ViewerProtocolPolicy: "redirect-to-https"
+          MinTTL: '50'
+        - AllowedMethods: [ GET, HEAD, OPTIONS ]
           PathPattern: api/v1/*
           TargetOriginId: APIApp
           ForwardedValues:
@@ -108,7 +120,9 @@ Resources:
               - Authorization
               - Origin
           ViewerProtocolPolicy: "redirect-to-https"
-          MinTTL: '50'
+          MinTTL: '0'
+          MaxTTL: '60'
+          DefaultTTL: '60'
 
 
   DnsRecord:

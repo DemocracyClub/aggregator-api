@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     "dc_design_system",
     "dc_utils",
 ]
-PROJECT_APPS = []
+PROJECT_APPS = ["api_docs.v1"]
 INSTALLED_APPS += PROJECT_APPS
 
 MIDDLEWARE = [
