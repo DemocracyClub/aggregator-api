@@ -16,6 +16,7 @@ respx = "*"
 pytest-asyncio = "*"
 moto = {extras = ["dynamodb"], version = "*"}
 pytest-ruff = "*"
+pre-commit = "*"
 
 [api]
 aiohttp = "==3.8.3"
@@ -34,9 +35,6 @@ django-storages = "==1.13.2"
 aws-wsgi = {ref = "unquote_path_strings", git = "https://github.com/DemocracyClub/awsgi.git"}
 whitenoise = "*"
 sentry-sdk = "*"
-
-
-
 
 [scripts]
 black = "black ."

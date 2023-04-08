@@ -25,7 +25,6 @@ async def get_url(key, url_data, request_urls):
         request_urls[key]["response"].raise_for_status()
 
 
-
 async def async_get_urls(requst_urls) -> Dict[str, httpx.Response]:
     await asyncio.gather(
         *[get_url(key, requst_urls[key], requst_urls) for key in requst_urls]
