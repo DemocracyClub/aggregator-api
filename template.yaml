@@ -114,6 +114,9 @@ Resources:
       Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
       CodeUri: ./api/api_auth
       Handler: handler.lambda_handler
+      Environment:
+        Variables:
+          SENTRY_DSN: !Ref AppSentryDSN
       Layers:
         - !Ref APICommonLayer
       Runtime: python3.8
@@ -131,6 +134,7 @@ Resources:
       Environment:
         Variables:
           FIREHOSE_ACCOUNT_ARN: !Ref AppLoggingAssumeRoleArn
+          SENTRY_DSN: !Ref AppSentryDSN
       Events:
         PostcodeRequests:
           Type: Api
@@ -152,6 +156,9 @@ Resources:
       Handler: app.handler
       Runtime: python3.8
       MemorySize: 512
+      Environment:
+        Variables:
+          SENTRY_DSN: !Ref AppSentryDSN
       Events:
         ElectionListRequests:
           Type: Api
@@ -173,6 +180,9 @@ Resources:
       Handler: app.handler
       Runtime: python3.8
       MemorySize: 512
+      Environment:
+        Variables:
+          SENTRY_DSN: !Ref AppSentryDSN
       Events:
         SandboxRequests:
           Type: Api

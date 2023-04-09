@@ -1,8 +1,11 @@
 from common.middleware import MIDDLEWARE
+from common.sentry_helper import init_sentry
 from election_views import get_election_list, get_single_election
 from mangum import Mangum
 from starlette.applications import Starlette
 from starlette.routing import Route
+
+init_sentry()
 
 routes = [
     Route(

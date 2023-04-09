@@ -4,11 +4,14 @@ import os
 import anyio
 from address import get_address
 from common.middleware import MIDDLEWARE
+from common.sentry_helper import init_sentry
 from dc_logging_client import DCWidePostcodeLoggingClient
 from mangum import Mangum
 from postcode import get_postcode
 from starlette.applications import Starlette
 from starlette.routing import Route
+
+init_sentry()
 
 
 @contextlib.asynccontextmanager

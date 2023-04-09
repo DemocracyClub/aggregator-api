@@ -1,4 +1,7 @@
 from common.auth_models import User, UserDoesNotExist
+from common.sentry_helper import init_sentry
+
+init_sentry()
 
 
 def dynamodb_auth(api_key: str, region_name="eu-west-2"):
