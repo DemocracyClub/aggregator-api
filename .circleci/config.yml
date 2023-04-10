@@ -227,4 +227,4 @@ workflows:
         - sam_build                       # deploy needs .aws-sam/build/
         - sam_deploy_staging              # production should only deploy if staging deploys successfully
         context: [ deployment-production-aggregator-api ]
-        filters: { branches: { only: [ main, master ] } }
+        filters: { branches: { only: [ main, master, split-endpoints-from-frontend ] } }
