@@ -24,9 +24,16 @@ def test_no_ballots(stitcher_client):
 
 def test_one_election_station_known_with_candidates(stitcher_client):
     postcode = "AA12AA"
+    wdiv_json = load_fixture(fixture_map[postcode], "wdiv")
+    wcivf_json = []
+    for ballot in wdiv_json["ballots"]:
+        wcivf_json.append(
+            load_fixture(fixture_map[postcode], ballot["ballot_paper_id"])
+        )
+
     s = Stitcher(
-        load_fixture(fixture_map[postcode], "wdiv"),
-        load_fixture(fixture_map[postcode], "wcivf"),
+        wdiv_json,
+        wcivf_json,
         stitcher_client,
         sandbox=True,
     )
@@ -35,9 +42,16 @@ def test_one_election_station_known_with_candidates(stitcher_client):
 
 def test_one_election_station_not_known_with_candidates(stitcher_client):
     postcode = "AA12AB"
+    wdiv_json = load_fixture(fixture_map[postcode], "wdiv")
+    wcivf_json = []
+    for ballot in wdiv_json["ballots"]:
+        wcivf_json.append(
+            load_fixture(fixture_map[postcode], ballot["ballot_paper_id"])
+        )
+
     s = Stitcher(
-        load_fixture(fixture_map[postcode], "wdiv"),
-        load_fixture(fixture_map[postcode], "wcivf"),
+        wdiv_json,
+        wcivf_json,
         stitcher_client,
         sandbox=True,
     )
@@ -57,9 +71,16 @@ def test_address_picker(stitcher_client):
 
 def test_multiple_elections(stitcher_client):
     postcode = "AA14AA"
+    wdiv_json = load_fixture(fixture_map[postcode], "wdiv")
+    wcivf_json = []
+    for ballot in wdiv_json["ballots"]:
+        wcivf_json.append(
+            load_fixture(fixture_map[postcode], ballot["ballot_paper_id"])
+        )
+
     s = Stitcher(
-        load_fixture(fixture_map[postcode], "wdiv"),
-        load_fixture(fixture_map[postcode], "wcivf"),
+        wdiv_json,
+        wcivf_json,
         stitcher_client,
         sandbox=True,
     )
@@ -68,16 +89,25 @@ def test_multiple_elections(stitcher_client):
 
 def test_validate_false_with_mismatched_ballots(stitcher_client):
     postcode = "AA14AA"
-    wcivf = load_fixture(fixture_map[postcode], "wcivf")
+    wdiv_json = load_fixture(fixture_map[postcode], "wdiv")
+    wcivf_json = []
+    for ballot in wdiv_json["ballots"]:
+        wcivf_json.append(
+            load_fixture(fixture_map[postcode], ballot["ballot_paper_id"])
+        )
+
     s = Stitcher(
-        load_fixture(fixture_map[postcode], "wdiv"), wcivf, stitcher_client
+        wdiv_json,
+        wcivf_json,
+        stitcher_client,
+        sandbox=True,
     )
     assert s.validate()
 
     # Remove an election from WCIVF
-    wcivf.pop(0)
+    wcivf_json.pop(0)
 
     s = Stitcher(
-        load_fixture(fixture_map[postcode], "wdiv"), wcivf, stitcher_client
+        load_fixture(fixture_map[postcode], "wdiv"), wcivf_json, stitcher_client
     )
     assert s.validate() is False

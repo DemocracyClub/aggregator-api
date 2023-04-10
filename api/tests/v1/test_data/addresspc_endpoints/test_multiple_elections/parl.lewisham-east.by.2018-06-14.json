@@ -1,0 +1,20 @@
+{
+    "election_date": "2018-06-14",
+    "wcivf_url": "https://whocanivotefor.co.uk/elections/parl.2018-06-14/post-WMC:E14000787/lewisham-east",
+    "replaced_by": null,
+    "election_name": "UK Parliament elections",
+    "election_id": "parl.2018-06-14",
+    "post_name": "Lewisham East",
+    "cancelled": false,
+    "voting_system": {
+        "slug": "FPTP",
+        "name": "First-past-the-post",
+        "uses_party_lists": false
+    },
+    "hustings": null,
+    "seats_contested": 1,
+    "organisation_type": "parl",
+    "candidates_verified": false,
+    "candidates": [],
+    "ballot_paper_id": "parl.lewisham-east.by.2018-06-14"
+}

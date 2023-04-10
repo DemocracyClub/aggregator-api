@@ -9,6 +9,8 @@ def load_fixture(testname, fixture, api_version="v1"):
     file_path: Path = (
         dirname / api_version / "test_data" / testname / f"{fixture}.json"
     )
+    if not file_path.exists():
+        return []
     with file_path.open("r") as f:
         return json.loads(f.read())
 
