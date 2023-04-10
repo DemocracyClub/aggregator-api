@@ -7,6 +7,9 @@ from tests.helpers import (
     load_fixture,
     load_sandbox_output,
 )
+from voting_information.elections_api_client import (
+    wcivf_ballot_cache_url_from_ballot,
+)
 
 
 @pytest.mark.parametrize(
@@ -15,23 +18,25 @@ from tests.helpers import (
 def test_valid(vi_app_client, respx_mock, postcode, input_fixture):
     # iterate through the same set of expected inputs/outputs
     # we test against in test_stitcher.py
-    respx_mock.get(
-        f"https://whocanivotefor.co.uk/api/candidates_for_postcode/?postcode={postcode}"
-    ).mock(
-        return_value=httpx.Response(
-            200,
-            json=load_fixture(input_fixture, "wcivf"),
-        )
-    )
 
+    fixture = load_fixture(input_fixture, "wdiv")
     respx_mock.get(
         f"http://wheredoivote.co.uk/api/beta/postcode/{postcode}/"
     ).mock(
         return_value=httpx.Response(
             200,
-            json=load_fixture(input_fixture, "wdiv"),
+            json=fixture,
         )
     )
+    for ballot in fixture["ballots"]:
+        respx_mock.get(
+            wcivf_ballot_cache_url_from_ballot(ballot["ballot_paper_id"])
+        ).mock(
+            return_value=httpx.Response(
+                200,
+                json=load_fixture(input_fixture, ballot["ballot_paper_id"]),
+            )
+        )
 
     expected = load_sandbox_output(
         postcode, base_url="http://testserver/api/v1/"
@@ -43,25 +48,27 @@ def test_valid(vi_app_client, respx_mock, postcode, input_fixture):
 
 def test_wcivf_missing_ballot(respx_mock, vi_app_client):
     load_fixture("addresspc_endpoints/test_multiple_elections", "wcivf")
-
+    fixture = load_fixture(
+        "addresspc_endpoints/test_multiple_elections", "wdiv"
+    )
     respx_mock.get("http://wheredoivote.co.uk/api/beta/postcode/SW1A1AA/").mock(
         return_value=httpx.Response(
             200,
-            json=load_fixture(
-                "addresspc_endpoints/test_multiple_elections", "wdiv"
-            ),
+            json=fixture,
         )
     )
-    respx_mock.get(
-        "https://whocanivotefor.co.uk/api/candidates_for_postcode/?postcode=SW1A1AA"
-    ).mock(
-        return_value=httpx.Response(
-            200,
-            json=load_fixture(
-                "addresspc_endpoints/test_multiple_elections", "wcivf"
-            ),
+    for ballot in fixture["ballots"]:
+        respx_mock.get(
+            wcivf_ballot_cache_url_from_ballot(ballot["ballot_paper_id"])
+        ).mock(
+            return_value=httpx.Response(
+                200,
+                json=load_fixture(
+                    "addresspc_endpoints/test_multiple_elections",
+                    ballot["ballot_paper_id"],
+                ),
+            )
         )
-    )
     resp = vi_app_client.get(
         "/api/v1/postcode/SW1A1AA/?foo=bar",
     )
@@ -71,25 +78,28 @@ def test_wcivf_missing_ballot(respx_mock, vi_app_client):
 
 def test_logging_working(respx_mock, vi_app_client, caplog):
     caplog.set_level(logging.DEBUG)
-
-    respx_mock.get(
-        "https://whocanivotefor.co.uk/api/candidates_for_postcode/?postcode=SW1A1AA"
-    ).mock(
-        return_value=httpx.Response(
-            200,
-            json=load_fixture(
-                "addresspc_endpoints/test_multiple_elections", "wcivf"
-            ),
-        )
+    fixture = load_fixture(
+        "addresspc_endpoints/test_multiple_elections", "wdiv"
     )
     respx_mock.get("http://wheredoivote.co.uk/api/beta/postcode/SW1A1AA/").mock(
         return_value=httpx.Response(
             200,
-            json=load_fixture(
-                "addresspc_endpoints/test_multiple_elections", "wdiv"
-            ),
+            json=fixture,
         )
     )
+
+    for ballot in fixture["ballots"]:
+        respx_mock.get(
+            wcivf_ballot_cache_url_from_ballot(ballot["ballot_paper_id"])
+        ).mock(
+            return_value=httpx.Response(
+                200,
+                json=load_fixture(
+                    "addresspc_endpoints/test_multiple_elections",
+                    ballot["ballot_paper_id"],
+                ),
+            )
+        )
 
     vi_app_client.get(
         "/api/v1/postcode/SW1A1AA/",

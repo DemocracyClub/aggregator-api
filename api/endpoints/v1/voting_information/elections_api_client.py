@@ -1,11 +1,20 @@
+import contextlib
+from json import JSONDecodeError
+
 import httpx
 from common import settings
-from common.async_requests import AsyncRequester
+from common.async_requests import AsyncRequester, UpstreamApiError
 from httpx import QueryParams
 
-# WDIV_BASE_URL = "http://wheredoivote.co.uk"
-# WCIVF_BASE_URL = "https://whocanivotefor.co.uk"
-# EE_BASE_URL = "https://elections.democracyclub.org.uk"
+SUPPRESS = [JSONDecodeError, httpx.HTTPError]
+if settings.DEBUG:
+    SUPPRESS = []
+
+
+def wcivf_ballot_cache_url_from_ballot(ballot_paper_id):
+    parts = ballot_paper_id.split(".")
+    path = "/".join((parts[-1], parts[0], parts[1], f"{ballot_paper_id}.json"))
+    return f"{settings.WCIVF_BALLOT_CACHE_URL}{path}"
 
 
 class WdivWcivfApiClient:
@@ -24,16 +33,24 @@ class WdivWcivfApiClient:
 
     async def get_data_for_postcode(self, postcode):
         wdiv_url = f"{settings.WDIV_BASE_URL}postcode/{postcode}/"
-        wcivf_url = f"{settings.WCIVF_BASE_URL}candidates_for_postcode/?postcode={postcode}"
-        request_urls = {"wdiv": {"url": wdiv_url}, "wcivf": {"url": wcivf_url}}
-        requester = AsyncRequester(request_dict=request_urls)
-        # This can raise a UpstreamApiError
-        responses: dict = await requester.get_urls()
+        wdiv_result = httpx.get(wdiv_url, params=self.wdiv_params)
+        if error_msg := wdiv_result.json().get("error"):
+            raise UpstreamApiError(error_msg)
+        wdiv_result.raise_for_status()
 
-        wdiv_result: httpx.Response = responses["wdiv"]["response"]
-        wcivf_result: httpx.Response = responses["wcivf"]["response"]
+        wdiv_json = wdiv_result.json()
 
-        return wdiv_result.json(), wcivf_result.json()
+        wcivf_json = []
+
+        if wdiv_json["ballots"]:
+            ballot_ids = [b["ballot_paper_id"] for b in wdiv_json["ballots"]]
+            for ballot in ballot_ids:
+                resp = httpx.get(wcivf_ballot_cache_url_from_ballot(ballot))
+                print(resp.url)
+                with contextlib.suppress(*SUPPRESS):
+                    wcivf_json.append(resp.json())
+
+        return wdiv_json, wcivf_json
 
     async def get_data_for_address(self, slug):
         wdiv_url = f"{settings.WDIV_BASE_URL}address/{slug}/"
@@ -47,25 +64,16 @@ class WdivWcivfApiClient:
         responses = await requester.get_urls()
         wdiv_json = responses["wdiv"]["response"].json()
 
-        wcivf_params = self.wcivf_params
+        wcivf_json = []
         if wdiv_json["ballots"]:
             ballot_ids = [b["ballot_paper_id"] for b in wdiv_json["ballots"]]
-            wcivf_url = f"{settings.WCIVF_BASE_URL}candidates_for_ballots/"
-            wcivf_params = wcivf_params.merge(
-                {"ballot_ids": ",".join(ballot_ids)}
-            )
-        else:
-            wcivf_url = f"{settings.WCIVF_BASE_URL}candidates_for_postcode/"
-            wcivf_params = wcivf_params.merge(
-                {"postcode": wdiv_json["addresses"][0]["postcode"]}
-            )
-
-        request_urls = {"wcivf": {"url": wcivf_url, "params": wcivf_params}}
-        # Async has no value here as it's a single URL, but it's a consistent
-        # interface so we may as well use it
-        requester = AsyncRequester(request_dict=request_urls)
-        # This can raise a UpstreamApiError
-        responses = await requester.get_urls()
-        wcivf_json = responses["wcivf"]["response"].json()
+            for ballot_paper_id in ballot_ids:
+                resp = httpx.get(
+                    wcivf_ballot_cache_url_from_ballot(ballot_paper_id)
+                )
+                print(resp.url)
+                with contextlib.suppress(*SUPPRESS):
+                    if data := resp.json():
+                        wcivf_json.append(data)
 
         return wdiv_json, wcivf_json
