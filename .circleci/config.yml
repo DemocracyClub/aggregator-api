@@ -204,7 +204,6 @@ workflows:
         - install_and_update_dependencies # SAM CLI is in the dev package set
         - sam_build                       # deploy needs .aws-sam/build/
         context: [ deployment-development-aggregator-api ]
-        filters: { branches: { only: [ split-endpoints-from-frontend ] } }
 
     - sam_deploy:
         name: sam_deploy_staging
@@ -215,7 +214,7 @@ workflows:
         - test                            # staging should only deploy if tests pass
         - sam_build                       # deploy needs .aws-sam/build/
         context: [ deployment-staging-aggregator-api ]
-        filters: { branches: { only: [ main, master, split-endpoints-from-frontend ] } }
+        filters: { branches: { only: [ main, master ] } }
 
     - sam_deploy:
         name: sam_deploy_production
@@ -227,4 +226,4 @@ workflows:
         - sam_build                       # deploy needs .aws-sam/build/
         - sam_deploy_staging              # production should only deploy if staging deploys successfully
         context: [ deployment-production-aggregator-api ]
-        filters: { branches: { only: [ main, master, split-endpoints-from-frontend ] } }
+        filters: { branches: { only: [ main, master ] } }
