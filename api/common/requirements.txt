@@ -1,0 +1,2 @@
+# File uses for AWS SAM. The `.` below tells SAM to run `setup.py`
+.

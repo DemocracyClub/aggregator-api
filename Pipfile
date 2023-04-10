@@ -4,41 +4,47 @@ verify_ssl = true
 name = "pypi"
 
 [dev-packages]
-black = "==22.12.0"
-pytest = ">=4.0.1,<7.0"
+black = "==23.3.0"
+ruff = "==0.0.261"
+pytest = " 7.2.2"
 pytest-cov = ">=2.6,<3.0"
 pytest-django = ">=3.4.4,<5.0"
-pytest-flakes = ">=4.0.0,<5.0"
 coveralls = ">=1.6,<4.0"
 tomlkit = "*"
 importlib-metadata = "*"
+respx = "*"
+pytest-asyncio = "*"
+moto = {extras = ["dynamodb"], version = "*"}
+pytest-ruff = "*"
+pre-commit = "*"
 
-[packages]
+[api]
 aiohttp = "==3.8.3"
+sentry-sdk = "*"
+dc-api-common = {path = "./api/common"}
+mypy-boto3-dynamodb = "*"
+
+[frontend]
+dc-design-system = {file = "https://github.com/DemocracyClub/design-system/archive/refs/tags/0.1.6.tar.gz"}
+dc-django-utils = {file = "https://github.com/DemocracyClub/dc_django_utils/archive/refs/tags/2.1.2.tar.gz"}
+Django = "==4.1.2"
+django-localflavor = "==3.1"
+psycopg2-binary = "*"
 django-apiblueprint-view = "==2.4.0"
 django-storages = "==1.13.2"
-raven = ">=6.10,<7.0"
-django-cors-headers = "==3.13.0"
 aws-wsgi = {ref = "unquote_path_strings", git = "https://github.com/DemocracyClub/awsgi.git"}
 whitenoise = "*"
 sentry-sdk = "*"
-werkzeug = "==2.0.3"
-psycopg2-binary = "*"
-wheel = "==0.38.4"
-certifi = "==2022.12.07"
-dc-design-system = {file = "https://github.com/DemocracyClub/design-system/archive/refs/tags/0.1.6.tar.gz"}
-dc-django-utils = {file = "https://github.com/DemocracyClub/dc_django_utils/archive/refs/tags/2.1.2.tar.gz"}
-dc-logging-utils = {file = "https://github.com/DemocracyClub/dc_logging/archive/refs/tags/0.0.6.tar.gz"}
-Django = "==4.1.2"
-django-localflavor = "==3.1"
 
 [scripts]
 black = "black ."
 black-check = "black --check ."
+ruff-check = "ruff  ."
 circleci_deploy_dev = "~/repo/deploy.sh dev"
 circleci_deploy_prod = "~/repo/deploy.sh prod"
 coveralls = "coveralls"
 pytest = "pytest"
+collectstatic = "python manage.py collectstatic --noinput --clear"
 
 [requires]
 python_version = "3.8"

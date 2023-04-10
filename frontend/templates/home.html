@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+
+{% block page_title %}Developers{% endblock page_title %}
+
+{% block content %}
+  <h1>Developer site <em>Alpha</em></h1>
+
+  <p>This is a site for our APIs and data. It's very young and will be updated soon.</p>
+  <p>If you're interested in what we're up to, please
+    <a href="https://democracyclub.org.uk/contact/">get in touch</a> or
+    <a href="https://slack.democracyclub.org.uk/">join our Slack</a>.
+
+  </p>
+
+
+  <div class="ds-card">
+    <div class="ds-card-body">
+      <h2><a href="{% url "docs" %}">API</a></h2>
+      <p>
+        Our API is currently in private beta.
+        All requests must be made with an API key.
+        If you're interested in working with the data,
+        <a href="https://democracyclub.org.uk/contact/">contact us</a>
+        for an API key.
+      </p>
+    </div>
+  </div>
+
+
+
+  <div class="ds-card">
+    <div class="ds-card-body">
+      <h2><a href="{% url 'terms'%}">Terms of use</a></h2>
+    </div></div>
+{% endblock content %}

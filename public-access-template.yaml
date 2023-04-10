@@ -24,7 +24,7 @@ Resources:
 
           - Id: Static
             DomainName:
-              Fn::ImportValue: !Sub "AggregatorApiApp-${StackNameSuffix}:AggregatorApiFqdn"
+              Fn::ImportValue: !Sub "AggregatorApiApp-${StackNameSuffix}:AggregatorApiFrontendFqdn"
             OriginPath: "/Prod"
             CustomOriginConfig:
               OriginProtocolPolicy: "https-only"
@@ -38,9 +38,21 @@ Resources:
               Enabled: true
               OriginShieldRegion: eu-west-2
 
-          - Id: Dynamic
+          - Id: APIApp
             DomainName:
               Fn::ImportValue: !Sub "AggregatorApiApp-${StackNameSuffix}:AggregatorApiFqdn"
+            OriginPath: "/Prod"
+            CustomOriginConfig:
+              OriginProtocolPolicy: "https-only"
+            OriginCustomHeaders:
+              - HeaderName: X-Forwarded-Host
+                HeaderValue: !Ref PublicFqdn
+              - HeaderName: X-Forwarded-Proto
+                HeaderValue: https
+
+          - Id: FrontendApp
+            DomainName:
+              Fn::ImportValue: !Sub "AggregatorApiApp-${StackNameSuffix}:AggregatorApiFrontendFqdn"
             OriginPath: "/Prod"
             CustomOriginConfig:
               OriginProtocolPolicy: "https-only"
@@ -62,7 +74,7 @@ Resources:
 
         DefaultCacheBehavior:
           AllowedMethods: [ GET, HEAD, OPTIONS ]
-          TargetOriginId: Dynamic
+          TargetOriginId: FrontendApp
           ForwardedValues:
             QueryString: true
             Cookies:
@@ -85,6 +97,32 @@ Resources:
               - Origin
           ViewerProtocolPolicy: "redirect-to-https"
           MinTTL: '50'
+        - AllowedMethods: [ GET, HEAD, OPTIONS ]
+          PathPattern: api/v1/
+          TargetOriginId: FrontendApp
+          ForwardedValues:
+            QueryString: true
+            Cookies:
+              Forward: none
+            Headers:
+              - Authorization
+              - Origin
+          ViewerProtocolPolicy: "redirect-to-https"
+          MinTTL: '50'
+        - AllowedMethods: [ GET, HEAD, OPTIONS ]
+          PathPattern: api/v1/*
+          TargetOriginId: APIApp
+          ForwardedValues:
+            QueryString: true
+            Cookies:
+              Forward: none
+            Headers:
+              - Authorization
+              - Origin
+          ViewerProtocolPolicy: "redirect-to-https"
+          MinTTL: '0'
+          MaxTTL: '60'
+          DefaultTTL: '60'
 
 
   DnsRecord:

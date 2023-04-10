@@ -15,6 +15,11 @@ Parameters:
     Description: "The SECRET_KEY environment variable passed to the app."
     Type: String
 
+  AppDebug:
+    Description: "Debug mode"
+    Default: AppDebug
+    Type: AWS::SSM::Parameter::Value<String>
+
   AppSentryDSN:
     Description: "The SENTRY_DSN environment variable passed to the app."
     Type: String
@@ -69,24 +74,153 @@ Parameters:
 
 Resources:
 
-  DependenciesLayer:
+  UsersDynamoDBTable:
+    Type: AWS::DynamoDB::Table
+
+    Properties:
+      TableName: "users"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        -
+          AttributeName: api_key
+          AttributeType: S
+      KeySchema:
+        -
+          AttributeName: api_key
+          KeyType: HASH
+
+  DCAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Auth:
+        DefaultAuthorizer: APIAuthFunction
+        Authorizers:
+          APIAuthFunction:
+            FunctionArn: !GetAtt APIAuthFunction.Arn
+            FunctionPayloadType: REQUEST
+            Identity:
+              QueryStrings:
+                - auth_token
+
+  APICommonLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
-      ContentUri: ./lambda-layers/DependenciesLayer/
+      ContentUri: ./lambda-layers/APICommonLayer/
       CompatibleRuntimes:
         - python3.8
     Metadata:
       BuildMethod: makefile
     RetentionPolicy: Delete
 
-  AggregatorApiFunction:
+  APIAuthFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
+      CodeUri: ./api/api_auth
+      Handler: handler.lambda_handler
+      Environment:
+        Variables:
+          SENTRY_DSN: !Ref AppSentryDSN
+      Layers:
+        - !Ref APICommonLayer
+      Runtime: python3.8
+
+  V1VotingInformationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
+      CodeUri: ./api/endpoints/v1/voting_information/
+      Handler: app.handler
+      Layers:
+        - !Ref APICommonLayer
+      Runtime: python3.8
+      MemorySize: 512
+      Environment:
+        Variables:
+          FIREHOSE_ACCOUNT_ARN: !Ref AppLoggingAssumeRoleArn
+          SENTRY_DSN: !Ref AppSentryDSN
+          DEBUG: !Ref AppDebug
+      Events:
+        PostcodeRequests:
+          Type: Api
+          Properties:
+            RestApiId: !Ref DCAPI
+            Path: /api/v1/postcode/{proxy+}
+            Method: GET
+        AddressRequests:
+          Type: Api
+          Properties:
+            RestApiId: !Ref DCAPI
+            Path: /api/v1/address/{proxy+}
+            Method: GET
+  V1ElectionsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
+      CodeUri: ./api/endpoints/v1/elections/
+      Handler: app.handler
+      Runtime: python3.8
+      MemorySize: 512
+      Environment:
+        Variables:
+          SENTRY_DSN: !Ref AppSentryDSN
+          DEBUG: !Ref AppDebug
+      Events:
+        ElectionListRequests:
+          Type: Api
+          Properties:
+            RestApiId: !Ref DCAPI
+            Path: /api/v1/elections/
+            Method: GET
+        SingleElectionRequests:
+          Type: Api
+          Properties:
+            RestApiId: !Ref DCAPI
+            Path: /api/v1/elections/{proxy+}
+            Method: GET
+  V1SandboxFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
+      CodeUri: ./api/endpoints/v1/sandbox/
+      Handler: app.handler
+      Runtime: python3.8
+      MemorySize: 512
+      Environment:
+        Variables:
+          SENTRY_DSN: !Ref AppSentryDSN
+          DEBUG: !Ref AppDebug
+      Events:
+        SandboxRequests:
+          Type: Api
+          Properties:
+            Path: /api/v1/sandbox/{proxy+}
+            Method: GET
+        SandboxOptionsRequests:
+          Type: Api
+          Properties:
+            Path: /api/v1/sandbox/{proxy+}
+            Method: OPTIONS
+
+  FrontendDependenciesLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      ContentUri: ./lambda-layers/FrontendDependenciesLayer/
+      CompatibleRuntimes:
+        - python3.8
+    Metadata:
+      BuildMethod: makefile
+    RetentionPolicy: Delete
+
+  ApiFrontendFunction:
     Type: AWS::Serverless::Function
     Properties:
       Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
       CodeUri: .
-      Handler: aggregator.lambda_awsgi.lambda_handler
+      Handler: frontend.lambda_awsgi.lambda_handler
       Layers:
-        - !Ref DependenciesLayer
+        - !Ref FrontendDependenciesLayer
       Runtime: python3.8
       MemorySize: 512
       Environment:
@@ -100,6 +234,7 @@ Resources:
           POSTGRES_DATABASE_NAME: !Ref AppPostgresDatabaseName
           DATABASE_PASS: !Ref AppPostgresPassword
           FIREHOSE_ACCOUNT_ARN: !Ref AppLoggingAssumeRoleArn
+          DEBUG: !Ref AppDebug
       Events:
         HTTPRequests:
           Type: Api
@@ -112,16 +247,21 @@ Resources:
             Path: /
             Method: ANY
 
-  AggregatorApiFunctionLogGroup:
+  ApiFrontendFunctionLogGroup:
     Type: AWS::Logs::LogGroup
-    DependsOn: [ AggregatorApiFunction ]
+    DependsOn: [ ApiFrontendFunction ]
     Properties:
-      LogGroupName: !Sub /aws/lambda/${AggregatorApiFunction}
+      LogGroupName: !Sub /aws/lambda/${ApiFrontendFunction}
       RetentionInDays: !Ref AppLogRetentionDays
 
 Outputs:
-  AggregatorApiFqdn:
+  AggregatorApiFrontendFqdn:
     Description: "API Gateway endpoint FQDN for Aggregator API function"
     Value: !Sub "${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com"
+    Export:
+      Name: !Join [ ":", [ !Ref "AWS::StackName", "AggregatorApiFrontendFqdn" ] ]
+  AggregatorApiFqdn:
+    Description: "API Gateway endpoint FQDN for Aggregator API function"
+    Value: !Sub "${DCAPI}.execute-api.${AWS::Region}.amazonaws.com"
     Export:
       Name: !Join [ ":", [ !Ref "AWS::StackName", "AggregatorApiFqdn" ] ]

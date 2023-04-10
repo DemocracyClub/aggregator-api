@@ -10,9 +10,10 @@
 #
 # $ NEW_ENV_NAME=myenv python samconfig.toml.d/new-dev-env.py >>samconfig.toml
 
-from tomlkit.toml_file import TOMLFile
 import os
 import re
+
+from tomlkit.toml_file import TOMLFile
 
 env_name = os.environ["NEW_ENV_NAME"]
 t = TOMLFile("samconfig.toml").read()
