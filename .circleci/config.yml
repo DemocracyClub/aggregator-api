@@ -215,7 +215,7 @@ workflows:
         - test                            # staging should only deploy if tests pass
         - sam_build                       # deploy needs .aws-sam/build/
         context: [ deployment-staging-aggregator-api ]
-        filters: { branches: { only: [ main, master ] } }
+        filters: { branches: { only: [ main, master, split-endpoints-from-frontend ] } }
 
     - sam_deploy:
         name: sam_deploy_production
