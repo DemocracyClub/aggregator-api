@@ -13,8 +13,8 @@ setup(
     package_dir={"common": "."},
     install_requires=[
         "httpx==0.23.0",
-        "mangum==0.15.0",
-        "starlette==0.19.1",
+        "mangum==0.17.0",
+        "starlette==0.26.1",
         "dc_logging_utils@https://github.com/DemocracyClub/dc_logging/archive/refs/tags/0.0.10.tar.gz",
         "sentry-sdk[starlette]",
     ],

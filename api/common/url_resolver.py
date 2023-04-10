@@ -89,4 +89,4 @@ def build_absolute_url(base_url: str, name: str, sandbox=False, **params):
             break
     if not match:
         raise NoMatchFound(name, params)
-    return URLPath(path=match).make_absolute_url(base_url=base_url)
+    return str(URLPath(path=match).make_absolute_url(base_url=base_url))

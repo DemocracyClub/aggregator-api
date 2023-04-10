@@ -9,7 +9,7 @@ async def get_postcode(request: Request):
     postcode = request.path_params["postcode"]
     logger: DCWidePostcodeLoggingClient = request.app.state.POSTCODE_LOGGER
     entry = logger.entry_class(
-        postcode=postcode,
+        postcode=str(postcode),
         dc_product=logger.dc_product.aggregator_api,
         api_key=request.scope["api_user"].api_key,
         **request.scope["utm_dict"],
