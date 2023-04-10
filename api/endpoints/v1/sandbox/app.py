@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from common import settings
 from common.middleware import MIDDLEWARE
 from common.sentry_helper import init_sentry
 from mangum import Mangum
@@ -38,6 +39,6 @@ routes = [
         name="sandbox_address",
     ),
 ]
-app = Starlette(debug=True, routes=routes, middleware=MIDDLEWARE)
+app = Starlette(debug=settings.DEBUG, routes=routes, middleware=MIDDLEWARE)
 
 handler = Mangum(app)

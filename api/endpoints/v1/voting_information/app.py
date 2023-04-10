@@ -1,6 +1,7 @@
 import os
 
 from address import get_address
+from common import settings
 from common.middleware import MIDDLEWARE
 from common.sentry_helper import init_sentry
 from dc_logging_client import DCWidePostcodeLoggingClient
@@ -34,7 +35,7 @@ routes = [
     ),
 ]
 app = Starlette(
-    debug=True,
+    debug=settings.DEBUG,
     routes=routes,
     middleware=MIDDLEWARE,
 )

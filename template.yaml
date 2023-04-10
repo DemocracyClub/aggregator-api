@@ -15,6 +15,11 @@ Parameters:
     Description: "The SECRET_KEY environment variable passed to the app."
     Type: String
 
+  AppDebug:
+    Description: "Debug mode"
+    Default: AppDebug
+    Type: AWS::SSM::Parameter::Value<String>
+
   AppSentryDSN:
     Description: "The SENTRY_DSN environment variable passed to the app."
     Type: String
@@ -135,6 +140,7 @@ Resources:
         Variables:
           FIREHOSE_ACCOUNT_ARN: !Ref AppLoggingAssumeRoleArn
           SENTRY_DSN: !Ref AppSentryDSN
+          DEBUG: !Ref AppDebug
       Events:
         PostcodeRequests:
           Type: Api
@@ -159,6 +165,7 @@ Resources:
       Environment:
         Variables:
           SENTRY_DSN: !Ref AppSentryDSN
+          DEBUG: !Ref AppDebug
       Events:
         ElectionListRequests:
           Type: Api
@@ -183,6 +190,7 @@ Resources:
       Environment:
         Variables:
           SENTRY_DSN: !Ref AppSentryDSN
+          DEBUG: !Ref AppDebug
       Events:
         SandboxRequests:
           Type: Api
@@ -226,6 +234,7 @@ Resources:
           POSTGRES_DATABASE_NAME: !Ref AppPostgresDatabaseName
           DATABASE_PASS: !Ref AppPostgresPassword
           FIREHOSE_ACCOUNT_ARN: !Ref AppLoggingAssumeRoleArn
+          DEBUG: !Ref AppDebug
       Events:
         HTTPRequests:
           Type: Api

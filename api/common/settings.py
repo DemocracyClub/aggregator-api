@@ -6,3 +6,5 @@ WDIV_API_KEY = os.environ.get("WDIV_API_KEY", None)
 WDIV_BASE_URL = "http://wheredoivote.co.uk/api/beta/"
 WCIVF_BASE_URL = "https://whocanivotefor.co.uk/api/"
 EE_BASE_URL = "https://elections.democracyclub.org.uk/api/"
+
+DEBUG = bool(int(os.environ.get("DEBUG", "0")))
