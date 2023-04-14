@@ -4,6 +4,33 @@ from typing import Dict, List, Optional
 
 from common.url_resolver import build_absolute_url
 
+CANCELLATION_REASONS = {
+    "NO_CANDIDATES": {
+        "title": "Uncontested election",
+        "detail": "This election was cancelled because no candidates were nominated to stand.",
+        "url": None,
+        "cancellation_reason": "NO_CANDIDATES",
+    },
+    "EQUAL_CANDIDATES": {
+        "title": "Uncontested election",
+        "detail": (
+            "This election was cancelled because the number of "
+            "candidates who stood was equal to the number of available seats."
+        ),
+        "url": None,
+        "cancellation_reason": "EQUAL_CANDIDATES",
+    },
+    "UNDER_CONTESTED": {
+        "title": "Uncontested election",
+        "detail": (
+            "This election was cancelled because the number of "
+            "candidates who stood was fewer than the number of available seats."
+        ),
+        "url": None,
+        "cancellation_reason": "UNDER_CONTESTED",
+    },
+}
+
 
 def ballot_charisma(ballot, sort_keys):
     charisma_map = {
@@ -62,32 +89,18 @@ def get_ballot_cancellation_reason_metadata(ballot: Dict) -> Optional[Dict]:
     :param ballot: Dict representing a ballot object
     :return: str or None
     """
-    metadata = None
     if ballot["cancelled"]:
         ballot_candidate_count = len(ballot.get("candidates", []))
         ballot_seats_contested = ballot.get("seats_contested", 0)
 
         if ballot_candidate_count <= ballot_seats_contested:
-            metadata = {
-                "title": "Uncontested election",
-                "detail": "This election is uncontested",
-                "url": None,
-            }
             if ballot_candidate_count == ballot_seats_contested:
-                metadata[
-                    "detail"
-                ] = "Uncontested election with equal candidates to seats"
+                return CANCELLATION_REASONS["EQUAL_CANDIDATES"]
             if ballot_candidate_count < ballot_seats_contested:
                 if ballot_candidate_count != 0:
-                    metadata[
-                        "detail"
-                    ] = "Uncontested election with fewer candidates than seats"
-                else:
-                    metadata[
-                        "detail"
-                    ] = "Uncontested election with no candidates"
-
-    return metadata
+                    return CANCELLATION_REASONS["UNDER_CONTESTED"]
+                return CANCELLATION_REASONS["NO_CANDIDATES"]
+    return None
 
 
 class NotificationsMaker:

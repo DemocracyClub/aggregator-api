@@ -187,15 +187,15 @@ def test_northern_ireland():
     [
         (
             cancelled_equal_candidates_seats,
-            "Uncontested election with equal candidates to seats",
+            "This election was cancelled because the number of candidates who stood was equal to the number of available seats.",
         ),
         (
             cancelled_fewer_candidates_seats,
-            "Uncontested election with fewer candidates than seats",
+            "This election was cancelled because the number of candidates who stood was fewer than the number of available seats.",
         ),
         (
             cancelled_zero_candidates,
-            "Uncontested election with no candidates",
+            "This election was cancelled because no candidates were nominated to stand.",
         ),
     ],
 )
@@ -244,5 +244,5 @@ def test_generate_cancelled_notification():
     )
     assert (
         notifications[0]["cancelled_ballots"][0]["detail"]
-        == "Uncontested election with no candidates"
+        == "This election was cancelled because no candidates were nominated to stand."
     )
