@@ -72,6 +72,19 @@ Parameters:
     Default: 60
     AllowedValues: [ 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653 ]
 
+  DCEnvironment:
+    Description: The DC Environment this application is deployed in
+    Type: String
+    AllowedValues:
+      - "production"
+      - "staging"
+      - "development"
+Conditions:
+  IsProd: !Equals
+    - !Ref DCEnvironment
+    - "production"
+
+
 Resources:
 
   UsersDynamoDBTable:
@@ -134,7 +147,13 @@ Resources:
       Handler: app.handler
       AutoPublishAlias: live
       ProvisionedConcurrencyConfig:
-        ProvisionedConcurrentExecutions: 10
+        ProvisionedConcurrentExecutions:
+          'Fn::If':
+            - IsProd
+            - 10
+            - 1
+
+
       Layers:
         - !Ref APICommonLayer
       Runtime: python3.8
