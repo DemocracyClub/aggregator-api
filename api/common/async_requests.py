@@ -8,7 +8,7 @@ import httpx
 class UpstreamApiError(Exception):
     def __init__(self, response_dict: httpx.Response):
         try:
-            self.message = response_dict.json().get("detail", "")
+            self.message = {"error": response_dict.json().get("detail", "")}
         except JSONDecodeError:
             self.message = ""
         self.status = response_dict.status_code
