@@ -1,3 +1,4 @@
+from common.async_requests import UpstreamApiError
 from dc_logging_client import DCWidePostcodeLoggingClient
 from elections_api_client import WdivWcivfApiClient
 from starlette.requests import Request
@@ -6,7 +7,7 @@ from stitcher import Stitcher
 
 
 async def get_postcode(request: Request):
-    postcode = request.path_params["postcode"]
+    postcode = request.path_params["postcode"].upper()
     logger: DCWidePostcodeLoggingClient = request.app.state.POSTCODE_LOGGER
     entry = logger.entry_class(
         postcode=str(postcode),
@@ -17,7 +18,10 @@ async def get_postcode(request: Request):
     logger.log(entry)
 
     client = WdivWcivfApiClient()
-    wdiv, wcivf = await client.get_data_for_postcode(postcode)
+    try:
+        wdiv, wcivf = await client.get_data_for_postcode(postcode)
+    except UpstreamApiError as error:
+        return JSONResponse(error.message, status_code=error.status)
     stitcher = Stitcher(wdiv, wcivf, request)
 
     if not wdiv["polling_station_known"] and len(wdiv["addresses"]) > 0:

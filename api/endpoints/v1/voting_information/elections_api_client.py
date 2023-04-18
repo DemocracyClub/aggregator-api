@@ -34,8 +34,8 @@ class WdivWcivfApiClient:
     async def get_data_for_postcode(self, postcode):
         wdiv_url = f"{settings.WDIV_BASE_URL}postcode/{postcode}/"
         wdiv_result = httpx.get(wdiv_url, params=self.wdiv_params)
-        if error_msg := wdiv_result.json().get("error"):
-            raise UpstreamApiError(error_msg)
+        if wdiv_result.status_code >= 400:
+            raise UpstreamApiError(wdiv_result)
         wdiv_result.raise_for_status()
 
         wdiv_json = wdiv_result.json()

@@ -6,12 +6,12 @@ import httpx
 
 
 class UpstreamApiError(Exception):
-    def __init__(self, response_dict: dict):
+    def __init__(self, response_dict: httpx.Response):
         try:
-            self.message = response_dict["response"].json()["detail"]
+            self.message = response_dict.json().get("detail", "")
         except JSONDecodeError:
             self.message = ""
-        self.status = response_dict["response"].status_code
+        self.status = response_dict.status_code
 
 
 async def get_url(key, url_data, request_urls):
