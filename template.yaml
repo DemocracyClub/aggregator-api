@@ -182,6 +182,8 @@ Resources:
       Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
       CodeUri: ./api/endpoints/v1/elections/
       Handler: app.handler
+      Layers:
+        - !Ref APICommonLayer
       Runtime: python3.8
       MemorySize: 512
       Environment:
@@ -208,6 +210,8 @@ Resources:
       CodeUri: ./api/endpoints/v1/sandbox/
       Handler: app.handler
       Runtime: python3.8
+      Layers:
+        - !Ref APICommonLayer
       MemorySize: 512
       Environment:
         Variables:
