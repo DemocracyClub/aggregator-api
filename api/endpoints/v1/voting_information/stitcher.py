@@ -14,8 +14,8 @@ CANCELLATION_REASONS = {
     "EQUAL_CANDIDATES": {
         "title": "Uncontested election",
         "detail": (
-            "This election was cancelled because the number of "
-            "candidates who stood was equal to the number of available seats."
+            "This election has been cancelled because the number of "
+            "candidates standing is equal to the number of available seats."
         ),
         "url": None,
         "cancellation_reason": "EQUAL_CANDIDATES",

@@ -187,11 +187,13 @@ def test_northern_ireland():
     [
         (
             cancelled_equal_candidates_seats,
-            "This election was cancelled because the number of candidates who stood was equal to the number of available seats.",
+            "This election has been cancelled because the number of "
+            "candidates standing is equal to the number of available seats.",
         ),
         (
             cancelled_fewer_candidates_seats,
-            "This election was cancelled because the number of candidates who stood was fewer than the number of available seats.",
+            "This election was cancelled because the number of candidates "
+            "who stood was fewer than the number of available seats.",
         ),
         (
             cancelled_zero_candidates,
