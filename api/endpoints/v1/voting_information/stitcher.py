@@ -125,9 +125,8 @@ class NotificationsMaker:
         """
         cancelled_ballot_details = []
         for ballot in self.cancelled_ballots:
-            cancelled_election_metadata = ballot.get("metadata", {}).get(
-                "cancelled_election", {}
-            )
+            metadata = ballot.get("metadata") or {}
+            cancelled_election_metadata = metadata.get("cancelled_election", {})
             if not cancelled_election_metadata:
                 cancelled_election_metadata = (
                     get_ballot_cancellation_reason_metadata(ballot) or {}
