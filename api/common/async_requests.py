@@ -22,6 +22,8 @@ async def get_url(key, url_data, request_urls):
             headers=url_data.get("headers", {}),
         )
         request_urls[key]["response"] = await response
+        if request_urls[key]["response"].status_code >= 400:
+            raise UpstreamApiError(request_urls[key]["response"])
         request_urls[key]["response"].raise_for_status()
 
 
