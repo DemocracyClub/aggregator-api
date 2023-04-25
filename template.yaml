@@ -152,8 +152,6 @@ Resources:
             - IsProd
             - 10
             - 1
-
-
       Layers:
         - !Ref APICommonLayer
       Runtime: python3.8
@@ -221,11 +219,17 @@ Resources:
         SandboxRequests:
           Type: Api
           Properties:
+            RestApiId: !Ref DCAPI
+            Auth:
+              Authorizer: NONE
             Path: /api/v1/sandbox/{proxy+}
             Method: GET
         SandboxOptionsRequests:
           Type: Api
           Properties:
+            RestApiId: !Ref DCAPI
+            Auth:
+              Authorizer: NONE
             Path: /api/v1/sandbox/{proxy+}
             Method: OPTIONS
 
