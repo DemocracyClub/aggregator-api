@@ -17,5 +17,6 @@ setup(
         "starlette==0.26.1",
         "dc_logging_utils@https://github.com/DemocracyClub/dc_logging/archive/refs/tags/0.0.10.tar.gz",
         "sentry-sdk[starlette]",
+        "urllib3<2.0.0",
     ],
 )
