@@ -31,7 +31,7 @@ def lambda_handler(event, context):
     if "auth_token" not in event["queryStringParameters"]:
         raise Exception("Unauthorized")
     api_key = event["queryStringParameters"].get("auth_token", None)
-    authentication = {"data": {"auth_token": api_key}}
+    authentication = {"data": {"api_key": api_key}}
     # TMP: disable dynamodb lookup for the time being
     # if not api_key:
     #     raise Exception("Unauthorized")

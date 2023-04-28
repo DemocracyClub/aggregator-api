@@ -72,5 +72,5 @@ class User:
 
         kwargs = {}
         for key in cls.__dataclass_fields__:
-            kwargs[key] = auth_data.get(key, None)
+            kwargs[key] = auth_data[key]
         return cls(**kwargs)
