@@ -20,7 +20,7 @@ def test_no_stitcher_error_with_mismatched_ballots(respx_mock, vi_app_client):
         "addresspc_endpoints/test_multiple_elections", "wdiv"
     )
     respx_mock.get(
-        "http://wheredoivote.co.uk/api/beta/address/1-foo-street-bar-town/?all_future_ballots=1&utm_medium=devs.DC+API"
+        "https://wheredoivote.co.uk/api/beta/address/1-foo-street-bar-town/?all_future_ballots=1&utm_medium=devs.DC+API"
     ).mock(
         return_value=httpx.Response(
             200,
@@ -51,7 +51,7 @@ def test_valid(postcode, vi_app_client, respx_mock):
     # we test against in test_stitcher.py
     fixture = load_fixture(fixture_map[postcode], "wdiv")
     respx_mock.get(
-        "http://wheredoivote.co.uk/api/beta/address/1-foo-street-bar-town/?all_future_ballots=1&utm_medium=devs.DC+API"
+        "https://wheredoivote.co.uk/api/beta/address/1-foo-street-bar-town/?all_future_ballots=1&utm_medium=devs.DC+API"
     ).mock(return_value=httpx.Response(200, json=fixture))
 
     for ballot in fixture["ballots"]:

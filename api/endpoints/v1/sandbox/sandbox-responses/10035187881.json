@@ -7,7 +7,7 @@
       "polling_station": {
         "polling_station_known": true,
         "custom_finder": null,
-        "report_problem_url": "http://wheredoivote.co.uk/report_problem/?source=testing&source_url=testing",
+        "report_problem_url": "https://wheredoivote.co.uk/report_problem/?source=testing&source_url=testing",
         "station": {
           "id": "E09000033.36-st-matthews-church",
           "type": "Feature",

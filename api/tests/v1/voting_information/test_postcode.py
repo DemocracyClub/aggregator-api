@@ -21,7 +21,7 @@ def test_valid(vi_app_client, respx_mock, postcode, input_fixture):
 
     fixture = load_fixture(input_fixture, "wdiv")
     respx_mock.get(
-        f"http://wheredoivote.co.uk/api/beta/postcode/{postcode}/"
+        f"https://wheredoivote.co.uk/api/beta/postcode/{postcode}/"
     ).mock(
         return_value=httpx.Response(
             200,
@@ -51,7 +51,9 @@ def test_wcivf_missing_ballot(respx_mock, vi_app_client):
     fixture = load_fixture(
         "addresspc_endpoints/test_multiple_elections", "wdiv"
     )
-    respx_mock.get("http://wheredoivote.co.uk/api/beta/postcode/SW1A1AA/").mock(
+    respx_mock.get(
+        "https://wheredoivote.co.uk/api/beta/postcode/SW1A1AA/"
+    ).mock(
         return_value=httpx.Response(
             200,
             json=fixture,
@@ -81,7 +83,9 @@ def test_logging_working(respx_mock, vi_app_client, caplog):
     fixture = load_fixture(
         "addresspc_endpoints/test_multiple_elections", "wdiv"
     )
-    respx_mock.get("http://wheredoivote.co.uk/api/beta/postcode/SW1A1AA/").mock(
+    respx_mock.get(
+        "https://wheredoivote.co.uk/api/beta/postcode/SW1A1AA/"
+    ).mock(
         return_value=httpx.Response(
             200,
             json=fixture,

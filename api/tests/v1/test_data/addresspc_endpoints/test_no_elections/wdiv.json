@@ -13,7 +13,7 @@
   },
   "custom_finder": null,
   "council": {
-    "url": "http://wheredoivote.co.uk/api/beta/councils/E09000033/",
+    "url": "https://wheredoivote.co.uk/api/beta/councils/E09000033/",
     "council_id": "E09000033",
     "name": "City of Westminster",
     "nation": "England",

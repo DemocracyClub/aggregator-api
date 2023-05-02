@@ -4,6 +4,7 @@ from json import JSONDecodeError
 import httpx
 from common import settings
 from common.async_requests import AsyncRequester, UpstreamApiError
+from common.http_client import app_httpx_client
 from httpx import QueryParams
 
 SUPPRESS = [JSONDecodeError, httpx.HTTPError]
@@ -33,7 +34,7 @@ class WdivWcivfApiClient:
 
     async def get_data_for_postcode(self, postcode):
         wdiv_url = f"{settings.WDIV_BASE_URL}postcode/{postcode}/"
-        wdiv_result = httpx.get(wdiv_url, params=self.wdiv_params)
+        wdiv_result = app_httpx_client.get(wdiv_url, params=self.wdiv_params)
         if wdiv_result.status_code >= 400:
             raise UpstreamApiError(wdiv_result)
         wdiv_result.raise_for_status()
@@ -45,7 +46,9 @@ class WdivWcivfApiClient:
         if wdiv_json["ballots"]:
             ballot_ids = [b["ballot_paper_id"] for b in wdiv_json["ballots"]]
             for ballot in ballot_ids:
-                resp = httpx.get(wcivf_ballot_cache_url_from_ballot(ballot))
+                resp = app_httpx_client.get(
+                    wcivf_ballot_cache_url_from_ballot(ballot)
+                )
                 print(resp.url)
                 with contextlib.suppress(*SUPPRESS):
                     wcivf_json.append(resp.json())
@@ -68,7 +71,7 @@ class WdivWcivfApiClient:
         if wdiv_json["ballots"]:
             ballot_ids = [b["ballot_paper_id"] for b in wdiv_json["ballots"]]
             for ballot_paper_id in ballot_ids:
-                resp = httpx.get(
+                resp = app_httpx_client.get(
                     wcivf_ballot_cache_url_from_ballot(ballot_paper_id)
                 )
                 print(resp.url)
