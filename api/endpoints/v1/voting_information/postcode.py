@@ -19,7 +19,7 @@ async def get_postcode(request: Request):
 
     client = WdivWcivfApiClient()
     try:
-        wdiv, wcivf = await client.get_data_for_postcode(postcode)
+        wdiv, wcivf = client.get_data_for_postcode(postcode)
     except UpstreamApiError as error:
         return JSONResponse(error.message, status_code=error.status)
     stitcher = Stitcher(wdiv, wcivf, request)
