@@ -18,10 +18,10 @@ jobs:
     - checkout
     - restore_cache:
         keys:
-        - v3-dependencies-{{ checksum "Pipfile.lock" }}
-        - v3-dependencies-
+        - v5-dependencies-{{ checksum "Pipfile.lock" }}
+        - v5-dependencies-
     - run: &install-pipenv pip install -U pipenv "urllib3<=2.0" pip --quiet --no-input
-    - run: pipenv install --dev
+    - run: pipenv install --categories "api dev-packages frontend"
       #- run: pipenv run pipenv check # before save_cache so an insecure cache is never saved
     - run: make lambda-layers/FrontendDependenciesLayer/requirements.txt
     - run: pipenv run collectstatic
@@ -34,7 +34,7 @@ jobs:
         when: on_success
         paths:
         - ~/.local/share/virtualenvs/
-        key: v3-dependencies-{{ checksum "Pipfile.lock" }}
+        key: v5-dependencies-{{ checksum "Pipfile.lock" }}
 
   test:
     docker:
@@ -44,8 +44,8 @@ jobs:
     - checkout
     - restore_cache:
         keys:
-        - v3-dependencies-{{ checksum "Pipfile.lock" }}
-        - v3-dependencies-
+        - v5-dependencies-{{ checksum "Pipfile.lock" }}
+        - v5-dependencies-
     - run: *install-pipenv
     - run: pipenv run black-check
     - run: pipenv run pytest --ruff --cov-report= --cov=frontend --cov=api --junitxml=test-results/junit.xml
@@ -101,8 +101,8 @@ jobs:
         at: ~/repo/
     - restore_cache:
         keys:
-        - v3-dependencies-{{ checksum "Pipfile.lock" }}
-        - v3-dependencies-
+        - v5-dependencies-{{ checksum "Pipfile.lock" }}
+        - v5-dependencies-
     - run: *install-pipenv
     - run: *install-sam
     - run: pipenv run pip install click==7.1.1 --no-warn-conflicts

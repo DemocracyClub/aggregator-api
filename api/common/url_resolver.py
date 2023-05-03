@@ -73,7 +73,6 @@ def build_absolute_url(base_url: str, name: str, sandbox=False, **params):
     in the same router / app.
 
     """
-
     if sandbox:
         name = f"sandbox_{name}"
 
@@ -89,4 +88,5 @@ def build_absolute_url(base_url: str, name: str, sandbox=False, **params):
             break
     if not match:
         raise NoMatchFound(name, params)
-    return str(URLPath(path=match).make_absolute_url(base_url=base_url))
+
+    return str(URLPath(path=match).make_absolute_url(base_url=str(base_url)))

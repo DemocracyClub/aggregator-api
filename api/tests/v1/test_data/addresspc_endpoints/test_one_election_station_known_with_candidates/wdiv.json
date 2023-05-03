@@ -69,7 +69,7 @@
     ]
   },
   "addresses": [],
-  "report_problem_url": "http://wheredoivote.co.uk/report_problem/?source=testing&source_url=testing",
+  "report_problem_url": "https://wheredoivote.co.uk/report_problem/?source=testing&source_url=testing",
   "metadata": null,
   "ballots": [
     {
