@@ -25,7 +25,7 @@ class WdivWcivfApiClient:
             all_future_ballots=1, utm_medium=settings.USER_AGENT
         )
         if settings.WDIV_API_KEY:
-            params["auth_token"] = settings.WDIV_API_KEY
+            params.set("auth_token", settings.WDIV_API_KEY)
         return params
 
     @property
