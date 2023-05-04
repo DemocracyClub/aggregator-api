@@ -161,6 +161,7 @@ Resources:
           FIREHOSE_ACCOUNT_ARN: !Ref AppLoggingAssumeRoleArn
           SENTRY_DSN: !Ref AppSentryDSN
           DEBUG: !Ref AppDebug
+          WDIV_API_KEY: !Ref AppWdivApiKey
       Events:
         PostcodeRequests:
           Type: Api
