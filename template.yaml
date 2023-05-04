@@ -145,7 +145,7 @@ Resources:
       Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
       CodeUri: ./api/endpoints/v1/voting_information/
       Handler: app.handler
-      AutoPublishAlias: live
+#      AutoPublishAlias: live
 #      ProvisionedConcurrencyConfig:
 #        ProvisionedConcurrentExecutions:
 #          'Fn::If':
