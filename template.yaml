@@ -146,12 +146,12 @@ Resources:
       CodeUri: ./api/endpoints/v1/voting_information/
       Handler: app.handler
       AutoPublishAlias: live
-      ProvisionedConcurrencyConfig:
-        ProvisionedConcurrentExecutions:
-          'Fn::If':
-            - IsProd
-            - 10
-            - 1
+#      ProvisionedConcurrencyConfig:
+#        ProvisionedConcurrentExecutions:
+#          'Fn::If':
+#            - IsProd
+#            - 10
+#            - 1
       Layers:
         - !Ref APICommonLayer
       Runtime: python3.8
