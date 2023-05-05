@@ -17,7 +17,7 @@ async def get_postcode(request: Request):
     )
     logger.log(entry)
 
-    client = WdivWcivfApiClient()
+    client = WdivWcivfApiClient(query_params=request.query_params)
     try:
         wdiv, wcivf = client.get_data_for_postcode(postcode)
     except UpstreamApiError as error:

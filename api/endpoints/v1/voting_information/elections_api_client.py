@@ -19,13 +19,22 @@ def wcivf_ballot_cache_url_from_ballot(ballot_paper_id):
 
 
 class WdivWcivfApiClient:
+    def __init__(self, query_params=None):
+        if not query_params:
+            query_params = {}
+        self.query_params = query_params
+
     @property
     def wdiv_params(self):
         params = QueryParams(
             all_future_ballots=1, utm_medium=settings.USER_AGENT
         )
+        if "include_current" in self.query_params:
+            params = params.set("include_current", "1")
+
         if settings.WDIV_API_KEY:
             return params.set("auth_token", settings.WDIV_API_KEY)
+
         return params
 
     @property
