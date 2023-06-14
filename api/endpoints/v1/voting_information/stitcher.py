@@ -2,6 +2,7 @@ import re
 from copy import deepcopy
 from typing import Dict, List, Optional
 
+import httpx
 from common.url_resolver import build_absolute_url
 
 CANCELLATION_REASONS = {
@@ -386,7 +387,7 @@ class Stitcher:
                 results[0]["advance_voting_station"] = self.wdiv_resp.get(
                     "advance_voting_station", None
                 )
-        return {
+        resp = {
             "address_picker": False,
             "addresses": [],
             "dates": sort_ballots(results, self.ballot_sort_keys),
@@ -394,3 +395,23 @@ class Stitcher:
             "registration": self.get_registration_contacts(),
             "postcode_location": self.wdiv_resp["postcode_location"],
         }
+
+        recall_petition_councils = ["SLK"]
+        if resp["electoral_services"]["council_id"] in recall_petition_councils:
+            postcode = self.request.path_params["postcode"]
+            recall_resp = httpx.get(
+                f"https://klbyvve95g.execute-api.eu-west-2.amazonaws.com/prod/postcode/{postcode}/"
+            ).json()
+            addresses = []
+            if recall_resp["address_picker"]:
+                for address in recall_resp["addresses"]:
+                    address["url"] = build_absolute_url(
+                        self.request.base_url,
+                        "address",
+                        uprn=address["slug"],
+                        sandbox=self.sandbox,
+                    )
+                    addresses.append(address)
+            recall_resp["addresses"] = addresses
+            resp.update(recall_resp)
+        return resp
