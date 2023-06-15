@@ -3,6 +3,7 @@ from copy import deepcopy
 from typing import Dict, List, Optional
 
 from common.url_resolver import build_absolute_url
+from endpoints.v1.recall_petitions.client import RecallPetitionApiClient
 
 CANCELLATION_REASONS = {
     "NO_CANDIDATES": {
@@ -386,11 +387,22 @@ class Stitcher:
                 results[0]["advance_voting_station"] = self.wdiv_resp.get(
                     "advance_voting_station", None
                 )
-        return {
+        resp = {
             "address_picker": False,
             "addresses": [],
             "dates": sort_ballots(results, self.ballot_sort_keys),
             "electoral_services": self.get_electoral_services(),
             "registration": self.get_registration_contacts(),
             "postcode_location": self.wdiv_resp["postcode_location"],
+            "recall_petitions": {},
         }
+
+        recall_petition_councils = ["SLK"]
+        if resp["electoral_services"]["council_id"] in recall_petition_councils:
+            postcode = self.request.path_params["postcode"]
+            recall_petition_client = RecallPetitionApiClient(self.request)
+            resp[
+                "recall_petitions"
+            ] = recall_petition_client.get_data_for_postcode(postcode)
+
+        return resp
