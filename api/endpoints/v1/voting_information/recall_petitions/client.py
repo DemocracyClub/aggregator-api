@@ -113,7 +113,7 @@ class RecallPetitionApiClient:
                 "Rutherglen and Hamilton West recall petition"
             )
             resp.parl_recall_petition.signing_start = "2023-06-20"
-            resp.parl_recall_petition.signing_end = "2023-06-30"
+            resp.parl_recall_petition.signing_end = "2023-07-31"
             resp.parl_recall_petition.signing_station = signing_station
 
         return resp.as_dict()
