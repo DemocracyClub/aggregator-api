@@ -162,6 +162,7 @@ Resources:
           SENTRY_DSN: !Ref AppSentryDSN
           DEBUG: !Ref AppDebug
           WDIV_API_KEY: !Ref AppWdivApiKey
+          DC_ENVIRONMENT: !Ref DCEnvironment
       Events:
         PostcodeRequests:
           Type: Api

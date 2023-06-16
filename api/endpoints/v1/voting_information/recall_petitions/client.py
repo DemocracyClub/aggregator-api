@@ -1,4 +1,5 @@
 import json
+import os
 import re
 
 import boto3
@@ -45,12 +46,12 @@ class RecallPetitionApiClient:
         """
 
         postcode = clean_postcode(postcode)
-
-        # TODO: get shard key from postcode?
         shard_key = "rutherglen-west-hamilton.csv"
+        dc_env = os.environ.get("DC_ENVIRONMENT", "development")
+        bucket_name = f"recall-petitions.data.{dc_env}"
 
         resp = client.select_object_content(
-            Bucket="recall-petitions.data.development",
+            Bucket=bucket_name,
             Key=shard_key,
             Expression=f"""select * from S3Object s where s.postcode_ns='{postcode}'""",
             ExpressionType="SQL",
@@ -72,12 +73,11 @@ class RecallPetitionApiClient:
         source file.
 
         """
-
-        # TODO: get shard key from uprn?
         shard_key = "rutherglen-west-hamilton.csv"
-
+        dc_env = os.environ.get("DC_ENVIRONMENT", "development")
+        bucket_name = f"recall-petitions.data.{dc_env}"
         resp = client.select_object_content(
-            Bucket="recall-petitions.data.development",
+            Bucket=bucket_name,
             Key=shard_key,
             Expression=f"""select * from S3Object s where s.uprn='{uprn}'""",
             ExpressionType="SQL",
@@ -114,7 +114,8 @@ class RecallPetitionApiClient:
             )
             resp.parl_recall_petition.signing_start = "2023-06-20"
             resp.parl_recall_petition.signing_end = "2023-07-31"
-            resp.parl_recall_petition.signing_station = signing_station
+            if signing_station.station_id:
+                resp.parl_recall_petition.signing_station = signing_station
 
         return resp.as_dict()
 
