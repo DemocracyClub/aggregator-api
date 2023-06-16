@@ -3,6 +3,8 @@ from copy import deepcopy
 from typing import Dict, List, Optional
 
 from common.url_resolver import build_absolute_url
+from recall_petitions.client import RecallPetitionApiClient
+from starlette.requests import Request
 
 CANCELLATION_REASONS = {
     "NO_CANDIDATES": {
@@ -196,7 +198,7 @@ class Stitcher:
         self.sandbox = sandbox
         self.wcivf_ballots = self.make_wcivf_ballots()
         self.ballot_sort_keys = {}
-        self.request = request
+        self.request: Request = request
         self.validate()
 
     def validate(self):
@@ -386,7 +388,7 @@ class Stitcher:
                 results[0]["advance_voting_station"] = self.wdiv_resp.get(
                     "advance_voting_station", None
                 )
-        return {
+        resp = {
             "address_picker": False,
             "addresses": [],
             "dates": sort_ballots(results, self.ballot_sort_keys),
@@ -394,3 +396,19 @@ class Stitcher:
             "registration": self.get_registration_contacts(),
             "postcode_location": self.wdiv_resp["postcode_location"],
         }
+
+        # TODO: Remove when we remove petitions
+        if hasattr(
+            self.request, "query_params"
+        ) and self.request.query_params.get("recall_petition"):
+            resp["parl_recall_petition"] = None
+            recall_petition_councils = ["SLK"]
+            council_id = resp["electoral_services"]["council_id"]
+            if council_id in recall_petition_councils:
+                recall_petition_client = RecallPetitionApiClient(
+                    self.request, council_id=council_id
+                )
+                return recall_petition_client.patch_response(resp)
+        # TODO: End removal code
+
+        return resp

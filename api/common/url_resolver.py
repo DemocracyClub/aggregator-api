@@ -38,6 +38,18 @@ ALL_ROUTES = {
         ),
         FakeRoute("/api/v1/address/{uprn}/", methods=["GET"], name="address"),
     ],
+    "v1/recall_petitions": [
+        FakeRoute(
+            "/api/v1/recall_petitions/postcode/{postcode}/",
+            methods=["GET"],
+            name="recall_petitions_postcode",
+        ),
+        FakeRoute(
+            "/api/v1/recall_petitions/address/{uprn}/",
+            methods=["GET"],
+            name="recall_petitions_address",
+        ),
+    ],
     "v1/sandbox": [
         FakeRoute(
             "/api/v1/sandbox/postcode/{postcode}/",
