@@ -9,8 +9,6 @@ WCIVF_BALLOT_CACHE_URL = (
     "https://wcivf-ballot-cache.s3.eu-west-2.amazonaws.com/ballot_data/"
 )
 EE_BASE_URL = "https://elections.democracyclub.org.uk/api/"
-RECALL_PETITION_BASE_URL = (
-    "https://klbyvve95g.execute-api.eu-west-2.amazonaws.com/prod/"
-)
+RECALL_PETITION_ENABLED = False
 
 DEBUG = bool(int(os.environ.get("DEBUG", "0")))
