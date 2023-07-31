@@ -2,6 +2,7 @@ import re
 from copy import deepcopy
 from typing import Dict, List, Optional
 
+from common import settings
 from common.url_resolver import build_absolute_url
 from recall_petitions.client import RecallPetitionApiClient
 from starlette.requests import Request
@@ -398,9 +399,11 @@ class Stitcher:
         }
 
         # TODO: Remove when we remove petitions
-        if hasattr(
-            self.request, "query_params"
-        ) and self.request.query_params.get("recall_petition"):
+        if (
+            settings.RECALL_PETITION_ENABLED
+            and hasattr(self.request, "query_params")
+            and self.request.query_params.get("recall_petition")
+        ):
             resp["parl_recall_petition"] = None
             recall_petition_councils = ["SLK"]
             council_id = resp["electoral_services"]["council_id"]
