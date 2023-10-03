@@ -1,8 +1,6 @@
-import pytest
-
 from api.endpoints.v1.voting_information.stitcher import (
+    CANCELLATION_REASONS,
     NotificationsMaker,
-    get_ballot_cancellation_reason_metadata,
 )
 
 nometa = {
@@ -32,34 +30,7 @@ pre_eco = {
 cancelled = {
     "ballot_paper_id": "local.cancelled.2018-05-03",
     "cancelled": True,
-    "metadata": {
-        "cancelled_election": {
-            "detail": "This election was cancelled due to death of a candidate.",
-            "title": "Cancelled Election",
-            "url": "https://foo.bar/baz",
-        }
-    },
-}
-
-cancelled_equal_candidates_seats = {
-    "ballot_paper_id": "local.cancelled-equal.2018-05-03",
-    "cancelled": True,
-    "candidates": ["foo", "bar"],
-    "seats_contested": 2,
-}
-
-cancelled_fewer_candidates_seats = {
-    "ballot_paper_id": "local.cancelled-non-zero.2018-05-03",
-    "cancelled": True,
-    "candidates": ["foo"],
-    "seats_contested": 2,
-}
-
-cancelled_zero_candidates = {
-    "ballot_paper_id": "local.cancelled-zero.2018-05-03",
-    "cancelled": True,
-    "candidates": [],
-    "seats_contested": 2,
+    "cancellation_reason": "CANDIDATE_DEATH",
 }
 
 
@@ -84,10 +55,7 @@ def test_one_cancelled_election():
     assert len(notifications) == 1
     assert notifications[0]["title"] == "Cancelled Election"
     assert notifications[0]["type"] == "cancelled_election"
-    assert (
-        notifications[0]["url"]
-        == cancelled["metadata"]["cancelled_election"]["url"]
-    )
+    assert notifications[0]["url"] is None
 
 
 def test_multiple_cancelled_elections():
@@ -182,55 +150,8 @@ def test_northern_ireland():
     assert notifications[0]["type"] == "voter_id"
 
 
-@pytest.mark.parametrize(
-    "ballot, expected_reason",
-    [
-        (
-            cancelled_equal_candidates_seats,
-            "This election has been cancelled because the number of "
-            "candidates standing is equal to the number of available seats.",
-        ),
-        (
-            cancelled_fewer_candidates_seats,
-            "This election was cancelled because the number of candidates "
-            "who stood was fewer than the number of available seats.",
-        ),
-        (
-            cancelled_zero_candidates,
-            "This election was cancelled because no candidates were nominated to stand.",
-        ),
-    ],
-)
-def test_get_ballot_cancellation_reason(ballot, expected_reason):
-    reason = get_ballot_cancellation_reason_metadata(ballot)
-    assert reason["title"] == "Uncontested election"
-    assert reason["detail"] == expected_reason
-
-
-@pytest.mark.parametrize(
-    "ballots, expected_count",
-    [
-        (
-            [cancelled_equal_candidates_seats],
-            1,
-        ),
-        (
-            [cancelled_zero_candidates, cancelled_fewer_candidates_seats],
-            2,
-        ),
-    ],
-)
-def test_get_cancelled_ballot_details(ballots, expected_count):
-    nm = NotificationsMaker(ballots)
-    cancelled_ballot_details = nm.get_cancelled_ballot_details()
-    assert len(cancelled_ballot_details) == expected_count
-    for i in range(expected_count):
-        assert cancelled_ballot_details[i]["ballot_paper_id"] is not None
-        assert cancelled_ballot_details[i]["detail"] is not None
-
-
 def test_generate_cancelled_notification():
-    nm = NotificationsMaker([cancelled_zero_candidates])
+    nm = NotificationsMaker([cancelled])
     notifications = nm.notifications
     assert notifications[0].get("type") == "cancelled_election"
     assert notifications[0].get("title") == "Cancelled Election"
@@ -242,9 +163,9 @@ def test_generate_cancelled_notification():
     assert len(notifications[0].get("cancelled_ballots")) == 1
     assert (
         notifications[0]["cancelled_ballots"][0]["ballot_paper_id"]
-        == cancelled_zero_candidates["ballot_paper_id"]
+        == cancelled["ballot_paper_id"]
     )
     assert (
         notifications[0]["cancelled_ballots"][0]["detail"]
-        == "This election was cancelled because no candidates were nominated to stand."
+        == CANCELLATION_REASONS[nm.ballots[0]["cancellation_reason"]]
     )

@@ -2,7 +2,11 @@ import pytest
 from starlette.testclient import TestClient
 from tests.helpers import fixture_map, load_fixture, load_sandbox_output
 from voting_information.app import app
-from voting_information.stitcher import Stitcher
+from voting_information.stitcher import (
+    CANCELLATION_REASONS,
+    Stitcher,
+    get_ballot_cancellation_reason_data,
+)
 
 
 @pytest.fixture(scope="function")
@@ -111,3 +115,18 @@ def test_validate_false_with_mismatched_ballots(stitcher_client):
         load_fixture(fixture_map[postcode], "wdiv"), wcivf_json, stitcher_client
     )
     assert s.validate() is False
+
+
+@pytest.mark.parametrize(
+    "cancelled, reason_code, reason_dict",
+    [
+        (True, None, {}),
+        (True, "CANDIDATE_DEATH", CANCELLATION_REASONS["CANDIDATE_DEATH"]),
+        (False, None, None),
+    ],
+)
+def test_get_ballot_cancellation_reason_data(
+    cancelled, reason_code, reason_dict
+):
+    ballot = {"cancelled": cancelled, "cancellation_reason": reason_code}
+    assert get_ballot_cancellation_reason_data(ballot) == reason_dict
