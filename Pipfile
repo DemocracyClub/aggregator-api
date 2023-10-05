@@ -15,6 +15,7 @@ importlib-metadata = "*"
 respx = "*"
 pytest-asyncio = "*"
 moto = {extras = ["dynamodb"], version = "*"}
+mypy_boto3_dynamodb = "*"
 pytest-ruff = "*"
 pre-commit = "*"
 
@@ -37,6 +38,9 @@ aws-wsgi = {file = "https://github.com/DemocracyClub/awsgi/archive/refs/heads/un
 whitenoise = "*"
 sentry-sdk = "*"
 urllib3 = "<2.0.0"
+django-sesame = "*"
+dc-api-common = {path = "./api/common"}
+boto3 = "*"
 
 [scripts]
 black = "black ."

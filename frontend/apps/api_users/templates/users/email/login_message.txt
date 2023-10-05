@@ -1,0 +1,1 @@
+Use the following URL to authenticate with the Democracy Club API: {{ authenticate_url }}.

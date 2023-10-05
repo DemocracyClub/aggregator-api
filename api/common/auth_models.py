@@ -22,6 +22,7 @@ class UserDoesNotExist(ValueError):
 class User:
     api_key: str
     user_id: str
+    api_plan: str = "hobbyists"
     is_active: bool = True
     rate_limit_warn: bool = False
 

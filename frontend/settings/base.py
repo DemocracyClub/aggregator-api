@@ -22,15 +22,18 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
+    "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sessions",
     "apiblueprint_view",
     "pipeline",
     "dc_design_system",
     "dc_utils",
 ]
-PROJECT_APPS = ["api_docs.v1"]
+PROJECT_APPS = ["api_docs.v1", "api_users"]
 INSTALLED_APPS += PROJECT_APPS
 
 MIDDLEWARE = [
@@ -65,6 +68,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "frontend.wsgi.application"
 
+AUTH_USER_MODEL = "api_users.CustomUser"
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -86,6 +90,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+AUTHENTICATION_BACKENDS = [
+    "sesame.backends.ModelBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+SESAME_MAX_AGE = 60 * 10
+SESAME_ONE_TIME = True
+SESAME_TOKEN_NAME = "login_token"
+LOGIN_URL = "api_users:login"
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/

@@ -23,8 +23,8 @@ jobs:
     - run: pipenv install --categories "api dev-packages frontend"
       #- run: pipenv run pipenv check # before save_cache so an insecure cache is never saved
     - run: make lambda-layers/FrontendDependenciesLayer/requirements.txt
-    - run: pipenv run make aggregator/apps/api_docs/v1/templates/api_docs_rendered.html APP_IS_BEHIND_CLOUDFRONT=True
     - run: pipenv run collectstatic
+    - run: pipenv run make aggregator/apps/api_docs/v1/templates/api_docs_rendered.html APP_IS_BEHIND_CLOUDFRONT=True
     - persist_to_workspace:
         root: ~/repo/
         paths:

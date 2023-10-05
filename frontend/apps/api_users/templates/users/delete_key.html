@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>Delete {{key.name}} key</h1>
+    <form method="POST" action=".">
+        <p>Are you sure you want to delete key <code>{{ key.key }}</code>?</p>
+        {% csrf_token %}
+        <p>This action cannot be undone and any application using your key will stop working.</p>
+        <button class="ds-button-blue" type="submit">Delete key</button>
+    </form>
+
+{% endblock %}
