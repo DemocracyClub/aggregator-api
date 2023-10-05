@@ -1,11 +1,11 @@
 {% load pipeline %}{% load static %}<!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <title>
-      {% block base_title %}
-        {% block page_title %}{% endblock page_title %} | {{ site_title }}
-      {% endblock base_title %}
+        {% block base_title %}
+            {% block page_title %}{% endblock page_title %} | {{ SITE_TITLE }}
+        {% endblock base_title %}
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -18,69 +18,95 @@
 
     {% stylesheet 'styles' %}
     {% block extra_page_css %}{% endblock extra_page_css %}
-  </head>
+</head>
 
-  <body class="ds-width-full">
-    <div class="ds-page">
-      <p><a class="ds-skip-link" href="#main">skip to content</a></p>
-      {% block site_menu %}
+<body class="ds-width-full ds-dark">
+<div class="ds-page">
+    <p><a class="ds-skip-link" href="#main">skip to content</a></p>
+    {% block site_menu %}
         <header class="ds-header">
-          <a class="ds-logo" href="/">
-            <img src="{% static 'images/logo_icon.svg' %}" alt="" />
-            <span>Democracy Club<br>for Developers<br></span>
-          </a>
+            <a class="ds-logo" href="/">
+                <img src="{% static 'images/logo_icon.svg' %}" alt="" />
+                <span>Democracy Club<br>for Developers<br></span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="{% url "home" %}">Home</a></li>
+                    {% if request.user.is_authenticated %}
+                        <li>
+                            <a href="{% url "api_users:profile" %}">Profile</a>
+                        </li>
+                        <li>
+                            <a href="{% url "api_users:logout" %}">Logout</a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{% url "api_users:login" %}">Log in</a>
+                        </li>
+
+                    {% endif %}
+                </ul>
+            </nav>
         </header>
-      {% endblock site_menu %}
-      <main id="main" tabindex="-1" class="ds-stack {% block extra_main_class%}{% endblock extra_main_class %}">
+    {% endblock site_menu %}
+    <main id="main" tabindex="-1" class="ds-stack {% block extra_main_class%}{% endblock extra_main_class %}">
+        {% if request.user.is_authenticated %}
+            <aside class="ds-status" aria-label="Status">
+                <ul class="ds-stack">
+                    <li class="ds-status-message">User accounts are in alpha. Please
+                        <a href="https://democracyclub.org.uk/contact/">let us know</a> if you find bugs!</li>
+                </ul>
+            </aside>
+        {% endif %}
         {% if messages %}
-          <aside class="ds-status messages" aria-label="Status">
-            <ul class="ds-stack">
-              {% for message in messages %}
-                <li {% if message.tags %}class=" {{ message.tags }} ds-status-message " {% endif %}> {{ message }} </li>
-              {% endfor %}
-            </ul>
-          </aside>
+            <aside class="ds-status messages" aria-label="Status">
+                <ul class="ds-stack">
+                    {% for message in messages %}
+                        <li {% if message.tags %}class=" {{ message.tags }} ds-status-message " {% endif %}> {{ message }} </li>
+                    {% endfor %}
+                </ul>
+            </aside>
         {% endif %}
 
         {% block content %}
         {% endblock content %}
-      </main>
-        <footer class="ds-footer">
-          <div class="ds-block-centered ds-text-centered ds-stack">
+    </main>
+    <footer class="ds-footer">
+        <div class="ds-block-centered ds-text-centered ds-stack">
             <div class="ds-cluster-center">
-              <ul>
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="https://democracyclub.org.uk/about/">About Democracy Club</a></li>
-                <li><a href="https://democracyclub.org.uk/contact/">Contact Us</a></li>
-                <li><a href="https://democracyclub.org.uk/privacy/">Privacy</a></li>
-                <li><a href="https://democracyclub.org.uk/donate/">Donate</a></li>
-                <li><a href="https://democracyclub.org.uk/blog/">Blog</a></li>
-                <li><a href="https://twitter.com/democlub">Twitter</a></li>
-                <li><a href="https://facebook.com/DemocracyClub">Facebook</a></li>
-                <li><a href="https://github.com/DemocracyClub">GitHub</a></li>
-                
-                
-              </ul>
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="https://democracyclub.org.uk/about/">About Democracy Club</a></li>
+                    <li><a href="https://democracyclub.org.uk/contact/">Contact Us</a></li>
+                    <li><a href="https://democracyclub.org.uk/privacy/">Privacy</a></li>
+                    <li><a href="https://democracyclub.org.uk/donate/">Donate</a></li>
+                    <li><a href="https://democracyclub.org.uk/blog/">Blog</a></li>
+                    <li><a href="https://twitter.com/democlub">Twitter</a></li>
+                    <li><a href="https://facebook.com/DemocracyClub">Facebook</a></li>
+                    <li><a href="https://github.com/DemocracyClub">GitHub</a></li>
+
+
+                </ul>
             </div>
             <div class="ds-copyright">
-              <a class="ds-logo" href="https://democracyclub.org.uk/">
-                <img src="{% static 'images/logo_icon.svg' %}" alt="" />
-                <span>democracy<br>club<br></span>
-              </a>
-              <p>Copyright © {% now "Y" %} Democracy Club Community Interest Company Company No: <a href="https://beta.companieshouse.gov.uk/company/09461226">09461226</a></p>
-              <p>
-                Contains OS data © Crown copyright and database right {% now "Y" %}<br>
-                Contains Royal Mail data © Royal Mail copyright and database right {% now "Y" %}<br>
-                Contains National Statistics data © Crown copyright and database right {% now "Y" %}<br>
-              </p>
-              <p class="ds-text-centered">Democracy Club is a UK-based Community Interest Company that builds
-                the digital infrastructure needed for a 21st century democracy
-              </p>
+                <a class="ds-logo" href="https://democracyclub.org.uk/">
+                    <img src="{% static 'images/logo_icon.svg' %}" alt="" />
+                    <span>democracy<br>club<br></span>
+                </a>
+                <p>Copyright © {% now "Y" %} Democracy Club Community Interest Company Company No: <a href="https://beta.companieshouse.gov.uk/company/09461226">09461226</a></p>
+                <p>
+                    Contains OS data © Crown copyright and database right {% now "Y" %}<br>
+                    Contains Royal Mail data © Royal Mail copyright and database right {% now "Y" %}<br>
+                    Contains National Statistics data © Crown copyright and database right {% now "Y" %}<br>
+                </p>
+                <p class="ds-text-centered">Democracy Club is a UK-based Community Interest Company that builds
+                    the digital infrastructure needed for a 21st century democracy
+                </p>
             </div>
-          </div>
-        </footer>
-    </div>
-  </body>
+        </div>
+    </footer>
+</div>
+</body>
 {% javascript 'scripts' %}
 {% block in_page_javascript %}{% endblock in_page_javascript %}
 </html>
