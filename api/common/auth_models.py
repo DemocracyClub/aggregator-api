@@ -74,3 +74,9 @@ class User:
         for key in cls.__dataclass_fields__:
             kwargs[key] = auth_data.get(key, None)
         return cls(**kwargs)
+
+
+@dataclass
+class ApiPlan:
+    label: str
+    request_per_day: int
