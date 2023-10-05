@@ -1,5 +1,9 @@
-from common.auth_models import User, UserDoesNotExist
-from common.sentry_helper import init_sentry
+import sys
+
+sys.path.append("api")
+
+from common.auth_models import User, UserDoesNotExist  # noqa
+from common.sentry_helper import init_sentry  # noqa
 
 init_sentry()
 
@@ -31,17 +35,17 @@ def lambda_handler(event, context):
     if "auth_token" not in event["queryStringParameters"]:
         raise Exception("Unauthorized")
     api_key = event["queryStringParameters"].get("auth_token", None)
-    authentication = {"data": {"api_key": api_key}}
-    # TMP: disable dynamodb lookup for the time being
-    # if not api_key:
-    #     raise Exception("Unauthorized")
-    #
-    # authentication = dynamodb_auth(api_key)
-    # if not authentication["authenticated"]:
-    #     raise Exception("Unauthorized")
+
+    if not api_key:
+        print("No API key provided")
+        raise Exception("Unauthorized")
+
+    authentication = dynamodb_auth(api_key)
+    if not authentication["authenticated"]:
+        raise Exception("Unauthorized")
 
     return {
-        "principalId": "sym",
+        "principalId": authentication["data"]["user_id"],
         "policyDocument": {
             "Version": "2012-10-17",
             "Statement": [
@@ -54,3 +58,34 @@ def lambda_handler(event, context):
         },
         "context": authentication["data"],
     }
+
+
+if __name__ == "__main__":
+    event = {
+        "resource": "/",
+        "path": "/",
+        "httpMethod": "GET",
+        "requestContext": {
+            "resourcePath": "/",
+            "httpMethod": "GET",
+            "path": "/Prod/",
+        },
+        "headers": {
+            "accept": "text/html",
+            "accept-encoding": "gzip, deflate, br",
+            "Host": "xxx.us-east-2.amazonaws.com",
+            "User-Agent": "Mozilla/5.0",
+        },
+        "multiValueHeaders": {
+            "accept": ["text/html"],
+            "accept-encoding": ["gzip, deflate, br"],
+        },
+        "queryStringParameters": {"auth_token": "foo"},
+        "multiValueQueryStringParameters": None,
+        "pathParameters": None,
+        "stageVariables": None,
+        "body": None,
+        "isBase64Encoded": False,
+    }
+
+    print(lambda_handler(event, None))
