@@ -26,8 +26,8 @@ mypy-boto3-dynamodb = "*"
 dc-logging-utils = {file = "https://github.com/DemocracyClub/dc_logging/archive/refs/tags/1.0.2.tar.gz"}
 
 [frontend]
-dc-design-system = {file = "https://github.com/DemocracyClub/design-system/archive/refs/tags/0.1.6.tar.gz"}
-dc-django-utils = {file = "https://github.com/DemocracyClub/dc_django_utils/archive/refs/tags/2.1.2.tar.gz"}
+dc-design-system = {file = "https://github.com/DemocracyClub/design-system/archive/refs/tags/0.4.0.tar.gz"}
+dc-django-utils = {file = "https://github.com/DemocracyClub/dc_django_utils/archive/refs/tags/2.4.0.tar.gz"}
 Django = "==4.1.2"
 django-localflavor = "==3.1"
 psycopg2-binary = "*"
