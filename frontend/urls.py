@@ -12,7 +12,7 @@ urlpatterns = [
     ),
     path(
         r"api/v1/",
-        TemplateView.as_view(template_name="api_docs_rendered.html"),
+        TemplateView.as_view(template_name="api_docs_rendered_base.html"),
         name="docs",
     ),
     path("user/", include("api_users.urls", namespace="api_users")),
