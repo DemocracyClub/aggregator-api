@@ -85,6 +85,18 @@ Resources:
           ViewerProtocolPolicy: "redirect-to-https"
 
         CacheBehaviors:
+        - AllowedMethods: [ GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE ]
+          PathPattern: user/*
+          TargetOriginId: FrontendApp
+          ForwardedValues:
+            QueryString: true
+            Cookies:
+              Forward: all
+            Headers:
+              - Authorization
+              - Origin
+          ViewerProtocolPolicy: "redirect-to-https"
+          MinTTL: '50'
         - AllowedMethods: [ GET, HEAD, OPTIONS ]
           PathPattern: static/*
           TargetOriginId: Static
