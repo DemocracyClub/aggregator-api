@@ -42,7 +42,6 @@ class WdivWcivfApiClient:
         return QueryParams(utm_medium=settings.USER_AGENT)
 
     def get_wdiv_json(self, url):
-        print(url)
         resp = app_httpx_client.get(url, params=self.wdiv_params)
         if resp.status_code >= 400:
             raise UpstreamApiError(resp)
@@ -58,7 +57,6 @@ class WdivWcivfApiClient:
                 resp = app_httpx_client.get(
                     wcivf_ballot_cache_url_from_ballot(ballot)
                 )
-                print(resp.status_code)
                 if resp.status_code >= 400 and not resp.status_code == 403:
                     raise UpstreamApiError(resp)
                 resp.raise_for_status()

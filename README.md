@@ -21,7 +21,11 @@ This project provides an API gateway in front of other Democracy Club APIs.
 ### Application
 
 * `cp aggregator-api/aggregator/settings/local.example.py aggregator-api/aggregator/settings/local.py`
-* Install Python dependencies: `pipenv install --dev`
+* Install Python dependencies
+  * This project makes use of the new pipenv categories. This means a straight `pipenv install` no longer works, and instead we must install by category. `pipenv install --categories "frontend api dev-packages"` will get you everything.
+  * When installing a new dependency, you must define the category you're installing it into, e.g. `pipenv install --categories "frontend" django`
+  * When removing a dependency you must remove it from the category it's defined in, e.g. `pipenv uninstall --categories "frontend" django `
+
 * Run the test suite: `pytest`
 * Run lint checks: `pytest --ruff`
 * Auto-format: `black .`
