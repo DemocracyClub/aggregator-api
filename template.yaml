@@ -273,7 +273,7 @@ Resources:
     Properties:
       Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
       CodeUri: .
-      Handler: frontend.lambda_awsgi.lambda_handler
+      Handler: frontend.asgi.handler
       Layers:
         - !Ref FrontendDependenciesLayer
       Runtime: python3.10

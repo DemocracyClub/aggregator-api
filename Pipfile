@@ -41,6 +41,7 @@ urllib3 = "<2.0.0"
 django-sesame = "*"
 dc-api-common = {path = "./api/common"}
 boto3 = "*"
+mangum = "*"
 
 [scripts]
 black = "black ."
