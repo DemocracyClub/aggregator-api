@@ -88,7 +88,6 @@ Resources:
         - AllowedMethods: [ GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE ]
           PathPattern: user/*
           TargetOriginId: FrontendApp
-          CachePolicyId: "4135ea2d-6df8-44a3-9df3-4b5a84be39ad"
           ForwardedValues:
             QueryString: true
             Cookies:
@@ -97,6 +96,9 @@ Resources:
               - Authorization
               - Origin
           ViewerProtocolPolicy: "redirect-to-https"
+          MinTTL: '0'
+          MaxTTL: '0'
+          DefaultTTL: '0'
         - AllowedMethods: [ GET, HEAD, OPTIONS ]
           PathPattern: static/*
           TargetOriginId: Static
