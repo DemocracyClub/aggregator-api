@@ -58,34 +58,3 @@ def lambda_handler(event, context):
         },
         "context": authentication["data"],
     }
-
-
-if __name__ == "__main__":
-    event = {
-        "resource": "/",
-        "path": "/",
-        "httpMethod": "GET",
-        "requestContext": {
-            "resourcePath": "/",
-            "httpMethod": "GET",
-            "path": "/Prod/",
-        },
-        "headers": {
-            "accept": "text/html",
-            "accept-encoding": "gzip, deflate, br",
-            "Host": "xxx.us-east-2.amazonaws.com",
-            "User-Agent": "Mozilla/5.0",
-        },
-        "multiValueHeaders": {
-            "accept": ["text/html"],
-            "accept-encoding": ["gzip, deflate, br"],
-        },
-        "queryStringParameters": {"auth_token": "foo"},
-        "multiValueQueryStringParameters": None,
-        "pathParameters": None,
-        "stageVariables": None,
-        "body": None,
-        "isBase64Encoded": False,
-    }
-
-    print(lambda_handler(event, None))
