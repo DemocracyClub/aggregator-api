@@ -105,3 +105,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get("SMTP_USERNAME")
 EMAIL_HOST_PASSWORD = os.environ.get("SMTP_PASSWORD")
 DEFAULT_FROM_EMAIL = "hello@democracyclub.org.uk"
+
+USE_DYNAMODB = True
