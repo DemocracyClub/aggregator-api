@@ -80,3 +80,11 @@ def test_auth_delete_user(dynamodb):
     resp = dynamodb_auth("12345")
     assert resp["authenticated"] is False
     assert resp["error"] == "API key not found"
+
+
+def test_from_dynamodb(dynamodb):
+    user = User(api_key="12345", user_id="1")
+    user.save()
+    user = User.from_dynamodb(api_key="12345")
+    assert user.user_id == "1"
+    assert user.rate_limit_warn is False

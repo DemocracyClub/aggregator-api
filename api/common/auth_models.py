@@ -26,8 +26,9 @@ class User:
     is_active: bool = True
     rate_limit_warn: bool = False
 
-    def save(self):
-        table = get_dynamodb_table("users")
+    def save(self, table=None):
+        if not table:
+            table = get_dynamodb_table("users")
         table.put_item(
             Item=self.as_dict(),
         )
@@ -75,6 +76,21 @@ class User:
         for key in cls.__dataclass_fields__:
             kwargs[key] = auth_data.get(key, None)
         return cls(**kwargs)
+
+    @classmethod
+    def from_django_model(cls, api_key_model):
+        """
+
+        :type api_key_model: frontend.apps.api_users.models.APIKey
+        """
+
+        return cls(
+            api_key=api_key_model.key,
+            user_id=str(api_key_model.user_id),
+            api_plan=api_key_model.api_plan,
+            is_active=api_key_model.is_active,
+            rate_limit_warn=api_key_model.rate_limit_warn,
+        )
 
 
 @dataclass

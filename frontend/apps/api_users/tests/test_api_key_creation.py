@@ -13,7 +13,13 @@ def test_save_api_key_posts_to_dynamodb(db, dynamodb):
     assert table.scan()["Items"] == []
     api_key.save()
     assert table.scan()["Items"] == [
-        {"api_key": api_key.key, "api_plan": "hobbyists"}
+        {
+            "api_key": api_key.key,
+            "api_plan": "hobbyists",
+            "is_active": True,
+            "rate_limit_warn": False,
+            "user_id": "1",
+        }
     ]
 
 

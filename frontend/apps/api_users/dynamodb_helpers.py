@@ -3,6 +3,7 @@ import os
 import sys
 
 import boto3
+from common.auth_models import User
 from django.conf import settings
 
 from api_users.models import APIKey
@@ -69,9 +70,8 @@ class DynamoDBClient:
             return
         logging.info(f"Putting key {api_key.key}")
 
-        table.put_item(
-            Item={"api_key": api_key.key, "api_plan": api_key.api_plan}
-        )
+        user = User.from_django_model(api_key)
+        user.save(table=table)
 
 
 if __name__ == "__main__":
