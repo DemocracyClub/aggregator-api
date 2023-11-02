@@ -34,8 +34,9 @@ class User:
         )
         return self.as_dict()
 
-    def delete(self):
-        table = get_dynamodb_table("users")
+    def delete(self, table=None):
+        if not table:
+            table = get_dynamodb_table("users")
         table.delete_item(Key={"api_key": self.api_key})
 
     def as_dict(self) -> dict:

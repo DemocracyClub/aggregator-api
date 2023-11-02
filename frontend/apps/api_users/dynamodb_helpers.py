@@ -65,6 +65,12 @@ class DynamoDBClient:
             table = dynamodb.Table(self.table_name)
             self._put_single_key(api_key, table)
 
+    def delete_key(self, api_key: APIKey):
+        dynamodb = boto3.resource("dynamodb", region_name=self.aws_region)
+        table = dynamodb.Table(self.table_name)
+        user = User.from_django_model(api_key)
+        user.delete(table=table)
+
     def _put_single_key(self, api_key: APIKey, table):
         if not self.live_mode:
             return

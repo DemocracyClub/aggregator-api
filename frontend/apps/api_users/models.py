@@ -120,6 +120,10 @@ class APIKey(TimestampMixin, models.Model):
         return self
 
     def delete(self, using=None, keep_parents=False):
+        from api_users.dynamodb_helpers import DynamoDBClient
+
+        dynamodb_client = DynamoDBClient()
+        dynamodb_client.delete_key(self)
         return super().delete(using, keep_parents)
 
     def get_absolute_delete_url(self):
