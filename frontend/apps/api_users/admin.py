@@ -1,5 +1,8 @@
 from django.contrib import admin
+from django.template.response import TemplateResponse
+from django.urls import path
 
+from api_users.dynamodb_helpers import DynamoDBClient
 from api_users.models import APIKey, CustomUser
 
 
@@ -32,6 +35,22 @@ class ApiUserAdmin(admin.ModelAdmin):
     fields = ("name", "email", "api_plan")
 
     inlines = [ApiKeyInline]
+
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [
+            path(
+                "sync_api_keys/",
+                self.admin_site.admin_view(self.sync_api_keys),
+                name="sync_api_keys",
+            )
+        ]
+        return my_urls + urls
+
+    def sync_api_keys(self, request):
+        DynamoDBClient().sync_api_keys()
+
+        return TemplateResponse(request, "admin/sync_confirmation.html")
 
 
 admin.site.register(CustomUser, ApiUserAdmin)
