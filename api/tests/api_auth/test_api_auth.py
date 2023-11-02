@@ -2,7 +2,7 @@ import os
 
 import boto3
 import pytest
-from api_auth.handler import dynamodb_auth
+from api_auth.handler import dynamodb_auth, lambda_handler
 from common.auth_models import User
 from moto import mock_dynamodb
 from mypy_boto3_dynamodb import DynamoDBServiceResource
@@ -80,6 +80,23 @@ def test_auth_delete_user(dynamodb):
     resp = dynamodb_auth("12345")
     assert resp["authenticated"] is False
     assert resp["error"] == "API key not found"
+
+
+def test_lambda_no_api_key(dynamodb):
+    # No auth_token key provided
+    with pytest.raises(Exception) as e:
+        lambda_handler({"queryStringParameters": {}}, {})
+    assert str(e.value) == "Unauthorized"
+
+    # Key provided, no value
+    with pytest.raises(Exception) as e:
+        lambda_handler({"queryStringParameters": {"auth_token": None}}, {})
+    assert str(e.value) == "Unauthorized"
+
+    # Key provided, with value, but not a valid key
+    with pytest.raises(Exception) as e:
+        lambda_handler({"queryStringParameters": {"auth_token": "12345"}}, {})
+    assert str(e.value) == "Unauthorized"
 
 
 def test_from_dynamodb(dynamodb):
