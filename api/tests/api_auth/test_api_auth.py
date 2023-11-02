@@ -83,6 +83,9 @@ def test_auth_delete_user(dynamodb):
 
 
 def test_lambda_no_api_key(dynamodb):
+    from api_auth import handler
+
+    handler.USE_DYNAMODB_AUTH = True
     # No auth_token key provided
     with pytest.raises(Exception) as e:
         lambda_handler({"queryStringParameters": {}}, {})
