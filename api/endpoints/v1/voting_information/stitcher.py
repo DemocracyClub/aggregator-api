@@ -363,7 +363,7 @@ class Stitcher:
             and self.request.query_params.get("recall_petition")
         ):
             resp["parl_recall_petition"] = None
-            recall_petition_councils = ["SLK"]
+            recall_petition_councils = ["NNT"]
             council_id = resp["electoral_services"]["council_id"]
             if council_id in recall_petition_councils:
                 recall_petition_client = RecallPetitionApiClient(

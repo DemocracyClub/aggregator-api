@@ -14,6 +14,27 @@ from .models import (
 
 client = boto3.client("s3")
 
+petition_info = {
+    "NNT": {
+        "data_file": "wellingborough-recall-petition.csv",
+        "petition": BaseRecallPetition(
+            name="Wellingborough recall petition",
+            signing_start="2023-11-08",
+            signing_end="2023-12-19",
+        ),
+        "constituency_name": "Wellingborough",
+    },
+    "SLK": {
+        "data_file": "rutherglen-west-hamilton.csv",
+        "petition": BaseRecallPetition(
+            name="Rutherglen and Hamilton West recall petition",
+            signing_start="2023-06-20",
+            signing_end="2023-07-31",
+        ),
+        "constituency_name": "Rutherglen and Hamilton West",
+    },
+}
+
 
 def clean_postcode(postcode):
     postcode = postcode.upper()
@@ -36,6 +57,9 @@ class RecallPetitionApiClient:
                     data.append(json.loads(record))
         return data
 
+    def get_petition_info(self):
+        return petition_info[self.council_id]
+
     def get_data_for_postcode(self, postcode):
         """
         Use S3 Select to get all addresses that match the postcode.
@@ -46,10 +70,9 @@ class RecallPetitionApiClient:
         """
 
         postcode = clean_postcode(postcode)
-        shard_key = "rutherglen-west-hamilton.csv"
+        shard_key = self.get_petition_info()["data_file"]
         dc_env = os.environ.get("DC_ENVIRONMENT", "development")
         bucket_name = f"recall-petitions.data.{dc_env}"
-
         resp = client.select_object_content(
             Bucket=bucket_name,
             Key=shard_key,
@@ -73,7 +96,7 @@ class RecallPetitionApiClient:
         source file.
 
         """
-        shard_key = "rutherglen-west-hamilton.csv"
+        shard_key = self.get_petition_info()["data_file"]
         dc_env = os.environ.get("DC_ENVIRONMENT", "development")
         bucket_name = f"recall-petitions.data.{dc_env}"
         resp = client.select_object_content(
@@ -93,27 +116,32 @@ class RecallPetitionApiClient:
 
     def query_to_dict(self, query_data):
         signing_stations = set()
+        constituencies = set()
         for row in query_data:
+            constituencies.add(row["organisationdivision__name"])
             station = SigningStationModel.from_row(row)
             signing_stations.add(station)
         signing_stations = list(signing_stations)
 
+        if not signing_stations:
+            return {}
+
+        # If none of the addresses are in the constituency, then don't show anything about the petition
+        if self.get_petition_info()["constituency_name"] not in constituencies:
+            return {}
+
         resp = BaseResponse()
 
         signing_station = None
+
         if len(signing_stations) > 1:
             resp.address_picker = True
             resp.addresses = [AddressModel.from_row(row) for row in query_data]
         else:
             signing_station = signing_stations[0]
 
-        if self.council_id == "SLK" and signing_station:
-            resp.parl_recall_petition = BaseRecallPetition()
-            resp.parl_recall_petition.name = (
-                "Rutherglen and Hamilton West recall petition"
-            )
-            resp.parl_recall_petition.signing_start = "2023-06-20"
-            resp.parl_recall_petition.signing_end = "2023-07-31"
+        if signing_station:
+            resp.parl_recall_petition = self.get_petition_info()["petition"]
             if signing_station.station_id:
                 resp.parl_recall_petition.signing_station = signing_station
 
