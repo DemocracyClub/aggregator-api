@@ -145,16 +145,16 @@ NB **this will destroy the current contents of the `.aws-sam/build/` directory**
 ```
 $ pipenv run sam build --config-env jcm1 --use-container --cached
 Starting Build inside a container
-Building codeuri: . runtime: python3.8 metadata: {} functions: 
+Building codeuri: . runtime: python3.10 metadata: {} functions:
 ['AggregatorApiFunction']
-Fetching amazon/aws-sam-cli-build-image-python3.8 Docker container image......
+Fetching amazon/aws-sam-cli-build-image-python3.10 Docker container image......
 Mounting /home/ubuntu/code/aggregator-api as /tmp/samcli/source:ro,delegated inside runtime container
 Running PythonPipBuilder:ResolveDependencies
 Running PythonPipBuilder:CopySource
 Building layer 'DependenciesLayer'
 For container layer build, first compatible runtime is chosen as build target for container.
 
-Fetching amazon/aws-sam-cli-build-image-python3.8 Docker container image......
+Fetching amazon/aws-sam-cli-build-image-python3.10 Docker container image......
 Mounting /home/ubuntu/code/aggregator-api/lambda-layers/DependenciesLayer as /tmp/samcli/source:ro,delegated inside runtime container
 
 Build Succeeded
@@ -281,7 +281,8 @@ Teach the tests about your config env by setting the `SAM_LAMBDA_CONFIG_ENV` env
 ```
 $ SAM_LAMBDA_CONFIG_ENV=jcm1 pipenv run pytest -vrP --disable-warnings .circleci/tests/system/test_app_via_api_gateway.py
 ================================================== test session starts ====================================================
-platform linux -- Python 3.8.5, pytest-6.1.2, py-1.9.0, pluggy-0.13.1 -- /home/ubuntu/.local/share/virtualenvs/8/bin/python
+platform linux -- Python 3.10, pytest-6.1.2, py-1.9.0, pluggy-0.13.1 --
+/home/ubuntu/.local/share/virtualenvs/8/bin/python
 cachedir: .pytest_cache
 django: settings: aggregator.settings.testing (from ini)
 rootdir: /home/ubuntu/code/aggregator-api, configfile: pytest.ini

@@ -126,7 +126,7 @@ Resources:
     Properties:
       ContentUri: ./lambda-layers/APICommonLayer/
       CompatibleRuntimes:
-        - python3.8
+        - python3.10
     Metadata:
       BuildMethod: makefile
     RetentionPolicy: Delete
@@ -142,7 +142,7 @@ Resources:
           SENTRY_DSN: !Ref AppSentryDSN
       Layers:
         - !Ref APICommonLayer
-      Runtime: python3.8
+      Runtime: python3.10
 
   V1VotingInformationFunction:
     Type: AWS::Serverless::Function
@@ -159,7 +159,7 @@ Resources:
 #            - 1
       Layers:
         - !Ref APICommonLayer
-      Runtime: python3.8
+      Runtime: python3.10
       MemorySize: 512
       Environment:
         Variables:
@@ -190,7 +190,7 @@ Resources:
       Handler: app.handler
       Layers:
         - !Ref APICommonLayer
-      Runtime: python3.8
+      Runtime: python3.10
       MemorySize: 512
       Environment:
         Variables:
@@ -215,7 +215,7 @@ Resources:
       Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
       CodeUri: ./api/endpoints/v1/sandbox/
       Handler: app.handler
-      Runtime: python3.8
+      Runtime: python3.10
       Layers:
         - !Ref APICommonLayer
       MemorySize: 512
@@ -246,7 +246,7 @@ Resources:
     Properties:
       ContentUri: ./lambda-layers/FrontendDependenciesLayer/
       CompatibleRuntimes:
-        - python3.8
+        - python3.10
     Metadata:
       BuildMethod: makefile
     RetentionPolicy: Delete
@@ -259,7 +259,7 @@ Resources:
       Handler: frontend.lambda_awsgi.lambda_handler
       Layers:
         - !Ref FrontendDependenciesLayer
-      Runtime: python3.8
+      Runtime: python3.10
       MemorySize: 512
       Environment:
         Variables:
