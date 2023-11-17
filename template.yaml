@@ -48,6 +48,11 @@ Parameters:
     Description: The ARN of the role needed by dc_logging
     Type: AWS::SSM::Parameter::Value<String>
 
+  AppLoggerArn:
+    Default: AppLoggerArn
+    Description: The ARN of the Lambda ingest function
+    Type: AWS::SSM::Parameter::Value<String>
+
   AppDjangoSettingsModule:
     # NB This parameter (and how it reaches the app, and how it's set in
     # developer and CI-managed deployments) is used in
@@ -163,6 +168,7 @@ Resources:
           DEBUG: !Ref AppDebug
           WDIV_API_KEY: !Ref AppWdivApiKey
           DC_ENVIRONMENT: !Ref DCEnvironment
+          LOGGER_ARN: !Ref AppLoggerArn
       Events:
         PostcodeRequests:
           Type: Api
