@@ -60,6 +60,9 @@ class WdivWcivfApiClient:
                 if resp.status_code != 200:
                     # For some reason we're not able to add this ballot,
                     # but don't raise an error about it
+                    for i, wdiv_ballot in enumerate(wdiv_json["ballots"]):
+                        if wdiv_ballot["ballot_paper_id"] == ballot:
+                            del wdiv_json["ballots"][i]
                     continue
                 with contextlib.suppress(*SUPPRESS):
                     wcivf_json.append(resp.json())
