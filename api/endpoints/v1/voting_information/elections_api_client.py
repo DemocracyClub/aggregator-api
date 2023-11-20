@@ -57,9 +57,10 @@ class WdivWcivfApiClient:
                 resp = app_httpx_client.get(
                     wcivf_ballot_cache_url_from_ballot(ballot)
                 )
-                if resp.status_code >= 400 and not resp.status_code == 403:
-                    raise UpstreamApiError(resp)
-                resp.raise_for_status()
+                if resp.status_code != 200:
+                    # For some reason we're not able to add this ballot,
+                    # but don't raise an error about it
+                    continue
                 with contextlib.suppress(*SUPPRESS):
                     wcivf_json.append(resp.json())
 
