@@ -6,7 +6,7 @@ name = "pypi"
 [dev-packages]
 black = "==23.3.0"
 ruff = "==0.0.261"
-pytest = " 7.2.2"
+pytest = "==7.2.2"
 pytest-cov = ">=2.6,<5.0"
 pytest-django = ">=3.4.4,<5.0"
 coveralls = ">=1.6,<4.0"
@@ -23,6 +23,7 @@ aiohttp = "==3.8.3"
 sentry-sdk = "*"
 dc-api-common = {path = "./api/common"}
 mypy-boto3-dynamodb = "*"
+dc-logging-utils = {file = "https://github.com/DemocracyClub/dc_logging/archive/refs/tags/1.0.2.tar.gz"}
 
 [frontend]
 dc-design-system = {file = "https://github.com/DemocracyClub/design-system/archive/refs/tags/0.1.6.tar.gz"}
@@ -32,7 +33,7 @@ django-localflavor = "==3.1"
 psycopg2-binary = "*"
 django-apiblueprint-view = "==2.4.0"
 django-storages = "==1.13.2"
-aws-wsgi = {ref = "unquote_path_strings", git = "https://github.com/DemocracyClub/awsgi.git"}
+aws-wsgi = {file = "https://github.com/DemocracyClub/awsgi/archive/refs/heads/unquote_path_strings.zip"}
 whitenoise = "*"
 sentry-sdk = "*"
 urllib3 = "<2.0.0"
@@ -48,4 +49,4 @@ pytest = "pytest"
 collectstatic = "python manage.py collectstatic --noinput --clear"
 
 [requires]
-python_version = "3.8"
+python_version = "3.10"

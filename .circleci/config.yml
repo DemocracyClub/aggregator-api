@@ -12,14 +12,13 @@ jobs:
 
   install_and_update_dependencies:
     docker:
-    - image: cimg/python:3.8.12
+    - image: cimg/python:3.10
     working_directory: ~/repo
     steps:
     - checkout
     - restore_cache:
         keys:
-        - v5-dependencies-{{ checksum "Pipfile.lock" }}
-        - v5-dependencies-
+        - v6-dependencies-{{ checksum "Pipfile.lock" }}
     - run: &install-pipenv pip install -U pipenv "urllib3<=2.0" pip --quiet --no-input
     - run: pipenv install --categories "api dev-packages frontend"
       #- run: pipenv run pipenv check # before save_cache so an insecure cache is never saved
@@ -34,18 +33,17 @@ jobs:
         when: on_success
         paths:
         - ~/.local/share/virtualenvs/
-        key: v5-dependencies-{{ checksum "Pipfile.lock" }}
+        key: v6-dependencies-{{ checksum "Pipfile.lock" }}
 
   test:
     docker:
-    - image: cimg/python:3.8.12
+    - image: cimg/python:3.10
     working_directory: ~/repo
     steps:
     - checkout
     - restore_cache:
         keys:
-        - v5-dependencies-{{ checksum "Pipfile.lock" }}
-        - v5-dependencies-
+        - v6-dependencies-{{ checksum "Pipfile.lock" }}
     - run: *install-pipenv
     - run: pipenv run black-check
     - run: pipenv run pytest --ruff --cov-report= --cov=frontend --cov=api --junitxml=test-results/junit.xml
@@ -63,15 +61,13 @@ jobs:
 
   sam_build:
     docker:
-    - image: amazon/aws-sam-cli-build-image-python3.8:latest
+    - image: public.ecr.aws/sam/build-python3.10:latest
     working_directory: ~/repo
     steps:
     - checkout
     - attach_workspace:
         at: ~/repo/
-    - run: pip install --upgrade pip pipenv
-    - run: pip install -r lambda-layers/FrontendDependenciesLayer/requirements.txt
-    - run: &install-sam pip install aws-sam-cli==1.43.0
+    - run: pip install --upgrade pip pipenv boto3
     - run: pip install -r lambda-layers/FrontendDependenciesLayer/requirements.txt
     - run: make aggregator/apps/api_docs/v1/templates/api_docs_rendered.html APP_IS_BEHIND_CLOUDFRONT=True
     - run: sam build ${DASH_DASH_DEBUG}
@@ -81,7 +77,7 @@ jobs:
 
   sam_deploy:
     docker:
-    - image: cimg/python:3.8.12
+    - image: cimg/python:3.10
     working_directory: ~/repo/
     parameters:
       dc-environment:
@@ -101,12 +97,9 @@ jobs:
         at: ~/repo/
     - restore_cache:
         keys:
-        - v5-dependencies-{{ checksum "Pipfile.lock" }}
-        - v5-dependencies-
+        - v6-dependencies-{{ checksum "Pipfile.lock" }}
     - run: *install-pipenv
-    - run: *install-sam
-    - run: pipenv run pip install click==7.1.1 --no-warn-conflicts
-    - run: pipenv run pip install aws-sam-cli==1.43.0
+    - run: pip install aws-sam-cli
     - run: printenv DJANGO_SETTINGS_MODULE SAM_CONFIG_FILE SAM_LAMBDA_CONFIG_ENV SAM_PUBLIC_CONFIG_ENV
     - run: printenv SECRET_KEY | md5sum
     - run: printenv AWS_ACCESS_KEY_ID | md5sum

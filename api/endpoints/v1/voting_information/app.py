@@ -14,9 +14,9 @@ init_sentry()
 
 
 def init_logger(app):
-    FIREHOSE_ACCOUNT_ARN = os.environ.get("FIREHOSE_ACCOUNT_ARN", None)
-    if FIREHOSE_ACCOUNT_ARN:
-        firehose_args = {"assume_role_arn": FIREHOSE_ACCOUNT_ARN}
+    LOGGER_ARN = os.environ.get("LOGGER_ARN", None)
+    if LOGGER_ARN:
+        firehose_args = {"function_arn": LOGGER_ARN}
     else:
         firehose_args = {"fake": True}
     app.state.POSTCODE_LOGGER = DCWidePostcodeLoggingClient(**firehose_args)
