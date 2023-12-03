@@ -24,7 +24,6 @@ aiohttp = "==3.8.3"
 sentry-sdk = "*"
 dc-api-common = {path = "./api/common"}
 mypy-boto3-dynamodb = "*"
-dc-logging-utils = {file = "https://github.com/DemocracyClub/dc_logging/archive/refs/tags/1.0.2.tar.gz"}
 
 [frontend]
 dc-design-system = {file = "https://github.com/DemocracyClub/design-system/archive/refs/tags/0.4.0.tar.gz"}
