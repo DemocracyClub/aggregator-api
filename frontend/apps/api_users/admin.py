@@ -15,7 +15,12 @@ class ApiKeyInline(admin.TabularInline):
         "usage_reason",
         "rate_limit_warn",
         "is_active",
+        "truncated_key",
     )
+
+    @admin.display(description="Truncated key")
+    def truncated_key(self, obj):
+        return obj.truncated_key
 
     def has_add_permission(self, request, obj=None):
         return False
@@ -26,7 +31,7 @@ class ApiKeyInline(admin.TabularInline):
     def has_delete_permission(self, request, obj=None):
         return False
 
-    readonly_fields = ("name", "key", "usage_reason")
+    readonly_fields = ("name", "key", "usage_reason", "truncated_key")
 
 
 class ApiUserAdmin(admin.ModelAdmin):

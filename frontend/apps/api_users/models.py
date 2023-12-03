@@ -98,7 +98,7 @@ class APIKey(TimestampMixin, models.Model):
         verbose_name_plural = "API keys"
 
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.truncated_key})"
 
     @classmethod
     def _generate_key(self):
@@ -139,3 +139,7 @@ class APIKey(TimestampMixin, models.Model):
         if self.api_plan == "hobbyists":
             return "Development"
         return "Production"
+
+    @property
+    def truncated_key(self):
+        return f"{self.key[:4]}…{self.key[-4:]}"
