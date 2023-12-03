@@ -51,7 +51,7 @@ def test_delete_key_deletes_from_dynamodb(db, dynamodb):
             "api_plan": "hobbyists",
             "is_active": True,
             "rate_limit_warn": False,
-            "user_id": "1",
+            "user_id": str(api_key.user.pk),
         }
     ]
     api_key.delete()
