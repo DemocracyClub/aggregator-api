@@ -86,7 +86,11 @@ class APIGatewayAuthenticatorContextMiddleware:
             )
         else:
             # We're not on AWS Lambda
-            user = User(user_id="direct_access", api_key="local-dev")
+            user = User(
+                user_id="direct_access",
+                api_key="local-dev",
+                key_type="development",
+            )
 
         scope["api_user"] = user
         await self.app(scope, receive, send)

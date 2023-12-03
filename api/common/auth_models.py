@@ -21,6 +21,7 @@ class UserDoesNotExist(ValueError):
 @dataclass
 class User:
     api_key: str
+    key_type: str
     user_id: str
     api_plan: str = "hobbyists"
     is_active: bool = True
@@ -88,7 +89,8 @@ class User:
         return cls(
             api_key=api_key_model.key,
             user_id=str(api_key_model.user_id),
-            api_plan=api_key_model.api_plan,
+            key_type=api_key_model.key_type,
+            api_plan=api_key_model.user.api_plan,
             is_active=api_key_model.is_active,
             rate_limit_warn=api_key_model.rate_limit_warn,
         )
@@ -96,5 +98,6 @@ class User:
 
 @dataclass
 class ApiPlan:
+    value: str
     label: str
     request_per_day: int

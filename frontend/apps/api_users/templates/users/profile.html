@@ -8,7 +8,7 @@
     <h2>Your API plan</h2>
     <p>{{ request.user.api_plan|title }} plan</p>
     <p>
-    {% if request.user.api_plan == "hobbyist"  %}
+    {% if request.user.api_plan == "hobbyists"  %}
     	You can only make one hobbyist key, and it will be rate limited to
         1,000 requests per day.
     {% endif %}
@@ -53,7 +53,18 @@
                     <h3>{{ key.name }}</h3>
                     <dl>
                         <dt>Key type</dt>
-                        <dd>{{ key.label }}</dd>
+                        <dd>
+                            <p>{{ key.label }}</p>
+                            {% if key.key_type == "development" %}
+                            	<p>Limited to 1,000 requests per day.
+                                {% if request.user.api_plan == "hobbyists" %}
+                                	<a href="https://democracyclub.org.uk/contact/">Get in touch for production keys</a>.
+                                {% endif %}
+
+                                </p>
+                            {% endif %}
+                            <p></p>
+                        </dd>
                         <dt>Key</dt>
                         <dd><code>{{ key.key }}</code></dd>
                     </dl>

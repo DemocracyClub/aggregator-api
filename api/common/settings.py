@@ -15,7 +15,13 @@ RECALL_PETITION_ENABLED = True
 
 DEBUG = bool(int(os.environ.get("DEBUG", "0")))
 API_PLANS = {
-    "hobbyists": ApiPlan(label="Hobbyists", request_per_day=1_000),
-    "standard": ApiPlan(label="Standard", request_per_day=10_000),
-    "enterprise": ApiPlan(label="Enterprise", request_per_day=0),
+    "hobbyists": ApiPlan(
+        value="hobbyists", label="Hobbyists", request_per_day=1_000
+    ),
+    "standard": ApiPlan(
+        value="standard", label="Standard", request_per_day=10_000
+    ),
+    "enterprise": ApiPlan(
+        value="enterprise", label="Enterprise", request_per_day=0
+    ),
 }

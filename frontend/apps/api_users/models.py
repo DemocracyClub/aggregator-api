@@ -79,14 +79,17 @@ class APIKey(TimestampMixin, models.Model):
     key = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     rate_limit_warn = models.BooleanField(default=False)
-    api_plan = models.CharField(
-        choices=[(name, plan.label) for name, plan in API_PLANS.items()],
+    key_type = models.CharField(
+        choices=[
+            ("development", "Development"),
+            ("production", "Production"),
+        ],
         max_length=100,
         verbose_name="API plan",
         help_text="The plan for this API key. Only one production key allowed.",
-        default="hobbyists",
+        default="development",
     )
-    user = models.ForeignKey(
+    user: CustomUser = models.ForeignKey(
         to=get_user_model(),
         on_delete=models.CASCADE,
         related_name="api_keys",
@@ -136,9 +139,7 @@ class APIKey(TimestampMixin, models.Model):
     def label(self):
         if self.user.api_plan == "hobbyists":
             return "Hobbyist"
-        if self.api_plan == "hobbyists":
-            return "Development"
-        return "Production"
+        return self.key_type.title()
 
     @property
     def truncated_key(self):
