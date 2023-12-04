@@ -14,7 +14,7 @@ from django.views.generic.edit import DeleteView, UpdateView
 from sesame.utils import get_query_string, get_user
 
 from api_users.forms import APIKeyForm, LoginForm, UserProfileForm
-from api_users.utils import get_domain
+from api_users.utils import get_domain, send_new_key_notification
 
 User = get_user_model()
 
@@ -118,10 +118,12 @@ class ProfileView(LoginRequiredMixin, FormView):
         """
         Build a APIKey via the form, attach the user from the request and save.
         """
-        key = form.save(commit=False)
-        key.user = self.request.user
-        key.save()
-        messages.success(self.request, f"{key.name} API key was created")
+        self.object = form.save()
+        messages.success(
+            self.request, f"{self.object.name} API key was created"
+        )
+        send_new_key_notification(self.request, self.object)
+
         return super().form_valid(form=form)
 
     def get_success_url(self):

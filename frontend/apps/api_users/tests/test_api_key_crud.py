@@ -3,6 +3,7 @@ from api_users.management.commands.sync_api_keys import (
     Command as SyncApiKeysCommand,
 )
 from api_users.models import APIKey, CustomUser
+from api_users.utils import send_new_key_notification
 from common.settings import API_PLANS
 from django.test.utils import override_settings
 
@@ -167,3 +168,29 @@ def test_standard_users_can_make_n_dev_keys_one_prod(db):
     assert form.errors == {}
     model = form.save()
     assert model.key_type == "development"
+
+
+def test_email_dc_about_key_api_keys(db, rf, mailoutbox):
+    request = rf.get("/")
+    api_user = CustomUser.objects.create(
+        api_plan=API_PLANS["standard"].value,
+        name="Test User",
+        email="test@example.com",
+    )
+    api_key = APIKey.objects.create(
+        user=api_user,
+        key_type="development",
+        name="Test Key",
+        usage_reason="Just testing",
+    )
+    send_new_key_notification(request, api_key)
+    assert len(mailoutbox) == 1
+    email_message = mailoutbox[0]
+    assert email_message.subject == "New email key creation"
+    assert "This is a development key." in email_message.body
+    assert '> "Just testing"' in email_message.body
+    assert (
+        "You can contact Test User on test@example.com." in email_message.body
+    )
+    assert email_message.from_email == "developers@democracyclub.org.uk"
+    assert list(email_message.to) == ["hello@democracyclub.org.uk"]
