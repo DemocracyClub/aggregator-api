@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load dc_forms %}
+
+{% block page_title %}
+	Log in
+{% endblock %}
+
+{% block content %}
+
+  {% if not messages %}
+    <h1>Login</h1>
+
+    <p>Please enter your email and we will send you a magic link URL to authenticate your account.</p>
+    <p>By logging in, you agree to our <a href="{% url "terms" %}">usage terms</a>.</p>
+    <form method="post">
+      {% csrf_token %}
+      {{ form|dc_form }}
+      <button type="submit" class="ds-button">Login</button>
+    </form>
+  {% endif %}
+
+{% endblock %}

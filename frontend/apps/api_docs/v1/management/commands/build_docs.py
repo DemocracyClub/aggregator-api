@@ -11,6 +11,8 @@ class Command(BaseCommand):
         request = HttpRequest()
         request.method = "GET"
         request.META["REMOTE_ADDR"] = "localhost"
+        request.META["SERVER_NAME"] = "localhost"
+        request.META["SERVER_PORT"] = "80"
         request.path = "/foo/bar/"
 
         view = ApiBlueprintView.as_view(

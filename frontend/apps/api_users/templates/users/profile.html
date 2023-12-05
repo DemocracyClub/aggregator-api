@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load dc_forms %}
+{% block content %}
+
+    <h1>Profile</h1>
+    <p>Hello, {{ request.user.name }}. From here you can manage and create new API keys.</p>
+    <p><a class="ds-cta" href="{% url "api_users:add_profile_details" %}">Edit profile</a></p>
+    <h2>Your API plan</h2>
+    <p>{{ request.user.api_plan|title }} plan</p>
+    <p>
+    {% if request.user.api_plan == "hobbyists"  %}
+    	You can only make one hobbyist key, and it will be rate limited to
+        1,000 requests per day.
+    {% endif %}
+    {% if request.user.api_plan == "standard"  %}
+    	You can make one dev key and one production key. Your development key is limited to 1,000 requests a day.
+        Your production key can make 10,000 requests per day.
+    {% endif %}
+    {% if request.user.api_plan == "enterprise"  %}
+    	You can make unlimited dev keys and one production key. Your development keys are limited to 1,000 requests a day.
+        Your production key isn't rate limited. Please let us know if and when you expect large traffic spikes!
+    {% endif %}
+
+    </p>
+    {% if request.user.api_plan != "enterprise" %}
+        <p><a href="https://democracyclub.org.uk/contact/">Get in touch to upgrade your plan</a>.
+            or you can always <a href="https://slack.democracyclub.org.uk/">join our Slack</a>
+            to talk to our community.</p>
+    {% endif %}
+
+    {% if request.user.api_plan != "hobbyist" %}
+        <h2>Support</h2>
+        <p>Email <a href="mailto:hello@democracyclub.org.uk">hello@democracyclub.org.uk</a>
+            for API support.
+        </p>
+        {% if request.user.api_plan == "enterprise" %}
+            <p>
+                For emergencies or direct support you can email
+                <a href="mailto:developers@democracyclub.org.uk">developers@democracyclub.org.uk</a>
+                <a href="mailto:sym@democracyclub.org.uk">sym@democracyclub.org.uk</a>,
+            or call Sym on
+                <a href="tel:+447742079314">07742079314</a>,
+            </p>
+        {% endif %}
+    {% endif %}
+
+    {% if api_keys %}
+        <h2>Your API keys</h2>
+        <p>Pass these keys in using <code>?auth_token=</code> as a GET parameter.</p>
+        {% for key in api_keys %}
+            <div class="ds-card">
+                <div class="ds-card-body ds-stack">
+                    <h3>{{ key.name }}</h3>
+                    <dl>
+                        <dt>Key type</dt>
+                        <dd>
+                            <p>{{ key.label }}</p>
+                            {% if key.key_type == "development" %}
+                            	<p>Limited to 1,000 requests per day.
+                                {% if request.user.api_plan == "hobbyists" %}
+                                	<a href="https://democracyclub.org.uk/contact/">Get in touch for production keys</a>.
+                                {% endif %}
+                                </p>
+                            {% endif %}
+                            <p></p>
+                        </dd>
+                        <dt>Key</dt>
+                        <dd><code>{{ key.key }}</code></dd>
+                    </dl>
+                    <p>Created {{ key.created_at }}</p>
+                    <div class="ds-cluster-right">
+                        <div>
+                            <a href="{{ key.get_absolute_delete_url }}" class="ds-cta">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <h2>Create a new API key</h2>
+    <p>Use the form below to create a new API token</p>
+    <form method="POST" action=".">
+        {% csrf_token %}
+        {{ form|dc_form }}
+        <button class="ds-button-blue" type="submit">Create key</button>
+    </form>
+
+{% endblock %}

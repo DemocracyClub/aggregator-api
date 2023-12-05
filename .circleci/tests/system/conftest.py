@@ -11,7 +11,7 @@ from tomlkit.toml_file import TOMLFile
 def tmp_api_user():
     api_key = secrets.token_urlsafe(16)
     user_id = secrets.token_urlsafe(16)
-    user = User(api_key=api_key, user_id=user_id)
+    user = User(api_key=api_key, user_id=user_id, key_type="development")
     user.save()
     yield user
     user.delete()

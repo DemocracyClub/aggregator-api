@@ -24,10 +24,12 @@ jobs:
       #- run: pipenv run pipenv check # before save_cache so an insecure cache is never saved
     - run: make lambda-layers/FrontendDependenciesLayer/requirements.txt
     - run: pipenv run collectstatic
+    - run: pipenv run make aggregator/apps/api_docs/v1/templates/api_docs_rendered.html APP_IS_BEHIND_CLOUDFRONT=True
     - persist_to_workspace:
         root: ~/repo/
         paths:
           - lambda-layers/FrontendDependenciesLayer/requirements.txt
+          - aggregator/apps/api_docs/v1/templates/api_docs_rendered.html
           - frontend/static_files/
     - save_cache:
         when: on_success
@@ -67,9 +69,7 @@ jobs:
     - checkout
     - attach_workspace:
         at: ~/repo/
-    - run: pip install --upgrade pip pipenv boto3
-    - run: pip install -r lambda-layers/FrontendDependenciesLayer/requirements.txt
-    - run: make aggregator/apps/api_docs/v1/templates/api_docs_rendered.html APP_IS_BEHIND_CLOUDFRONT=True
+    - run: pip install --upgrade pip pipenv
     - run: sam build ${DASH_DASH_DEBUG}
     - persist_to_workspace:
         root: ~/repo/
@@ -77,7 +77,7 @@ jobs:
 
   sam_deploy:
     docker:
-    - image: cimg/python:3.10
+    - image: public.ecr.aws/sam/build-python3.10:latest
     working_directory: ~/repo/
     parameters:
       dc-environment:
@@ -98,8 +98,6 @@ jobs:
     - restore_cache:
         keys:
         - v6-dependencies-{{ checksum "Pipfile.lock" }}
-    - run: *install-pipenv
-    - run: pip install aws-sam-cli
     - run: printenv DJANGO_SETTINGS_MODULE SAM_CONFIG_FILE SAM_LAMBDA_CONFIG_ENV SAM_PUBLIC_CONFIG_ENV
     - run: printenv SECRET_KEY | md5sum
     - run: printenv AWS_ACCESS_KEY_ID | md5sum
@@ -120,7 +118,7 @@ jobs:
     - run:
         name: "pipenv run sam deploy # App: Lambda + API Gateway"
         command: |
-          pipenv run sam deploy ${DASH_DASH_DEBUG} \
+          sam deploy ${DASH_DASH_DEBUG} \
             --config-file ~/repo/${SAM_CONFIG_FILE} \
             --config-env $SAM_LAMBDA_CONFIG_ENV \
             --template-file ~/repo/.aws-sam/build/template.yaml \
@@ -136,8 +134,16 @@ jobs:
               "
 
     - run:
-        name:   "pipenv run pytest .circleci/tests/system/test_app_via_api_gateway.py # Smoke test Lambda deployment"
-        command: pipenv run pytest -vrA --disable-warnings .circleci/tests/system/test_app_via_api_gateway.py
+        name: "Migrate database"
+        command: |
+          AWS_REGION=eu-west-2 aws lambda invoke --function-name ApiFrontendManagementFunction --payload '{ "command": "migrate", "args": ["--no-input"] }' --cli-binary-format raw-in-base64-out -
+
+    - run:
+        name:   "Install test dependencies"
+        command: pip install -r .circleci/tests/requirements.txt
+    - run:
+        name:   "pytest .circleci/tests/system/test_app_via_api_gateway.py # Smoke test Lambda deployment"
+        command: pytest -vrA --disable-warnings .circleci/tests/system/test_app_via_api_gateway.py
 
     - run:
         name: printenv PUBLIC_FQDN CERTIFICATE_ARN
@@ -152,10 +158,10 @@ jobs:
           printenv PUBLIC_FQDN CERTIFICATE_ARN | sed -E 's/^(.)(.)/\1\x00\2/'
 
     - run:
-        name: "pipenv run sam deploy # Public access: CDN + DNS"
+        name: "sam deploy # Public access: CDN + DNS"
         no_output_timeout: 20m # CloudFront can take longer than CircleCI's 10m default
         command: |
-          pipenv run sam deploy ${DASH_DASH_DEBUG} \
+          sam deploy ${DASH_DASH_DEBUG} \
             --config-file ~/repo/${SAM_CONFIG_FILE} \
             --config-env $SAM_PUBLIC_CONFIG_ENV \
             --template-file ~/repo/public-access-template.yaml \
@@ -166,8 +172,8 @@ jobs:
               "
 
     - run:
-        name:   "pipenv run pytest .circleci/tests/system/ # Smoke test CDN+DNS deployment"
-        command: pipenv run pytest -vrA --disable-warnings .circleci/tests/system/
+        name:   "pytest .circleci/tests/system/ # Smoke test CDN+DNS deployment"
+        command: pytest -vrA --disable-warnings .circleci/tests/system/
 
 workflows:
   version: 2

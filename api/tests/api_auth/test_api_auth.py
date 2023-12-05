@@ -2,7 +2,7 @@ import os
 
 import boto3
 import pytest
-from api_auth.handler import dynamodb_auth
+from api_auth.handler import dynamodb_auth, lambda_handler
 from common.auth_models import User
 from moto import mock_dynamodb
 from mypy_boto3_dynamodb import DynamoDBServiceResource
@@ -43,7 +43,7 @@ def dynamodb(aws_credentials):
 
 
 def test_auth_active_key(dynamodb):
-    user = User(api_key="12345", user_id="1")
+    user = User(api_key="12345", user_id="1", key_type="development")
     user.save()
     resp = dynamodb_auth("12345")
     assert resp["authenticated"] is True
@@ -56,7 +56,9 @@ def test_auth_incorrect_key(dynamodb):
 
 
 def test_auth_inactive_key(dynamodb):
-    user = User(api_key="12345", user_id="1", is_active=False)
+    user = User(
+        api_key="12345", user_id="1", is_active=False, key_type="development"
+    )
     user.save()
     resp = dynamodb_auth("12345")
     assert resp["authenticated"] is False
@@ -64,7 +66,12 @@ def test_auth_inactive_key(dynamodb):
 
 
 def test_auth_rate_limit_warn(dynamodb):
-    user = User(api_key="12345", user_id="1", rate_limit_warn=True)
+    user = User(
+        api_key="12345",
+        user_id="1",
+        rate_limit_warn=True,
+        key_type="development",
+    )
     user.save()
     resp = dynamodb_auth("12345")
     assert resp["authenticated"] is True
@@ -72,7 +79,12 @@ def test_auth_rate_limit_warn(dynamodb):
 
 
 def test_auth_delete_user(dynamodb):
-    user = User(api_key="12345", user_id="1", rate_limit_warn=True)
+    user = User(
+        api_key="12345",
+        user_id="1",
+        rate_limit_warn=True,
+        key_type="development",
+    )
     user.save()
     resp = dynamodb_auth("12345")
     assert resp["authenticated"] is True
@@ -80,3 +92,31 @@ def test_auth_delete_user(dynamodb):
     resp = dynamodb_auth("12345")
     assert resp["authenticated"] is False
     assert resp["error"] == "API key not found"
+
+
+def test_lambda_no_api_key(dynamodb):
+    from api_auth import handler
+
+    handler.USE_DYNAMODB_AUTH = True
+    # No auth_token key provided
+    with pytest.raises(Exception) as e:
+        lambda_handler({"queryStringParameters": {}}, {})
+    assert str(e.value) == "Unauthorized"
+
+    # Key provided, no value
+    with pytest.raises(Exception) as e:
+        lambda_handler({"queryStringParameters": {"auth_token": None}}, {})
+    assert str(e.value) == "Unauthorized"
+
+    # Key provided, with value, but not a valid key
+    with pytest.raises(Exception) as e:
+        lambda_handler({"queryStringParameters": {"auth_token": "12345"}}, {})
+    assert str(e.value) == "Unauthorized"
+
+
+def test_from_dynamodb(dynamodb):
+    user = User(api_key="12345", user_id="1", key_type="development")
+    user.save()
+    user = User.from_dynamodb(api_key="12345")
+    assert user.user_id == "1"
+    assert user.rate_limit_warn is False

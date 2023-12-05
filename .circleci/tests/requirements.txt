@@ -1,0 +1,5 @@
+pytest
+boto3
+api/common
+tomlkit
+requests

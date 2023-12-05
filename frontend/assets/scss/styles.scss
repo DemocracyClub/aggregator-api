@@ -102,7 +102,6 @@ $scope: false;
 }
 
 .api-method {
-  @extend code;
   border-radius: 5px;
   padding: 0.2em 0.5em;
 }
@@ -115,7 +114,6 @@ $scope: false;
   background-color: $greenForWhite;
   color: #FFF;
 }
-
 
 .api-resource, .api-resource-group {
   @extend .ds-stack;
@@ -152,13 +150,18 @@ $scope: false;
 }
 
 main.wide {
+  width:95%;
   max-width: 100em;
 }
 
-code, pre {
-  background-color: #DDDDDD;
-  padding:3px;
-  font-family: "Courier New", monospace;
+.ds-dark code, pre {
+  background-color: $darkBlack;
+}
+
+.ds-dark input,
+.ds-dark select,
+.ds-dark textarea {
+  color: $black;
 }
 
 pre {
@@ -170,4 +173,13 @@ pre {
   @extend .ds-codeblock;
   white-space: nowrap;
 
+}
+
+input, button,
+textarea, select {
+  font: inherit;
+}
+
+textarea:not([rows]) {
+  min-height: 10em;
 }

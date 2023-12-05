@@ -71,6 +71,23 @@ Parameters:
     - "False"
     Default: "False"
 
+  AppSmtpHost:
+    Description: "SMTP Host"
+    Default: AppSmtpHost
+    Type: AWS::SSM::Parameter::Value<String>
+
+  AppSmtpUser:
+    Description: "SMTP User"
+    Default: AppSmtpUser
+    Type: AWS::SSM::Parameter::Value<String>
+
+  AppSmtpPass:
+    Description: "SMTP Password"
+    Default: AppSmtpPass
+    Type: AWS::SSM::Parameter::Value<String>
+
+
+
   AppLogRetentionDays:
     Description: "The number of days that CloudWatch Logs will keep logs from the app."
     Type: Number
@@ -256,7 +273,7 @@ Resources:
     Properties:
       Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
       CodeUri: .
-      Handler: frontend.lambda_awsgi.lambda_handler
+      Handler: frontend.asgi.handler
       Layers:
         - !Ref FrontendDependenciesLayer
       Runtime: python3.10
@@ -273,6 +290,9 @@ Resources:
           DATABASE_PASS: !Ref AppPostgresPassword
           FIREHOSE_ACCOUNT_ARN: !Ref AppLoggingAssumeRoleArn
           DEBUG: !Ref AppDebug
+          SMTP_HOST: !Ref AppSmtpHost
+          SMTP_USERNAME: !Ref AppSmtpUser
+          SMTP_PASSWORD: !Ref AppSmtpPass
       Events:
         HTTPRequests:
           Type: Api
@@ -284,6 +304,32 @@ Resources:
           Properties:
             Path: /
             Method: ANY
+
+  ApiFrontendManagementFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: ApiFrontendManagementFunction
+      Timeout: 60
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
+      CodeUri: .
+      Handler: frontend.lambda_awsgi.management_handler
+      Layers:
+        - !Ref FrontendDependenciesLayer
+      Runtime: python3.10
+      MemorySize: 512
+      Environment:
+        Variables:
+          SECRET_KEY: !Ref AppSecretKey
+          SENTRY_DSN: !Ref AppSentryDSN
+          WDIV_API_KEY: !Ref AppWdivApiKey
+          DJANGO_SETTINGS_MODULE: !Ref AppDjangoSettingsModule
+          APP_IS_BEHIND_CLOUDFRONT: !Ref AppIsBehindCloudFront
+          DATABASE_HOST: !Ref AppPostgresHost
+          POSTGRES_DATABASE_NAME: !Ref AppPostgresDatabaseName
+          DATABASE_PASS: !Ref AppPostgresPassword
+          FIREHOSE_ACCOUNT_ARN: !Ref AppLoggingAssumeRoleArn
+          DEBUG: !Ref AppDebug
+
 
   ApiFrontendFunctionLogGroup:
     Type: AWS::Logs::LogGroup

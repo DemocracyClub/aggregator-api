@@ -15,7 +15,7 @@ setup(
         "httpx[http2]==0.23.0",
         "mangum==0.17.0",
         "starlette==0.26.1",
-        "dc_logging_utils @ https://github.com/DemocracyClub/dc_logging/archive/refs/tags/1.0.2.tar.gz",
+        "dc-logging-utils @ git+https://github.com/DemocracyClub/dc_logging.git@1.0.2",
         "sentry-sdk[starlette]",
         "urllib3<2.0.0",
     ],

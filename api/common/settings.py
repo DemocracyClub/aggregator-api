@@ -1,5 +1,7 @@
 import os
 
+from common.auth_models import ApiPlan
+
 USER_AGENT = os.environ.get("API_USER_AGENT", "devs.DC API")
 WDIV_API_KEY = os.environ.get("WDIV_API_KEY", None)
 
@@ -12,3 +14,14 @@ EE_BASE_URL = "https://elections.democracyclub.org.uk/api/"
 RECALL_PETITION_ENABLED = True
 
 DEBUG = bool(int(os.environ.get("DEBUG", "0")))
+API_PLANS = {
+    "hobbyists": ApiPlan(
+        value="hobbyists", label="Hobbyists", request_per_day=1_000
+    ),
+    "standard": ApiPlan(
+        value="standard", label="Standard", request_per_day=10_000
+    ),
+    "enterprise": ApiPlan(
+        value="enterprise", label="Enterprise", request_per_day=0
+    ),
+}
