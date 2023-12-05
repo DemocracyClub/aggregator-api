@@ -99,6 +99,20 @@ Resources:
           MinTTL: '0'
           MaxTTL: '0'
           DefaultTTL: '0'
+        - AllowedMethods: [ GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE ]
+          PathPattern: admin/*
+          TargetOriginId: FrontendApp
+          ForwardedValues:
+            QueryString: true
+            Cookies:
+              Forward: all
+            Headers:
+              - Authorization
+              - Origin
+          ViewerProtocolPolicy: "redirect-to-https"
+          MinTTL: '0'
+          MaxTTL: '0'
+          DefaultTTL: '0'
         - AllowedMethods: [ GET, HEAD, OPTIONS ]
           PathPattern: static/*
           TargetOriginId: Static
