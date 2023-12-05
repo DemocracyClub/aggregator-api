@@ -71,6 +71,23 @@ Parameters:
     - "False"
     Default: "False"
 
+  AppSmtpHost:
+    Description: "SMTP Host"
+    Default: AppSmtpHost
+    Type: AWS::SSM::Parameter::Value<String>
+
+  AppSmtpUser:
+    Description: "SMTP User"
+    Default: AppSmtpUser
+    Type: AWS::SSM::Parameter::Value<String>
+
+  AppSmtpPass:
+    Description: "SMTP Password"
+    Default: AppSmtpPass
+    Type: AWS::SSM::Parameter::Value<String>
+
+
+
   AppLogRetentionDays:
     Description: "The number of days that CloudWatch Logs will keep logs from the app."
     Type: Number
@@ -273,6 +290,9 @@ Resources:
           DATABASE_PASS: !Ref AppPostgresPassword
           FIREHOSE_ACCOUNT_ARN: !Ref AppLoggingAssumeRoleArn
           DEBUG: !Ref AppDebug
+          SMTP_HOST: !Ref AppSmtpHost
+          SMTP_USERNAME: !Ref AppSmtpUser
+          SMTP_PASSWORD: !Ref AppSmtpPass
       Events:
         HTTPRequests:
           Type: Api
