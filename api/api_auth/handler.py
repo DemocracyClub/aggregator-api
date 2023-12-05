@@ -8,7 +8,13 @@ from common.sentry_helper import init_sentry  # noqa
 
 init_sentry()
 
-USE_DYNAMODB_AUTH = os.environ.get("USE_DYNAMODB_AUTH", False)
+USE_DYNAMODB_AUTH = os.environ.get("USE_DYNAMODB_AUTH", False) in [
+    True,
+    "true",
+    "True",
+    "TRUE",
+]
+ENFORCE_AUTH = False
 
 
 def dynamodb_auth(api_key: str, region_name="eu-west-2"):
@@ -46,7 +52,18 @@ def lambda_handler(event, context):
     if USE_DYNAMODB_AUTH:
         authentication = dynamodb_auth(api_key)
         if not authentication["authenticated"]:
-            raise Exception("Unauthorized")
+            if ENFORCE_AUTH:
+                raise Exception("Unauthorized")
+            print(
+                f"AUTH_ERROR: Would have raised 'Unauthorized' for key {api_key} but the Authorizer isn't enforced at the moment. Authorizing anyway"
+            )
+            authentication = {
+                "data": {"user_id": api_key},
+                "authenticated": True,
+                "error": None,
+                "warnings": [],
+            }
+
     else:
         authentication = {
             "data": {"user_id": api_key},

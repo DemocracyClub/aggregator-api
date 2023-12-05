@@ -86,7 +86,10 @@ Parameters:
     Default: AppSmtpPass
     Type: AWS::SSM::Parameter::Value<String>
 
-
+  AppUseDynamoDBAuth:
+    Description: "Enable or disable DynamoDB Auth. Set to 'True' or 'False'."
+    Default: AppUseDynamoDBAuth
+    Type: AWS::SSM::Parameter::Value<String>
 
   AppLogRetentionDays:
     Description: "The number of days that CloudWatch Logs will keep logs from the app."
@@ -157,6 +160,7 @@ Resources:
       Environment:
         Variables:
           SENTRY_DSN: !Ref AppSentryDSN
+          USE_DYNAMODB_AUTH: !Ref AppUseDynamoDBAuth
       Layers:
         - !Ref APICommonLayer
       Runtime: python3.10
