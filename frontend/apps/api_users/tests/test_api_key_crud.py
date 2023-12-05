@@ -186,7 +186,7 @@ def test_email_dc_about_key_api_keys(db, rf, mailoutbox):
     send_new_key_notification(request, api_key)
     assert len(mailoutbox) == 1
     email_message = mailoutbox[0]
-    assert email_message.subject == "New email key creation"
+    assert email_message.subject == "New API key creation"
     assert "This is a development key." in email_message.body
     assert '> "Just testing"' in email_message.body
     assert (

@@ -34,7 +34,7 @@ def send_new_key_notification(request, api_key: APIKey):
 
     """
     send_mail(
-        "New email key creation",
+        "New API key creation",
         message,
         "developers@democracyclub.org.uk",
         ["hello@democracyclub.org.uk"],
