@@ -14,7 +14,7 @@ USE_DYNAMODB_AUTH = os.environ.get("USE_DYNAMODB_AUTH", False) in [
     "True",
     "TRUE",
 ]
-ENFORCE_AUTH = False
+ENFORCE_AUTH = True
 
 
 def dynamodb_auth(api_key: str, region_name="eu-west-2"):
