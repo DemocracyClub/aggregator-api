@@ -95,6 +95,14 @@ class User:
             rate_limit_warn=api_key_model.rate_limit_warn,
         )
 
+    @classmethod
+    def unauthenticated_user(cls):
+        return cls(
+            user_id="unauthenticated_user",
+            api_key="unauthenticated_user",
+            key_type="unauthenticated_user",
+        )
+
 
 @dataclass
 class ApiPlan:
