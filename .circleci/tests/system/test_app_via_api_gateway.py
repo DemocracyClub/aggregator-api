@@ -27,3 +27,9 @@ def test_api_docs_assets_style_css_filename_contains_md5_of_content(
     styles_file = requests.get(frontend_url + styles_path)
     content_md5_start = hashlib.md5(styles_file.content).hexdigest()[:12]
     assert f".{content_md5_start}." in styles_path
+
+
+def test_sandbox_responses(api_url):
+    base_url = urljoin(api_url, "api/v1/sandbox/postcode/AA11AA/")
+    resp = requests.get(base_url)
+    assert resp.status_code == 200
