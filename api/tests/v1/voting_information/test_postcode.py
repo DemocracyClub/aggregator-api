@@ -12,9 +12,7 @@ from voting_information.elections_api_client import (
 )
 
 
-@pytest.mark.parametrize(
-    "postcode,input_fixture", [(k, v) for k, v in fixture_map.items()]
-)
+@pytest.mark.parametrize("postcode,input_fixture", list(fixture_map.items()))
 def test_valid(vi_app_client, respx_mock, postcode, input_fixture):
     # iterate through the same set of expected inputs/outputs
     # we test against in test_stitcher.py

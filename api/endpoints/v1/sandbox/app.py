@@ -5,24 +5,33 @@ from common.middleware import MIDDLEWARE
 from common.sentry_helper import init_sentry
 from mangum import Mangum
 from starlette.applications import Starlette
-from starlette.responses import FileResponse
+from starlette.responses import FileResponse, Response
 from starlette.routing import Route
 
 init_sentry()
 
 
 def sandbox_content(filename):
-    return Path(__file__).parent / f"sandbox-responses/{filename}.json"
+    path = Path(__file__).parent / f"sandbox-responses/{filename}.json"
+    if not path.exists():
+        raise FileNotFoundError()
+    return path
 
 
 async def sandbox_postcode(request):
-    return FileResponse(
-        sandbox_content(request.path_params["postcode"].upper())
-    )
+    try:
+        return FileResponse(
+            sandbox_content(request.path_params["postcode"].upper())
+        )
+    except FileNotFoundError:
+        return Response(status_code=404)
 
 
 async def sandbox_address(request):
-    return FileResponse(sandbox_content(request.path_params["uprn"]))
+    try:
+        return FileResponse(sandbox_content(request.path_params["uprn"]))
+    except FileNotFoundError:
+        return Response(status_code=404)
 
 
 routes = [

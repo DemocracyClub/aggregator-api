@@ -81,9 +81,7 @@ class APIGatewayAuthenticatorContextMiddleware:
             user = User.from_authorizer_data(authorizer_data)
         elif aws_event:
             # We're on AWS Lambda, but this isn't a function with an authorizer
-            user = User(
-                user_id="unauthenticated_user", api_key="unauthenticated_user"
-            )
+            user = User.unauthenticated_user()
         else:
             # We're not on AWS Lambda
             user = User(
