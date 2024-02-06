@@ -245,7 +245,7 @@ class Stitcher:
                     "postcode": address["postcode"],
                     "slug": address["uprn"],
                     "url": build_absolute_url(
-                        self.request.base_url,
+                        str(self.request.base_url),
                         "address",
                         uprn=address["uprn"],
                         sandbox=self.sandbox,
