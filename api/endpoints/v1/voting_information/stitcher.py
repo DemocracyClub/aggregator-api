@@ -4,6 +4,7 @@ from typing import Dict, List, Optional
 
 from common import settings
 from common.url_resolver import build_absolute_url
+from parl_boundary_changes.client import ParlBoundaryChangeApiClient
 from recall_petitions.client import RecallPetitionApiClient
 from starlette.requests import Request
 
@@ -356,6 +357,21 @@ class Stitcher:
             "postcode_location": self.wdiv_resp["postcode_location"],
         }
 
+        postcode = None
+        uprn = None
+        # Get the postcode for the property
+        if self.request.path_params.get("postcode"):
+            postcode = self.request.path_params.get("postcode")
+        else:
+            if addresses := self.wdiv_resp["addresses"]:
+                postcode = addresses[0]["postcode"]
+                uprn = self.request.path_params.get("uprn")
+
+        if not postcode:
+            # Don't do anything more at this stage, if for some reason we don't
+            # have a postcode
+            return resp
+
         # TODO: Remove when we remove petitions
         if (
             settings.RECALL_PETITION_ENABLED
@@ -367,9 +383,18 @@ class Stitcher:
             council_id = resp["electoral_services"]["council_id"]
             if council_id in recall_petition_councils:
                 recall_petition_client = RecallPetitionApiClient(
-                    self.request, council_id=council_id
+                    self.request,
+                    postcode=postcode,
+                    uprn=uprn,
+                    council_id=council_id,
                 )
-                return recall_petition_client.patch_response(resp)
+                resp = recall_petition_client.patch_response(resp)
         # TODO: End removal code
+
+        if settings.PARL_BOUNDARY_CHANGES_ENABLED:
+            parl_boundary_change = ParlBoundaryChangeApiClient(
+                self.request, postcode=postcode, uprn=uprn
+            )
+            return parl_boundary_change.patch_response(resp)
 
         return resp
