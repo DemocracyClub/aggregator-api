@@ -12,7 +12,7 @@ setup(
     packages=["common"],
     package_dir={"common": "."},
     install_requires=[
-        "httpx[http2]==0.23.0",
+        "httpx[http2]==0.26.0",
         "mangum==0.17.0",
         "starlette==0.26.1",
         "dc-logging-utils @ git+https://github.com/DemocracyClub/dc_logging.git@1.0.2",
