@@ -4,7 +4,7 @@ import boto3
 import pytest
 from api_auth.handler import dynamodb_auth, lambda_handler
 from common.auth_models import User
-from moto import mock_dynamodb
+from moto import mock_aws
 from mypy_boto3_dynamodb import DynamoDBServiceResource
 
 
@@ -21,7 +21,7 @@ def aws_credentials():
 
 @pytest.fixture(scope="function")
 def dynamodb(aws_credentials):
-    with mock_dynamodb():
+    with mock_aws():
         db_client: DynamoDBServiceResource = boto3.resource(
             "dynamodb", region_name="eu-west-2"
         )
