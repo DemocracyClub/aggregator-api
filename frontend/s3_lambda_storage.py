@@ -31,7 +31,7 @@ class LambdaSASSCompiler(SASSCompiler):
             output_style="compressed",
             include_paths=settings.SASS_INCLUDE_PATHS,
         )
-        if type(out_value) == bytes:
+        if isinstance(out_value, bytes):
             out_value = out_value.decode("utf8")
 
         with staticfiles_storage.open(outfile, "w") as out:

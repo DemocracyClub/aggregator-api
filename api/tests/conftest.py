@@ -10,6 +10,21 @@ def vi_app_client() -> TestClient:
 
 
 @pytest.fixture(scope="function")
+def api_settings():
+    from common import settings
+
+    initial_settings = {
+        k: getattr(settings, k)
+        for k in [
+            setting for setting in dir(settings) if not setting.startswith("_")
+        ]
+    }
+    yield settings
+    for setting, value in initial_settings.items():
+        setattr(settings, setting, value)
+
+
+@pytest.fixture(scope="function")
 def mangum_app_client():
     """
     Use when testing the Mangum integration. Useful when testing

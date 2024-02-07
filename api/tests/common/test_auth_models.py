@@ -12,12 +12,14 @@ def test_unauthenticated():
     assert user.user_id == "unauthenticated_user"
 
 
-def test_authentication_via_aws_like_scope(mangum_app_client, respx_mock):
+def test_authentication_via_aws_like_scope(
+    mangum_app_client, respx_mock, api_settings
+):
     """
     Use Mangum to force the AWS-like scope, so we can test that the
     authentication middleware is working properly
     """
-
+    api_settings.PARL_BOUNDARY_CHANGES_ENABLED = False
     postcode = "AA11AA"
     fixture = load_fixture("addresspc_endpoints/test_no_elections", "wdiv")
     respx_mock.get(

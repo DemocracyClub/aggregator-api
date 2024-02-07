@@ -13,7 +13,10 @@ from voting_information.elections_api_client import (
 
 
 @pytest.mark.parametrize("postcode,input_fixture", list(fixture_map.items()))
-def test_valid(vi_app_client, respx_mock, postcode, input_fixture):
+def test_valid(
+    vi_app_client, respx_mock, postcode, input_fixture, api_settings
+):
+    api_settings.PARL_BOUNDARY_CHANGES_ENABLED = False
     # iterate through the same set of expected inputs/outputs
     # we test against in test_stitcher.py
 
@@ -44,7 +47,8 @@ def test_valid(vi_app_client, respx_mock, postcode, input_fixture):
     assert response.json() == expected
 
 
-def test_wcivf_missing_ballot(respx_mock, vi_app_client):
+def test_wcivf_missing_ballot(respx_mock, vi_app_client, api_settings):
+    api_settings.PARL_BOUNDARY_CHANGES_ENABLED = False
     load_fixture("addresspc_endpoints/test_multiple_elections", "wcivf")
     fixture = load_fixture(
         "addresspc_endpoints/test_multiple_elections", "wdiv"
@@ -76,7 +80,8 @@ def test_wcivf_missing_ballot(respx_mock, vi_app_client):
     assert "mayor.lewisham.2018-05-03" in resp.text
 
 
-def test_logging_working(respx_mock, vi_app_client, caplog):
+def test_logging_working(respx_mock, vi_app_client, caplog, api_settings):
+    api_settings.PARL_BOUNDARY_CHANGES_ENABLED = False
     caplog.set_level(logging.DEBUG)
     fixture = load_fixture(
         "addresspc_endpoints/test_multiple_elections", "wdiv"

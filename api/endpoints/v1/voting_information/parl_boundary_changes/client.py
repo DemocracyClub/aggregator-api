@@ -1,6 +1,7 @@
 import os
 from typing import Any, Dict
 
+from common import settings
 from parl_boundary_changes.models import (
     BaseParlBoundariesResponse,
     BaseParlBoundaryChange,
@@ -14,7 +15,7 @@ class ParlBoundaryChangeApiClient(S3SelectPostcodeHelper):
         return f"addressbase-lookups.{dc_env}"
 
     def get_shard_key(self) -> str:
-        return f"parl-2023-boundary-review/20230913/{self.postcode.outcode}.parquet"
+        return f"{settings.PARL_BOUNDARY_DATA_KEY_PREFIX}/{self.postcode.outcode}.parquet"
 
     def get_input_serialization(self) -> Dict[str, Any]:
         return {"Parquet": {}}
@@ -37,7 +38,7 @@ class ParlBoundaryChangeApiClient(S3SelectPostcodeHelper):
                 f"{row['new_constituencies_official_identifier']}-{row['new_constituencies_name']}"
             )
         if not row:
-            return {}
+            return {"parl_boundary_changes": None}
         old_constituencies = list(old_constituencies)
         new_constituencies = list(new_constituencies)
 

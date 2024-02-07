@@ -4,6 +4,7 @@ from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 
 import boto3
+from botocore.exceptions import ClientError
 from starlette.requests import Request
 
 _s3_client_cache = None
@@ -59,14 +60,24 @@ class S3SelectPostcodeHelper(metaclass=ABCMeta):
         shard_key = self.get_shard_key()
 
         bucket_name = self.get_bucket_name()
-        resp = self.s3_client.select_object_content(
-            Bucket=bucket_name,
-            Key=shard_key,
-            Expression=self.get_postcode_query_expression(),
-            ExpressionType="SQL",
-            InputSerialization=self.get_input_serialization(),
-            OutputSerialization={"JSON": {}},
-        )
+        try:
+            resp = self.s3_client.select_object_content(
+                Bucket=bucket_name,
+                Key=shard_key,
+                Expression=self.get_postcode_query_expression(),
+                ExpressionType="SQL",
+                InputSerialization=self.get_input_serialization(),
+                OutputSerialization={"JSON": {}},
+            )
+        except AttributeError:
+            # Special case for Moto that doesn't return a ClientError
+            return []
+        except ClientError as ex:
+            if ex.response["Error"]["Code"] == "NoSuchKey":
+                # If there's no key for whatever reason, just return quietly
+                return []
+            raise
+
         return self._response_to_list(resp)
 
     def get_data_for_uprn(self):
