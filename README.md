@@ -1,6 +1,6 @@
 [![CircleCI](https://circleci.com/gh/DemocracyClub/aggregator-api.svg?style=svg)](https://circleci.com/gh/DemocracyClub/aggregator-api)
 [![Coverage Status](https://coveralls.io/repos/github/DemocracyClub/aggregator-api/badge.svg?branch=master)](https://coveralls.io/github/DemocracyClub/aggregator-api?branch=master)
-![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
 # developers.democracyclub.org.uk API
 
@@ -28,7 +28,7 @@ This project provides an API gateway in front of other Democracy Club APIs.
 
 * Run the test suite: `pytest`
 * Run lint checks: `pytest --ruff`
-* Auto-format: `black .`
+* Auto-format: `ruff format .`
 
 ### Documentation
 
