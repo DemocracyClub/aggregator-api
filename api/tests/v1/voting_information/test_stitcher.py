@@ -1,4 +1,6 @@
 import pytest
+from starlette.datastructures import Headers
+from starlette.requests import Request
 from starlette.testclient import TestClient
 from tests.helpers import fixture_map, load_fixture, load_sandbox_output
 from voting_information.app import app
@@ -16,17 +18,33 @@ def stitcher_client():
     )
 
 
-def test_no_ballots(stitcher_client):
+@pytest.fixture(scope="function")
+def mock_request(stitcher_client):
+    def request_factory(path):
+        return Request(
+            {
+                "type": "http",
+                "path": path,
+                "server": ("developers.democracyclub.org.uk", 443),
+                "scheme": "https",
+                "headers": Headers().raw,
+            }
+        )
+
+    return request_factory
+
+
+def test_no_ballots(mock_request):
     postcode = "AA11AA"
     s = Stitcher(
         load_fixture(fixture_map[postcode], "wdiv"),
         load_fixture(fixture_map[postcode], "wcivf"),
-        stitcher_client,
+        mock_request(f"/api/v1/postcode/{postcode}"),
     )
     assert s.make_result_known_response() == load_sandbox_output(postcode)
 
 
-def test_one_election_station_known_with_candidates(stitcher_client):
+def test_one_election_station_known_with_candidates(mock_request):
     postcode = "AA12AA"
     wdiv_json = load_fixture(fixture_map[postcode], "wdiv")
     wcivf_json = []
@@ -38,13 +56,13 @@ def test_one_election_station_known_with_candidates(stitcher_client):
     s = Stitcher(
         wdiv_json,
         wcivf_json,
-        stitcher_client,
+        mock_request(f"/api/v1/postcode/{postcode}"),
         sandbox=True,
     )
     assert s.make_result_known_response() == load_sandbox_output(postcode)
 
 
-def test_one_election_station_not_known_with_candidates(stitcher_client):
+def test_one_election_station_not_known_with_candidates(mock_request):
     postcode = "AA12AB"
     wdiv_json = load_fixture(fixture_map[postcode], "wdiv")
     wcivf_json = []
@@ -56,24 +74,24 @@ def test_one_election_station_not_known_with_candidates(stitcher_client):
     s = Stitcher(
         wdiv_json,
         wcivf_json,
-        stitcher_client,
+        mock_request(f"/api/v1/postcode/{postcode}"),
         sandbox=True,
     )
     assert s.make_result_known_response() == load_sandbox_output(postcode)
 
 
-def test_address_picker(stitcher_client):
+def test_address_picker(mock_request):
     postcode = "AA13AA"
     s = Stitcher(
         load_fixture(fixture_map[postcode], "wdiv"),
         load_fixture(fixture_map[postcode], "wcivf"),
-        stitcher_client,
+        mock_request(f"/api/v1/postcode/{postcode}"),
         sandbox=True,
     )
     assert s.make_address_picker_response() == load_sandbox_output(postcode)
 
 
-def test_multiple_elections(stitcher_client):
+def test_multiple_elections(mock_request):
     postcode = "AA14AA"
     wdiv_json = load_fixture(fixture_map[postcode], "wdiv")
     wcivf_json = []
@@ -85,13 +103,13 @@ def test_multiple_elections(stitcher_client):
     s = Stitcher(
         wdiv_json,
         wcivf_json,
-        stitcher_client,
+        mock_request(f"/api/v1/postcode/{postcode}"),
         sandbox=True,
     )
     assert s.make_result_known_response() == load_sandbox_output(postcode)
 
 
-def test_validate_false_with_mismatched_ballots(stitcher_client):
+def test_validate_false_with_mismatched_ballots(mock_request):
     postcode = "AA14AA"
     wdiv_json = load_fixture(fixture_map[postcode], "wdiv")
     wcivf_json = []
@@ -103,7 +121,7 @@ def test_validate_false_with_mismatched_ballots(stitcher_client):
     s = Stitcher(
         wdiv_json,
         wcivf_json,
-        stitcher_client,
+        mock_request(f"/api/v1/postcode/{postcode}"),
         sandbox=True,
     )
     assert s.validate()
@@ -112,7 +130,9 @@ def test_validate_false_with_mismatched_ballots(stitcher_client):
     wcivf_json.pop(0)
 
     s = Stitcher(
-        load_fixture(fixture_map[postcode], "wdiv"), wcivf_json, stitcher_client
+        load_fixture(fixture_map[postcode], "wdiv"),
+        wcivf_json,
+        mock_request(f"/api/v1/postcode/{postcode}"),
     )
     assert s.validate() is False
 

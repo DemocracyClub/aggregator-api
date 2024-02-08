@@ -126,7 +126,6 @@ jobs:
                AppDjangoSettingsModule=$DJANGO_SETTINGS_MODULE \
                AppSecretKey='$SECRET_KEY' \
                AppSentryDSN='$SENTRY_DSN' \
-               AppWdivApiKey='$WDIV_API_KEY' \
                AppIsBehindCloudFront=True \
                AppLogRetentionDays=60 \
                DCEnvironment=$DC_ENVIRONMENT \
