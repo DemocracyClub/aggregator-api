@@ -8,4 +8,8 @@ updates:
   ignore:
   - dependency-name: django
     versions:
-    - ">=2.0"
+    - ">=5.0"
+  groups:
+    python-packages:
+      patterns:
+        - "*"
