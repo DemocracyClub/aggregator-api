@@ -4,8 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [dev-packages]
-black = "==23.3.0"
-ruff = "==0.0.261"
+ruff = "==0.2.1"
 pytest = "<8.0.0"
 pytest-cov = ">=2.6,<5.0"
 pytest-django = ">=3.4.4,<5.0"
@@ -43,9 +42,8 @@ boto3 = "*"
 mangum = "*"
 
 [scripts]
-black = "black ."
-black-check = "black --check ."
 ruff-check = "ruff  ."
+ruff-format = "ruff  format ."
 circleci_deploy_dev = "~/repo/deploy.sh dev"
 circleci_deploy_prod = "~/repo/deploy.sh prod"
 coveralls = "coveralls"
