@@ -4,6 +4,7 @@ from unittest.mock import patch
 import boto3
 import httpx
 import pytest
+from common.settings import PARL_BOUNDARY_CHANGES_ENABLED
 from elections_api_client import wcivf_ballot_cache_url_from_ballot
 from moto import mock_aws
 from tests.helpers import fixture_map, load_fixture
@@ -85,6 +86,9 @@ def mock_s3_select_postcode_response():
         yield mock_method
 
 
+@pytest.mark.skipif(
+    not PARL_BOUNDARY_CHANGES_ENABLED, reason="Parl boundary feature disabled"
+)
 def test_parl_boundary_postcode_no_s3_data(
     mock_s3_select, vi_app_client, mock_wdiv
 ):
@@ -92,6 +96,9 @@ def test_parl_boundary_postcode_no_s3_data(
     assert resp.json()["parl_boundary_changes"] is None
 
 
+@pytest.mark.skipif(
+    not PARL_BOUNDARY_CHANGES_ENABLED, reason="Parl boundary feature disabled"
+)
 def test_parl_boundary_postcode_no_address_picker(
     mock_s3_select_postcode_response,
     vi_app_client,
@@ -110,6 +117,9 @@ def test_parl_boundary_postcode_no_address_picker(
     }
 
 
+@pytest.mark.skipif(
+    not PARL_BOUNDARY_CHANGES_ENABLED, reason="Parl boundary feature disabled"
+)
 def test_parl_boundary_postcode_with_address_picker(
     mock_s3_select_postcode_response,
     vi_app_client,
@@ -125,6 +135,9 @@ def test_parl_boundary_postcode_with_address_picker(
     assert resp.json()["parl_boundary_changes"] is None
 
 
+@pytest.mark.skipif(
+    not PARL_BOUNDARY_CHANGES_ENABLED, reason="Parl boundary feature disabled"
+)
 def test_parl_boundary_postcode_change_type_name(
     mock_s3_select_postcode_response,
     vi_app_client,
@@ -146,6 +159,9 @@ def test_parl_boundary_postcode_change_type_name(
     }
 
 
+@pytest.mark.skipif(
+    not PARL_BOUNDARY_CHANGES_ENABLED, reason="Parl boundary feature disabled"
+)
 def test_parl_boundary_postcode_no_change(
     mock_s3_select_postcode_response,
     vi_app_client,
