@@ -12,7 +12,7 @@ WCIVF_BALLOT_CACHE_URL = (
 )
 EE_BASE_URL = "https://elections.democracyclub.org.uk/api/"
 RECALL_PETITION_ENABLED = False
-PARL_BOUNDARY_CHANGES_ENABLED = True
+PARL_BOUNDARY_CHANGES_ENABLED = False
 PARL_BOUNDARY_DATA_KEY_PREFIX = "parl-2023-boundary-review/20230913"
 
 DEBUG = bool(int(os.environ.get("DEBUG", "0")))
