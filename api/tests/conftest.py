@@ -11,7 +11,7 @@ def vi_app_client() -> TestClient:
 
 @pytest.fixture(scope="function")
 def api_settings():
-    from common import settings
+    from common.conf import settings
 
     initial_settings = {
         k: getattr(settings, k)

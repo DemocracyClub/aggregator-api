@@ -4,7 +4,7 @@ from unittest.mock import patch
 import boto3
 import httpx
 import pytest
-from common.settings import PARL_BOUNDARY_CHANGES_ENABLED
+from common.conf import settings
 from elections_api_client import wcivf_ballot_cache_url_from_ballot
 from moto import mock_aws
 from tests.helpers import fixture_map, load_fixture
@@ -160,7 +160,7 @@ def test_parl_boundary_postcode_change_type_name(
 
 
 @pytest.mark.skipif(
-    not PARL_BOUNDARY_CHANGES_ENABLED, reason="Parl boundary feature disabled"
+    not settings.PARL_BOUNDARY_CHANGES_ENABLED, reason="Parl boundary feature disabled"
 )
 def test_parl_boundary_postcode_no_change(
     mock_s3_select_postcode_response,

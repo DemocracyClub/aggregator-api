@@ -2,8 +2,8 @@ import contextlib
 from json import JSONDecodeError
 
 import httpx
-from common import settings
 from common.async_requests import UpstreamApiError
+from common.conf import settings
 from common.http_client import app_httpx_client
 from httpx import QueryParams
 

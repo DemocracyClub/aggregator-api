@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from common import settings
+from common.conf import settings
 
 
 def load_fixture(testname, fixture, api_version="v1"):

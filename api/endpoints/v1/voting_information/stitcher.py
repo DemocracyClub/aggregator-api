@@ -2,7 +2,7 @@ import re
 from copy import deepcopy
 from typing import Dict, List, Optional
 
-from common import settings
+from common.conf import settings
 from common.url_resolver import build_absolute_url
 from parl_boundary_changes.client import ParlBoundaryChangeApiClient
 from recall_petitions.client import RecallPetitionApiClient

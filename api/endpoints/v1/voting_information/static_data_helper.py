@@ -7,15 +7,6 @@ import boto3
 from botocore.exceptions import ClientError
 from starlette.requests import Request
 
-_s3_client_cache = None
-
-
-def get_s3_client():
-    global _s3_client_cache
-    if _s3_client_cache is None:
-        _s3_client_cache = boto3.client("s3")
-    return _s3_client_cache
-
 
 class S3SelectPostcodeHelper(metaclass=ABCMeta):
     """

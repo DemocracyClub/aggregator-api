@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from common import settings
+from common.conf import settings
 from common.middleware import MIDDLEWARE
 from common.sentry_helper import init_sentry
 from mangum import Mangum
