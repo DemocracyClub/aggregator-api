@@ -391,7 +391,11 @@ class Stitcher:
                 resp = recall_petition_client.patch_response(resp)
         # TODO: End removal code
 
-        if settings.PARL_BOUNDARY_CHANGES_ENABLED:
+        if (
+            settings.PARL_BOUNDARY_CHANGES_ENABLED
+            and hasattr(self.request, "query_params")
+            and self.request.query_params.get("parl_boundaries")
+        ):
             parl_boundary_change = ParlBoundaryChangeApiClient(
                 self.request, postcode=postcode, uprn=uprn
             )
