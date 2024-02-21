@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from typing import List, Optional
 
 from polars import DataFrame
-from s3_select_helper import AddressModel, BaseDictDataclass
+from static_data_helper import AddressModel, BaseDictDataclass
 
 
 @dataclass

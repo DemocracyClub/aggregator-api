@@ -1,23 +1,18 @@
-import json
 import re
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 
-import boto3
-from botocore.exceptions import ClientError
 from starlette.requests import Request
 
 
-class S3SelectPostcodeHelper(metaclass=ABCMeta):
+class StaticDataHelper(metaclass=ABCMeta):
     """
-    Helper function for querying data on S3 that's keyed by postcode
-
+    Helper function for querying data that's keyed by postcode.
     """
 
     def __init__(self, request: Request, postcode, uprn=None):
         self.postcode = Postcode(postcode)
         self.uprn = uprn
-        self.s3_client = get_s3_client()
 
     @abstractmethod
     def get_shard_key(self):
@@ -27,81 +22,11 @@ class S3SelectPostcodeHelper(metaclass=ABCMeta):
     def get_bucket_name(self):
         ...
 
-    @abstractmethod
-    def get_input_serialization(self):
-        ...
-
-    @abstractmethod
-    def get_postcode_query_expression(self):
-        ...
-
-    @abstractmethod
-    def get_uprn_query_expression(self):
-        ...
-
     def get_data_for_postcode(self):
-        """
-        Use S3 Select to get all addresses that match the postcode.
-
-        Return a list of dicts, where the dict represents the CSV row in the
-        source file.
-
-        """
-
-        shard_key = self.get_shard_key()
-
-        bucket_name = self.get_bucket_name()
-        try:
-            resp = self.s3_client.select_object_content(
-                Bucket=bucket_name,
-                Key=shard_key,
-                Expression=self.get_postcode_query_expression(),
-                ExpressionType="SQL",
-                InputSerialization=self.get_input_serialization(),
-                OutputSerialization={"JSON": {}},
-            )
-        except AttributeError:
-            # Special case for Moto that doesn't return a ClientError
-            return []
-        except ClientError as ex:
-            if ex.response["Error"]["Code"] == "NoSuchKey":
-                # If there's no key for whatever reason, just return quietly
-                return []
-            raise
-
-        return self._response_to_list(resp)
+        ...
 
     def get_data_for_uprn(self):
-        """
-        Use S3 Select to get the row matching the UPRN.
-
-        Return a list of dicts, where the dict represents the CSV row in the
-        source file.
-
-        """
-        shard_key = self.get_shard_key()
-
-        bucket_name = self.get_bucket_name()
-        resp = self.s3_client.select_object_content(
-            Bucket=bucket_name,
-            Key=shard_key,
-            Expression=self.get_uprn_query_expression(),
-            ExpressionType="SQL",
-            InputSerialization=self.get_input_serialization(),
-            OutputSerialization={"JSON": {}},
-        )
-        return self._response_to_list(resp)
-
-    def _response_to_list(self, response):
-        data = []
-        for event in response["Payload"]:
-            if "Records" in event:
-                records = event["Records"]["Payload"].decode().split("\n")
-                for record in records:
-                    if not record:
-                        continue
-                    data.append(json.loads(record))
-        return data
+        ...
 
     @abstractmethod
     def postcode_response(self):

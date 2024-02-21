@@ -24,6 +24,7 @@ sentry-sdk = "*"
 dc-api-common = {path = "./api/common"}
 mypy-boto3-dynamodb = "*"
 
+
 [frontend]
 dc-design-system = {file = "https://github.com/DemocracyClub/design-system/archive/refs/tags/0.4.0.tar.gz"}
 dc-django-utils = {file = "https://github.com/DemocracyClub/dc_django_utils/archive/refs/tags/2.4.0.tar.gz"}
