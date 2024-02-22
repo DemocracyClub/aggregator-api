@@ -13,6 +13,7 @@ class StaticDataHelper(metaclass=ABCMeta):
     def __init__(self, request: Request, postcode, uprn=None):
         self.postcode = Postcode(postcode)
         self.uprn = uprn
+        self.request = request
 
     @abstractmethod
     def get_shard_key(self):
@@ -71,13 +72,16 @@ class AddressModel(BaseDictDataclass):
     address: str
     postcode: str
     slug: str
+    url: str
 
     @classmethod
-    def from_row(cls, row):
+    def from_row(cls, row, request: Request):
+        url = str(request.url_for("address", uprn=row["uprn"]))
         return cls(
             slug=row["uprn"],
             address=row["address"],
             postcode=row["postcode"],
+            url=url,
         )
 
 

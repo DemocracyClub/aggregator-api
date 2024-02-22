@@ -89,7 +89,8 @@ class ParlBoundaryChangeApiClient(StaticDataHelper):
         if self.is_split(data):
             resp.address_picker = True
             resp.addresses = [
-                AddressModel.from_row(row) for row in data.to_dicts()
+                AddressModel.from_row(row, self.request)
+                for row in data.to_dicts()
             ]
         else:
             row = data[0]
