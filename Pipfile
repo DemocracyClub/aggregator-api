@@ -4,8 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [dev-packages]
-ruff = "==0.2.1"
-pytest = "<8.0.0"
+ruff = "==0.2.2"
+pytest = "<9.0.0"
 pytest-cov = ">=2.6,<5.0"
 pytest-django = ">=3.4.4,<5.0"
 coveralls = ">=1.6,<4.0"
