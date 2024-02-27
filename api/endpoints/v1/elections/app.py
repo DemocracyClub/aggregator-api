@@ -1,4 +1,4 @@
-from common import settings
+from common.conf import settings
 from common.middleware import MIDDLEWARE
 from common.sentry_helper import init_sentry
 from election_views import get_election_list, get_single_election

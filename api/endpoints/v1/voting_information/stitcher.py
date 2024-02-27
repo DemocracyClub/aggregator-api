@@ -2,7 +2,7 @@ import re
 from copy import deepcopy
 from typing import Dict, List, Optional
 
-from common import settings
+from common.conf import settings
 from common.url_resolver import build_absolute_url
 from parl_boundary_changes.client import ParlBoundaryChangeApiClient
 from recall_petitions.client import RecallPetitionApiClient
@@ -391,7 +391,11 @@ class Stitcher:
                 resp = recall_petition_client.patch_response(resp)
         # TODO: End removal code
 
-        if settings.PARL_BOUNDARY_CHANGES_ENABLED:
+        if (
+            settings.PARL_BOUNDARY_CHANGES_ENABLED
+            and hasattr(self.request, "query_params")
+            and self.request.query_params.get("parl_boundaries")
+        ):
             parl_boundary_change = ParlBoundaryChangeApiClient(
                 self.request, postcode=postcode, uprn=uprn
             )

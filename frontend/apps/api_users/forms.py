@@ -1,4 +1,4 @@
-from common.settings import API_PLANS
+from common.conf import settings
 from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
@@ -63,7 +63,7 @@ class APIKeyForm(forms.ModelForm):
             ("development", "Development"),
         ]
         if (
-            self.user.api_plan == API_PLANS["enterprise"].value
+            self.user.api_plan == settings.API_PLANS["enterprise"].value
             or not self.user.api_keys.filter(key_type="production").exists()
         ):
             choices.append(("production", "Production key"))
@@ -81,7 +81,7 @@ class APIKeyForm(forms.ModelForm):
             # That's what you get for giving us the big bucks
             return cleaned_data
 
-        if api_plan == API_PLANS["hobbyists"].value:
+        if api_plan == settings.API_PLANS["hobbyists"].value:
             has_existing_keys = self.user.api_keys.exists()
             if has_existing_keys:
                 raise ValidationError("Can't make more than one hobbyist key")

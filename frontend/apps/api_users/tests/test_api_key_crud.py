@@ -4,7 +4,7 @@ from api_users.management.commands.sync_api_keys import (
 )
 from api_users.models import APIKey, CustomUser
 from api_users.utils import send_new_key_notification
-from common.settings import API_PLANS
+from common.conf import settings
 from django.test.utils import override_settings
 
 
@@ -71,7 +71,7 @@ def test_api_key_type_creation(db):
     assert "api_plan" not in form.fields
 
     # Standard, user can pick prod or dev
-    api_user.api_plan = API_PLANS["standard"].value
+    api_user.api_plan = settings.API_PLANS["standard"].value
     api_user.save()
     form = APIKeyForm(user=api_user)
     assert "key_type" in form.fields
@@ -87,7 +87,7 @@ def test_api_key_type_creation(db):
     assert "key_type" not in form.fields
 
     # Promote this user to an enterprise user
-    api_user.api_plan = API_PLANS["enterprise"].value
+    api_user.api_plan = settings.API_PLANS["enterprise"].value
     api_user.save()
     api_user.refresh_from_db()
     form = APIKeyForm(user=api_user)
@@ -99,7 +99,7 @@ def test_api_key_type_creation(db):
     ]
 
     # Demote this user to a standard user
-    api_user.api_plan = API_PLANS["standard"].value
+    api_user.api_plan = settings.API_PLANS["standard"].value
     api_user.save()
     api_user.refresh_from_db()
     form = APIKeyForm(user=api_user)
@@ -107,7 +107,7 @@ def test_api_key_type_creation(db):
 
 
 def test_form_validation(db):
-    api_user = CustomUser.objects.create(api_plan=API_PLANS["hobbyists"].value)
+    api_user = CustomUser.objects.create(api_plan=settings.API_PLANS["hobbyists"].value)
 
     basic_form_kwargs = {"name": "Test Key", "usage_reason": "Just for testing"}
 
@@ -121,7 +121,7 @@ def test_form_validation(db):
     form.is_valid()
     assert form.errors == {"__all__": ["Can't make more than one hobbyist key"]}
 
-    api_user.api_plan = API_PLANS["standard"].value
+    api_user.api_plan = settings.API_PLANS["standard"].value
     api_user.save()
     api_user.refresh_from_db()
     data = basic_form_kwargs.copy()
@@ -132,7 +132,7 @@ def test_form_validation(db):
 
 
 def test_standard_users_can_make_n_dev_keys_one_prod(db):
-    api_user = CustomUser.objects.create(api_plan=API_PLANS["standard"].value)
+    api_user = CustomUser.objects.create(api_plan=settings.API_PLANS["standard"].value)
     api_user.save()
 
     basic_form_kwargs = {"name": "Test Key", "usage_reason": "Just for testing"}
@@ -173,7 +173,7 @@ def test_standard_users_can_make_n_dev_keys_one_prod(db):
 def test_email_dc_about_key_api_keys(db, rf, mailoutbox):
     request = rf.get("/")
     api_user = CustomUser.objects.create(
-        api_plan=API_PLANS["standard"].value,
+        api_plan=settings.API_PLANS["standard"].value,
         name="Test User",
         email="test@example.com",
     )

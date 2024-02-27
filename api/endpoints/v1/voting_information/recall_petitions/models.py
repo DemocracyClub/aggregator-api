@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import List, Optional
 
-from s3_select_helper import AddressModel, BaseDictDataclass
+from static_data_helper import AddressModel, BaseDictDataclass
 
 
 @dataclass(eq=True, unsafe_hash=True)

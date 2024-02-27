@@ -1,7 +1,8 @@
 from dataclasses import dataclass, field
 from typing import List, Optional
 
-from s3_select_helper import AddressModel, BaseDictDataclass
+from polars import DataFrame
+from static_data_helper import AddressModel, BaseDictDataclass
 
 
 @dataclass
@@ -30,6 +31,20 @@ class BaseParlBoundaryChange(BaseDictDataclass):
         base = super().as_dict()
         base["CHANGE_TYPE"] = self.change_type
         return base
+
+    @classmethod
+    def from_row(cls, row: DataFrame):
+        row_dict = row.to_dict(as_series=False)
+        fields = [
+            "current_constituencies_official_identifier",
+            "current_constituencies_name",
+            "new_constituencies_official_identifier",
+            "new_constituencies_name",
+        ]
+        kwargs = {}
+        for attr in fields:
+            kwargs[attr] = row_dict[attr][0]
+        return cls(**kwargs)
 
 
 @dataclass

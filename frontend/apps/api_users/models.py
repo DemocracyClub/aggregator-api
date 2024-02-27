@@ -2,7 +2,7 @@
 import binascii
 import os
 
-from common.settings import API_PLANS
+from common.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
@@ -42,7 +42,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     )
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
     api_plan = models.CharField(
-        choices=[(name, plan.label) for name, plan in API_PLANS.items()],
+        choices=[(name, plan.label) for name, plan in settings.API_PLANS.items()],
         default="hobbyists",
         max_length=100,
         verbose_name="API plan",

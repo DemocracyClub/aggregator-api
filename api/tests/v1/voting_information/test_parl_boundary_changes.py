@@ -1,10 +1,12 @@
 import os
-from unittest.mock import patch
+import tempfile
+from pathlib import Path
 
 import boto3
 import httpx
+import polars
 import pytest
-from common.settings import PARL_BOUNDARY_CHANGES_ENABLED
+from common.conf import settings
 from elections_api_client import wcivf_ballot_cache_url_from_ballot
 from moto import mock_aws
 from tests.helpers import fixture_map, load_fixture
@@ -13,13 +15,21 @@ BUCKET_NAME = "addressbase-lookups.development"
 
 
 @pytest.fixture()
+def temp_parl_data_root(api_settings):
+    with tempfile.TemporaryDirectory("parl-data") as tmp:
+        api_settings.PARL_BOUNDARY_CHANGES_ENABLED = True
+        api_settings.LOCAL_DATA_PATH = tmp
+        yield tmp
+
+
+@pytest.fixture()
 def sample_postcode_data():
-    yield [
+    return [
         {
             "uprn": 10003707532,
             "address": "HARLOW STUDY CENTRE, WATERHOUSE MOOR, HARLOW",
-            "postcode": "CM18 6BW",
-            "outcode": "CM18",
+            "postcode": "AA1 2AA",
+            "outcode": "AA1",
             "current_constituencies_official_identifier": "gss:E14000729",
             "current_constituencies_name": "Harlow",
             "new_constituencies_official_identifier": "gss:E14001267",
@@ -28,14 +38,28 @@ def sample_postcode_data():
         {
             "uprn": 100090549541,
             "address": "208 WATERHOUSE MOOR, HARLOW",
-            "postcode": "CM18 6BW",
-            "outcode": "CM18",
+            "postcode": "AA1 2AA",
+            "outcode": "AA1",
             "current_constituencies_official_identifier": "gss:E14000729",
             "current_constituencies_name": "Harlow",
             "new_constituencies_official_identifier": "gss:E14001267",
             "new_constituencies_name": "Harlow",
         },
     ]
+
+
+@pytest.fixture
+def sample_data_writer(temp_parl_data_root):
+    def write_data(data):
+        df = polars.DataFrame(data)
+        df_root = (
+            Path(temp_parl_data_root) / settings.PARL_BOUNDARY_DATA_KEY_PREFIX
+        )
+        df_root.mkdir(exist_ok=True, parents=True)
+        df_path = df_root / "AA1.parquet"
+        df.write_parquet(df_path)
+
+    yield write_data
 
 
 @pytest.fixture(scope="function")
@@ -78,36 +102,21 @@ def mock_wdiv(respx_mock):
         )
 
 
-@pytest.fixture()
-def mock_s3_select_postcode_response():
-    with patch(
-        "parl_boundary_changes.client.ParlBoundaryChangeApiClient.get_data_for_postcode"
-    ) as mock_method:
-        yield mock_method
-
-
-@pytest.mark.skipif(
-    not PARL_BOUNDARY_CHANGES_ENABLED, reason="Parl boundary feature disabled"
-)
 def test_parl_boundary_postcode_no_s3_data(
-    mock_s3_select, vi_app_client, mock_wdiv
+    vi_app_client, mock_wdiv, sample_data_writer
 ):
-    resp = vi_app_client.get("/api/v1/postcode/AA12AA/")
+    resp = vi_app_client.get("/api/v1/postcode/AA12AA/?parl_boundaries=1")
     assert resp.json()["parl_boundary_changes"] is None
 
 
-@pytest.mark.skipif(
-    not PARL_BOUNDARY_CHANGES_ENABLED, reason="Parl boundary feature disabled"
-)
 def test_parl_boundary_postcode_no_address_picker(
-    mock_s3_select_postcode_response,
+    sample_postcode_data,
+    sample_data_writer,
     vi_app_client,
     mock_wdiv,
-    sample_postcode_data,
 ):
-    mock_s3_select_postcode_response.return_value = sample_postcode_data
-
-    resp = vi_app_client.get("/api/v1/postcode/AA12AA/")
+    sample_data_writer(sample_postcode_data)
+    resp = vi_app_client.get("/api/v1/postcode/AA12AA/?parl_boundaries=1")
     assert resp.json()["parl_boundary_changes"] == {
         "CHANGE_TYPE": "BOUNDARY_CHANGE",
         "current_constituencies_name": "Harlow",
@@ -117,39 +126,50 @@ def test_parl_boundary_postcode_no_address_picker(
     }
 
 
-@pytest.mark.skipif(
-    not PARL_BOUNDARY_CHANGES_ENABLED, reason="Parl boundary feature disabled"
-)
 def test_parl_boundary_postcode_with_address_picker(
-    mock_s3_select_postcode_response,
+    sample_postcode_data,
+    sample_data_writer,
     vi_app_client,
     mock_wdiv,
-    sample_postcode_data,
 ):
     changed_data = sample_postcode_data
     changed_data[1]["new_constituencies_official_identifier"] = "DIFFERENT"
-    mock_s3_select_postcode_response.return_value = changed_data
+    sample_data_writer(changed_data)
 
-    resp = vi_app_client.get("/api/v1/postcode/AA12AA/")
-    assert resp.json()["address_picker"]
-    assert resp.json()["parl_boundary_changes"] is None
+    # Make sure we don't get an address picker without the par boundaries
+    resp = vi_app_client.get("/api/v1/postcode/AA12AA/").json()
+    assert not resp["address_picker"]
+
+    resp = vi_app_client.get(
+        "/api/v1/postcode/AA12AA/?parl_boundaries=1"
+    ).json()
+    assert resp["address_picker"]
+    assert resp["parl_boundary_changes"] is None
+    assert resp["addresses"] == [
+        {
+            "address": "HARLOW STUDY CENTRE, WATERHOUSE MOOR, HARLOW",
+            "postcode": "AA1 2AA",
+            "slug": 10003707532,
+            "url": "http://testserver/api/v1/address/10003707532/",
+        },
+        {
+            "address": "208 WATERHOUSE MOOR, HARLOW",
+            "postcode": "AA1 2AA",
+            "slug": 100090549541,
+            "url": "http://testserver/api/v1/address/100090549541/",
+        },
+    ]
 
 
-@pytest.mark.skipif(
-    not PARL_BOUNDARY_CHANGES_ENABLED, reason="Parl boundary feature disabled"
-)
 def test_parl_boundary_postcode_change_type_name(
-    mock_s3_select_postcode_response,
-    vi_app_client,
-    mock_wdiv,
-    sample_postcode_data,
+    vi_app_client, mock_wdiv, sample_postcode_data, sample_data_writer
 ):
     changed_data = sample_postcode_data
     changed_data[0]["new_constituencies_name"] = "DIFFERENT"
     changed_data[1]["new_constituencies_name"] = "DIFFERENT"
-    mock_s3_select_postcode_response.return_value = changed_data
+    sample_data_writer(changed_data)
 
-    resp = vi_app_client.get("/api/v1/postcode/AA12AA/")
+    resp = vi_app_client.get("/api/v1/postcode/AA12AA/?parl_boundaries=1")
     assert resp.json()["parl_boundary_changes"] == {
         "CHANGE_TYPE": "NAME_CHANGE_BOUNDARY_CHANGE",
         "current_constituencies_name": "Harlow",
@@ -159,14 +179,8 @@ def test_parl_boundary_postcode_change_type_name(
     }
 
 
-@pytest.mark.skipif(
-    not PARL_BOUNDARY_CHANGES_ENABLED, reason="Parl boundary feature disabled"
-)
 def test_parl_boundary_postcode_no_change(
-    mock_s3_select_postcode_response,
-    vi_app_client,
-    mock_wdiv,
-    sample_postcode_data,
+    vi_app_client, mock_wdiv, sample_postcode_data, sample_data_writer
 ):
     changed_data = sample_postcode_data
     for data in changed_data:
@@ -174,9 +188,8 @@ def test_parl_boundary_postcode_no_change(
         data["new_constituencies_official_identifier"] = data[
             "current_constituencies_official_identifier"
         ]
-    mock_s3_select_postcode_response.return_value = changed_data
-
-    resp = vi_app_client.get("/api/v1/postcode/AA12AA/")
+    sample_data_writer(changed_data)
+    resp = vi_app_client.get("/api/v1/postcode/AA12AA/?parl_boundaries=1")
     assert resp.json()["parl_boundary_changes"] == {
         "CHANGE_TYPE": "NO_CHANGE",
         "current_constituencies_name": "Harlow",

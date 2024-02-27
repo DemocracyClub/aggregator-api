@@ -1,6 +1,6 @@
 import os
 
-from s3_select_helper import AddressModel, S3SelectPostcodeHelper
+from static_data_helper import AddressModel, StaticDataHelper
 
 from .models import (
     BaseRecallPetition,
@@ -30,7 +30,7 @@ petition_info = {
 }
 
 
-class RecallPetitionApiClient(S3SelectPostcodeHelper):
+class RecallPetitionApiClient(StaticDataHelper):
     def __init__(self, *args, council_id, **kwargs):
         self.council_id = council_id
         super().__init__(*args, **kwargs)
@@ -78,7 +78,9 @@ class RecallPetitionApiClient(S3SelectPostcodeHelper):
 
         if len(signing_stations) > 1:
             resp.address_picker = True
-            resp.addresses = [AddressModel.from_row(row) for row in query_data]
+            resp.addresses = [
+                AddressModel.from_row(row, self.request) for row in query_data
+            ]
         else:
             signing_station = signing_stations[0]
 
