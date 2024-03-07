@@ -358,7 +358,7 @@ class Stitcher:
         }
 
         postcode = None
-        uprn = None
+        uprn: Optional[str] = None
         # Get the postcode for the property
         if self.request.path_params.get("postcode"):
             postcode = self.request.path_params.get("postcode")

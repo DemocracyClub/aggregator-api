@@ -70,7 +70,7 @@ class ParlBoundaryChangeApiClient(StaticDataHelper):
 
     def get_data_for_uprn(self):
         return self.get_data_for_postcode().filter(
-            (polars.col("uprn") == self.uprn)
+            (polars.col("uprn") == int(self.uprn))
         )
 
     def is_split(self, data) -> bool:
