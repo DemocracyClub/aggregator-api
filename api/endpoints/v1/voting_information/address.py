@@ -6,7 +6,7 @@ from stitcher import Stitcher
 
 
 def get_address(request: Request):
-    uprn = request.path_params["uprn"]
+    uprn: str = request.path_params["uprn"]
     client = WdivWcivfApiClient(query_params=request.query_params)
     try:
         wdiv, wcivf = client.get_data_for_address(uprn)
