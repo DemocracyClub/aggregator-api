@@ -34,6 +34,11 @@ class RecallPetitionApiClient(StaticDataHelper):
             (polars.col("postcode") == self.postcode.with_space)
         )
 
+    def get_data_for_uprn(self):
+        return polars.read_parquet(self.get_filename_or_file()).filter(
+            (polars.col("uprn") == int(self.uprn))
+        )
+
     def get_shard_key(self):
         return f"{self.postcode.outcode}.parquet"
 
@@ -45,6 +50,8 @@ class RecallPetitionApiClient(StaticDataHelper):
         return petition_info[self.council_id]
 
     def is_split(self, data) -> bool:
+        if data.is_empty():
+            return False
         return (
             data.group_by(
                 "has_recall_petition",
@@ -56,6 +63,8 @@ class RecallPetitionApiClient(StaticDataHelper):
         )
 
     def query_to_dict(self, data: DataFrame):
+        if data.is_empty():
+            return None
         resp = BasePetitionResponse()
         if self.is_split(data):
             resp.address_picker = True

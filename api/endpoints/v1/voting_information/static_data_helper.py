@@ -65,9 +65,13 @@ class StaticDataHelper(metaclass=ABCMeta):
             new_response_data = self.uprn_response()
         else:
             new_response_data = self.postcode_response()
-
-        new_response_data["postcode_location"] = resp["postcode_location"]
-        return new_response_data
+        if new_response_data and new_response_data["address_picker"]:
+            new_response_data["postcode_location"] = resp["postcode_location"]
+            return new_response_data
+        new_response_data["electoral_services"] = resp["electoral_services"]
+        new_response_data["registration"] = resp["registration"]
+        resp.update(new_response_data)
+        return resp
 
     def get_filename_or_file(self) -> Path | IO:
         """
