@@ -28,18 +28,27 @@ class BaseSettings:
         )
 
         # Only try to use the S3 Client if we think we're deployed
-        self.S3_CLIENT_ENABLED = os.environ.get("S3_CLIENT_ENABLED", bool(self.DC_ENVIRONMENT))
+        self.S3_CLIENT_ENABLED = os.environ.get(
+            "S3_CLIENT_ENABLED", bool(self.DC_ENVIRONMENT)
+        )
 
         if self.S3_CLIENT_ENABLED:
             self.S3_CLIENT = get_s3_client()
 
         self.LOCAL_DATA_PATH = os.environ.get("LOCAL_STATIC_DATA_PATH", None)
 
-        self.RECALL_PETITION_ENABLED = False
+        self.RECALL_PETITION_ENABLED = True
 
         self.PARL_BOUNDARY_CHANGES_ENABLED = True
-        self.PARL_BOUNDARY_DATA_KEY_PREFIX = "parl-2023-boundary-review/20230913"
-        self.PARL_BOUNDARY_DATA_BUCKET_NAME = f"addressbase-lookups.{self.DC_ENVIRONMENT}"
+        self.PARL_BOUNDARY_DATA_KEY_PREFIX = (
+            "parl-2023-boundary-review/20230913"
+        )
+        self.PARL_BOUNDARY_DATA_BUCKET_NAME = (
+            f"addressbase-lookups.{self.DC_ENVIRONMENT}"
+        )
+        self.RECALL_DATA_KEY_PREFIX = os.environ.get(
+            "RECALL_DATA_KEY_PREFIX", ""
+        )
 
         self.DEBUG = bool(int(os.environ.get("DEBUG", "0")))
 
