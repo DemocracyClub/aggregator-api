@@ -47,7 +47,7 @@ class BaseSettings:
             f"addressbase-lookups.{self.DC_ENVIRONMENT}"
         )
         self.RECALL_DATA_KEY_PREFIX = os.environ.get(
-            "RECALL_DATA_KEY_PREFIX", ""
+            "RECALL_DATA_KEY_PREFIX", "blackpool-south.2024-03/"
         )
 
         self.DEBUG = bool(int(os.environ.get("DEBUG", "0")))
