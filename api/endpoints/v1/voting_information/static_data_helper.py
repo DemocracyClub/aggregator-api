@@ -1,7 +1,11 @@
 import re
 from abc import ABCMeta, abstractmethod
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import IO, List, Optional
 
+from botocore.exceptions import ClientError
+from common.conf import settings
 from starlette.requests import Request
 
 
@@ -18,6 +22,21 @@ class StaticDataHelper(metaclass=ABCMeta):
     @abstractmethod
     def get_shard_key(self):
         ...
+
+    def get_file_path(self):
+        DATA_BASE_PATH = Path(settings.PARL_BOUNDARY_DATA_KEY_PREFIX)
+        return DATA_BASE_PATH / self.get_shard_key()
+
+    def get_local_file_name(self):
+        if not settings.LOCAL_DATA_PATH:
+            raise ValueError(
+                "LOCAL_DATA_PATH isn't set. Export `LOCAL_STATIC_DATA_PATH`"
+            )
+        local_file_path = Path(settings.LOCAL_DATA_PATH) / self.get_file_path()
+        if not local_file_path.exists():
+            print(f"WARNING: local data doesn't exist at {local_file_path}")
+            raise FileNotFoundError()
+        return local_file_path
 
     @abstractmethod
     def get_bucket_name(self):
@@ -46,9 +65,41 @@ class StaticDataHelper(metaclass=ABCMeta):
             new_response_data = self.uprn_response()
         else:
             new_response_data = self.postcode_response()
-
+        if new_response_data and new_response_data["address_picker"]:
+            new_response_data["postcode_location"] = resp["postcode_location"]
+            return new_response_data
+        new_response_data["electoral_services"] = resp["electoral_services"]
+        new_response_data["registration"] = resp["registration"]
         resp.update(new_response_data)
         return resp
+
+    def get_filename_or_file(self) -> Path | IO:
+        """
+        If we use S3 then we want to use boto3 to download the file
+        and return the bytes.
+
+        If we're not using S3, assume the file we're reading is local.
+
+        The Polars interface allows passing in either a IO object (e.g a file) or a path.
+
+        We can take advantage of this here.
+
+        :return:
+        """
+        if settings.S3_CLIENT_ENABLED:
+            try:
+                response = settings.S3_CLIENT.get_object(
+                    Bucket=self.get_bucket_name(), Key=str(self.get_file_path())
+                )
+            except ClientError as ex:
+                if ex.response["Error"]["Code"] == "NoSuchKey":
+                    # If there's no key for whatever reason raise
+                    raise FileNotFoundError()
+                # Raie any other boto3 errors
+                raise
+            return response["Body"].read()
+
+        return self.get_local_file_name()
 
 
 class BaseDictDataclass:
@@ -103,3 +154,15 @@ class Postcode:
 
     def __str__(self):
         return self.without_space
+
+
+class FileNotFoundError(ValueError):
+    ...
+
+
+@dataclass
+class BaseResponse(BaseDictDataclass):
+    addresses: Optional[List[AddressModel]] = field(default_factory=list)
+    address_picker: bool = field(default=False)
+    electoral_services: bool = None
+    registration: bool = None

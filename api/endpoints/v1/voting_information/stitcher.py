@@ -377,9 +377,10 @@ class Stitcher:
             settings.RECALL_PETITION_ENABLED
             and hasattr(self.request, "query_params")
             and self.request.query_params.get("recall_petition")
+            and not resp["address_picker"]
         ):
             resp["parl_recall_petition"] = None
-            recall_petition_councils = ["NNT"]
+            recall_petition_councils = ["BPL"]
             council_id = resp["electoral_services"]["council_id"]
             if council_id in recall_petition_councils:
                 recall_petition_client = RecallPetitionApiClient(
@@ -395,6 +396,7 @@ class Stitcher:
             settings.PARL_BOUNDARY_CHANGES_ENABLED
             and hasattr(self.request, "query_params")
             and self.request.query_params.get("parl_boundaries")
+            and not resp["address_picker"]
         ):
             parl_boundary_change = ParlBoundaryChangeApiClient(
                 self.request, postcode=postcode, uprn=uprn

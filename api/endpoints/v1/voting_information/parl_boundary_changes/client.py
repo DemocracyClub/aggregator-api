@@ -1,19 +1,11 @@
-from pathlib import Path
-from typing import IO
-
 import polars
-from botocore.exceptions import ClientError
 from common.conf import settings
 from parl_boundary_changes.models import (
     BaseParlBoundariesResponse,
     BaseParlBoundaryChange,
 )
 from polars import DataFrame
-from static_data_helper import AddressModel, StaticDataHelper
-
-
-class FileNotFoundError(ValueError):
-    ...
+from static_data_helper import AddressModel, FileNotFoundError, StaticDataHelper
 
 
 class ParlBoundaryChangeApiClient(StaticDataHelper):
@@ -22,38 +14,6 @@ class ParlBoundaryChangeApiClient(StaticDataHelper):
 
     def get_shard_key(self):
         return f"{self.postcode.outcode}.parquet"
-
-    def get_file_path(self):
-        DATA_BASE_PATH = Path(settings.PARL_BOUNDARY_DATA_KEY_PREFIX)
-        return DATA_BASE_PATH / self.get_shard_key()
-
-    def get_filename_or_file(self) -> Path | IO:
-        """
-        If we use S3 then we want to use boto3 to download the file
-        and return the bytes.
-
-        If we're not using S3, assume the file we're reading is local.
-
-        The Polars interface allows passing in either a IO object (e.g a file) or a path.
-
-        We can take advantage of this here.
-
-        :return:
-        """
-        if settings.S3_CLIENT_ENABLED:
-            try:
-                response = settings.S3_CLIENT.get_object(
-                    Bucket=self.get_bucket_name(), Key=str(self.get_file_path())
-                )
-            except ClientError as ex:
-                if ex.response["Error"]["Code"] == "NoSuchKey":
-                    # If there's no key for whatever reason raise
-                    raise FileNotFoundError()
-                # Raie any other boto3 errors
-                raise
-            return response["Body"].read()
-
-        return self.get_local_file_name()
 
     def postcode_response(self):
         data = self.get_data_for_postcode()
@@ -110,14 +70,3 @@ class ParlBoundaryChangeApiClient(StaticDataHelper):
             new_response_data = resp
         resp.update(new_response_data)
         return resp
-
-    def get_local_file_name(self):
-        if not settings.LOCAL_DATA_PATH:
-            raise ValueError(
-                "LOCAL_DATA_PATH isn't set. Export `LOCAL_STATIC_DATA_PATH`"
-            )
-        local_file_path = Path(settings.LOCAL_DATA_PATH) / self.get_file_path()
-        if not local_file_path.exists():
-            print(f"WARNING: local data doesn't exist at {local_file_path}")
-            raise FileNotFoundError()
-        return local_file_path

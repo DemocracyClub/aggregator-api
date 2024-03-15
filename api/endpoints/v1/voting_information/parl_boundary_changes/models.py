@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import Optional
 
 from polars import DataFrame
-from static_data_helper import AddressModel, BaseDictDataclass
+from static_data_helper import BaseDictDataclass, BaseResponse
 
 
 @dataclass
@@ -48,9 +48,7 @@ class BaseParlBoundaryChange(BaseDictDataclass):
 
 
 @dataclass
-class BaseParlBoundariesResponse(BaseDictDataclass):
+class BaseParlBoundariesResponse(BaseResponse):
     parl_boundary_changes: Optional[BaseParlBoundaryChange] = field(
         default=None
     )
-    addresses: Optional[List[AddressModel]] = field(default_factory=list)
-    address_picker: bool = field(default=False)
