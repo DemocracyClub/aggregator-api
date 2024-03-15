@@ -66,8 +66,8 @@ class StaticDataHelper(metaclass=ABCMeta):
         else:
             new_response_data = self.postcode_response()
 
-        resp.update(new_response_data)
-        return resp
+        new_response_data["postcode_location"] = resp["postcode_location"]
+        return new_response_data
 
     def get_filename_or_file(self) -> Path | IO:
         """
@@ -160,3 +160,5 @@ class FileNotFoundError(ValueError):
 class BaseResponse(BaseDictDataclass):
     addresses: Optional[List[AddressModel]] = field(default_factory=list)
     address_picker: bool = field(default=False)
+    electoral_services: bool = None
+    registration: bool = None
