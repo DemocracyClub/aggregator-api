@@ -4,7 +4,7 @@ from pathlib import Path
 import polars
 from common.conf import settings
 from polars import DataFrame
-from static_data_helper import AddressModel, StaticDataHelper
+from static_data_helper import AddressModel, FileNotFoundError, StaticDataHelper
 
 from .models import (
     BasePetitionResponse,
@@ -90,3 +90,10 @@ class RecallPetitionApiClient(StaticDataHelper):
     def get_file_path(self):
         DATA_BASE_PATH = Path(settings.RECALL_DATA_KEY_PREFIX)
         return DATA_BASE_PATH / self.get_shard_key()
+
+    def patch_response(self, resp):
+        try:
+            return super().patch_response(resp)
+        except FileNotFoundError:
+            resp["parl_recall_petition"] = None
+            return resp
