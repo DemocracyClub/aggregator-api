@@ -8,16 +8,15 @@ from static_data_helper import AddressModel, FileNotFoundError, StaticDataHelper
 
 from .models import (
     BasePetitionResponse,
-    BaseRecallPetition,
     SigningStationModel,
 )
 
 petition_info = {
-    "BPL": BaseRecallPetition(
-        name="Blackpool South recall petition",
-        signing_start="2024-03-12",
-        signing_end="2023-04-22",
-    ),
+    # "BPL": BaseRecallPetition(
+    #     name="Blackpool South recall petition",
+    #     signing_start="2024-03-12",
+    #     signing_end="2023-04-22",
+    # ),
 }
 
 
