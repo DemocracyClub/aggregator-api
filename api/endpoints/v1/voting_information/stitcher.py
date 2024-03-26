@@ -380,7 +380,7 @@ class Stitcher:
             and not resp["address_picker"]
         ):
             resp["parl_recall_petition"] = None
-            recall_petition_councils = ["BPL"]
+            recall_petition_councils = []
             council_id = resp["electoral_services"]["council_id"]
             if council_id in recall_petition_councils:
                 recall_petition_client = RecallPetitionApiClient(
