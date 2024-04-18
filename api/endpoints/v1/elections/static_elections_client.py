@@ -11,6 +11,7 @@ import polars
 from botocore.exceptions import ClientError
 from common.async_requests import AsyncRequester
 from common.conf import settings
+from starlette.requests import Request
 
 
 def ballot_paper_id_to_static_url(ballot_paper_id):
@@ -44,6 +45,7 @@ class ElectionsForPostcodeHelper:
     def __init__(
         self,
         postcode: str,
+        request: Request,
         uprn: str = None,
         root_path: str = None,
         full_ballots: bool = True,
@@ -51,6 +53,7 @@ class ElectionsForPostcodeHelper:
         """
         Args:
             postcode (str): The postcode for the location. This is converted internally to a `Postcode` object.
+            request (Request): The Starlette request. Used for making URLs
             uprn (str, optional): The Unique Property Reference Number for a specific property. Defaults to None.
             root_path (str, optional): The root directory path where election data is stored. If not provided,
                                        the default path is taken from `settings.ELECTIONS_DATA_PATH`.
@@ -61,6 +64,7 @@ class ElectionsForPostcodeHelper:
         """
 
         self.postcode = Postcode(postcode)
+        self.request = request
         self.uprn = uprn
         if not root_path:
             root_path = settings.ELECTIONS_DATA_PATH
@@ -86,10 +90,33 @@ class ElectionsForPostcodeHelper:
             return response["Body"].read()
         return Path(full_path)
 
+    def addresses_to_address_objects(self, df):
+        addresses = []
+
+        for row in df.iter_rows(named=True):
+            addresses.append(
+                {
+                    "address": row["address"],
+                    "postcode": row["postcode"],
+                    "slug": str(row["uprn"]),
+                    "url": str(
+                        self.request.url_for(
+                            "elections_for_uprn",
+                            postcode=row["postcode"].replace(" ", ""),
+                            uprn=row["uprn"],
+                        )
+                    ),
+                },
+            )
+        return addresses
+
     def get_ballot_list(self) -> Tuple[bool, List]:
-        df = polars.read_parquet(self.get_file(self.get_file_path())).filter(
-            (polars.col("postcode") == self.postcode.with_space)
-        )
+        df = polars.read_parquet(self.get_file(self.get_file_path()))
+        if self.uprn:
+            df = df.filter((polars.col("uprn") == int(self.uprn)))
+            return False, df["current_elections"][0].split(",")
+
+        df = df.filter((polars.col("postcode") == self.postcode.with_space))
 
         # Count the unique values in the `current_elections` column.
         # If there is more than one value, count the postcode as split
@@ -99,8 +126,7 @@ class ElectionsForPostcodeHelper:
         )
 
         if is_split:
-            # TODO: support split postcodes
-            raise NotImplementedError("Split postcodes not supported yet")
+            return is_split, self.addresses_to_address_objects(df)
 
         return is_split, df["current_elections"][0].split(",")
 

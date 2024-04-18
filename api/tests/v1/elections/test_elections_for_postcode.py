@@ -115,3 +115,43 @@ async def test_postcode_returns_ballots(
             },
         ],
     }
+
+
+def test_address_picker(
+    elections_app_client,
+    sample_data_writer,
+    sample_postcode_data,
+):
+    sample_postcode_data[0]["current_elections"] = "local.other.ward.2019-01-01"
+    sample_data_writer(sample_postcode_data)
+    req = elections_app_client.get("/api/v1/elections/postcode/AA12AA/")
+    assert req.status_code == 200
+    assert req.json()["address_picker"] is True
+    assert req.json()["addresses"] == [
+        {
+            "address": "HARLOW STUDY CENTRE, WATERHOUSE MOOR, HARLOW",
+            "postcode": "AA1 2AA",
+            "slug": "10003707532",
+            "url": "http://testserver/api/v1/elections/postcode/AA12AA/10003707532/",
+        },
+        {
+            "address": "208 WATERHOUSE MOOR, HARLOW",
+            "postcode": "AA1 2AA",
+            "slug": "100090549541",
+            "url": "http://testserver/api/v1/elections/postcode/AA12AA/100090549541/",
+        },
+    ]
+
+
+def test_uprn_view(
+    elections_app_client,
+    sample_data_writer,
+    sample_postcode_data,
+):
+    sample_postcode_data[0]["current_elections"] = "local.other.ward.2019-01-01"
+    sample_data_writer(sample_postcode_data)
+    req = elections_app_client.get(
+        "/api/v1/elections/postcode/AA12AA/10003707532/"
+    )
+    assert req.status_code == 200
+    assert req.json()["address_picker"] is False
