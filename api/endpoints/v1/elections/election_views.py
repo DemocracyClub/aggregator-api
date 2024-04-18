@@ -19,7 +19,7 @@ async def get_single_election(request: Request):
 async def get_elections_for_postcode(request: Request):
     postcode = request.path_params["postcode"].upper()
     data_helper = ElectionsForPostcodeHelper(postcode)
-    response_data = data_helper.build_response()
+    response_data = await data_helper.build_response()
     # TODO: logging
     return JSONResponse(response_data)
 

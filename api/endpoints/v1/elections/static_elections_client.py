@@ -6,9 +6,20 @@ from pathlib import Path
 from typing import IO, List, Tuple
 from urllib.parse import urljoin
 
+import httpx
 import polars
 from botocore.exceptions import ClientError
+from common.async_requests import AsyncRequester
 from common.conf import settings
+
+
+def ballot_paper_id_to_static_url(ballot_paper_id):
+    parts = ballot_paper_id.split(".")
+    base_url = (
+        "https://wcivf-ballot-cache.s3.eu-west-2.amazonaws.com/ballot_data/"
+    )
+    path = "/".join((parts[-1], parts[0], parts[1], f"{ballot_paper_id}.json"))
+    return urljoin(base_url, path)
 
 
 class Postcode:
@@ -33,16 +44,31 @@ class Postcode:
 
 
 class ElectionsForPostcodeHelper:
-    def __init__(self, postcode: str, uprn: str = None, root_path: str = None):
+    def __init__(
+        self,
+        postcode: str,
+        uprn: str = None,
+        root_path: str = None,
+        full_ballots: bool = True,
+    ):
+        """
+        Args:
+            postcode (str): The postcode for the location. This is converted internally to a `Postcode` object.
+            uprn (str, optional): The Unique Property Reference Number for a specific property. Defaults to None.
+            root_path (str, optional): The root directory path where election data is stored. If not provided,
+                                       the default path is taken from `settings.ELECTIONS_DATA_PATH`.
+                                       Can be a local file path or an S3 URL starting `s3://`
+            full_ballots (bool, optional): Flag to determine if full ballot details should be used. Defaults to True.
+                                           If False then only ballot paper IDs are returned
+
         """
 
-        :type root_path: str, Either a file or S3 path to the root of the data
-        """
         self.postcode = Postcode(postcode)
         self.uprn = uprn
         if not root_path:
             root_path = settings.ELECTIONS_DATA_PATH
         self.root_path = root_path
+        self.full_ballots = full_ballots
 
     def get_file_path(self):
         return f"{self.root_path}/{self.postcode.outcode}.parquet"
@@ -81,10 +107,34 @@ class ElectionsForPostcodeHelper:
 
         return is_split, df["current_elections"][0].split(",")
 
-    def ballot_list_to_dates(self, ballot_list):
+    async def get_full_ballots(self, ballot_data):
+        request_dict = {}
+
+        for ballot in ballot_data:
+            ballot_id = ballot["ballot_paper_id"]
+            url = ballot_paper_id_to_static_url(ballot_id)
+            request_dict[ballot_id] = {
+                "url": url,
+                "params": {},  # Add any params if needed
+                "headers": {},  # Custom headers can be added here if required
+            }
+        requester = AsyncRequester(request_dict=request_dict)
+        response_dict = await requester.get_urls(raise_errors=False)
+        result = []
+        for key, value in response_dict.items():
+            response: httpx.Response = value["response"]
+            if response.is_success:
+                result.append(response.json())
+        return result
+
+    async def ballot_list_to_dates(self, ballot_list):
+        ballot_data = [{"ballot_paper_id": ballot} for ballot in ballot_list]
+        if self.full_ballots:
+            ballot_data = await self.get_full_ballots(ballot_data)
+
         ballots_by_date = {}
-        for ballot in ballot_list:
-            ballot_date = ballot.rsplit(".", 1)[-1]
+        for ballot in ballot_data:
+            ballot_date = ballot["ballot_paper_id"].rsplit(".", 1)[-1]
             if ballot_date not in ballots_by_date:
                 ballots_by_date[ballot_date] = []
             ballots_by_date[ballot_date].append(ballot)
@@ -94,7 +144,7 @@ class ElectionsForPostcodeHelper:
             dates_list.append({"date": date, "ballots": ballots})
         return sorted(dates_list, key=lambda date: date["date"])
 
-    def build_response(self):
+    async def build_response(self):
         is_split, data_for_postcode = self.get_ballot_list()
         data = {
             "address_picker": is_split,
@@ -104,6 +154,6 @@ class ElectionsForPostcodeHelper:
         if is_split:
             data["addresses"] = data_for_postcode
         else:
-            data["dates"] = self.ballot_list_to_dates(data_for_postcode)
+            data["dates"] = await self.ballot_list_to_dates(data_for_postcode)
 
         return data

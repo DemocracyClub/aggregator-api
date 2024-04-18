@@ -14,7 +14,7 @@ class UpstreamApiError(Exception):
         self.status = response_dict.status_code
 
 
-async def get_url(key, url_data, request_urls):
+async def get_url(key, url_data, request_urls, raise_errors=True):
     async with httpx.AsyncClient(http2=True) as client:
         response: httpx.Response = client.get(
             url=url_data["url"],
@@ -22,19 +22,27 @@ async def get_url(key, url_data, request_urls):
             headers=url_data.get("headers", {}),
         )
         request_urls[key]["response"] = await response
-        if request_urls[key]["response"].status_code >= 400:
-            raise UpstreamApiError(request_urls[key]["response"])
-        request_urls[key]["response"].raise_for_status()
+        if raise_errors:
+            if request_urls[key]["response"].status_code >= 400:
+                raise UpstreamApiError(request_urls[key]["response"])
+            request_urls[key]["response"].raise_for_status()
 
 
-async def async_get_urls(requst_urls) -> Dict[str, httpx.Response]:
+async def async_get_urls(
+    requst_urls, raise_errors=True
+) -> Dict[str, httpx.Response]:
     await asyncio.gather(
-        *[get_url(key, requst_urls[key], requst_urls) for key in requst_urls]
+        *[
+            get_url(
+                key, requst_urls[key], requst_urls, raise_errors=raise_errors
+            )
+            for key in requst_urls
+        ]
     )
-
-    for url, result in requst_urls.items():
-        if result["response"].status_code >= 400:
-            raise UpstreamApiError(result)
+    if raise_errors:
+        for url, result in requst_urls.items():
+            if result["response"].status_code >= 400:
+                raise UpstreamApiError(result)
     return requst_urls
 
 
@@ -91,5 +99,7 @@ class AsyncRequester:
             headers = value.get("headers", {})
             headers.update(self.get_default_headers)
 
-    async def get_urls(self) -> dict:
-        return await async_get_urls(self.request_dict)
+    async def get_urls(self, raise_errors=True) -> dict:
+        return await async_get_urls(
+            self.request_dict, raise_errors=raise_errors
+        )

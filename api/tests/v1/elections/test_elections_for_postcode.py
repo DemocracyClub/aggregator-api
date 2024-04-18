@@ -1,10 +1,12 @@
 import tempfile
 from pathlib import Path
 
+import httpx
 import polars
 import pytest
 from endpoints.v1.elections import app
 from starlette.testclient import TestClient
+from static_elections_client import ballot_paper_id_to_static_url
 
 
 @pytest.fixture(scope="function")
@@ -51,10 +53,39 @@ def sample_data_writer(temp_data_root):
     yield write_data
 
 
-def test_postcode_returns_ballots(
-    elections_app_client, sample_data_writer, sample_postcode_data
+@pytest.fixture
+def mock_ballot_response(respx_mock):
+    async def ballot_route(ballot_paper_id, return_value, status_code=200):
+        url = ballot_paper_id_to_static_url(ballot_paper_id)
+        print(f"mocking: {url}")
+        return respx_mock.get(url).mock(
+            return_value=httpx.Response(
+                200,
+                json={
+                    "ballot_paper_id": ballot_paper_id,
+                    "poll_open_date": ballot_paper_id.rsplit(".", 1)[-1],
+                },
+            )
+        )
+
+    return ballot_route
+
+
+@pytest.mark.asyncio
+async def test_postcode_returns_ballots(
+    elections_app_client,
+    sample_data_writer,
+    sample_postcode_data,
+    mock_ballot_response,
 ):
     sample_data_writer(sample_postcode_data)
+    ballots_set = set()
+    for row in sample_postcode_data:
+        for ballot in row["current_elections"].split(","):
+            ballots_set.add(ballot)
+    for ballot in ballots_set:
+        await mock_ballot_response(ballot, "")
+
     req = elections_app_client.get("/api/v1/elections/postcode/AA12AA/")
     assert req.status_code == 200
     assert req.json() == {
@@ -63,11 +94,25 @@ def test_postcode_returns_ballots(
         "dates": [
             {
                 "date": "2019-01-01",
-                "ballots": ["local.foo.bar.2019-01-01", "parl.foo.2019-01-01"],
+                "ballots": [
+                    {
+                        "ballot_paper_id": "local.foo.bar.2019-01-01",
+                        "poll_open_date": "2019-01-01",
+                    },
+                    {
+                        "ballot_paper_id": "parl.foo.2019-01-01",
+                        "poll_open_date": "2019-01-01",
+                    },
+                ],
             },
             {
                 "date": "2019-12-12",
-                "ballots": ["parl.foo.2019-12-12"],
+                "ballots": [
+                    {
+                        "ballot_paper_id": "parl.foo.2019-12-12",
+                        "poll_open_date": "2019-12-12",
+                    }
+                ],
             },
         ],
     }
