@@ -81,13 +81,29 @@ class ElectionsForPostcodeHelper:
 
         return is_split, df["current_elections"][0].split(",")
 
+    def ballot_list_to_dates(self, ballot_list):
+        ballots_by_date = {}
+        for ballot in ballot_list:
+            ballot_date = ballot.rsplit(".", 1)[-1]
+            if ballot_date not in ballots_by_date:
+                ballots_by_date[ballot_date] = []
+            ballots_by_date[ballot_date].append(ballot)
+
+        dates_list = []
+        for date, ballots in ballots_by_date.items():
+            dates_list.append({"date": date, "ballots": ballots})
+        return sorted(dates_list, key=lambda date: date["date"])
+
     def build_response(self):
         is_split, data_for_postcode = self.get_ballot_list()
-        data = {"address_picker": is_split, "addresses": [], "ballots": []}
+        data = {
+            "address_picker": is_split,
+            "addresses": [],
+        }
 
         if is_split:
             data["addresses"] = data_for_postcode
         else:
-            data["ballots"] = data_for_postcode
+            data["dates"] = self.ballot_list_to_dates(data_for_postcode)
 
         return data

@@ -27,14 +27,14 @@ def sample_postcode_data():
             "address": "HARLOW STUDY CENTRE, WATERHOUSE MOOR, HARLOW",
             "postcode": "AA1 2AA",
             "outcode": "AA1",
-            "current_elections": "local.foo.bar.2019-01-01,parl.foo.2019-01-01",
+            "current_elections": "local.foo.bar.2019-01-01,parl.foo.2019-01-01,parl.foo.2019-12-12",
         },
         {
             "uprn": 100090549541,
             "address": "208 WATERHOUSE MOOR, HARLOW",
             "postcode": "AA1 2AA",
             "outcode": "AA1",
-            "current_elections": "local.foo.bar.2019-01-01,parl.foo.2019-01-01",
+            "current_elections": "local.foo.bar.2019-01-01,parl.foo.2019-01-01,parl.foo.2019-12-12",
         },
     ]
 
@@ -60,5 +60,14 @@ def test_postcode_returns_ballots(
     assert req.json() == {
         "address_picker": False,
         "addresses": [],
-        "ballots": ["local.foo.bar.2019-01-01", "parl.foo.2019-01-01"],
+        "dates": [
+            {
+                "date": "2019-01-01",
+                "ballots": ["local.foo.bar.2019-01-01", "parl.foo.2019-01-01"],
+            },
+            {
+                "date": "2019-12-12",
+                "ballots": ["parl.foo.2019-12-12"],
+            },
+        ],
     }
