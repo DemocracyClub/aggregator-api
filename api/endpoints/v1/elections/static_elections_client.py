@@ -3,7 +3,7 @@ Helpers for getting data from S3
 """
 import re
 from pathlib import Path
-from typing import IO
+from typing import IO, List, Tuple
 from urllib.parse import urljoin
 
 import polars
@@ -63,7 +63,7 @@ class ElectionsForPostcodeHelper:
             return response["Body"].read()
         return Path(full_path)
 
-    def get_ballot_list(self):
+    def get_ballot_list(self) -> Tuple[bool, List]:
         df = polars.read_parquet(self.get_file(self.get_file_path())).filter(
             (polars.col("postcode") == self.postcode.with_space)
         )
@@ -75,11 +75,19 @@ class ElectionsForPostcodeHelper:
             > 1
         )
 
-        if not is_split:
-            return df["current_elections"][0].split(",")
+        if is_split:
+            # TODO: support split postcodes
+            raise NotImplementedError("Split postcodes not supported yet")
 
-        # TODO: support split postcodes
-        raise NotImplementedError("Split postcodes not supported yet")
+        return is_split, df["current_elections"][0].split(",")
 
     def build_response(self):
-        return {"ballots": self.get_ballot_list()}
+        is_split, data_for_postcode = self.get_ballot_list()
+        data = {"address_picker": is_split, "addresses": [], "ballots": []}
+
+        if is_split:
+            data["addresses"] = data_for_postcode
+        else:
+            data["ballots"] = data_for_postcode
+
+        return data

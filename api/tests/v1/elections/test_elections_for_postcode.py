@@ -58,5 +58,7 @@ def test_postcode_returns_ballots(
     req = elections_app_client.get("/api/v1/elections/postcode/AA12AA/")
     assert req.status_code == 200
     assert req.json() == {
-        "ballots": ["local.foo.bar.2019-01-01", "parl.foo.2019-01-01"]
+        "address_picker": False,
+        "addresses": [],
+        "ballots": ["local.foo.bar.2019-01-01", "parl.foo.2019-01-01"],
     }
