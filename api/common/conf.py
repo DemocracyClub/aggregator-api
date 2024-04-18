@@ -50,6 +50,10 @@ class BaseSettings:
             "RECALL_DATA_KEY_PREFIX", "blackpool-south.2024-03/"
         )
 
+        self.ELECTIONS_DATA_PATH = (
+            f"s3://dc-every-election.{self.DC_ENVIRONMENT}/"
+        )
+
         self.DEBUG = bool(int(os.environ.get("DEBUG", "0")))
 
         self.API_PLANS = {
