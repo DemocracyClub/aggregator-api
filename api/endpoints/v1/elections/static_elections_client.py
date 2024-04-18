@@ -15,11 +15,8 @@ from common.conf import settings
 
 def ballot_paper_id_to_static_url(ballot_paper_id):
     parts = ballot_paper_id.split(".")
-    base_url = (
-        "https://wcivf-ballot-cache.s3.eu-west-2.amazonaws.com/ballot_data/"
-    )
     path = "/".join((parts[-1], parts[0], parts[1], f"{ballot_paper_id}.json"))
-    return urljoin(base_url, path)
+    return urljoin(settings.WCIVF_BALLOT_CACHE_URL, path)
 
 
 class Postcode:

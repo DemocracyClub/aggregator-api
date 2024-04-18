@@ -57,7 +57,6 @@ def sample_data_writer(temp_data_root):
 def mock_ballot_response(respx_mock):
     async def ballot_route(ballot_paper_id, return_value, status_code=200):
         url = ballot_paper_id_to_static_url(ballot_paper_id)
-        print(f"mocking: {url}")
         return respx_mock.get(url).mock(
             return_value=httpx.Response(
                 200,
