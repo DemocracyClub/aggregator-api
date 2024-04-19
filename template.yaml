@@ -218,6 +218,7 @@ Resources:
         Variables:
           SENTRY_DSN: !Ref AppSentryDSN
           DEBUG: !Ref AppDebug
+          DC_ENVIRONMENT: !Ref DCEnvironment
       Events:
         ElectionListRequests:
           Type: Api
