@@ -25,14 +25,14 @@ def temp_data_root(api_settings):
 def sample_postcode_data():
     return [
         {
-            "uprn": 10003707532,
+            "uprn": "10003707532",
             "address": "HARLOW STUDY CENTRE, WATERHOUSE MOOR, HARLOW",
             "postcode": "AA1 2AA",
             "outcode": "AA1",
             "current_elections": "local.foo.bar.2019-01-01,parl.foo.2019-01-01,parl.foo.2019-12-12",
         },
         {
-            "uprn": 100090549541,
+            "uprn": "100090549541",
             "address": "208 WATERHOUSE MOOR, HARLOW",
             "postcode": "AA1 2AA",
             "outcode": "AA1",

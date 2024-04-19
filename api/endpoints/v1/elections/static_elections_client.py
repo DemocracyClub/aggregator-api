@@ -80,11 +80,13 @@ class ElectionsForPostcodeHelper:
             bucket_name = full_path.split("/")[2]
             key = "/".join(full_path.split("/")[3:])
             try:
-                response = settings.S3_CLIENT.get_object(bucket_name, key)
+                response = settings.S3_CLIENT.get_object(
+                    Bucket=bucket_name, Key=key
+                )
             except ClientError as ex:
                 if ex.response["Error"]["Code"] == "NoSuchKey":
                     # If there's no key for whatever reason raise
-                    raise FileNotFoundError()
+                    raise FileNotFoundError(key)
                 # Raise any other boto3 errors
                 raise
             return response["Body"].read()
@@ -112,13 +114,25 @@ class ElectionsForPostcodeHelper:
 
     def get_ballot_list(self) -> Tuple[bool, List]:
         df = polars.read_parquet(self.get_file(self.get_file_path()))
+        if "ballot_ids" in df.columns:
+            # TODO Remove this if we change the name at source
+            df = df.rename({"ballot_ids": "current_elections"})
+
+        # TODO: This isn't needed if the Parquet casts the list to a string
+        #       at the point of creation
+        df = df.with_columns(
+            polars.col("current_elections")
+            .cast(polars.List(polars.Utf8))
+            .list.join(",")
+        )
+
         if self.uprn:
-            df = df.filter((polars.col("uprn") == int(self.uprn)))
+            df = df.filter((polars.col("uprn") == self.uprn))
             return False, df["current_elections"][0].split(",")
 
         df = df.filter((polars.col("postcode") == self.postcode.with_space))
 
-        # Count the unique values in the `current_elections` column.
+        # Count the unique values in the `ballot_ids` column.
         # If there is more than one value, count the postcode as split
         is_split = (
             df.select(polars.col("current_elections").n_unique()).to_series()[0]
