@@ -113,7 +113,13 @@ class ElectionsForPostcodeHelper:
         return addresses
 
     def get_ballot_list(self) -> Tuple[bool, List]:
-        df = polars.read_parquet(self.get_file(self.get_file_path()))
+        try:
+            df = polars.read_parquet(self.get_file(self.get_file_path()))
+        except FileNotFoundError:
+            # If the file isn't found it should mean that there are no current
+            # elections for this outcode. Just return an empty dates list.
+            return False, []
+
         if "ballot_ids" in df.columns:
             # TODO Remove this if we change the name at source
             df = df.rename({"ballot_ids": "current_elections"})
