@@ -117,6 +117,30 @@ async def test_postcode_returns_ballots(
     }
 
 
+@pytest.mark.asyncio
+async def test_postcode_doesnt_exist_in_file(
+    elections_app_client,
+    sample_data_writer,
+    sample_postcode_data,
+    mock_ballot_response,
+):
+    sample_data_writer(sample_postcode_data)
+    ballots_set = set()
+    for row in sample_postcode_data:
+        for ballot in row["current_elections"].split(","):
+            ballots_set.add(ballot)
+    for ballot in ballots_set:
+        await mock_ballot_response(ballot, "")
+
+    req = elections_app_client.get("/api/v1/elections/postcode/AA12AB/")
+    assert req.status_code == 200
+    assert req.json() == {
+        "address_picker": False,
+        "addresses": [],
+        "dates": [],
+    }
+
+
 def test_address_picker(
     elections_app_client,
     sample_data_writer,

@@ -137,6 +137,10 @@ class ElectionsForPostcodeHelper:
             return False, df["current_elections"][0].split(",")
 
         df = df.filter((polars.col("postcode") == self.postcode.with_space))
+        if df.is_empty():
+            # This file doesn't have any rows matching the given postcode
+            # Just return an empty list as this means there aren't elections here.
+            return False, []
 
         # Count the unique values in the `ballot_ids` column.
         # If there is more than one value, count the postcode as split
