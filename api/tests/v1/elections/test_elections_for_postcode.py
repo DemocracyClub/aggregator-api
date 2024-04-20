@@ -1,3 +1,4 @@
+import logging
 import tempfile
 from pathlib import Path
 
@@ -76,7 +77,10 @@ async def test_postcode_returns_ballots(
     sample_data_writer,
     sample_postcode_data,
     mock_ballot_response,
+    caplog,
 ):
+    caplog.set_level(logging.DEBUG)
+
     sample_data_writer(sample_postcode_data)
     ballots_set = set()
     for row in sample_postcode_data:
@@ -115,6 +119,11 @@ async def test_postcode_returns_ballots(
             },
         ],
     }
+    logging_message = None
+    for record in caplog.records:
+        if record.message.startswith("dc-postcode-searches"):
+            logging_message = record
+    assert logging_message
 
 
 @pytest.mark.asyncio
@@ -167,11 +176,14 @@ def test_address_picker(
     ]
 
 
-def test_uprn_view(
+@pytest.mark.asyncio
+async def test_uprn_view(
     elections_app_client,
     sample_data_writer,
     sample_postcode_data,
+    mock_ballot_response,
 ):
+    await mock_ballot_response("local.other.ward.2019-01-01", "")
     sample_postcode_data[0]["current_elections"] = "local.other.ward.2019-01-01"
     sample_data_writer(sample_postcode_data)
     req = elections_app_client.get(

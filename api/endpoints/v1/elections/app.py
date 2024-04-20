@@ -1,6 +1,9 @@
+import os
+
 from common.conf import settings
 from common.middleware import MIDDLEWARE
 from common.sentry_helper import init_sentry
+from dc_logging_client import DCWidePostcodeLoggingClient
 from election_views import (
     get_election_list,
     get_elections_for_postcode,
@@ -10,6 +13,18 @@ from election_views import (
 from mangum import Mangum
 from starlette.applications import Starlette
 from starlette.routing import Route
+
+
+def init_logger(app):
+    # TODO: DRY this up (see also voting_information.app
+    LOGGER_ARN = os.environ.get("LOGGER_ARN", None)
+    if LOGGER_ARN:
+        firehose_args = {"function_arn": LOGGER_ARN}
+    else:
+        firehose_args = {"fake": True}
+    app.state.POSTCODE_LOGGER = DCWidePostcodeLoggingClient(**firehose_args)
+    return app
+
 
 init_sentry()
 
@@ -40,5 +55,7 @@ routes = [
     ),
 ]
 app = Starlette(debug=settings.DEBUG, routes=routes, middleware=MIDDLEWARE)
+
+init_logger(app)
 
 handler = Mangum(app)

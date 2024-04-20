@@ -219,6 +219,7 @@ Resources:
           SENTRY_DSN: !Ref AppSentryDSN
           DEBUG: !Ref AppDebug
           DC_ENVIRONMENT: !Ref DCEnvironment
+          LOGGER_ARN: !Ref AppLoggerArn
       Events:
         ElectionListRequests:
           Type: Api
