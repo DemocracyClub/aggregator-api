@@ -4,6 +4,8 @@ from typing import Dict
 
 import httpx
 
+client = httpx.AsyncClient(http2=True)
+
 
 class UpstreamApiError(Exception):
     def __init__(self, response_dict: httpx.Response):
@@ -15,17 +17,16 @@ class UpstreamApiError(Exception):
 
 
 async def get_url(key, url_data, request_urls, raise_errors=True):
-    async with httpx.AsyncClient(http2=True) as client:
-        response: httpx.Response = client.get(
-            url=url_data["url"],
-            params=url_data.get("params", {}),
-            headers=url_data.get("headers", {}),
-        )
-        request_urls[key]["response"] = await response
-        if raise_errors:
-            if request_urls[key]["response"].status_code >= 400:
-                raise UpstreamApiError(request_urls[key]["response"])
-            request_urls[key]["response"].raise_for_status()
+    response: httpx.Response = await client.get(
+        url=url_data["url"],
+        params=url_data.get("params", {}),
+        headers=url_data.get("headers", {}),
+    )
+    request_urls[key]["response"] = response
+    if raise_errors:
+        if request_urls[key]["response"].status_code >= 400:
+            raise UpstreamApiError(request_urls[key]["response"])
+        request_urls[key]["response"].raise_for_status()
 
 
 async def async_get_urls(
