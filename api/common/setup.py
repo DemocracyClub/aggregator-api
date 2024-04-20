@@ -18,6 +18,6 @@ setup(
         "dc-logging-utils @ git+https://github.com/DemocracyClub/dc_logging.git@1.0.2",
         "sentry-sdk[starlette]",
         "urllib3<2.0.0",
-        "polars==0.20.10",
+        "polars==0.20.21",
     ],
 )
