@@ -39,6 +39,7 @@
           "election_id": "parl.2018-05-03",
           "election_name": "UK Parliament elections",
           "post_name": "West Tyrone",
+          "postal_voting_requirements": null,
           "candidates_verified": false,
           "voting_system": {
             "slug": "FPTP",

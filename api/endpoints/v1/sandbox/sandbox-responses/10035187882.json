@@ -40,6 +40,7 @@
           "election_id": "local.westminster.2018-11-22",
           "election_name": "Westminster local election",
           "post_name": "Lancaster Gate",
+          "postal_voting_requirements": null,
           "candidates_verified": true,
           "voting_system": {
             "slug": "FPTP",

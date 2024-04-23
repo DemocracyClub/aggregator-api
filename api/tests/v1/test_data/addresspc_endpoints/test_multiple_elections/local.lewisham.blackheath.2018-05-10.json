@@ -5,6 +5,7 @@
     "election_name": "Lewisham local election",
     "election_id": "local.lewisham.2018-05-10",
     "post_name": "Blackheath",
+    "postal_voting_requirements": null,
     "cancelled": false,
     "voting_system": {
         "slug": "FPTP",
