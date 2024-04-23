@@ -26,6 +26,7 @@
           "election_id": "mayor.lewisham.2018-05-03",
           "election_name": "Mayor of Lewisham election",
           "post_name": "London Borough of Lewisham",
+          "postal_voting_requirements": null,
           "candidates_verified": true,
           "voting_system": {
             "slug": "sv",
@@ -180,6 +181,7 @@
           "election_id": "local.lewisham.2018-05-03",
           "election_name": "Lewisham local election",
           "post_name": "Blackheath",
+          "postal_voting_requirements": null,
           "candidates_verified": true,
           "candidates": [
             {
@@ -394,6 +396,7 @@
           "election_id": "local.lewisham.2018-05-10",
           "election_name": "Lewisham local election",
           "post_name": "Blackheath",
+          "postal_voting_requirements": null,
           "candidates_verified": false,
           "candidates": [
             {
@@ -601,6 +604,7 @@
           "election_id": "parl.2018-06-14",
           "election_name": "UK Parliament elections",
           "post_name": "Lewisham East",
+          "postal_voting_requirements": null,
           "candidates_verified": false,
           "voting_system": {
             "slug": "FPTP",
