@@ -58,8 +58,10 @@
           "elected_role": "Local Councillor",
           "metadata": null,
           "cancelled": false,
+          "cancellation_reason": null,
           "replaced_by": null,
           "replaces": null,
+          "requires_voter_id": "EA-2022",
           "election_id": "local.westminster.2018-11-22",
           "election_name": "Westminster local election",
           "post_name": "Lancaster Gate",
@@ -184,9 +186,6 @@
     "address": "Electoral Registration Officer\nWestminster City Council\n2nd Floor, City Hall\n5 Strand"
   },
   "registration": {
-    "council_id": "E09000033",
-    "name": "City of Westminster",
-    "nation": "England",
     "email": "electoralservices@westminster.gov.uk",
     "phone": "020 7641 2730",
     "website": "http://www.westminster.gov.uk/",

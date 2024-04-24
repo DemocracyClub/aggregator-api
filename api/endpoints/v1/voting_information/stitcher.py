@@ -224,6 +224,9 @@ class Stitcher:
                 details["phone"] = ""
         else:
             details = self.get_electoral_services()
+            details.pop("name")
+            details.pop("nation")
+            details.pop("council_id")
         return details
 
     def make_wcivf_ballots(self):

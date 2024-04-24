@@ -36,8 +36,10 @@
       "elected_role": "Mayor of Lewisham",
       "metadata": null,
       "cancelled": false,
+      "cancellation_reason": null,
       "replaced_by": null,
-      "replaces": null
+      "replaces": null,
+      "requires_voter_id": "EA-2022"
     },
     {
       "ballot_paper_id": "local.lewisham.blackheath.2018-05-03",
@@ -48,7 +50,8 @@
       "cancelled": true,
       "cancellation_reason": "UNDER_CONTESTED",
       "replaced_by": "local.lewisham.blackheath.2018-05-10",
-      "replaces": null
+      "replaces": null,
+      "requires_voter_id": "EA-2022"
     },
     {
       "ballot_paper_id": "local.lewisham.blackheath.2018-05-10",
@@ -57,8 +60,10 @@
       "elected_role": "Local Councillor",
       "metadata": null,
       "cancelled": false,
+      "cancellation_reason": null,
       "replaced_by": null,
-      "replaces": "local.lewisham.blackheath.2018-05-03"
+      "replaces": "local.lewisham.blackheath.2018-05-03",
+      "requires_voter_id": "EA-2022"
     },
     {
       "ballot_paper_id": "parl.lewisham-east.by.2018-06-14",
@@ -67,8 +72,10 @@
       "elected_role": "Member of Parliament",
       "metadata": null,
       "cancelled": false,
+      "cancellation_reason": null,
       "replaced_by": null,
-      "replaces": null
+      "replaces": null,
+      "requires_voter_id": "EA-2022"
     }
   ]
 }
