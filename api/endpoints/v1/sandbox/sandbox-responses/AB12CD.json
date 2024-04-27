@@ -16,17 +16,7 @@
           "type": "cancelled_election",
           "title": "Cancelled Election",
           "url": null,
-          "detail": "The poll for this election will not take place",
-          "cancelled_ballots": [
-            {
-              "ballot_paper_id": "mayor.lewisham.2018-05-03",
-              "detail": "Uncontested election with no candidates"
-            },
-            {
-              "ballot_paper_id": "local.lewisham.blackheath.2018-05-03",
-              "detail": "The election for a Borough Councillor to represent the Blackheath Ward has now been postponed due to leaves on the line."
-            }
-          ]
+          "detail": "The poll for this election will not take place"
         }
       ],
       "ballots": [
@@ -43,8 +33,10 @@
             }
           },
           "cancelled": true,
+          "cancellation_reason": "NO_CANDIDATES",
           "replaced_by": null,
           "replaces": null,
+          "requires_voter_id": "EA-2022",
           "seats_contested": 1,
           "candidates": [],
           "ballot_url": "https://developers.democracyclub.org.uk/api/v1/sandbox/elections/mayor.lewisham.2018-05-03/",
@@ -83,8 +75,10 @@
             }
           },
           "cancelled": true,
+          "cancellation_reason": "NO_CANDIDATES",
           "replaced_by": "local.lewisham.blackheath.2018-05-10",
           "replaces": null,
+          "requires_voter_id": "EA-2022",
           "seats_contested": 1,
           "candidates": [
             {
@@ -292,9 +286,6 @@
     "address": "Electoral Registration Officer\nLewisham Town Hall\nCatford Road\nCatford"
   },
   "registration": {
-    "council_id": "E09000023",
-    "name": "London Borough of Lewisham",
-    "nation": "England",
     "email": "electoral.services@lewisham.gov.uk",
     "phone": "020 8314 6086",
     "website": "http://www.lewisham.gov.uk/",

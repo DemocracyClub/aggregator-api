@@ -79,8 +79,10 @@
       "elected_role": "Local Councillor",
       "metadata": null,
       "cancelled": false,
+      "cancellation_reason": null,
       "replaced_by": null,
-      "replaces": null
+      "replaces": null,
+      "requires_voter_id": "EA-2022"
     }
   ]
 }

@@ -34,8 +34,10 @@
             }
           },
           "cancelled": false,
+          "cancellation_reason": null,
           "replaced_by": null,
           "replaces": null,
+          "requires_voter_id": "EFA-2002",
           "election_id": "parl.2018-05-03",
           "election_name": "UK Parliament elections",
           "post_name": "West Tyrone",
@@ -74,9 +76,6 @@
     "address": "The Electoral Office Headquarters\nSt Anne's House\n15 Church Street\nBelfast"
   },
   "registration": {
-    "council_id": "N09000007",
-    "name": "",
-    "nation": "Northern Ireland",
     "email": "info@eoni.org.uk",
     "phone": "",
     "website": "http://www.eoni.org.uk/",
