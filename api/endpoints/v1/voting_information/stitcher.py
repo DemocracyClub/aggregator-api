@@ -331,7 +331,6 @@ class Stitcher:
                 ballot["election_id"] = wcivf_ballot["election_id"]
                 ballot["election_name"] = wcivf_ballot["election_name"]
                 ballot["post_name"] = wcivf_ballot["post_name"]
-                ballot["elected_role"] = "representitive"
                 ballot["candidates_verified"] = wcivf_ballot[
                     "candidates_verified"
                 ]
