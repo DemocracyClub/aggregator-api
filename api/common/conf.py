@@ -41,7 +41,7 @@ class BaseSettings:
 
         self.PARL_BOUNDARY_CHANGES_ENABLED = True
         self.PARL_BOUNDARY_DATA_KEY_PREFIX = (
-            "parl-2023-boundary-review/20230913"
+            "parl-2023-boundary-review/20240603"
         )
         self.PARL_BOUNDARY_DATA_BUCKET_NAME = (
             f"addressbase-lookups.{self.DC_ENVIRONMENT}"
