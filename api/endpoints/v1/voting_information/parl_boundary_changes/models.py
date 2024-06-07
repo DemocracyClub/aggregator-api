@@ -42,8 +42,11 @@ class BaseParlBoundaryChange(BaseDictDataclass):
             "new_constituencies_name",
         ]
         kwargs = {}
-        for attr in fields:
-            kwargs[attr] = row_dict[attr][0]
+        try:
+            for attr in fields:
+                kwargs[attr] = row_dict[attr][0]
+        except IndexError:
+            return None
         return cls(**kwargs)
 
 
