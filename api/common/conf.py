@@ -41,7 +41,7 @@ class BaseSettings:
 
         self.PARL_BOUNDARY_CHANGES_ENABLED = True
         self.PARL_BOUNDARY_DATA_KEY_PREFIX = (
-            "parl-2023-boundary-review/20230913"
+            "parl-2023-boundary-review/20240603"
         )
         self.PARL_BOUNDARY_DATA_BUCKET_NAME = (
             f"addressbase-lookups.{self.DC_ENVIRONMENT}"
@@ -50,7 +50,7 @@ class BaseSettings:
             "RECALL_DATA_KEY_PREFIX", "blackpool-south.2024-03/"
         )
 
-        self.ELECTIONS_DATA_PATH = "s3://pollingstations.private.data/addressbase/2023-12-15/uprn-to-ballots-outcodes"
+        self.ELECTIONS_DATA_PATH = "s3://pollingstations.private.data/addressbase/2024-05-01/uprn-to-ballots-outcodes"
 
         self.DEBUG = bool(int(os.environ.get("DEBUG", "0")))
 
