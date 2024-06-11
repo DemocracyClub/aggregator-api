@@ -88,7 +88,7 @@ class AuthenticateView(TemplateView):
         return redirect("api_users:profile")
 
 
-class UpdateProfileDetailsView(UpdateView):
+class UpdateProfileDetailsView(LoginRequiredMixin, UpdateView):
     form_class = UserProfileForm
     template_name = "users/update_profile.html"
 
