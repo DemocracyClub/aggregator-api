@@ -14,6 +14,9 @@ class BaseParlBoundaryChange(BaseDictDataclass):
 
     @property
     def change_type(self):
+        if self.new_constituencies_official_identifier == "gss:E14001302":
+            # Ipswich has a new GSS code but there is no change to the name or boundary.
+            return "NO_CHANGE"
         CHANGE_TYPE = []
         if self.new_constituencies_name != self.current_constituencies_name:
             CHANGE_TYPE.append("NAME_CHANGE")
