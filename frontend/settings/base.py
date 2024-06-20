@@ -96,7 +96,7 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
 ]
 SESAME_MAX_AGE = 60 * 10
-SESAME_ONE_TIME = True
+SESAME_ONE_TIME = False
 SESAME_TOKEN_NAME = "login_token"
 LOGIN_URL = "api_users:login"
 
