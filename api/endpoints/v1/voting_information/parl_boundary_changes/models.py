@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Optional
 
+from parl_boundary_changes.constants import OLD_NEW_GSS_TO_UPRN_IN_DIFF_COUNT
 from polars import DataFrame
 from static_data_helper import BaseDictDataclass, BaseResponse
 
@@ -14,8 +15,21 @@ class BaseParlBoundaryChange(BaseDictDataclass):
 
     @property
     def change_type(self):
-        if self.new_constituencies_official_identifier == "gss:E14001302":
-            # Ipswich has a new GSS code but there is no change to the name or boundary.
+        if (
+            self.current_constituencies_official_identifier
+            == self.new_constituencies_official_identifier
+        ):
+            return "NO_CHANGE"
+        if (
+            uprn_count := OLD_NEW_GSS_TO_UPRN_IN_DIFF_COUNT.get(
+                (
+                    self.current_constituencies_official_identifier,
+                    self.new_constituencies_official_identifier,
+                ),
+                None,
+            )
+        ) and uprn_count < 50:
+            # We could be more clever here and introduce 'MINOR_CHANGE'
             return "NO_CHANGE"
         CHANGE_TYPE = []
         if self.new_constituencies_name != self.current_constituencies_name:
