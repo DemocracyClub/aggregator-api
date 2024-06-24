@@ -28,6 +28,7 @@ class BaseParlBoundaryChange(BaseDictDataclass):
                 ),
                 None,
             )
+            is not None
         ) and uprn_count < 50:
             # We could be more clever here and introduce 'MINOR_CHANGE'
             return "NO_CHANGE"
