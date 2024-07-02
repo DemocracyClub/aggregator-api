@@ -233,6 +233,28 @@ Resources:
             RestApiId: !Ref DCAPI
             Path: /api/v1/elections/{proxy+}
             Method: GET
+  V1LayersOfStateFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
+      CodeUri: ./api/endpoints/v1/layers_of_state/
+      Handler: app.handler
+      Layers:
+        - !Ref APICommonLayer
+      Runtime: python3.10
+      MemorySize: 512
+      Environment:
+        Variables:
+          SENTRY_DSN: !Ref AppSentryDSN
+          DEBUG: !Ref AppDebug
+          DC_ENVIRONMENT: !Ref DCEnvironment
+      Events:
+        PostcodeAndUPRNRequests:
+          Type: Api
+          Properties:
+            RestApiId: !Ref DCAPI
+            Path: /api/v1/layers_of_state/{proxy+}
+            Method: GET
   V1SandboxFunction:
     Type: AWS::Serverless::Function
     Properties:
