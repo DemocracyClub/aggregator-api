@@ -19,6 +19,8 @@ def api_settings():
             setting for setting in dir(settings) if not setting.startswith("_")
         ]
     }
+    # always set include_current
+    settings.ALWAYS_INCLUDE_CURRENT = True
     yield settings
     for setting, value in initial_settings.items():
         setattr(settings, setting, value)

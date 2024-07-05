@@ -44,7 +44,7 @@ def test_no_ballots(mock_request):
     assert s.make_result_known_response() == load_sandbox_output(postcode)
 
 
-def test_one_election_station_known_with_candidates(mock_request):
+def test_one_election_station_known_with_candidates(mock_request, api_settings):
     postcode = "AA12AA"
     wdiv_json = load_fixture(fixture_map[postcode], "wdiv")
     wcivf_json = []

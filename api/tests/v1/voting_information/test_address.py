@@ -46,7 +46,7 @@ def test_no_stitcher_error_with_mismatched_ballots(respx_mock, vi_app_client):
 
 
 @pytest.mark.parametrize("postcode", ["AA12AA", "AA12AB", "AA14AA"])
-def test_valid(postcode, vi_app_client, respx_mock):
+def test_valid(postcode, vi_app_client, respx_mock, api_settings):
     # iterate through the subset of applicable expected inputs/outputs
     # we test against in test_stitcher.py
     fixture = load_fixture(fixture_map[postcode], "wdiv")

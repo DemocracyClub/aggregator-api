@@ -1,5 +1,6 @@
 import re
 from copy import deepcopy
+from datetime import datetime
 from typing import Dict, List, Optional
 
 from common.conf import settings
@@ -193,6 +194,7 @@ class Stitcher:
         self.ballot_sort_keys = {}
         self.request: Request = request
         self.validate()
+        self.always_include_current = settings.ALWAYS_INCLUDE_CURRENT
 
     def validate(self):
         for ballot in self.wdiv_resp["ballots"]:
@@ -298,6 +300,15 @@ class Stitcher:
         results = []
         dates = self.get_dates()
         for date in dates:
+            data_obj = datetime.strptime(date, "%Y-%m-%d").date()
+            if (
+                data_obj < datetime.today().date()
+                and "query_string" in self.request.scope
+                and not self.request.query_params.get(
+                    "include_current", self.always_include_current
+                )
+            ):
+                continue
             ballots = self.get_ballots_for_date(date)
             nm = NotificationsMaker(ballots)
             results.append(

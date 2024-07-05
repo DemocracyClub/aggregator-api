@@ -65,6 +65,7 @@ class BaseSettings:
                 value="enterprise", label="Enterprise", request_per_day=0
             ),
         }
+        self.ALWAYS_INCLUDE_CURRENT = False
 
 
 settings = BaseSettings()
