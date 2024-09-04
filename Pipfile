@@ -18,13 +18,13 @@ mypy_boto3_dynamodb = "*"
 pytest-ruff = "*"
 pre-commit = "*"
 dc-response-builder = {file = "https://github.com/DemocracyClub/dc_response_builder/archive/refs/tags/0.0.17.tar.gz"}
+uvicorn = "==0.30.6"
 
 [api]
 aiohttp = "==3.8.3"
 sentry-sdk = "*"
 dc-api-common = {path = "./api/common"}
 mypy-boto3-dynamodb = "*"
-
 
 [frontend]
 dc-design-system = {file = "https://github.com/DemocracyClub/design-system/archive/refs/tags/0.4.0.tar.gz"}
