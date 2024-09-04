@@ -42,7 +42,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     )
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
     api_plan = models.CharField(
-        choices=[(name, plan.label) for name, plan in settings.API_PLANS.items()],
+        choices=[
+            (name, plan.label) for name, plan in settings.API_PLANS.items()
+        ],
         default="hobbyists",
         max_length=100,
         verbose_name="API plan",
