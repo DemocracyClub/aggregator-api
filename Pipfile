@@ -46,8 +46,6 @@ mangum = "*"
 [scripts]
 ruff-check = "ruff  ."
 ruff-format = "ruff  format ."
-circleci_deploy_dev = "~/repo/deploy.sh dev"
-circleci_deploy_prod = "~/repo/deploy.sh prod"
 coveralls = "coveralls"
 pytest = "pytest"
 collectstatic = "python manage.py collectstatic --noinput --clear"
