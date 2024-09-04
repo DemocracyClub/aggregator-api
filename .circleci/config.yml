@@ -12,7 +12,7 @@ jobs:
 
   install_and_update_dependencies:
     docker:
-    - image: cimg/python:3.10
+    - image: cimg/python:3.12
     working_directory: ~/repo
     steps:
     - checkout
@@ -39,7 +39,7 @@ jobs:
 
   test:
     docker:
-    - image: cimg/python:3.10
+    - image: cimg/python:3.12
     working_directory: ~/repo
     steps:
     - checkout
@@ -64,7 +64,7 @@ jobs:
 
   sam_build:
     docker:
-    - image: public.ecr.aws/sam/build-python3.10:latest
+    - image: public.ecr.aws/sam/build-python3.12:latest
     working_directory: ~/repo
     steps:
     - checkout
@@ -78,7 +78,7 @@ jobs:
 
   sam_deploy:
     docker:
-    - image: public.ecr.aws/sam/build-python3.10:latest
+    - image: public.ecr.aws/sam/build-python3.12:latest
     working_directory: ~/repo/
     parameters:
       dc-environment:

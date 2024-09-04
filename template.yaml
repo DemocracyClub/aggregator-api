@@ -147,7 +147,7 @@ Resources:
     Properties:
       ContentUri: ./lambda-layers/APICommonLayer/
       CompatibleRuntimes:
-        - python3.10
+        - python3.12
     Metadata:
       BuildMethod: makefile
     RetentionPolicy: Delete
@@ -164,7 +164,7 @@ Resources:
           USE_DYNAMODB_AUTH: !Ref AppUseDynamoDBAuth
       Layers:
         - !Ref APICommonLayer
-      Runtime: python3.10
+      Runtime: python3.12
 
   V1VotingInformationFunction:
     Type: AWS::Serverless::Function
@@ -181,7 +181,7 @@ Resources:
 #            - 1
       Layers:
         - !Ref APICommonLayer
-      Runtime: python3.10
+      Runtime: python3.12
       MemorySize: 512
       Environment:
         Variables:
@@ -212,7 +212,7 @@ Resources:
       Handler: app.handler
       Layers:
         - !Ref APICommonLayer
-      Runtime: python3.10
+      Runtime: python3.12
       MemorySize: 512
       Environment:
         Variables:
@@ -241,7 +241,7 @@ Resources:
       Handler: app.handler
       Layers:
         - !Ref APICommonLayer
-      Runtime: python3.10
+      Runtime: python3.12
       MemorySize: 512
       Environment:
         Variables:
@@ -261,7 +261,7 @@ Resources:
       Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
       CodeUri: ./api/endpoints/v1/sandbox/
       Handler: app.handler
-      Runtime: python3.10
+      Runtime: python3.12
       Layers:
         - !Ref APICommonLayer
       MemorySize: 512
@@ -292,7 +292,7 @@ Resources:
     Properties:
       ContentUri: ./lambda-layers/FrontendDependenciesLayer/
       CompatibleRuntimes:
-        - python3.10
+        - python3.12
     Metadata:
       BuildMethod: makefile
     RetentionPolicy: Delete
@@ -305,7 +305,7 @@ Resources:
       Handler: frontend.asgi.handler
       Layers:
         - !Ref FrontendDependenciesLayer
-      Runtime: python3.10
+      Runtime: python3.12
       MemorySize: 512
       Environment:
         Variables:
@@ -344,7 +344,7 @@ Resources:
       Handler: frontend.lambda_awsgi.management_handler
       Layers:
         - !Ref FrontendDependenciesLayer
-      Runtime: python3.10
+      Runtime: python3.12
       MemorySize: 512
       Environment:
         Variables:
