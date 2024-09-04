@@ -47,6 +47,7 @@ jobs:
         keys:
         - v6-dependencies-{{ checksum "Pipfile.lock" }}
     - run: *install-pipenv
+    - run: pipenv run pipenv verify
     - run: pipenv run ruff-check
     - run: pipenv run pytest --ruff --cov-report= --cov=frontend --cov=api --junitxml=test-results/junit.xml
     - run: |
