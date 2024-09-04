@@ -43,6 +43,7 @@ django-sesame = "*"
 dc-api-common = {path = "./api/common"}
 boto3 = "*"
 mangum = "*"
+setuptools = "*"
 
 [scripts]
 ruff-check = "bash -c \"ruff check . && ruff format . --check\""
