@@ -21,7 +21,7 @@ dc-response-builder = {file = "https://github.com/DemocracyClub/dc_response_buil
 uvicorn = "==0.30.6"
 
 [api]
-aiohttp = "==3.8.3"
+aiohttp = "==3.10.5"
 sentry-sdk = "*"
 dc-api-common = {path = "./api/common"}
 mypy-boto3-dynamodb = "*"
@@ -51,4 +51,4 @@ pytest = "pytest"
 collectstatic = "python manage.py collectstatic --noinput --clear"
 
 [requires]
-python_version = "3.10"
+python_version = "3.12"
