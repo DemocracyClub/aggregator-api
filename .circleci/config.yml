@@ -48,7 +48,6 @@ jobs:
         - v6-dependencies-{{ checksum "Pipfile.lock" }}
     - run: *install-pipenv
     - run: pipenv run ruff-check
-    - run: pipenv run ruff-format
     - run: pipenv run pytest --ruff --cov-report= --cov=frontend --cov=api --junitxml=test-results/junit.xml
     - run: |
         if [ -n "$COVERALLS_REPO_TOKEN" ]; then

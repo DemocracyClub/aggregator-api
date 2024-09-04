@@ -44,8 +44,8 @@ boto3 = "*"
 mangum = "*"
 
 [scripts]
-ruff-check = "ruff  ."
-ruff-format = "ruff  format ."
+ruff-check = "bash -c \"ruff check . && ruff format . --check\""
+ruff-format = "ruff format ."
 coveralls = "coveralls"
 pytest = "pytest"
 collectstatic = "python manage.py collectstatic --noinput --clear"
