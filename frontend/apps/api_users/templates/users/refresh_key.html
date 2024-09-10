@@ -2,15 +2,15 @@
 
 {% block content %}
 
-<div class="ds-card">
-  <div class="ds-card-body">
-  <h1>Refresh {{key.name}} key</h1>
-    <form method="POST" action=".">
-      <p>Are you sure you want to refresh key <code>{{ key.key }}</code>?</p>
-      {% csrf_token %}
-      <button class="ds-button-blue" type="submit">Refresh key</button>
-    </form>
+  <div class="ds-card">
+    <div class="ds-card-body">
+      <h1>Refresh {{key.name}} key</h1>
+      <form method="POST" action=".">
+        <p>Are you sure you want to refresh key <code>{{ key.key }}</code>?</p>
+        {% csrf_token %}
+        <button class="ds-button-blue" type="submit">Refresh key</button>
+      </form>
+    </div>
   </div>
-</div>
 
 {% endblock %}

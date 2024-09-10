@@ -18,18 +18,18 @@ mypy_boto3_dynamodb = "*"
 pytest-ruff = "*"
 pre-commit = "*"
 dc-response-builder = {file = "https://github.com/DemocracyClub/dc_response_builder/archive/refs/tags/0.0.17.tar.gz"}
+uvicorn = "==0.30.6"
+djhtml = "==3.0.6"
 
 [api]
-aiohttp = "==3.8.3"
+aiohttp = "==3.10.5"
 sentry-sdk = "*"
 dc-api-common = {path = "./api/common"}
 mypy-boto3-dynamodb = "*"
 
-
 [frontend]
 dc-design-system = {file = "https://github.com/DemocracyClub/design-system/archive/refs/tags/0.4.0.tar.gz"}
 dc-django-utils = {file = "https://github.com/DemocracyClub/dc_django_utils/archive/refs/tags/2.4.0.tar.gz"}
-Django = "==4.1.2"
 django-localflavor = "==3.1"
 psycopg2-binary = "*"
 django-apiblueprint-view = "==2.4.0"
@@ -42,15 +42,15 @@ django-sesame = "*"
 dc-api-common = {path = "./api/common"}
 boto3 = "*"
 mangum = "*"
+setuptools = "*"
+django = "==4.2.16"
 
 [scripts]
-ruff-check = "ruff  ."
-ruff-format = "ruff  format ."
-circleci_deploy_dev = "~/repo/deploy.sh dev"
-circleci_deploy_prod = "~/repo/deploy.sh prod"
+ruff-check = "bash -c \"ruff check . && ruff format . --check\""
+ruff-format = "ruff format ."
 coveralls = "coveralls"
 pytest = "pytest"
 collectstatic = "python manage.py collectstatic --noinput --clear"
 
 [requires]
-python_version = "3.10"
+python_version = "3.12"

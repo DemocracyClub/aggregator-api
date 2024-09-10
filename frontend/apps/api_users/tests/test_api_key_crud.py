@@ -107,7 +107,9 @@ def test_api_key_type_creation(db):
 
 
 def test_form_validation(db):
-    api_user = CustomUser.objects.create(api_plan=settings.API_PLANS["hobbyists"].value)
+    api_user = CustomUser.objects.create(
+        api_plan=settings.API_PLANS["hobbyists"].value
+    )
 
     basic_form_kwargs = {"name": "Test Key", "usage_reason": "Just for testing"}
 
@@ -132,7 +134,9 @@ def test_form_validation(db):
 
 
 def test_standard_users_can_make_n_dev_keys_one_prod(db):
-    api_user = CustomUser.objects.create(api_plan=settings.API_PLANS["standard"].value)
+    api_user = CustomUser.objects.create(
+        api_plan=settings.API_PLANS["standard"].value
+    )
     api_user.save()
 
     basic_form_kwargs = {"name": "Test Key", "usage_reason": "Just for testing"}
