@@ -4,7 +4,7 @@ from boto3 import Session
 
 from .base import *  # noqa
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [os.environ.get("APP_DOMAIN")]
 DEBUG = os.environ.get("DEBUG", False)
 
 WHITENOISE_AUTOREFRESH = False
