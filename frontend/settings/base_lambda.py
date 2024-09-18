@@ -1,8 +1,19 @@
 import os
 
-from boto3 import Session
+import boto3
 
 from .base import *  # noqa
+
+
+def get_api_gateway_urls():
+    client = boto3.client("apigateway")
+    response = client.get_rest_apis()
+    return [
+        f"{api['id']}.execute-api.eu-west-2.amazonaws.com"
+        for api in response["items"]
+        if api["name"].startswith("AggregatorApiApp-")
+    ]
+
 
 ALLOWED_HOSTS = [os.environ.get("APP_DOMAIN")]
 DEBUG = os.environ.get("DEBUG", False)
@@ -71,7 +82,8 @@ PIPELINE["COMPILERS"] = (  # noqa
 )
 
 if os.environ.get("AWS_EXECUTION_ENV"):
-    logger_boto3_session = Session(region_name="eu-west-2")
+    ALLOWED_HOSTS = ALLOWED_HOSTS + get_api_gateway_urls()
+    logger_boto3_session = boto3.Session(region_name="eu-west-2")
 
     LOGGING = {
         "version": 1,
