@@ -32,7 +32,7 @@ lambda-layers/FrontendDependenciesLayer/requirements.txt: Pipfile Pipfile.lock #
 
 .PHONY: aggregator/apps/api_docs/v1/templates/api_docs_rendered.html
 aggregator/apps/api_docs/v1/templates/api_docs_rendered.html: ## Rebuild the API documentation page
-	PIPELINE_ENABLED=True python manage.py build_docs
+	PIPELINE_ENABLED=True APP_DOMAIN=localhost python manage.py build_docs
 
 .PHONY: help
 # gratuitously adapted from https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
