@@ -111,6 +111,9 @@ Conditions:
   IsProd: !Equals
     - !Ref DCEnvironment
     - "production"
+  UseBasicAuth: !Or
+  - !Equals [ !Ref DCEnvironment, development ]
+  - !Equals [ !Ref DCEnvironment, staging ]
 
 Resources:
 
@@ -348,6 +351,33 @@ Resources:
         AllowMethods: "'GET'"
         AllowOrigin: "'*'"
         MaxAge: "'600'"
+      Auth:
+        DefaultAuthorizer: !If [ UseBasicAuth, "BasicAuthFunction", !Ref AWS::NoValue]
+        Authorizers:
+          BasicAuthFunction:
+            FunctionArn: !GetAtt BasicAuthFunction.Arn
+            FunctionPayloadType: REQUEST
+            Identity:
+              Headers:
+                - Authorization
+              ReauthorizeEvery: 3600
+
+  BasicAuthFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./frontend/
+      Handler: lambda_basic_auth.lambda_handler
+      Runtime: python3.12
+
+  BasicAuthGatewayResponse:
+    Condition: UseBasicAuth
+    Type: AWS::ApiGateway::GatewayResponse
+    Properties:
+      ResponseParameters:
+        gatewayresponse.header.www-authenticate: "'Basic realm=\"Restricted\"'"
+      ResponseType: UNAUTHORIZED
+      RestApiId: !Ref FrontendAPIGateway
+      StatusCode: '401'
 
   ApiFrontendManagementFunction:
     Type: AWS::Serverless::Function
