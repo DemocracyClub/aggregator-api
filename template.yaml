@@ -332,8 +332,19 @@ Resources:
         HTTPRequestRoots:
           Type: Api
           Properties:
+            RestApiId: !Ref FrontendAPIGateway
             Path: /
             Method: ANY
+
+  FrontendAPIGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      AlwaysDeploy: True
+      StageName: Prod
+      Cors:
+        AllowMethods: "'GET'"
+        AllowOrigin: "'*'"
+        MaxAge: "'600'"
 
   ApiFrontendManagementFunction:
     Type: AWS::Serverless::Function
@@ -373,6 +384,12 @@ Outputs:
     Value: !Sub "${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com"
     Export:
       Name: !Join [ ":", [ !Ref "AWS::StackName", "AggregatorApiFrontendFqdn" ] ]
+
+  AggregatorApiFrontendFqdnTempValue:
+    Description: "API Gateway endpoint FQDN for Aggregator API function"
+    Value: !Sub "${FrontendAPIGateway}.execute-api.${AWS::Region}.amazonaws.com"
+    Export:
+      Name: !Join [ ":", [ !Ref "AWS::StackName", "AggregatorApiFrontendFqdnTempValue" ] ]
 
   AggregatorApiFqdn:
     Description: "API Gateway endpoint FQDN for Aggregator API function"
