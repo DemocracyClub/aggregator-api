@@ -10,7 +10,6 @@ Globals:
       - "*/*"
 
 Parameters:
-
   AppSecretKey:
     Description: "The SECRET_KEY environment variable passed to the app."
     Type: String
@@ -105,17 +104,16 @@ Parameters:
       - "production"
       - "staging"
       - "development"
+
 Conditions:
   IsProd: !Equals
     - !Ref DCEnvironment
     - "production"
 
-
 Resources:
 
   UsersDynamoDBTable:
     Type: AWS::DynamoDB::Table
-
     Properties:
       TableName: "users"
       BillingMode: PAY_PER_REQUEST
@@ -204,6 +202,7 @@ Resources:
             RestApiId: !Ref DCAPI
             Path: /api/v1/address/{proxy+}
             Method: GET
+
   V1ElectionsFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -233,6 +232,7 @@ Resources:
             RestApiId: !Ref DCAPI
             Path: /api/v1/elections/{proxy+}
             Method: GET
+
   V1LayersOfStateFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -255,6 +255,7 @@ Resources:
             RestApiId: !Ref DCAPI
             Path: /api/v1/layers_of_state/{proxy+}
             Method: GET
+
   V1SandboxFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -359,7 +360,6 @@ Resources:
           FIREHOSE_ACCOUNT_ARN: !Ref AppLoggingAssumeRoleArn
           DEBUG: !Ref AppDebug
 
-
   ApiFrontendFunctionLogGroup:
     Type: AWS::Logs::LogGroup
     DependsOn: [ ApiFrontendFunction ]
@@ -373,6 +373,7 @@ Outputs:
     Value: !Sub "${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com"
     Export:
       Name: !Join [ ":", [ !Ref "AWS::StackName", "AggregatorApiFrontendFqdn" ] ]
+
   AggregatorApiFqdn:
     Description: "API Gateway endpoint FQDN for Aggregator API function"
     Value: !Sub "${DCAPI}.execute-api.${AWS::Region}.amazonaws.com"
