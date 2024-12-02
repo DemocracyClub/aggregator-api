@@ -327,6 +327,7 @@ Resources:
         HTTPRequests:
           Type: Api
           Properties:
+            RestApiId: !Ref FrontendAPIGateway
             Path: /{proxy+}
             Method: ANY
         HTTPRequestRoots:
@@ -381,7 +382,7 @@ Resources:
 Outputs:
   AggregatorApiFrontendFqdn:
     Description: "API Gateway endpoint FQDN for Aggregator API function"
-    Value: !Sub "${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com"
+    Value: !Sub "${FrontendAPIGateway}.execute-api.${AWS::Region}.amazonaws.com"
     Export:
       Name: !Join [ ":", [ !Ref "AWS::StackName", "AggregatorApiFrontendFqdn" ] ]
 
