@@ -207,6 +207,7 @@ workflows:
         - install_and_update_dependencies # SAM CLI is in the dev package set
         - sam_build                       # deploy needs .aws-sam/build/
         context: [ deployment-development-aggregator-api ]
+        filters: { branches: { only: [ feat/basic-auth-lambda-on-dev-and-stage ] } }
 
     - sam_deploy:
         name: sam_deploy_staging
