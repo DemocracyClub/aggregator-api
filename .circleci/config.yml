@@ -18,7 +18,7 @@ jobs:
     - checkout
     - restore_cache:
         keys:
-        - v8-dependencies-{{ checksum "Pipfile.lock" }}
+        - v9-dependencies-{{ checksum "Pipfile.lock" }}
     - run: &install-pipenv pip install -U pipenv "urllib3<=2.0" pip --quiet --no-input
     - run: pipenv sync --categories "api dev-packages frontend"
       #- run: pipenv run pipenv check # before save_cache so an insecure cache is never saved
@@ -35,7 +35,7 @@ jobs:
         when: on_success
         paths:
         - ~/.local/share/virtualenvs/
-        key: v8-dependencies-{{ checksum "Pipfile.lock" }}
+        key: v9-dependencies-{{ checksum "Pipfile.lock" }}
 
   test:
     docker:
@@ -45,7 +45,7 @@ jobs:
     - checkout
     - restore_cache:
         keys:
-        - v8-dependencies-{{ checksum "Pipfile.lock" }}
+        - v9-dependencies-{{ checksum "Pipfile.lock" }}
     - run: *install-pipenv
     - run: pipenv run pipenv verify
     - run: pipenv run ruff-check
@@ -99,7 +99,7 @@ jobs:
         at: ~/repo/
     - restore_cache:
         keys:
-        - v8-dependencies-{{ checksum "Pipfile.lock" }}
+        - v9-dependencies-{{ checksum "Pipfile.lock" }}
     - run: printenv DJANGO_SETTINGS_MODULE SAM_CONFIG_FILE SAM_LAMBDA_CONFIG_ENV SAM_PUBLIC_CONFIG_ENV
     - run: printenv SECRET_KEY | md5sum
     - run: printenv AWS_ACCESS_KEY_ID | md5sum
