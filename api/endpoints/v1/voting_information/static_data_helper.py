@@ -23,9 +23,9 @@ class StaticDataHelper(metaclass=ABCMeta):
     def get_shard_key(self):
         ...
 
+    @abstractmethod
     def get_file_path(self):
-        DATA_BASE_PATH = Path(settings.PARL_BOUNDARY_DATA_KEY_PREFIX)
-        return DATA_BASE_PATH / self.get_shard_key()
+        ...
 
     def get_local_file_name(self):
         if not settings.LOCAL_DATA_PATH:

@@ -38,14 +38,6 @@ class BaseSettings:
         self.LOCAL_DATA_PATH = os.environ.get("LOCAL_STATIC_DATA_PATH", None)
 
         self.RECALL_PETITION_ENABLED = True
-
-        self.PARL_BOUNDARY_CHANGES_ENABLED = True
-        self.PARL_BOUNDARY_DATA_KEY_PREFIX = (
-            "parl-2023-boundary-review/20240603"
-        )
-        self.PARL_BOUNDARY_DATA_BUCKET_NAME = (
-            f"addressbase-lookups.{self.DC_ENVIRONMENT}"
-        )
         self.RECALL_DATA_KEY_PREFIX = os.environ.get(
             "RECALL_DATA_KEY_PREFIX", "blackpool-south.2024-03/"
         )
