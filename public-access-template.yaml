@@ -24,7 +24,7 @@ Resources:
 
           - Id: Static
             DomainName:
-              Fn::ImportValue: !Sub "AggregatorApiApp-${StackNameSuffix}:AggregatorApiFrontendFqdn"
+              Fn::ImportValue: !Sub "AggregatorApiApp-${StackNameSuffix}:AggregatorApiFrontendFqdnTempValue"
             OriginPath: "/Prod"
             CustomOriginConfig:
               OriginProtocolPolicy: "https-only"
@@ -52,7 +52,7 @@ Resources:
 
           - Id: FrontendApp
             DomainName:
-              Fn::ImportValue: !Sub "AggregatorApiApp-${StackNameSuffix}:AggregatorApiFrontendFqdn"
+              Fn::ImportValue: !Sub "AggregatorApiApp-${StackNameSuffix}:AggregatorApiFrontendFqdnTempValue"
             OriginPath: "/Prod"
             CustomOriginConfig:
               OriginProtocolPolicy: "https-only"
