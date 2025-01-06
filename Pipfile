@@ -4,11 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [dev-packages]
-ruff = "==0.2.1"
-pytest = "<8.0.0"
-pytest-cov = ">=2.6,<5.0"
+ruff = "==0.8.6"
+pytest = "<9.0.0"
+pytest-cov = ">=2.6,<6.0"
 pytest-django = ">=3.4.4,<5.0"
-coveralls = ">=1.6,<4.0"
+coveralls = ">=1.6,<5.0"
 tomlkit = "*"
 importlib-metadata = "*"
 respx = "*"
@@ -18,8 +18,8 @@ mypy_boto3_dynamodb = "*"
 pytest-ruff = "*"
 pre-commit = "*"
 dc-response-builder = {file = "https://github.com/DemocracyClub/dc_response_builder/archive/refs/tags/0.0.17.tar.gz"}
-uvicorn = "==0.30.6"
-djhtml = "==3.0.6"
+uvicorn = "==0.34.0"
+djhtml = "==3.0.7"
 
 [api]
 aiohttp = "==3.10.5"
