@@ -42,7 +42,7 @@
         + date: `2017-05-04` (string) - Polling day on which an election will occur
         + `polling_station`: (object) - Results for polling station search
             + `polling_station_known`: `true` (boolean) - Do we know where this user should vote?
-            + `custom_finder`: (string, nullable) - If we don't know a user's polling station, sometimes we can provide the URL of another polling station finder. This will always be populated for users in Northern Ireland where Electoral Office for Northern Ireland run their own service.
+            + `custom_finder`: (string, nullable) - Deprecated field. This will always be null.
             + `report_problem_url`: `http://wheredoivote.co.uk/report_problem/?source=testing&source_url=testing` (string, nullable) - If we provide a polling station result, this URL may be used to provide a user with a back-channel to report inaccurate data.
             + station: (object, nullable) - A [GeoJSON Feature](https://tools.ietf.org/html/rfc7946#section-3.2) describing the user's polling station (if known)
                 + id: `w06000015.QK` (string)
