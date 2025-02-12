@@ -1,22 +1,10 @@
 ## Group Notes and Tips
 
-### Polling Stations
+### Contact details
 
-* If we don't know a user's polling station, sometimes we may provide an external link for more info in `custom_finder`.
-This will always be populated for users in Northern Ireland where the Electoral Office for Northern Ireland run
-their own service. e.g:
-
-<pre><code>{
-...
-  "custom_finder": "http://www.eoni.org.uk/Offices/Postcode-Search-Results?postcode=BT28%202EY"
-}
-</code></pre>
-
-* If we don't know a user's polling station and `custom_finder` is not populated, the contact details in the
+If we don't know a user's polling station, the contact details in the
 `electoral_services` or `registration` object can be used to provide contact details for the user's local electoral
 services or registration team.
-
-### Contact details
 
 We provide two types of contact details; "electoral services" and "registration". This is because in Scotland and
 Northern Ireland the local authority doesn't handle electoral registration. If you are using the data to deal with
@@ -72,7 +60,7 @@ The values for this are:
 
 #### Cancelled Polls
 
-Sometimes a scheduled poll may be cancelled. This is usually either because
+Sometimes a scheduled poll may be cancelled or rescheduled. This is usually either because
 the election is uncontested or due to death of a candidate.
 
 If the user has more than one ballot and only one of them is cancelled, we will not add a notification. In this case,

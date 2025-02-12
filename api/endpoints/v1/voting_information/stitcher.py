@@ -283,11 +283,15 @@ class Stitcher:
         resp = {}
         fields = (
             "polling_station_known",
-            "custom_finder",
             "report_problem_url",
         )
         for field in fields:
             resp[field] = self.wdiv_resp[field]
+
+        # this feature doesn't exist any more, but the key is
+        # still in the API response for legacy compatibility
+        resp["custom_finder"] = None
+
         resp["station"] = deepcopy(self.wdiv_resp["polling_station"])
         if resp["station"]:
             resp["station"]["properties"].pop("urls", None)

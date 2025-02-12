@@ -16,5 +16,5 @@ The following test postcodes and address slugs are valid in the sandbox. Each on
     * `local.lewisham.blackheath.2018-05-03` - This election is cancelled and rescheduled on 2018-05-10
     * `local.lewisham.blackheath.2018-05-10` - This election replaces the cancelled `local.lewisham.blackheath.2018-05-03`
     * `parl.lewisham-east.by.2018-06-14` - This election is scheduled but we don't know of any candidates yet
-* postcode [AA15AA](http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA15AA) - Northern Ireland. This example shows the `custom_finder` key in use. We can use this to redirect users to Electoral Office for Northern Ireland's website for polling station data.
+* postcode [AA15AA](http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/AA15AA) - Northern Ireland. In Northern Ireland, everyone's contact details for electroal services is The Electoral Office for Northern Ireland.
 * postcode [EH11YJ](http://developers.democracyclub.org.uk/api/v1/sandbox/postcode/EH11YJ) - Scotland. This example shows different registration and electoral services contact details.
