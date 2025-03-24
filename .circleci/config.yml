@@ -131,7 +131,7 @@ jobs:
                AppIsBehindCloudFront=True \
                AppLogRetentionDays=60 \
                DCEnvironment=$DC_ENVIRONMENT \
-
+               AppDomain='$PUBLIC_FQDN' \
               "
 
     - run:

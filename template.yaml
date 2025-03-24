@@ -21,6 +21,10 @@ Parameters:
     Default: AppDebug
     Type: AWS::SSM::Parameter::Value<String>
 
+  AppDomain:
+    Description: "The domain the app is on."
+    Type: String
+
   AppSentryDSN:
     Description: "The SENTRY_DSN environment variable passed to the app."
     Type: String
@@ -328,6 +332,7 @@ Resources:
           SMTP_HOST: !Ref AppSmtpHost
           SMTP_USERNAME: !Ref AppSmtpUser
           SMTP_PASSWORD: !Ref AppSmtpPass
+          APP_DOMAIN: !Ref AppDomain
       Events:
         HTTPRequests:
           Type: Api
