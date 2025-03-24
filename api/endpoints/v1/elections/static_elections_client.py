@@ -12,7 +12,6 @@ import polars
 from botocore.exceptions import ClientError
 from common.async_requests import AsyncRequester
 from common.conf import settings
-from sentry_sdk import capture_message
 from starlette.requests import Request
 
 logger = logging.getLogger(__name__)
@@ -149,10 +148,9 @@ class ElectionsForPostcodeHelper:
                 # This probably means the URPN was invalid
                 return False, []
             if df.height > 1:
-                message = f"UPRN {self.uprn} found {df.height} times in Parquet file {parquet_filepath}"
-                logger.error(message)
-                capture_message(message, level="error")
-                return False, []
+                raise Exception(
+                    f"UPRN {self.uprn} found {df.height} times in Parquet file {parquet_filepath}"
+                )
             return (
                 False,
                 []
@@ -196,12 +194,11 @@ class ElectionsForPostcodeHelper:
                 "headers": {},  # Custom headers can be added here if required
             }
         requester = AsyncRequester(request_dict=request_dict)
-        response_dict = await requester.get_urls(raise_errors=False)
+        response_dict = await requester.get_urls()
         result = []
         for key, value in response_dict.items():
             response: httpx.Response = value["response"]
-            if response.is_success:
-                result.append(response.json())
+            result.append(response.json())
         return result
 
     async def ballot_list_to_dates(self, ballot_list):

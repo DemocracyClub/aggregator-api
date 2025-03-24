@@ -5,7 +5,10 @@ from pathlib import Path
 import httpx
 import polars
 import pytest
+import respx
+from common.async_requests import UpstreamApiError
 from endpoints.v1.elections import app
+from httpx import Response
 from starlette.testclient import TestClient
 from static_elections_client import ballot_paper_id_to_static_url
 
@@ -261,19 +264,8 @@ async def test_uprn_duplicate(
         ]
     )
 
-    resp = elections_app_client.get("/api/v1/elections/postcode/AA11AA/000001/")
-    assert resp.status_code == 200
-    assert resp.json() == {
-        "address_picker": False,
-        "addresses": [],
-        "dates": [],
-    }
-
-    message = ""
-    for record in caplog.records:
-        if record.name == "static_elections_client":
-            message = record.msg
-    assert message.startswith("UPRN 000001 found 2 times in Parquet file")
+    with pytest.raises(Exception):
+        elections_app_client.get("/api/v1/elections/postcode/AA11AA/000001/")
 
 
 @pytest.mark.asyncio
@@ -335,4 +327,127 @@ async def test_uprn_no_elections(
         "address_picker": False,
         "addresses": [],
         "dates": [],
+    }
+
+
+@respx.mock
+def test_get_full_ballots_with_errors(elections_app_client, sample_data_writer):
+    respx.get(
+        "https://wcivf-ballot-cache.s3.eu-west-2.amazonaws.com/ballot_data/2025-03-20/local/north-kesteven/local.north-kesteven.bracebridge-heath.by.2025-03-20.json"
+    ).mock(
+        return_value=Response(
+            200,
+            json={
+                "election_id": "local.north-kesteven.bracebridge-heath.by.2025-03-20"
+            },
+        )
+    )
+    respx.get(
+        "https://wcivf-ballot-cache.s3.eu-west-2.amazonaws.com/ballot_data/2025-05-01/mayor/greater-lincolnshire-cca/mayor.greater-lincolnshire-cca.2025-05-01.json"
+    ).mock(
+        return_value=Response(
+            500,
+            json={"error": "oh no"},
+        )
+    )
+    respx.get(
+        "https://wcivf-ballot-cache.s3.eu-west-2.amazonaws.com/ballot_data/2025-05-01/local/lincolnshire/local.lincolnshire.washingborough.2025-05-01.json"
+    ).mock(
+        return_value=Response(
+            502,
+            text="Bad Gateway",
+        )
+    )
+
+    sample_data_writer(
+        [
+            {
+                "postcode": "AA1 1AA",
+                "uprn": "000001",
+                "current_elections": [
+                    "local.north-kesteven.bracebridge-heath.by.2025-03-20",
+                    "mayor.greater-lincolnshire-cca.2025-05-01",
+                    "local.lincolnshire.washingborough.2025-05-01",
+                ],
+            },
+        ]
+    )
+
+    with pytest.raises(UpstreamApiError):
+        elections_app_client.get("/api/v1/elections/postcode/AA11AA")
+
+
+@respx.mock
+def test_get_full_ballots_all_success(elections_app_client, sample_data_writer):
+    respx.get(
+        "https://wcivf-ballot-cache.s3.eu-west-2.amazonaws.com/ballot_data/2025-03-20/local/north-kesteven/local.north-kesteven.bracebridge-heath.by.2025-03-20.json"
+    ).mock(
+        return_value=Response(
+            200,
+            json={
+                "ballot_paper_id": "local.north-kesteven.bracebridge-heath.by.2025-03-20"
+            },
+        )
+    )
+    respx.get(
+        "https://wcivf-ballot-cache.s3.eu-west-2.amazonaws.com/ballot_data/2025-05-01/mayor/greater-lincolnshire-cca/mayor.greater-lincolnshire-cca.2025-05-01.json"
+    ).mock(
+        return_value=Response(
+            200,
+            json={
+                "ballot_paper_id": "mayor.greater-lincolnshire-cca.2025-05-01"
+            },
+        )
+    )
+    respx.get(
+        "https://wcivf-ballot-cache.s3.eu-west-2.amazonaws.com/ballot_data/2025-05-01/local/lincolnshire/local.lincolnshire.washingborough.2025-05-01.json"
+    ).mock(
+        return_value=Response(
+            200,
+            json={
+                "ballot_paper_id": "local.lincolnshire.washingborough.2025-05-01"
+            },
+        )
+    )
+
+    sample_data_writer(
+        [
+            {
+                "postcode": "AA1 1AA",
+                "uprn": "000001",
+                "current_elections": [
+                    "local.north-kesteven.bracebridge-heath.by.2025-03-20",
+                    "mayor.greater-lincolnshire-cca.2025-05-01",
+                    "local.lincolnshire.washingborough.2025-05-01",
+                ],
+            },
+        ]
+    )
+
+    resp = elections_app_client.get("/api/v1/elections/postcode/AA11AA/000001/")
+    assert resp.status_code == 200
+    assert resp.json() == {
+        "address_picker": False,
+        "addresses": [],
+        "dates": [
+            {
+                "date": "2025-03-20",
+                "ballots": [
+                    {
+                        "ballot_paper_id": "local.north-kesteven.bracebridge-heath.by.2025-03-20"
+                    }
+                ],
+            },
+            {
+                "date": "2025-05-01",
+                "ballots": [
+                    {
+                        "ballot_paper_id": "mayor.greater-lincolnshire-cca.2025-05-01"
+                    },
+                    {
+                        "ballot_paper_id": "local.lincolnshire.washingborough.2025-05-01"
+                    },
+                ],
+            },
+        ],
     }
