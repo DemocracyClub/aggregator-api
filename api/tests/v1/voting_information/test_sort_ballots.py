@@ -22,6 +22,17 @@ def test_sorter():
                 {"ballot_paper_id": "mayor.london.2020-05-07"},
             ],
         },
+        {
+            "poll_open_date": "2020-05-07",
+            "ballots": [
+                {"ballot_paper_id": "gla.a.2020-05-07"},
+                {"ballot_paper_id": "gla.c.lambeth-and-southwark.2020-05-07"},
+                {
+                    "ballot_paper_id": "mayor.london.2020-05-07",
+                    "cancelled": True,
+                },
+            ],
+        },
     ]
     expected = [
         {
@@ -41,6 +52,17 @@ def test_sorter():
                 {"ballot_paper_id": "mayor.london.2020-05-07"},
                 {"ballot_paper_id": "gla.c.lambeth-and-southwark.2020-05-07"},
                 {"ballot_paper_id": "gla.a.2020-05-07"},
+            ],
+        },
+        {
+            "poll_open_date": "2020-05-07",
+            "ballots": [
+                {"ballot_paper_id": "gla.c.lambeth-and-southwark.2020-05-07"},
+                {"ballot_paper_id": "gla.a.2020-05-07"},
+                {
+                    "ballot_paper_id": "mayor.london.2020-05-07",
+                    "cancelled": True,
+                },
             ],
         },
     ]
