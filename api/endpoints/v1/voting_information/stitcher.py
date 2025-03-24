@@ -77,6 +77,11 @@ def ballot_charisma(ballot, sort_keys):
     if ".by." in ballot_paper_id:
         modifier += 1
 
+    # Cancelled ballots are always less important than ballots
+    # that are taking place
+    if ballot.get("cancelled", False):
+        modifier += 100
+
     return base_charisma - modifier
 
 
