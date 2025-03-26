@@ -16,8 +16,21 @@ class UpstreamApiError(Exception):
         self.status = response_dict.status_code
 
 
+async def retry_request(*args, **kwargs):
+    retries = 1
+    backoff_factor = 0.1
+    status_codes = {502, 503, 504}
+
+    for attempt in range(retries + 1):
+        response = await client.get(*args, **kwargs)
+        if response.status_code not in status_codes:
+            break
+        await asyncio.sleep(backoff_factor * (2**attempt))
+    return response
+
+
 async def get_url(key, url_data, request_urls, raise_errors=True):
-    response: httpx.Response = await client.get(
+    response: httpx.Response = await retry_request(
         url=url_data["url"],
         params=url_data.get("params", {}),
         headers=url_data.get("headers", {}),
