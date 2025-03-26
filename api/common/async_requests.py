@@ -22,10 +22,17 @@ async def retry_request(*args, **kwargs):
     status_codes = {502, 503, 504}
 
     for attempt in range(retries + 1):
-        response = await client.get(*args, **kwargs)
-        if response.status_code not in status_codes:
-            break
-        await asyncio.sleep(backoff_factor * (2**attempt))
+        try:
+            response = await client.get(*args, **kwargs)
+            if response.status_code not in status_codes:
+                return response
+        except httpx.TransportError as e:
+            if attempt >= retries:
+                raise e
+
+        if attempt < retries:
+            await asyncio.sleep(backoff_factor * (2**attempt))
+
     return response
 
 
