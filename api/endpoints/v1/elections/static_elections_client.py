@@ -1,6 +1,7 @@
 """
 Helpers for getting data from S3
 """
+import logging
 import re
 from pathlib import Path
 from typing import IO, List, Tuple
@@ -12,6 +13,8 @@ from botocore.exceptions import ClientError
 from common.async_requests import AsyncRequester
 from common.conf import settings
 from starlette.requests import Request
+
+logger = logging.getLogger(__name__)
 
 
 def ballot_paper_id_to_static_url(ballot_paper_id):
@@ -113,11 +116,18 @@ class ElectionsForPostcodeHelper:
         return addresses
 
     def get_ballot_list(self) -> Tuple[bool, List]:
+        parquet_filepath = self.get_file_path()
         try:
-            df = polars.read_parquet(self.get_file(self.get_file_path()))
+            df = polars.read_parquet(self.get_file(parquet_filepath))
         except FileNotFoundError:
             # If the file isn't found it should mean that there are no current
-            # elections for this outcode. Just return an empty dates list.
+            # elections for this outcode, or the outcode doesn't exist.
+            # Just return an empty dates list.
+            return False, []
+
+        if df.height == 0:
+            # If the file is found but empty it should mean that there are no current
+            # elections for this outcode. Just return an empty ballots list.
             return False, []
 
         if "ballot_ids" in df.columns:
@@ -134,12 +144,25 @@ class ElectionsForPostcodeHelper:
 
         if self.uprn:
             df = df.filter((polars.col("uprn") == self.uprn))
-            return False, df["current_elections"][0].split(",")
+            if df.height == 0:
+                # This probably means the URPN was invalid
+                return False, []
+            if df.height > 1:
+                raise Exception(
+                    f"UPRN {self.uprn} found {df.height} times in Parquet file {parquet_filepath}"
+                )
+            return (
+                False,
+                []
+                if df["current_elections"][0] == ""
+                else df["current_elections"][0].split(","),
+            )
 
         df = df.filter((polars.col("postcode") == self.postcode.with_space))
         if df.is_empty():
             # This file doesn't have any rows matching the given postcode
-            # Just return an empty list as this means there aren't elections here.
+            # Just return an empty list as this means there aren't elections here
+            # or the postcode was invalid
             return False, []
 
         # Count the unique values in the `ballot_ids` column.
@@ -152,7 +175,12 @@ class ElectionsForPostcodeHelper:
         if is_split:
             return is_split, self.addresses_to_address_objects(df)
 
-        return is_split, df["current_elections"][0].split(",")
+        return (
+            is_split,
+            []
+            if df["current_elections"][0] == ""
+            else df["current_elections"][0].split(","),
+        )
 
     async def get_full_ballots(self, ballot_data):
         request_dict = {}
@@ -166,12 +194,11 @@ class ElectionsForPostcodeHelper:
                 "headers": {},  # Custom headers can be added here if required
             }
         requester = AsyncRequester(request_dict=request_dict)
-        response_dict = await requester.get_urls(raise_errors=False)
+        response_dict = await requester.get_urls()
         result = []
         for key, value in response_dict.items():
             response: httpx.Response = value["response"]
-            if response.is_success:
-                result.append(response.json())
+            result.append(response.json())
         return result
 
     async def ballot_list_to_dates(self, ballot_list):

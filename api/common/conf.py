@@ -42,7 +42,7 @@ class BaseSettings:
             "RECALL_DATA_KEY_PREFIX", "blackpool-south.2024-03/"
         )
 
-        self.ELECTIONS_DATA_PATH = "s3://pollingstations.private.data/addressbase/2024-05-01/uprn-to-ballots-outcodes"
+        self.ELECTIONS_DATA_PATH = "s3://pollingstations.private.data/addressbase/production/current_elections_parquet"
 
         self.DEBUG = bool(int(os.environ.get("DEBUG", "0")))
 

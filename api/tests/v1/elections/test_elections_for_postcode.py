@@ -5,7 +5,10 @@ from pathlib import Path
 import httpx
 import polars
 import pytest
+import respx
+from common.async_requests import UpstreamApiError
 from endpoints.v1.elections import app
+from httpx import Response
 from starlette.testclient import TestClient
 from static_elections_client import ballot_paper_id_to_static_url
 
@@ -89,9 +92,9 @@ async def test_postcode_returns_ballots(
     for ballot in ballots_set:
         await mock_ballot_response(ballot, "")
 
-    req = elections_app_client.get("/api/v1/elections/postcode/AA12AA/")
-    assert req.status_code == 200
-    assert req.json() == {
+    resp = elections_app_client.get("/api/v1/elections/postcode/AA12AA/")
+    assert resp.status_code == 200
+    assert resp.json() == {
         "address_picker": False,
         "addresses": [],
         "dates": [
@@ -141,9 +144,33 @@ async def test_postcode_doesnt_exist_in_file(
     for ballot in ballots_set:
         await mock_ballot_response(ballot, "")
 
-    req = elections_app_client.get("/api/v1/elections/postcode/AA12AB/")
-    assert req.status_code == 200
-    assert req.json() == {
+    resp = elections_app_client.get("/api/v1/elections/postcode/AA12AB/")
+    assert resp.status_code == 200
+    assert resp.json() == {
+        "address_picker": False,
+        "addresses": [],
+        "dates": [],
+    }
+
+
+@pytest.mark.asyncio
+async def test_file_not_found(
+    elections_app_client,
+    sample_data_writer,
+    sample_postcode_data,
+    mock_ballot_response,
+):
+    sample_data_writer(sample_postcode_data)
+    ballots_set = set()
+    for row in sample_postcode_data:
+        for ballot in row["current_elections"].split(","):
+            ballots_set.add(ballot)
+    for ballot in ballots_set:
+        await mock_ballot_response(ballot, "")
+
+    resp = elections_app_client.get("/api/v1/elections/postcode/notapostcode/")
+    assert resp.status_code == 200
+    assert resp.json() == {
         "address_picker": False,
         "addresses": [],
         "dates": [],
@@ -157,10 +184,10 @@ def test_address_picker(
 ):
     sample_postcode_data[0]["current_elections"] = "local.other.ward.2019-01-01"
     sample_data_writer(sample_postcode_data)
-    req = elections_app_client.get("/api/v1/elections/postcode/AA12AA/")
-    assert req.status_code == 200
-    assert req.json()["address_picker"] is True
-    assert req.json()["addresses"] == [
+    resp = elections_app_client.get("/api/v1/elections/postcode/AA12AA/")
+    assert resp.status_code == 200
+    assert resp.json()["address_picker"] is True
+    assert resp.json()["addresses"] == [
         {
             "address": "HARLOW STUDY CENTRE, WATERHOUSE MOOR, HARLOW",
             "postcode": "AA1 2AA",
@@ -186,8 +213,241 @@ async def test_uprn_view(
     await mock_ballot_response("local.other.ward.2019-01-01", "")
     sample_postcode_data[0]["current_elections"] = "local.other.ward.2019-01-01"
     sample_data_writer(sample_postcode_data)
-    req = elections_app_client.get(
+    resp = elections_app_client.get(
         "/api/v1/elections/postcode/AA12AA/10003707532/"
     )
-    assert req.status_code == 200
-    assert req.json()["address_picker"] is False
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["address_picker"] is False
+    assert len(body["dates"]) == 1
+
+
+@pytest.mark.asyncio
+async def test_uprn_not_found(
+    elections_app_client,
+    sample_data_writer,
+    sample_postcode_data,
+    mock_ballot_response,
+):
+    await mock_ballot_response("local.other.ward.2019-01-01", "")
+    sample_postcode_data[0]["current_elections"] = "local.other.ward.2019-01-01"
+    sample_data_writer(sample_postcode_data)
+    resp = elections_app_client.get("/api/v1/elections/postcode/AA12AA/123/")
+    assert resp.status_code == 200
+    assert resp.json() == {
+        "address_picker": False,
+        "addresses": [],
+        "dates": [],
+    }
+
+
+@pytest.mark.asyncio
+async def test_uprn_duplicate(
+    elections_app_client,
+    sample_data_writer,
+    sample_postcode_data,
+    mock_ballot_response,
+    caplog,
+):
+    sample_data_writer(
+        [
+            {
+                "postcode": "AA1 1AA",
+                "uprn": "000001",
+                "current_elections": ["local.buckinghamshire.abbey.2025-05-01"],
+            },
+            {
+                "postcode": "AA1 1AA",
+                "uprn": "000001",
+                "current_elections": ["local.buckinghamshire.abbey.2025-05-01"],
+            },
+        ]
+    )
+
+    with pytest.raises(Exception):
+        elections_app_client.get("/api/v1/elections/postcode/AA11AA/000001/")
+
+
+@pytest.mark.asyncio
+async def test_postcode_no_elections(
+    elections_app_client,
+    sample_data_writer,
+    sample_postcode_data,
+    mock_ballot_response,
+):
+    sample_data_writer(
+        [
+            {
+                "postcode": "AA1 1AA",
+                "uprn": "000001",
+                "current_elections": [],
+            },
+            {
+                "postcode": "AA1 1AA",
+                "uprn": "000002",
+                "current_elections": [],
+            },
+        ]
+    )
+
+    resp = elections_app_client.get("/api/v1/elections/postcode/AA11AA/")
+    assert resp.status_code == 200
+    assert resp.json() == {
+        "address_picker": False,
+        "addresses": [],
+        "dates": [],
+    }
+
+
+@pytest.mark.asyncio
+async def test_uprn_no_elections(
+    elections_app_client,
+    sample_data_writer,
+    sample_postcode_data,
+    mock_ballot_response,
+):
+    sample_data_writer(
+        [
+            {
+                "postcode": "AA1 1AA",
+                "uprn": "000001",
+                "current_elections": [],
+            },
+            {
+                "postcode": "AA1 1AA",
+                "uprn": "000002",
+                "current_elections": [],
+            },
+        ]
+    )
+
+    resp = elections_app_client.get("/api/v1/elections/postcode/AA11AA/000001/")
+    assert resp.status_code == 200
+    assert resp.json() == {
+        "address_picker": False,
+        "addresses": [],
+        "dates": [],
+    }
+
+
+@respx.mock
+def test_get_full_ballots_with_errors(elections_app_client, sample_data_writer):
+    respx.get(
+        "https://wcivf-ballot-cache.s3.eu-west-2.amazonaws.com/ballot_data/2025-03-20/local/north-kesteven/local.north-kesteven.bracebridge-heath.by.2025-03-20.json"
+    ).mock(
+        return_value=Response(
+            200,
+            json={
+                "election_id": "local.north-kesteven.bracebridge-heath.by.2025-03-20"
+            },
+        )
+    )
+    respx.get(
+        "https://wcivf-ballot-cache.s3.eu-west-2.amazonaws.com/ballot_data/2025-05-01/mayor/greater-lincolnshire-cca/mayor.greater-lincolnshire-cca.2025-05-01.json"
+    ).mock(
+        return_value=Response(
+            500,
+            json={"error": "oh no"},
+        )
+    )
+    respx.get(
+        "https://wcivf-ballot-cache.s3.eu-west-2.amazonaws.com/ballot_data/2025-05-01/local/lincolnshire/local.lincolnshire.washingborough.2025-05-01.json"
+    ).mock(
+        return_value=Response(
+            502,
+            text="Bad Gateway",
+        )
+    )
+
+    sample_data_writer(
+        [
+            {
+                "postcode": "AA1 1AA",
+                "uprn": "000001",
+                "current_elections": [
+                    "local.north-kesteven.bracebridge-heath.by.2025-03-20",
+                    "mayor.greater-lincolnshire-cca.2025-05-01",
+                    "local.lincolnshire.washingborough.2025-05-01",
+                ],
+            },
+        ]
+    )
+
+    with pytest.raises(UpstreamApiError):
+        elections_app_client.get("/api/v1/elections/postcode/AA11AA")
+
+
+@respx.mock
+def test_get_full_ballots_all_success(elections_app_client, sample_data_writer):
+    respx.get(
+        "https://wcivf-ballot-cache.s3.eu-west-2.amazonaws.com/ballot_data/2025-03-20/local/north-kesteven/local.north-kesteven.bracebridge-heath.by.2025-03-20.json"
+    ).mock(
+        return_value=Response(
+            200,
+            json={
+                "ballot_paper_id": "local.north-kesteven.bracebridge-heath.by.2025-03-20"
+            },
+        )
+    )
+    respx.get(
+        "https://wcivf-ballot-cache.s3.eu-west-2.amazonaws.com/ballot_data/2025-05-01/mayor/greater-lincolnshire-cca/mayor.greater-lincolnshire-cca.2025-05-01.json"
+    ).mock(
+        return_value=Response(
+            200,
+            json={
+                "ballot_paper_id": "mayor.greater-lincolnshire-cca.2025-05-01"
+            },
+        )
+    )
+    respx.get(
+        "https://wcivf-ballot-cache.s3.eu-west-2.amazonaws.com/ballot_data/2025-05-01/local/lincolnshire/local.lincolnshire.washingborough.2025-05-01.json"
+    ).mock(
+        return_value=Response(
+            200,
+            json={
+                "ballot_paper_id": "local.lincolnshire.washingborough.2025-05-01"
+            },
+        )
+    )
+
+    sample_data_writer(
+        [
+            {
+                "postcode": "AA1 1AA",
+                "uprn": "000001",
+                "current_elections": [
+                    "local.north-kesteven.bracebridge-heath.by.2025-03-20",
+                    "mayor.greater-lincolnshire-cca.2025-05-01",
+                    "local.lincolnshire.washingborough.2025-05-01",
+                ],
+            },
+        ]
+    )
+
+    resp = elections_app_client.get("/api/v1/elections/postcode/AA11AA/000001/")
+    assert resp.status_code == 200
+    assert resp.json() == {
+        "address_picker": False,
+        "addresses": [],
+        "dates": [
+            {
+                "date": "2025-03-20",
+                "ballots": [
+                    {
+                        "ballot_paper_id": "local.north-kesteven.bracebridge-heath.by.2025-03-20"
+                    }
+                ],
+            },
+            {
+                "date": "2025-05-01",
+                "ballots": [
+                    {
+                        "ballot_paper_id": "mayor.greater-lincolnshire-cca.2025-05-01"
+                    },
+                    {
+                        "ballot_paper_id": "local.lincolnshire.washingborough.2025-05-01"
+                    },
+                ],
+            },
+        ],
+    }
