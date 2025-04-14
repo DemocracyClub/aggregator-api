@@ -14,7 +14,7 @@ setup(
     install_requires=[
         "httpx[http2]==0.26.0",
         "mangum==0.17.0",
-        "starlette==0.36.2",
+        "starlette==0.40.0",
         "dc-logging-utils @ git+https://github.com/DemocracyClub/dc_logging.git@1.0.2",
         "sentry-sdk[starlette]",
         "urllib3<2.0.0",
