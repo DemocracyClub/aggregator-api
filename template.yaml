@@ -328,6 +328,7 @@ Resources:
           SMTP_HOST: !Ref AppSmtpHost
           SMTP_USERNAME: !Ref AppSmtpUser
           SMTP_PASSWORD: !Ref AppSmtpPass
+          DC_ENVIRONMENT: !Ref DCEnvironment
       Events:
         HTTPRequests:
           Type: Api
