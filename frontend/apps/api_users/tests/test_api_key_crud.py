@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from api_users.forms import APIKeyForm
 from api_users.management.commands.sync_api_keys import (
     Command as SyncApiKeysCommand,
@@ -14,7 +16,13 @@ def test_save_api_key_posts_to_dynamodb(db, dynamodb):
 
     table = dynamodb.Table("users")
     assert table.scan()["Items"] == []
-    api_key.save()
+
+    with patch(
+        "api_users.logging_helpers.APIKeyForLogging.upload_to_s3"
+    ) as mock_upload_to_s3:
+        api_key.save()
+        mock_upload_to_s3.assert_called_once()
+
     assert table.scan()["Items"] == [
         {
             "api_key": api_key.key,
@@ -28,12 +36,15 @@ def test_save_api_key_posts_to_dynamodb(db, dynamodb):
 
 
 def test_bulk_create_api_keys(db, dynamodb, settings):
-    with override_settings(USE_DYNAMODB=False):
+    with override_settings(USE_DYNAMODB=False), patch(
+        "api_users.logging_helpers.APIKeyForLogging.upload_to_s3"
+    ) as mock_upload_to_s3:
         for i in range(10):
             api_user = CustomUser.objects.create(
                 name=i, email=f"{i}@example.com"
             )
             APIKey.objects.create(name=f"test_key_{i}", user=api_user)
+        assert mock_upload_to_s3.call_count == 10
 
     table = dynamodb.Table("users")
     assert table.scan()["Items"] == []
