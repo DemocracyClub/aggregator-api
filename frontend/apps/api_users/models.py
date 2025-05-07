@@ -12,6 +12,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from api_users.logging_helpers import APIKeyForLogging
 from api_users.managers import CustomUserManager
 from api_users.mixins import TimestampMixin
 
@@ -122,6 +123,10 @@ class APIKey(TimestampMixin, models.Model):
 
         super().save(*args, **kwargs)
         dynamodb_client.update_key(self)
+
+        key_for_logging = APIKeyForLogging.from_django_model(self)
+        key_for_logging.upload_to_s3()
+
         return self
 
     def delete(self, using=None, keep_parents=False):
