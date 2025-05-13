@@ -1,5 +1,5 @@
 ## ElectoralServices (object)
-+ `council_id`: `W06000015` (string) - GSS code for this council
++ `council_id`: `CRF` (string) - Three-letter code for this council
 + name: `Cardiff Council` (string) - Name of this council
 + nation: `Wales` (string) - Name of nation
 + address: `Electoral Registration Officer\nCity of Cardiff Council\nCounty Hall Atlantic Wharf` (string) - Contact address for this council
@@ -7,6 +7,8 @@
 + email: `electoralservices@cardiff.gov.uk` (string) - Contact email address for this council's Electoral Services team
 + phone: `029 2087 2034` (string) - Telephone number for this council's Electoral Services team
 + website: `http://www.cardiff.gov.uk/` (string) - URL for this council's website
++ identifiers (array[string], fixed-type) - An array of alternative identifiers for this council. If known, this array will contain a GSS code for this council
+    + `W06000015`
 
 ## Registration (object)
 + address: `Electoral Registration Officer\nCity of Cardiff Council\nCounty Hall Atlantic Wharf` (string) - Contact address for this council
