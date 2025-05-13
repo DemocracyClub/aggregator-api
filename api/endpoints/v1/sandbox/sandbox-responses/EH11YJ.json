@@ -9,8 +9,11 @@
     "email": "elections@edinburgh.gov.uk",
     "phone": "0131 200 2315",
     "website": "https://www.edinburgh.gov.uk/info/20033/elections_and_voting",
-    "postcode": "",
-    "address": ""
+    "postcode": "EH1 1YJ",
+    "address": "City Chambers\r\nHigh Street\r\nEdinburgh",
+    "identifiers": [
+      "S12000036"
+    ]
   },
   "registration": {
     "phone": "0131 200 2315",
