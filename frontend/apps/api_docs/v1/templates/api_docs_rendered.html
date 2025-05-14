@@ -297,6 +297,7 @@
           &quot;replaced_by&quot;: null,
           &quot;replaces&quot;: null,
           &quot;requires_voter_id&quot;: &quot;EA-2022&quot;,
+          &quot;postal_voting_requirements&quot;: &quot;EA-2022&quot;,
           &quot;election_id&quot;: &quot;local.cardiff.2017-05-04&quot;,
           &quot;election_name&quot;: &quot;Cardiff local election&quot;,
           &quot;post_name&quot;: &quot;Pontprennau/Old St. Mellons&quot;,
@@ -639,6 +640,18 @@
                     null
                   ],
                   &quot;description&quot;: &quot;The type of voter ID required in order to vote in this election. Nullable, or one of Electoral Fraud (Northern Ireland) Act 2002, Elections Act 2022 or one of the pilots.&quot;
+                },
+                &quot;postal_voting_requirements&quot;: {
+                  &quot;type&quot;: [
+                    &quot;string&quot;,
+                    &quot;null&quot;
+                  ],
+                  &quot;enum&quot;: [
+                    &quot;EA-2022&quot;,
+                    &quot;RPA2000&quot;,
+                    null
+                  ],
+                  &quot;description&quot;: &quot;Postal voting requirements for this election. Nullable, or one of Elections Act 2022 or Representation of the People Act 2000.&quot;
                 },
                 &quot;election_id&quot;: {
                   &quot;type&quot;: &quot;string&quot;,
@@ -1274,6 +1287,7 @@
           &quot;replaced_by&quot;: null,
           &quot;replaces&quot;: null,
           &quot;requires_voter_id&quot;: &quot;EA-2022&quot;,
+          &quot;postal_voting_requirements&quot;: &quot;EA-2022&quot;,
           &quot;election_id&quot;: &quot;local.cardiff.2017-05-04&quot;,
           &quot;election_name&quot;: &quot;Cardiff local election&quot;,
           &quot;post_name&quot;: &quot;Pontprennau/Old St. Mellons&quot;,
@@ -1616,6 +1630,18 @@
                     null
                   ],
                   &quot;description&quot;: &quot;The type of voter ID required in order to vote in this election. Nullable, or one of Electoral Fraud (Northern Ireland) Act 2002, Elections Act 2022 or one of the pilots.&quot;
+                },
+                &quot;postal_voting_requirements&quot;: {
+                  &quot;type&quot;: [
+                    &quot;string&quot;,
+                    &quot;null&quot;
+                  ],
+                  &quot;enum&quot;: [
+                    &quot;EA-2022&quot;,
+                    &quot;RPA2000&quot;,
+                    null
+                  ],
+                  &quot;description&quot;: &quot;Postal voting requirements for this election. Nullable, or one of Elections Act 2022 or Representation of the People Act 2000.&quot;
                 },
                 &quot;election_id&quot;: {
                   &quot;type&quot;: &quot;string&quot;,

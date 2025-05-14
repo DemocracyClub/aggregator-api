@@ -96,6 +96,9 @@
                     + `EA-2022`
                     + `pilot-2018`
                     + `pilot-2019`
+                + `postal_voting_requirements`: `EA-2022` (enum[string], nullable) - Postal voting requirements for this election. Nullable, or one of Elections Act 2022 or Representation of the People Act 2000.
+                    + `EA-2022`
+                    + `RPA2000`
                 + `election_id`: `local.cardiff.2017-05-04` (string) - Identifier for this ballot's parent election group
                 + `election_name`: `Cardiff local election` (string) - Friendly name for this ballot's parent election group
                 + `post_name`: `Pontprennau/Old St. Mellons` (string) - Name of the division or post the winner(s) of this election will represent
