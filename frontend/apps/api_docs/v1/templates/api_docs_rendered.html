@@ -343,20 +343,6 @@
                   }
                 ]
               }
-            },
-            {
-              &quot;list_position&quot;: null,
-              &quot;party&quot;: {
-                &quot;party_id&quot;: &quot;party:52&quot;,
-                &quot;party_name&quot;: &quot;Conservative and Unionist Party&quot;
-              },
-              &quot;person&quot;: {
-                &quot;ynr_id&quot;: 8071,
-                &quot;name&quot;: &quot;Joel Williams&quot;,
-                &quot;absolute_url&quot;: &quot;https://whocanivotefor.co.uk/person/8071/joel-williams&quot;,
-                &quot;email&quot;: null,
-                &quot;photo_url&quot;: &quot;https://static-candidates.democracyclub.org.uk/media/images/images/8071.png&quot;
-              }
             }
           ],
           &quot;wcivf_url&quot;: &quot;https://whocanivotefor.co.uk/elections/local.cardiff.2017-05-04/post-UTE:W05000900/pontprennauold-st-mellons&quot;
@@ -714,18 +700,33 @@
                 },
                 &quot;candidates&quot;: {
                   &quot;type&quot;: &quot;array&quot;,
-                  &quot;items&quot;: [
-                    {
-                      &quot;type&quot;: &quot;object&quot;,
-                      &quot;properties&quot;: {
-                        &quot;list_position&quot;: {
-                          &quot;type&quot;: [
-                            &quot;number&quot;,
-                            &quot;null&quot;
-                          ],
-                          &quot;description&quot;: &quot;Numeric position in party list. This value is only relevant to elections using party lists. It will always be null in First-Past-The-post elections.&quot;
-                        },
-                        &quot;party&quot;: {
+                  &quot;items&quot;: {
+                    &quot;type&quot;: &quot;object&quot;,
+                    &quot;properties&quot;: {
+                      &quot;list_position&quot;: {
+                        &quot;type&quot;: [
+                          &quot;number&quot;,
+                          &quot;null&quot;
+                        ],
+                        &quot;description&quot;: &quot;Numeric position in party list. This value is only relevant to elections using party lists. It will always be null in First-Past-The-post elections.&quot;
+                      },
+                      &quot;party&quot;: {
+                        &quot;type&quot;: &quot;object&quot;,
+                        &quot;properties&quot;: {
+                          &quot;party_id&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          },
+                          &quot;party_name&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          }
+                        }
+                      },
+                      &quot;previous_party_affiliations&quot;: {
+                        &quot;type&quot;: [
+                          &quot;array&quot;,
+                          &quot;null&quot;
+                        ],
+                        &quot;items&quot;: {
                           &quot;type&quot;: &quot;object&quot;,
                           &quot;properties&quot;: {
                             &quot;party_id&quot;: {
@@ -733,134 +734,65 @@
                             },
                             &quot;party_name&quot;: {
                               &quot;type&quot;: &quot;string&quot;
-                            }
-                          }
-                        },
-                        &quot;previous_party_affiliations&quot;: {
-                          &quot;type&quot;: [
-                            &quot;array&quot;,
-                            &quot;null&quot;
-                          ],
-                          &quot;items&quot;: {
-                            &quot;type&quot;: &quot;object&quot;,
-                            &quot;properties&quot;: {
-                              &quot;party_id&quot;: {
-                                &quot;type&quot;: &quot;string&quot;
-                              },
-                              &quot;party_name&quot;: {
-                                &quot;type&quot;: &quot;string&quot;
-                              }
-                            }
-                          }
-                        },
-                        &quot;person&quot;: {
-                          &quot;type&quot;: &quot;object&quot;,
-                          &quot;properties&quot;: {
-                            &quot;ynr_id&quot;: {
-                              &quot;type&quot;: &quot;number&quot;
-                            },
-                            &quot;name&quot;: {
-                              &quot;type&quot;: &quot;string&quot;
-                            },
-                            &quot;absolute_url&quot;: {
-                              &quot;type&quot;: &quot;string&quot;,
-                              &quot;description&quot;: &quot;Link for more (human-readable) information about this candidate&quot;
-                            },
-                            &quot;email&quot;: {
-                              &quot;type&quot;: [
-                                &quot;string&quot;,
-                                &quot;null&quot;
-                              ],
-                              &quot;description&quot;: &quot;Email address for this candidate, if we hold it&quot;
-                            },
-                            &quot;photo_url&quot;: {
-                              &quot;type&quot;: [
-                                &quot;string&quot;,
-                                &quot;null&quot;
-                              ],
-                              &quot;description&quot;: &quot;URL for a photo of this candidate, if we hold one&quot;
-                            },
-                            &quot;leaflets&quot;: {
-                              &quot;type&quot;: [
-                                &quot;array&quot;,
-                                &quot;null&quot;
-                              ],
-                              &quot;items&quot;: {
-                                &quot;type&quot;: &quot;object&quot;,
-                                &quot;properties&quot;: {
-                                  &quot;leaflet_id&quot;: {
-                                    &quot;type&quot;: &quot;number&quot;,
-                                    &quot;description&quot;: &quot;The electionleaflets.org ID for this leaflet&quot;
-                                  },
-                                  &quot;thumb_url&quot;: {
-                                    &quot;type&quot;: &quot;string&quot;,
-                                    &quot;description&quot;: &quot;URL to the thumbnail image of this leaflet&quot;
-                                  },
-                                  &quot;leaflet_url&quot;: {
-                                    &quot;type&quot;: &quot;string&quot;,
-                                    &quot;description&quot;: &quot;URL to the leaflet page on electionleaflets.org&quot;
-                                  }
-                                }
-                              },
-                              &quot;description&quot;: &quot;Leaflets uploaded to electionleaflets.org and tagged with this person&quot;
                             }
                           }
                         }
-                      }
-                    },
-                    {
-                      &quot;type&quot;: &quot;object&quot;,
-                      &quot;properties&quot;: {
-                        &quot;list_position&quot;: {
-                          &quot;type&quot;: [
-                            &quot;number&quot;,
-                            &quot;null&quot;
-                          ],
-                          &quot;description&quot;: &quot;Numeric position in party list. This value is only relevant to elections using party lists. It will always be null in First-Past-The-post elections.&quot;
-                        },
-                        &quot;party&quot;: {
-                          &quot;type&quot;: &quot;object&quot;,
-                          &quot;properties&quot;: {
-                            &quot;party_id&quot;: {
-                              &quot;type&quot;: &quot;string&quot;
+                      },
+                      &quot;person&quot;: {
+                        &quot;type&quot;: &quot;object&quot;,
+                        &quot;properties&quot;: {
+                          &quot;ynr_id&quot;: {
+                            &quot;type&quot;: &quot;number&quot;
+                          },
+                          &quot;name&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          },
+                          &quot;absolute_url&quot;: {
+                            &quot;type&quot;: &quot;string&quot;,
+                            &quot;description&quot;: &quot;Link for more (human-readable) information about this candidate&quot;
+                          },
+                          &quot;email&quot;: {
+                            &quot;type&quot;: [
+                              &quot;string&quot;,
+                              &quot;null&quot;
+                            ],
+                            &quot;description&quot;: &quot;Email address for this candidate, if we hold it&quot;
+                          },
+                          &quot;photo_url&quot;: {
+                            &quot;type&quot;: [
+                              &quot;string&quot;,
+                              &quot;null&quot;
+                            ],
+                            &quot;description&quot;: &quot;URL for a photo of this candidate, if we hold one&quot;
+                          },
+                          &quot;leaflets&quot;: {
+                            &quot;type&quot;: [
+                              &quot;array&quot;,
+                              &quot;null&quot;
+                            ],
+                            &quot;items&quot;: {
+                              &quot;type&quot;: &quot;object&quot;,
+                              &quot;properties&quot;: {
+                                &quot;leaflet_id&quot;: {
+                                  &quot;type&quot;: &quot;number&quot;,
+                                  &quot;description&quot;: &quot;The electionleaflets.org ID for this leaflet&quot;
+                                },
+                                &quot;thumb_url&quot;: {
+                                  &quot;type&quot;: &quot;string&quot;,
+                                  &quot;description&quot;: &quot;URL to the thumbnail image of this leaflet&quot;
+                                },
+                                &quot;leaflet_url&quot;: {
+                                  &quot;type&quot;: &quot;string&quot;,
+                                  &quot;description&quot;: &quot;URL to the leaflet page on electionleaflets.org&quot;
+                                }
+                              }
                             },
-                            &quot;party_name&quot;: {
-                              &quot;type&quot;: &quot;string&quot;
-                            }
-                          }
-                        },
-                        &quot;person&quot;: {
-                          &quot;type&quot;: &quot;object&quot;,
-                          &quot;properties&quot;: {
-                            &quot;ynr_id&quot;: {
-                              &quot;type&quot;: &quot;number&quot;
-                            },
-                            &quot;name&quot;: {
-                              &quot;type&quot;: &quot;string&quot;
-                            },
-                            &quot;absolute_url&quot;: {
-                              &quot;type&quot;: &quot;string&quot;,
-                              &quot;description&quot;: &quot;Link for more (human-readable) information about this candidate&quot;
-                            },
-                            &quot;email&quot;: {
-                              &quot;type&quot;: [
-                                &quot;string&quot;,
-                                &quot;null&quot;
-                              ],
-                              &quot;description&quot;: &quot;Email address for this candidate, if we hold it&quot;
-                            },
-                            &quot;photo_url&quot;: {
-                              &quot;type&quot;: [
-                                &quot;string&quot;,
-                                &quot;null&quot;
-                              ],
-                              &quot;description&quot;: &quot;URL for a photo of this candidate, if we hold one&quot;
-                            }
+                            &quot;description&quot;: &quot;Leaflets uploaded to electionleaflets.org and tagged with this person&quot;
                           }
                         }
                       }
                     }
-                  ],
+                  },
                   &quot;description&quot;: &quot;Array of candidate objects describing candidates that will appear on this ballot paper. In an election which uses party lists, the `candidates` array is sorted by party and `list_position` within parties. For other election types it is sorted alphabetically by candidate name.&quot;
                 },
                 &quot;wcivf_url&quot;: {
@@ -1373,20 +1305,6 @@
                   }
                 ]
               }
-            },
-            {
-              &quot;list_position&quot;: null,
-              &quot;party&quot;: {
-                &quot;party_id&quot;: &quot;party:52&quot;,
-                &quot;party_name&quot;: &quot;Conservative and Unionist Party&quot;
-              },
-              &quot;person&quot;: {
-                &quot;ynr_id&quot;: 8071,
-                &quot;name&quot;: &quot;Joel Williams&quot;,
-                &quot;absolute_url&quot;: &quot;https://whocanivotefor.co.uk/person/8071/joel-williams&quot;,
-                &quot;email&quot;: null,
-                &quot;photo_url&quot;: &quot;https://static-candidates.democracyclub.org.uk/media/images/images/8071.png&quot;
-              }
             }
           ],
           &quot;wcivf_url&quot;: &quot;https://whocanivotefor.co.uk/elections/local.cardiff.2017-05-04/post-UTE:W05000900/pontprennauold-st-mellons&quot;
@@ -1744,18 +1662,33 @@
                 },
                 &quot;candidates&quot;: {
                   &quot;type&quot;: &quot;array&quot;,
-                  &quot;items&quot;: [
-                    {
-                      &quot;type&quot;: &quot;object&quot;,
-                      &quot;properties&quot;: {
-                        &quot;list_position&quot;: {
-                          &quot;type&quot;: [
-                            &quot;number&quot;,
-                            &quot;null&quot;
-                          ],
-                          &quot;description&quot;: &quot;Numeric position in party list. This value is only relevant to elections using party lists. It will always be null in First-Past-The-post elections.&quot;
-                        },
-                        &quot;party&quot;: {
+                  &quot;items&quot;: {
+                    &quot;type&quot;: &quot;object&quot;,
+                    &quot;properties&quot;: {
+                      &quot;list_position&quot;: {
+                        &quot;type&quot;: [
+                          &quot;number&quot;,
+                          &quot;null&quot;
+                        ],
+                        &quot;description&quot;: &quot;Numeric position in party list. This value is only relevant to elections using party lists. It will always be null in First-Past-The-post elections.&quot;
+                      },
+                      &quot;party&quot;: {
+                        &quot;type&quot;: &quot;object&quot;,
+                        &quot;properties&quot;: {
+                          &quot;party_id&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          },
+                          &quot;party_name&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          }
+                        }
+                      },
+                      &quot;previous_party_affiliations&quot;: {
+                        &quot;type&quot;: [
+                          &quot;array&quot;,
+                          &quot;null&quot;
+                        ],
+                        &quot;items&quot;: {
                           &quot;type&quot;: &quot;object&quot;,
                           &quot;properties&quot;: {
                             &quot;party_id&quot;: {
@@ -1763,134 +1696,65 @@
                             },
                             &quot;party_name&quot;: {
                               &quot;type&quot;: &quot;string&quot;
-                            }
-                          }
-                        },
-                        &quot;previous_party_affiliations&quot;: {
-                          &quot;type&quot;: [
-                            &quot;array&quot;,
-                            &quot;null&quot;
-                          ],
-                          &quot;items&quot;: {
-                            &quot;type&quot;: &quot;object&quot;,
-                            &quot;properties&quot;: {
-                              &quot;party_id&quot;: {
-                                &quot;type&quot;: &quot;string&quot;
-                              },
-                              &quot;party_name&quot;: {
-                                &quot;type&quot;: &quot;string&quot;
-                              }
-                            }
-                          }
-                        },
-                        &quot;person&quot;: {
-                          &quot;type&quot;: &quot;object&quot;,
-                          &quot;properties&quot;: {
-                            &quot;ynr_id&quot;: {
-                              &quot;type&quot;: &quot;number&quot;
-                            },
-                            &quot;name&quot;: {
-                              &quot;type&quot;: &quot;string&quot;
-                            },
-                            &quot;absolute_url&quot;: {
-                              &quot;type&quot;: &quot;string&quot;,
-                              &quot;description&quot;: &quot;Link for more (human-readable) information about this candidate&quot;
-                            },
-                            &quot;email&quot;: {
-                              &quot;type&quot;: [
-                                &quot;string&quot;,
-                                &quot;null&quot;
-                              ],
-                              &quot;description&quot;: &quot;Email address for this candidate, if we hold it&quot;
-                            },
-                            &quot;photo_url&quot;: {
-                              &quot;type&quot;: [
-                                &quot;string&quot;,
-                                &quot;null&quot;
-                              ],
-                              &quot;description&quot;: &quot;URL for a photo of this candidate, if we hold one&quot;
-                            },
-                            &quot;leaflets&quot;: {
-                              &quot;type&quot;: [
-                                &quot;array&quot;,
-                                &quot;null&quot;
-                              ],
-                              &quot;items&quot;: {
-                                &quot;type&quot;: &quot;object&quot;,
-                                &quot;properties&quot;: {
-                                  &quot;leaflet_id&quot;: {
-                                    &quot;type&quot;: &quot;number&quot;,
-                                    &quot;description&quot;: &quot;The electionleaflets.org ID for this leaflet&quot;
-                                  },
-                                  &quot;thumb_url&quot;: {
-                                    &quot;type&quot;: &quot;string&quot;,
-                                    &quot;description&quot;: &quot;URL to the thumbnail image of this leaflet&quot;
-                                  },
-                                  &quot;leaflet_url&quot;: {
-                                    &quot;type&quot;: &quot;string&quot;,
-                                    &quot;description&quot;: &quot;URL to the leaflet page on electionleaflets.org&quot;
-                                  }
-                                }
-                              },
-                              &quot;description&quot;: &quot;Leaflets uploaded to electionleaflets.org and tagged with this person&quot;
                             }
                           }
                         }
-                      }
-                    },
-                    {
-                      &quot;type&quot;: &quot;object&quot;,
-                      &quot;properties&quot;: {
-                        &quot;list_position&quot;: {
-                          &quot;type&quot;: [
-                            &quot;number&quot;,
-                            &quot;null&quot;
-                          ],
-                          &quot;description&quot;: &quot;Numeric position in party list. This value is only relevant to elections using party lists. It will always be null in First-Past-The-post elections.&quot;
-                        },
-                        &quot;party&quot;: {
-                          &quot;type&quot;: &quot;object&quot;,
-                          &quot;properties&quot;: {
-                            &quot;party_id&quot;: {
-                              &quot;type&quot;: &quot;string&quot;
+                      },
+                      &quot;person&quot;: {
+                        &quot;type&quot;: &quot;object&quot;,
+                        &quot;properties&quot;: {
+                          &quot;ynr_id&quot;: {
+                            &quot;type&quot;: &quot;number&quot;
+                          },
+                          &quot;name&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          },
+                          &quot;absolute_url&quot;: {
+                            &quot;type&quot;: &quot;string&quot;,
+                            &quot;description&quot;: &quot;Link for more (human-readable) information about this candidate&quot;
+                          },
+                          &quot;email&quot;: {
+                            &quot;type&quot;: [
+                              &quot;string&quot;,
+                              &quot;null&quot;
+                            ],
+                            &quot;description&quot;: &quot;Email address for this candidate, if we hold it&quot;
+                          },
+                          &quot;photo_url&quot;: {
+                            &quot;type&quot;: [
+                              &quot;string&quot;,
+                              &quot;null&quot;
+                            ],
+                            &quot;description&quot;: &quot;URL for a photo of this candidate, if we hold one&quot;
+                          },
+                          &quot;leaflets&quot;: {
+                            &quot;type&quot;: [
+                              &quot;array&quot;,
+                              &quot;null&quot;
+                            ],
+                            &quot;items&quot;: {
+                              &quot;type&quot;: &quot;object&quot;,
+                              &quot;properties&quot;: {
+                                &quot;leaflet_id&quot;: {
+                                  &quot;type&quot;: &quot;number&quot;,
+                                  &quot;description&quot;: &quot;The electionleaflets.org ID for this leaflet&quot;
+                                },
+                                &quot;thumb_url&quot;: {
+                                  &quot;type&quot;: &quot;string&quot;,
+                                  &quot;description&quot;: &quot;URL to the thumbnail image of this leaflet&quot;
+                                },
+                                &quot;leaflet_url&quot;: {
+                                  &quot;type&quot;: &quot;string&quot;,
+                                  &quot;description&quot;: &quot;URL to the leaflet page on electionleaflets.org&quot;
+                                }
+                              }
                             },
-                            &quot;party_name&quot;: {
-                              &quot;type&quot;: &quot;string&quot;
-                            }
-                          }
-                        },
-                        &quot;person&quot;: {
-                          &quot;type&quot;: &quot;object&quot;,
-                          &quot;properties&quot;: {
-                            &quot;ynr_id&quot;: {
-                              &quot;type&quot;: &quot;number&quot;
-                            },
-                            &quot;name&quot;: {
-                              &quot;type&quot;: &quot;string&quot;
-                            },
-                            &quot;absolute_url&quot;: {
-                              &quot;type&quot;: &quot;string&quot;,
-                              &quot;description&quot;: &quot;Link for more (human-readable) information about this candidate&quot;
-                            },
-                            &quot;email&quot;: {
-                              &quot;type&quot;: [
-                                &quot;string&quot;,
-                                &quot;null&quot;
-                              ],
-                              &quot;description&quot;: &quot;Email address for this candidate, if we hold it&quot;
-                            },
-                            &quot;photo_url&quot;: {
-                              &quot;type&quot;: [
-                                &quot;string&quot;,
-                                &quot;null&quot;
-                              ],
-                              &quot;description&quot;: &quot;URL for a photo of this candidate, if we hold one&quot;
-                            }
+                            &quot;description&quot;: &quot;Leaflets uploaded to electionleaflets.org and tagged with this person&quot;
                           }
                         }
                       }
                     }
-                  ],
+                  },
                   &quot;description&quot;: &quot;Array of candidate objects describing candidates that will appear on this ballot paper. In an election which uses party lists, the `candidates` array is sorted by party and `list_position` within parties. For other election types it is sorted alphabetically by candidate name.&quot;
                 },
                 &quot;wcivf_url&quot;: {

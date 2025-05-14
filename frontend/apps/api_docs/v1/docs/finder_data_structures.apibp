@@ -129,19 +129,6 @@
                                     + `leaflet_id`: `14666` (number) - The electionleaflets.org ID for this leaflet
                                     + `thumb_url`: `https://images.electionleaflets.org/thumbs/350x350/leaflets/18813566_827285407428319_685384237798419912_n.png` (string) - URL to the thumbnail image of this leaflet
                                     + `leaflet_url`: `https://electionleaflets.org/leaflets/14666/` (string) - URL to the leaflet page on electionleaflets.org
-
-
-                    + (object)
-                        + `list_position`: (number, nullable) - Numeric position in party list. This value is only relevant to elections using party lists. It will always be null in First-Past-The-post elections.
-                        + party: (object)
-                            + `party_id`: `party:52` (string)
-                            + `party_name`: `Conservative and Unionist Party` (string)
-                        + person: (object)
-                            + `ynr_id`: `8071` (number)
-                            + name: `Joel Williams` (string)
-                            + `absolute_url`: `https://whocanivotefor.co.uk/person/8071/joel-williams` (string) - Link for more (human-readable) information about this candidate
-                            + `email`: (string, nullable) - Email address for this candidate, if we hold it
-                            + `photo_url`: `https://static-candidates.democracyclub.org.uk/media/images/images/8071.png` (string, nullable) - URL for a photo of this candidate, if we hold one
                 + `wcivf_url`: `https://whocanivotefor.co.uk/elections/local.cardiff.2017-05-04/post-UTE:W05000900/pontprennauold-st-mellons` - Link for more (human-readable) information about this ballot
 + `electoral_services` (ElectoralServices, nullable) - Contact details for the user's local Electoral Services team. If we do not know the user's polling station, this can be used to provide contact info for their local council. This may be `null` if we are not able to determine the user's council.
 + `registration` (Registration, nullable) - Sometimes the contact information for registration and proxy voting is different to the electoral services contact details. Use these if they exist and your users might have questions about voter registration. If this key is null, assume the electoral services contact details can be used for electoral registration related enquiries.
