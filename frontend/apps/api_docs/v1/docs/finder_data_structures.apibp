@@ -87,8 +87,8 @@
                 + `poll_open_date`: `2017-05-04` (string) - Polling day for this ballot  (ISO 8601)
                 + `elected_role`: `Local Councillor` (string) - Name of the role the winner(s) of this election will assume
                 + metadata: (object, nullable) - Object containing information about special conditions for the user to be aware about (e.g: cancelled elections, voter id pilot). (details TBC)
-                + cancelled: `false` (boolean) - True if this ballot has been cancelled
-                + cancellation_reason: `null` (CancellationReason, nullable) - If a ballot has been cancelled, this key may hold a codified reason for that ballot's cancellation
+                + cancelled: `true` (boolean) - True if this ballot has been cancelled
+                + cancellation_reason: (CancellationReason, nullable) - If a ballot has been cancelled, this key may hold a codified reason for that ballot's cancellation
                 + `replaced_by`: (string, nullable) - If a ballot has been cancelled (cancelled = true) and rescheduled for a later date, this key will hold the ballot_paper_id of the ballot that replaces it.
                 + replaces: (string, nullable) - If this ballot replaces another cancelled ballot, this key will hold the ballot_paper_id of the ballot that it replaces.
                 + `election_id`: `local.cardiff.2017-05-04` (string) - Identifier for this ballot's parent election group
