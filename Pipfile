@@ -20,6 +20,7 @@ pre-commit = "*"
 uvicorn = "==0.30.6"
 djhtml = "==3.0.6"
 dc-response-builder = {file = "https://github.com/DemocracyClub/dc_response_builder/archive/refs/tags/1.1.1.tar.gz"}
+beautifulsoup4 = "==4.13.4"
 
 [api]
 aiohttp = "==3.10.5"
