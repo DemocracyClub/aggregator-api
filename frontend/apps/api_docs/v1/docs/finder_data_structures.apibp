@@ -91,6 +91,11 @@
                 + cancellation_reason: (CancellationReason, nullable) - If a ballot has been cancelled, this key may hold a codified reason for that ballot's cancellation
                 + `replaced_by`: (string, nullable) - If a ballot has been cancelled (cancelled = true) and rescheduled for a later date, this key will hold the ballot_paper_id of the ballot that replaces it.
                 + replaces: (string, nullable) - If this ballot replaces another cancelled ballot, this key will hold the ballot_paper_id of the ballot that it replaces.
+                + `requires_voter_id`: `EA-2022` (enum[string], nullable) - The type of voter ID required in order to vote in this election. Nullable, or one of Electoral Fraud (Northern Ireland) Act 2002, Elections Act 2022 or one of the pilots.
+                    + `EFA-2002`
+                    + `EA-2022`
+                    + `pilot-2018`
+                    + `pilot-2019`
                 + `election_id`: `local.cardiff.2017-05-04` (string) - Identifier for this ballot's parent election group
                 + `election_name`: `Cardiff local election` (string) - Friendly name for this ballot's parent election group
                 + `post_name`: `Pontprennau/Old St. Mellons` (string) - Name of the division or post the winner(s) of this election will represent

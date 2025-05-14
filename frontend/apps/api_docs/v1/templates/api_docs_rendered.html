@@ -296,6 +296,7 @@
           &quot;cancellation_reason&quot;: &quot;NO_CANDIDATES&quot;,
           &quot;replaced_by&quot;: null,
           &quot;replaces&quot;: null,
+          &quot;requires_voter_id&quot;: &quot;EA-2022&quot;,
           &quot;election_id&quot;: &quot;local.cardiff.2017-05-04&quot;,
           &quot;election_name&quot;: &quot;Cardiff local election&quot;,
           &quot;post_name&quot;: &quot;Pontprennau/Old St. Mellons&quot;,
@@ -624,6 +625,20 @@
                     &quot;null&quot;
                   ],
                   &quot;description&quot;: &quot;If this ballot replaces another cancelled ballot, this key will hold the ballot_paper_id of the ballot that it replaces.&quot;
+                },
+                &quot;requires_voter_id&quot;: {
+                  &quot;type&quot;: [
+                    &quot;string&quot;,
+                    &quot;null&quot;
+                  ],
+                  &quot;enum&quot;: [
+                    &quot;EFA-2002&quot;,
+                    &quot;EA-2022&quot;,
+                    &quot;pilot-2018&quot;,
+                    &quot;pilot-2019&quot;,
+                    null
+                  ],
+                  &quot;description&quot;: &quot;The type of voter ID required in order to vote in this election. Nullable, or one of Electoral Fraud (Northern Ireland) Act 2002, Elections Act 2022 or one of the pilots.&quot;
                 },
                 &quot;election_id&quot;: {
                   &quot;type&quot;: &quot;string&quot;,
@@ -1258,6 +1273,7 @@
           &quot;cancellation_reason&quot;: &quot;NO_CANDIDATES&quot;,
           &quot;replaced_by&quot;: null,
           &quot;replaces&quot;: null,
+          &quot;requires_voter_id&quot;: &quot;EA-2022&quot;,
           &quot;election_id&quot;: &quot;local.cardiff.2017-05-04&quot;,
           &quot;election_name&quot;: &quot;Cardiff local election&quot;,
           &quot;post_name&quot;: &quot;Pontprennau/Old St. Mellons&quot;,
@@ -1586,6 +1602,20 @@
                     &quot;null&quot;
                   ],
                   &quot;description&quot;: &quot;If this ballot replaces another cancelled ballot, this key will hold the ballot_paper_id of the ballot that it replaces.&quot;
+                },
+                &quot;requires_voter_id&quot;: {
+                  &quot;type&quot;: [
+                    &quot;string&quot;,
+                    &quot;null&quot;
+                  ],
+                  &quot;enum&quot;: [
+                    &quot;EFA-2002&quot;,
+                    &quot;EA-2022&quot;,
+                    &quot;pilot-2018&quot;,
+                    &quot;pilot-2019&quot;,
+                    null
+                  ],
+                  &quot;description&quot;: &quot;The type of voter ID required in order to vote in this election. Nullable, or one of Electoral Fraud (Northern Ireland) Act 2002, Elections Act 2022 or one of the pilots.&quot;
                 },
                 &quot;election_id&quot;: {
                   &quot;type&quot;: &quot;string&quot;,
@@ -2728,10 +2758,12 @@
                                                                                                                                                                                                             message)
                                                                                                                                                                                                             then you can look at the <code>type</code> key.</p><p>The values for this are:</p><ul><li><p><code>cancelled_election</code>: See below</p></li><li><p><code>pre_eco</code>: The council is due to have a boundary change meaning we can't create the full elections until it's
                                                                                                                                                                                                               finished. This response is a placeholder.</p></li><li><p>(deprecated) <code>voter_id_pilot</code>: over 2018 and 19 some English councils conducted pilots of the voter ID scheme.
-                                                                                                                                                                                                                We have replaced this notification with a value per ballot.</p></li></ul><h4>Cancelled Polls</h4><p>Sometimes a scheduled poll may be cancelled or rescheduled. This is usually either because
-                                                                                                                                                                                                                  the election is uncontested or due to death of a candidate.</p><p>If the user has more than one ballot and only one of them is cancelled, we will not add a notification. In this case,
-                                                                                                                                                                                                                    you should look at the <code>cancelled</code> and <code>cancellation_reason</code> values on each ballot.</p><p>If every ballot for a date is cancelled (meaning the user has no election to vote in) then we will add a notification
-                                                                                                                                                                                                                      alerting them that they don't have to vote on that day, e.g:</p><pre><code>{
+                                                                                                                                                                                                                We have replaced this notification with a value per ballot.</p></li></ul><h4>ID Requirements</h4><p>Some UK elections require ID in order to vote in person.</p><p>This is defined at the ballot level, as it's possible for some ballots to require ID and some not to. In this case the
+                                                                                                                                                                                                                  user must be told about the requirements, even if not all ballots on a single day require them.</p><p>The ballot has a <code>requires_voter_id</code> key that will be one of the following values:</p><ul><li><p><code>EFA-2002</code>: ID required under the <em>Electoral Fraud (Northern Ireland) Act 2002</em></p></li><li><p><code>EA-2022</code>: ID required under the <em>Elections Act 2022</em></p></li><li><p><code>pilot-2018</code>: 2018 voter ID pilot scheme (historic elections only)</p></li><li><p><code>pilot-2019</code>: 2019 voter ID pilot scheme (historic elections only)</p></li></ul><p>If the <code>requires_voter_id</code> is not null then users must be told that they are required to bring ID. The exact ID
+                                                                                                                                                                                                                    requirements change depending on the value. This should be taken into account when writing copy that is shown to users.</p><h4>Cancelled Polls</h4><p>Sometimes a scheduled poll may be cancelled or rescheduled. This is usually either because
+                                                                                                                                                                                                                      the election is uncontested or due to death of a candidate.</p><p>If the user has more than one ballot and only one of them is cancelled, we will not add a notification. In this case,
+                                                                                                                                                                                                                        you should look at the <code>cancelled</code> and <code>cancellation_reason</code> values on each ballot.</p><p>If every ballot for a date is cancelled (meaning the user has no election to vote in) then we will add a notification
+                                                                                                                                                                                                                          alerting them that they don't have to vote on that day, e.g:</p><pre><code>{
 ...
   "notifications": [
     {
@@ -2743,8 +2775,8 @@
   ]
 }
 </code></pre><p>When we know the reason for a cancelled ballot we will add a <code>cancellation_reason</code> to the ballot object, next to the
-                                                                                                                                                                                                                          <code>cancelled</code> boolean:</p><ul><li><p><code>NO_CANDIDATES</code>: No candidates</p></li><li><p><code>EQUAL_CANDIDATES</code>: Equal candidates to contested seats</p></li><li><p><code>UNDER_CONTESTED</code>: Fewer candidates than seats</p></li><li><p><code>CANDIDATE_DEATH</code>: Death of a candidate</p></li></ul><h3>Advance Voting Stations</h3><p>For the 2022 local elections in Wales, four councils are piloting "Advance Voting". This means people in the pilot areas
-                                                                                                                                                                                                                            will be able to cast their vote in the days before polling day.</p><p>We support this pilot, and have an extra key in the API in the <code>dates</code> array.</p><p><pre><code>{
+                                                                                                                                                                                                                              <code>cancelled</code> boolean:</p><ul><li><p><code>NO_CANDIDATES</code>: No candidates</p></li><li><p><code>EQUAL_CANDIDATES</code>: Equal candidates to contested seats</p></li><li><p><code>UNDER_CONTESTED</code>: Fewer candidates than seats</p></li><li><p><code>CANDIDATE_DEATH</code>: Death of a candidate</p></li></ul><h3>Advance Voting Stations</h3><p>For the 2022 local elections in Wales, four councils are piloting "Advance Voting". This means people in the pilot areas
+                                                                                                                                                                                                                                will be able to cast their vote in the days before polling day.</p><p>We support this pilot, and have an extra key in the API in the <code>dates</code> array.</p><p><pre><code>{
 ...
 "advance_voting_station": {
     "name": "Exeter Guildhall",
@@ -2771,12 +2803,12 @@
     ]
   },
 }</pre></code></p><p>If this object exists in the API response, it's <em>highly recommended</em> to display it to the user.</p><p>Each Advance Voting Station has a name, address, postcode and location. Opening times are given as an ordered list of
-                                                                                                                                                                                                                                lists, containing:</p><p><code>[date, open time, close time]</code></p><h3>Previous Party Affiliations</h3><p>The <a href="https://www.legislation.gov.uk/wsi/2021/1459/made">Local Elections (Principal Areas) (Wales) Rules 2021</a> Statutory
-                                                                                                                                                                                                                                  Instrument, among other things introduced a requirement for candidates to list any other political party membership in
-                                                                                                                                                                                                                                  the last 12 months on the Statement Of Persons Nominated.</p><p>We store this information, and present it for candidates in Welsh run elections. The field exists on the <code>candidate</code>
-                                                                                                                                                                                                                                    object in the <code>candidates</code> list on each ballot. It wil be <code>null</code> unless the candidate has declared affiliation with
-                                                                                                                                                                                                                                    another party in the last 12 months.</p><p>Note that this is <em>not</em> the same as previous candidacies for this person. We also track this, but a person must declare
-                                                                                                                                                                                                                                      parties they have beem members of in the previous 12 months before the date of the election.</p><p>When data exists, it's a list of parties. This information is transcribed from the Statement of Persons Nominated.</p><h2>Errors</h2><div class="ds-grid"><div><p>
-                                                                                                                                                                                                                                        Errors will be reported using HTTP status codes. The body of the error will be formatted as valid JSON and will give a description of the error
-                                                                                                                                                                                                                                      </p></div><div class="ds-stack-smaller"><figure><figcaption>
-                                                                                                                                                                                                                                        Example error response</figcaption><pre>{ "detail": "Could not geocode from any source" }</pre></figure></div></div></div></div>
+                                                                                                                                                                                                                                    lists, containing:</p><p><code>[date, open time, close time]</code></p><h3>Previous Party Affiliations</h3><p>The <a href="https://www.legislation.gov.uk/wsi/2021/1459/made">Local Elections (Principal Areas) (Wales) Rules 2021</a> Statutory
+                                                                                                                                                                                                                                      Instrument, among other things introduced a requirement for candidates to list any other political party membership in
+                                                                                                                                                                                                                                      the last 12 months on the Statement Of Persons Nominated.</p><p>We store this information, and present it for candidates in Welsh run elections. The field exists on the <code>candidate</code>
+                                                                                                                                                                                                                                        object in the <code>candidates</code> list on each ballot. It wil be <code>null</code> unless the candidate has declared affiliation with
+                                                                                                                                                                                                                                        another party in the last 12 months.</p><p>Note that this is <em>not</em> the same as previous candidacies for this person. We also track this, but a person must declare
+                                                                                                                                                                                                                                          parties they have beem members of in the previous 12 months before the date of the election.</p><p>When data exists, it's a list of parties. This information is transcribed from the Statement of Persons Nominated.</p><h2>Errors</h2><div class="ds-grid"><div><p>
+                                                                                                                                                                                                                                            Errors will be reported using HTTP status codes. The body of the error will be formatted as valid JSON and will give a description of the error
+                                                                                                                                                                                                                                          </p></div><div class="ds-stack-smaller"><figure><figcaption>
+                                                                                                                                                                                                                                            Example error response</figcaption><pre>{ "detail": "Could not geocode from any source" }</pre></figure></div></div></div></div>
