@@ -126,9 +126,9 @@
                             + `photo_url`: (string, nullable) - URL for a photo of this candidate, if we hold one
                             + leaflets: (array[object], fixed-type, nullable) - Leaflets uploaded to electionleaflets.org and tagged with this person
                                 + (object)
-                                    + `leaflet_id`: (number) - The electionleaflets.org ID for this leaflet
-                                    + `thumb_url`: (string) - URL to the thumbnail image of this leaflet
-                                    + `leaflet_url`: (string) - URL to the leaflet page on electionleaflets.org
+                                    + `leaflet_id`: `14666` (number) - The electionleaflets.org ID for this leaflet
+                                    + `thumb_url`: `https://images.electionleaflets.org/thumbs/350x350/leaflets/18813566_827285407428319_685384237798419912_n.png` (string) - URL to the thumbnail image of this leaflet
+                                    + `leaflet_url`: `https://electionleaflets.org/leaflets/14666/` (string) - URL to the leaflet page on electionleaflets.org
 
 
                     + (object)
