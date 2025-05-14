@@ -1,5 +1,5 @@
 ## ElectionOrganisation
-+ `official_identifier`: `naw` (string) - An identifier for this organisation. Where possible, we'll us a code from the relevant [gov.uk register](https://www.registers.service.gov.uk/).
++ `official_identifier`: `naw` (string) - An identifier for this organisation.
 + `organisation_type`: `naw` (enum[string])
     + `combined-authority`
     + `europarl`
@@ -9,8 +9,9 @@
     + `nia`
     + `parl`
     + `police-area`
+    + `senedd`
     + `sp`
-+ `organisation_subtype`: (enum[string]) - If organisation_type = 'local-authority', an additional description of what type of local authority this is from the [gov.uk local authority registers](https://www.registers.service.gov.uk/category/regional-and-local-government). Empty string for other organisation types
++ `organisation_subtype`: (enum[string]) - If organisation_type = 'local-authority', an additional description of what type of local authority. Empty string for other organisation types
     + (string)
     + `CA`
     + `CC`
