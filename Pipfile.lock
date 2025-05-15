@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "f0c964f0d8b759bd4ccfe14151f85e51bd32218acdfbc748a4b24404f9b2dbf4"
+            "sha256": "f450ee8663060ffe7ca13a8d4ce0f673e493aca81fdb12c79fa3e34a28eec629"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -899,7 +899,7 @@
             "version": "==42.0.5"
         },
         "dc-response-builder": {
-            "file": "https://github.com/DemocracyClub/dc_response_builder/archive/refs/tags/1.1.1.tar.gz"
+            "file": "https://github.com/DemocracyClub/dc_response_builder/archive/refs/tags/1.1.2.tar.gz"
         },
         "distlib": {
             "hashes": [
