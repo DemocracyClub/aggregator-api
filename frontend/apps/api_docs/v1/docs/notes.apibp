@@ -58,6 +58,24 @@ The values for this are:
   We have replaced this notification with a value per ballot.
 
 
+#### ID Requirements
+
+Some UK elections require ID in order to vote in person.
+
+This is defined at the ballot level, as it's possible for some ballots to require ID and some not to. In this case the
+user must be told about the requirements, even if not all ballots on a single day require them.
+
+The ballot has a `requires_voter_id` key that will be one of the following values:
+
+* `EFA-2002`: ID required under the _Electoral Fraud (Northern Ireland) Act 2002_
+* `EA-2022`: ID required under the _Elections Act 2022_
+* `pilot-2018`: 2018 voter ID pilot scheme (historic elections only)
+* `pilot-2019`: 2019 voter ID pilot scheme (historic elections only)
+
+If the `requires_voter_id` is not null then users must be told that they are required to bring ID. The exact ID
+requirements change depending on the value. This should be taken into account when writing copy that is shown to users.
+
+
 #### Cancelled Polls
 
 Sometimes a scheduled poll may be cancelled or rescheduled. This is usually either because
@@ -90,7 +108,6 @@ When we know the reason for a cancelled ballot we will add a `cancellation_reaso
 * `EQUAL_CANDIDATES`: Equal candidates to contested seats
 * `UNDER_CONTESTED`: Fewer candidates than seats
 * `CANDIDATE_DEATH`: Death of a candidate
-
 
 
 ### Advance Voting Stations

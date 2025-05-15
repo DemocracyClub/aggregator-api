@@ -17,9 +17,10 @@ moto = {extras = ["dynamodb"], version = "*"}
 mypy_boto3_dynamodb = "*"
 pytest-ruff = "*"
 pre-commit = "*"
-dc-response-builder = {file = "https://github.com/DemocracyClub/dc_response_builder/archive/refs/tags/0.0.17.tar.gz"}
 uvicorn = "==0.30.6"
 djhtml = "==3.0.6"
+beautifulsoup4 = "==4.13.4"
+dc-response-builder = {file = "https://github.com/DemocracyClub/dc_response_builder/archive/refs/tags/1.1.2.tar.gz"}
 
 [api]
 aiohttp = "==3.10.5"

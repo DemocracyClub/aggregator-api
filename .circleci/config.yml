@@ -50,6 +50,12 @@ jobs:
     - run: pipenv run pipenv verify
     - run: pipenv run ruff-check
     - run: pipenv run djhtml --check .
+    - run:
+        name: ensure api_docs_rendered.html is up to date
+        command: |
+          SECRET_KEY=fake pipenv run python manage.py build_docs
+          pipenv run djhtml frontend/apps/api_docs/v1/templates/api_docs_rendered.html
+          git diff --exit-code
     - run: pipenv run pytest --ruff --cov-report= --cov=frontend --cov=api --junitxml=test-results/junit.xml
     - run: |
         if [ -n "$COVERALLS_REPO_TOKEN" ]; then

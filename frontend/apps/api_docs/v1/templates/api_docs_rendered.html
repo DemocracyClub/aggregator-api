@@ -8,7 +8,7 @@
       Usage must comply with our <a href="/terms">terms of use</a>.</p></div></div><div class="api-resource-group card"><h2 id="postcode-search-2">
         Postcode search&nbsp;<a
           href="#postcode-search-2"
-          class="permalink">&para;</a></h2><div class="api-description"><p>The <code>/postcode</code> and <code>/address</code> endpoints find details of ballots, candidates and polling stations based on the user's registered address. This allows you to present Democracy Club's data to users in your website or app.</p><p>The entry point to a polling station search is a call to the <code>/postcode</code> endpoint.
+          class="permalink">&para;</a></h2><div class="api-description"><p>The <code>/postcode</code> and <code>/address</code> endpoints find details of ballots, candidates and polling stations in upcoming elections based on the user's registered address. This allows you to present Democracy Club's data to users in your website or app. This API does not serve the winners or results of elections that have already happened.</p><p>The entry point to a polling station search is a call to the <code>/postcode</code> endpoint.
             A valid postcode search may result in one of 3 outcomes:</p><ul><li><p><a href="#postcode-search-no-upcoming-ballots-3">No upcoming ballots</a>: There are no upcoming ballots relevant to this area.</p></li><li><p><a href="#postcode-search-results-found-3">Results found</a>: We hold data for this area and the same ballots, candidates and polling station data is relevant to all registered addresses with this postcode.</p></li><li><p><a href="#postcode-search-address-picker-3">Address picker</a>: We hold data for this area but different information is applicable to different addresses with this postcode. To find relevant data, we must show the user an address picker and make a second API call to the <a href="#address-search-2"><code>/address</code> endpoint</a>.</p></li></ul></div><div class="api-resource card"><h3 id="postcode-search-no-upcoming-ballots-3">
               Postcode search: No upcoming ballots&nbsp;<a
                 href="#postcode-search-no-upcoming-ballots-3"
@@ -42,14 +42,17 @@
   &quot;addresses&quot;: [],
   &quot;dates&quot;: [],
   &quot;electoral_services&quot;: {
-    &quot;council_id&quot;: &quot;W06000015&quot;,
+    &quot;council_id&quot;: &quot;CRF&quot;,
     &quot;name&quot;: &quot;Cardiff Council&quot;,
     &quot;nation&quot;: &quot;Wales&quot;,
     &quot;address&quot;: &quot;Electoral Registration Officer\\nCity of Cardiff Council\\nCounty Hall Atlantic Wharf&quot;,
     &quot;postcode&quot;: &quot;CF10 4UW&quot;,
     &quot;email&quot;: &quot;electoralservices@cardiff.gov.uk&quot;,
     &quot;phone&quot;: &quot;029 2087 2034&quot;,
-    &quot;website&quot;: &quot;http://www.cardiff.gov.uk/&quot;
+    &quot;website&quot;: &quot;http://www.cardiff.gov.uk/&quot;,
+    &quot;identifiers&quot;: [
+      &quot;W06000015&quot;
+    ]
   },
   &quot;registration&quot;: {
     &quot;address&quot;: &quot;Electoral Registration Officer\\nCity of Cardiff Council\\nCounty Hall Atlantic Wharf&quot;,
@@ -95,7 +98,7 @@
       &quot;properties&quot;: {
         &quot;council_id&quot;: {
           &quot;type&quot;: &quot;string&quot;,
-          &quot;description&quot;: &quot;GSS code for this council&quot;
+          &quot;description&quot;: &quot;Three-letter code for this council&quot;
         },
         &quot;name&quot;: {
           &quot;type&quot;: &quot;string&quot;,
@@ -124,6 +127,13 @@
         &quot;website&quot;: {
           &quot;type&quot;: &quot;string&quot;,
           &quot;description&quot;: &quot;URL for this council&#x27;s website&quot;
+        },
+        &quot;identifiers&quot;: {
+          &quot;type&quot;: &quot;array&quot;,
+          &quot;items&quot;: {
+            &quot;type&quot;: &quot;string&quot;
+          },
+          &quot;description&quot;: &quot;An array of alternative identifiers for this council. If known, this array will contain a GSS code for this council&quot;
         }
       },
       &quot;description&quot;: &quot;Contact details for the user&#x27;s local Electoral Services team. If we do not know the user&#x27;s polling station, this can be used to provide contact info for their local council. This may be `null` if we are not able to determine the user&#x27;s council.&quot;
@@ -282,10 +292,12 @@
           &quot;poll_open_date&quot;: &quot;2017-05-04&quot;,
           &quot;elected_role&quot;: &quot;Local Councillor&quot;,
           &quot;metadata&quot;: null,
-          &quot;cancelled&quot;: false,
-          &quot;cancellation_reason&quot;: &quot;null&quot;,
+          &quot;cancelled&quot;: true,
+          &quot;cancellation_reason&quot;: &quot;NO_CANDIDATES&quot;,
           &quot;replaced_by&quot;: null,
           &quot;replaces&quot;: null,
+          &quot;requires_voter_id&quot;: &quot;EA-2022&quot;,
+          &quot;postal_voting_requirements&quot;: &quot;EA-2022&quot;,
           &quot;election_id&quot;: &quot;local.cardiff.2017-05-04&quot;,
           &quot;election_name&quot;: &quot;Cardiff local election&quot;,
           &quot;post_name&quot;: &quot;Pontprennau/Old St. Mellons&quot;,
@@ -327,25 +339,11 @@
                 &quot;photo_url&quot;: null,
                 &quot;leaflets&quot;: [
                   {
-                    &quot;leaflet_id&quot;: 0,
-                    &quot;thumb_url&quot;: &quot;&quot;,
-                    &quot;leaflet_url&quot;: &quot;&quot;
+                    &quot;leaflet_id&quot;: 14666,
+                    &quot;thumb_url&quot;: &quot;https://images.electionleaflets.org/thumbs/350x350/leaflets/18813566_827285407428319_685384237798419912_n.png&quot;,
+                    &quot;leaflet_url&quot;: &quot;https://electionleaflets.org/leaflets/14666/&quot;
                   }
                 ]
-              }
-            },
-            {
-              &quot;list_position&quot;: null,
-              &quot;party&quot;: {
-                &quot;party_id&quot;: &quot;party:52&quot;,
-                &quot;party_name&quot;: &quot;Conservative and Unionist Party&quot;
-              },
-              &quot;person&quot;: {
-                &quot;ynr_id&quot;: 8071,
-                &quot;name&quot;: &quot;Joel Williams&quot;,
-                &quot;absolute_url&quot;: &quot;https://whocanivotefor.co.uk/person/8071/joel-williams&quot;,
-                &quot;email&quot;: null,
-                &quot;photo_url&quot;: &quot;https://static-candidates.democracyclub.org.uk/media/images/images/8071.png&quot;
               }
             }
           ],
@@ -355,14 +353,17 @@
     }
   ],
   &quot;electoral_services&quot;: {
-    &quot;council_id&quot;: &quot;W06000015&quot;,
+    &quot;council_id&quot;: &quot;CRF&quot;,
     &quot;name&quot;: &quot;Cardiff Council&quot;,
     &quot;nation&quot;: &quot;Wales&quot;,
     &quot;address&quot;: &quot;Electoral Registration Officer\\nCity of Cardiff Council\\nCounty Hall Atlantic Wharf&quot;,
     &quot;postcode&quot;: &quot;CF10 4UW&quot;,
     &quot;email&quot;: &quot;electoralservices@cardiff.gov.uk&quot;,
     &quot;phone&quot;: &quot;029 2087 2034&quot;,
-    &quot;website&quot;: &quot;http://www.cardiff.gov.uk/&quot;
+    &quot;website&quot;: &quot;http://www.cardiff.gov.uk/&quot;,
+    &quot;identifiers&quot;: [
+      &quot;W06000015&quot;
+    ]
   },
   &quot;registration&quot;: {
     &quot;address&quot;: &quot;Electoral Registration Officer\\nCity of Cardiff Council\\nCounty Hall Atlantic Wharf&quot;,
@@ -608,7 +609,6 @@
                     &quot;EQUAL_CANDIDATES&quot;,
                     &quot;UNDER_CONTESTED&quot;,
                     &quot;CANDIDATE_DEATH&quot;,
-                    &quot;null&quot;,
                     null
                   ],
                   &quot;description&quot;: &quot;If a ballot has been cancelled, this key may hold a codified reason for that ballot&#x27;s cancellation&quot;
@@ -626,6 +626,32 @@
                     &quot;null&quot;
                   ],
                   &quot;description&quot;: &quot;If this ballot replaces another cancelled ballot, this key will hold the ballot_paper_id of the ballot that it replaces.&quot;
+                },
+                &quot;requires_voter_id&quot;: {
+                  &quot;type&quot;: [
+                    &quot;string&quot;,
+                    &quot;null&quot;
+                  ],
+                  &quot;enum&quot;: [
+                    &quot;EFA-2002&quot;,
+                    &quot;EA-2022&quot;,
+                    &quot;pilot-2018&quot;,
+                    &quot;pilot-2019&quot;,
+                    null
+                  ],
+                  &quot;description&quot;: &quot;The type of voter ID required in order to vote in this election. Nullable, or one of Electoral Fraud (Northern Ireland) Act 2002, Elections Act 2022 or one of the pilots.&quot;
+                },
+                &quot;postal_voting_requirements&quot;: {
+                  &quot;type&quot;: [
+                    &quot;string&quot;,
+                    &quot;null&quot;
+                  ],
+                  &quot;enum&quot;: [
+                    &quot;EA-2022&quot;,
+                    &quot;RPA2000&quot;,
+                    null
+                  ],
+                  &quot;description&quot;: &quot;Postal voting requirements for this election. Nullable, or one of Elections Act 2022 or Representation of the People Act 2000.&quot;
                 },
                 &quot;election_id&quot;: {
                   &quot;type&quot;: &quot;string&quot;,
@@ -702,18 +728,33 @@
                 },
                 &quot;candidates&quot;: {
                   &quot;type&quot;: &quot;array&quot;,
-                  &quot;items&quot;: [
-                    {
-                      &quot;type&quot;: &quot;object&quot;,
-                      &quot;properties&quot;: {
-                        &quot;list_position&quot;: {
-                          &quot;type&quot;: [
-                            &quot;number&quot;,
-                            &quot;null&quot;
-                          ],
-                          &quot;description&quot;: &quot;Numeric position in party list. This value is only relevant to elections using party lists. It will always be null in First-Past-The-post elections.&quot;
-                        },
-                        &quot;party&quot;: {
+                  &quot;items&quot;: {
+                    &quot;type&quot;: &quot;object&quot;,
+                    &quot;properties&quot;: {
+                      &quot;list_position&quot;: {
+                        &quot;type&quot;: [
+                          &quot;number&quot;,
+                          &quot;null&quot;
+                        ],
+                        &quot;description&quot;: &quot;Numeric position in party list. This value is only relevant to elections using party lists. It will always be null in First-Past-The-post elections.&quot;
+                      },
+                      &quot;party&quot;: {
+                        &quot;type&quot;: &quot;object&quot;,
+                        &quot;properties&quot;: {
+                          &quot;party_id&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          },
+                          &quot;party_name&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          }
+                        }
+                      },
+                      &quot;previous_party_affiliations&quot;: {
+                        &quot;type&quot;: [
+                          &quot;array&quot;,
+                          &quot;null&quot;
+                        ],
+                        &quot;items&quot;: {
                           &quot;type&quot;: &quot;object&quot;,
                           &quot;properties&quot;: {
                             &quot;party_id&quot;: {
@@ -721,134 +762,65 @@
                             },
                             &quot;party_name&quot;: {
                               &quot;type&quot;: &quot;string&quot;
-                            }
-                          }
-                        },
-                        &quot;previous_party_affiliations&quot;: {
-                          &quot;type&quot;: [
-                            &quot;array&quot;,
-                            &quot;null&quot;
-                          ],
-                          &quot;items&quot;: {
-                            &quot;type&quot;: &quot;object&quot;,
-                            &quot;properties&quot;: {
-                              &quot;party_id&quot;: {
-                                &quot;type&quot;: &quot;string&quot;
-                              },
-                              &quot;party_name&quot;: {
-                                &quot;type&quot;: &quot;string&quot;
-                              }
-                            }
-                          }
-                        },
-                        &quot;person&quot;: {
-                          &quot;type&quot;: &quot;object&quot;,
-                          &quot;properties&quot;: {
-                            &quot;ynr_id&quot;: {
-                              &quot;type&quot;: &quot;number&quot;
-                            },
-                            &quot;name&quot;: {
-                              &quot;type&quot;: &quot;string&quot;
-                            },
-                            &quot;absolute_url&quot;: {
-                              &quot;type&quot;: &quot;string&quot;,
-                              &quot;description&quot;: &quot;Link for more (human-readable) information about this candidate&quot;
-                            },
-                            &quot;email&quot;: {
-                              &quot;type&quot;: [
-                                &quot;string&quot;,
-                                &quot;null&quot;
-                              ],
-                              &quot;description&quot;: &quot;Email address for this candidate, if we hold it&quot;
-                            },
-                            &quot;photo_url&quot;: {
-                              &quot;type&quot;: [
-                                &quot;string&quot;,
-                                &quot;null&quot;
-                              ],
-                              &quot;description&quot;: &quot;URL for a photo of this candidate, if we hold one&quot;
-                            },
-                            &quot;leaflets&quot;: {
-                              &quot;type&quot;: [
-                                &quot;array&quot;,
-                                &quot;null&quot;
-                              ],
-                              &quot;items&quot;: {
-                                &quot;type&quot;: &quot;object&quot;,
-                                &quot;properties&quot;: {
-                                  &quot;leaflet_id&quot;: {
-                                    &quot;type&quot;: &quot;number&quot;,
-                                    &quot;description&quot;: &quot;The electionleaflets.org ID for this leaflet&quot;
-                                  },
-                                  &quot;thumb_url&quot;: {
-                                    &quot;type&quot;: &quot;string&quot;,
-                                    &quot;description&quot;: &quot;URL to the thumbnail image of this leaflet&quot;
-                                  },
-                                  &quot;leaflet_url&quot;: {
-                                    &quot;type&quot;: &quot;string&quot;,
-                                    &quot;description&quot;: &quot;URL to the leaflet page on electionleaflets.org&quot;
-                                  }
-                                }
-                              },
-                              &quot;description&quot;: &quot;Leaflets uploaded to electionleaflets.org and tagged with this person&quot;
                             }
                           }
                         }
-                      }
-                    },
-                    {
-                      &quot;type&quot;: &quot;object&quot;,
-                      &quot;properties&quot;: {
-                        &quot;list_position&quot;: {
-                          &quot;type&quot;: [
-                            &quot;number&quot;,
-                            &quot;null&quot;
-                          ],
-                          &quot;description&quot;: &quot;Numeric position in party list. This value is only relevant to elections using party lists. It will always be null in First-Past-The-post elections.&quot;
-                        },
-                        &quot;party&quot;: {
-                          &quot;type&quot;: &quot;object&quot;,
-                          &quot;properties&quot;: {
-                            &quot;party_id&quot;: {
-                              &quot;type&quot;: &quot;string&quot;
+                      },
+                      &quot;person&quot;: {
+                        &quot;type&quot;: &quot;object&quot;,
+                        &quot;properties&quot;: {
+                          &quot;ynr_id&quot;: {
+                            &quot;type&quot;: &quot;number&quot;
+                          },
+                          &quot;name&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          },
+                          &quot;absolute_url&quot;: {
+                            &quot;type&quot;: &quot;string&quot;,
+                            &quot;description&quot;: &quot;Link for more (human-readable) information about this candidate&quot;
+                          },
+                          &quot;email&quot;: {
+                            &quot;type&quot;: [
+                              &quot;string&quot;,
+                              &quot;null&quot;
+                            ],
+                            &quot;description&quot;: &quot;Email address for this candidate, if we hold it&quot;
+                          },
+                          &quot;photo_url&quot;: {
+                            &quot;type&quot;: [
+                              &quot;string&quot;,
+                              &quot;null&quot;
+                            ],
+                            &quot;description&quot;: &quot;URL for a photo of this candidate, if we hold one&quot;
+                          },
+                          &quot;leaflets&quot;: {
+                            &quot;type&quot;: [
+                              &quot;array&quot;,
+                              &quot;null&quot;
+                            ],
+                            &quot;items&quot;: {
+                              &quot;type&quot;: &quot;object&quot;,
+                              &quot;properties&quot;: {
+                                &quot;leaflet_id&quot;: {
+                                  &quot;type&quot;: &quot;number&quot;,
+                                  &quot;description&quot;: &quot;The electionleaflets.org ID for this leaflet&quot;
+                                },
+                                &quot;thumb_url&quot;: {
+                                  &quot;type&quot;: &quot;string&quot;,
+                                  &quot;description&quot;: &quot;URL to the thumbnail image of this leaflet&quot;
+                                },
+                                &quot;leaflet_url&quot;: {
+                                  &quot;type&quot;: &quot;string&quot;,
+                                  &quot;description&quot;: &quot;URL to the leaflet page on electionleaflets.org&quot;
+                                }
+                              }
                             },
-                            &quot;party_name&quot;: {
-                              &quot;type&quot;: &quot;string&quot;
-                            }
-                          }
-                        },
-                        &quot;person&quot;: {
-                          &quot;type&quot;: &quot;object&quot;,
-                          &quot;properties&quot;: {
-                            &quot;ynr_id&quot;: {
-                              &quot;type&quot;: &quot;number&quot;
-                            },
-                            &quot;name&quot;: {
-                              &quot;type&quot;: &quot;string&quot;
-                            },
-                            &quot;absolute_url&quot;: {
-                              &quot;type&quot;: &quot;string&quot;,
-                              &quot;description&quot;: &quot;Link for more (human-readable) information about this candidate&quot;
-                            },
-                            &quot;email&quot;: {
-                              &quot;type&quot;: [
-                                &quot;string&quot;,
-                                &quot;null&quot;
-                              ],
-                              &quot;description&quot;: &quot;Email address for this candidate, if we hold it&quot;
-                            },
-                            &quot;photo_url&quot;: {
-                              &quot;type&quot;: [
-                                &quot;string&quot;,
-                                &quot;null&quot;
-                              ],
-                              &quot;description&quot;: &quot;URL for a photo of this candidate, if we hold one&quot;
-                            }
+                            &quot;description&quot;: &quot;Leaflets uploaded to electionleaflets.org and tagged with this person&quot;
                           }
                         }
                       }
                     }
-                  ],
+                  },
                   &quot;description&quot;: &quot;Array of candidate objects describing candidates that will appear on this ballot paper. In an election which uses party lists, the `candidates` array is sorted by party and `list_position` within parties. For other election types it is sorted alphabetically by candidate name.&quot;
                 },
                 &quot;wcivf_url&quot;: {
@@ -871,7 +843,7 @@
       &quot;properties&quot;: {
         &quot;council_id&quot;: {
           &quot;type&quot;: &quot;string&quot;,
-          &quot;description&quot;: &quot;GSS code for this council&quot;
+          &quot;description&quot;: &quot;Three-letter code for this council&quot;
         },
         &quot;name&quot;: {
           &quot;type&quot;: &quot;string&quot;,
@@ -900,6 +872,13 @@
         &quot;website&quot;: {
           &quot;type&quot;: &quot;string&quot;,
           &quot;description&quot;: &quot;URL for this council&#x27;s website&quot;
+        },
+        &quot;identifiers&quot;: {
+          &quot;type&quot;: &quot;array&quot;,
+          &quot;items&quot;: {
+            &quot;type&quot;: &quot;string&quot;
+          },
+          &quot;description&quot;: &quot;An array of alternative identifiers for this council. If known, this array will contain a GSS code for this council&quot;
         }
       },
       &quot;description&quot;: &quot;Contact details for the user&#x27;s local Electoral Services team. If we do not know the user&#x27;s polling station, this can be used to provide contact info for their local council. This may be `null` if we are not able to determine the user&#x27;s council.&quot;
@@ -1015,14 +994,17 @@
   ],
   &quot;dates&quot;: [],
   &quot;electoral_services&quot;: {
-    &quot;council_id&quot;: &quot;W06000015&quot;,
+    &quot;council_id&quot;: &quot;CRF&quot;,
     &quot;name&quot;: &quot;Cardiff Council&quot;,
     &quot;nation&quot;: &quot;Wales&quot;,
     &quot;address&quot;: &quot;Electoral Registration Officer\\nCity of Cardiff Council\\nCounty Hall Atlantic Wharf&quot;,
     &quot;postcode&quot;: &quot;CF10 4UW&quot;,
     &quot;email&quot;: &quot;electoralservices@cardiff.gov.uk&quot;,
     &quot;phone&quot;: &quot;029 2087 2034&quot;,
-    &quot;website&quot;: &quot;http://www.cardiff.gov.uk/&quot;
+    &quot;website&quot;: &quot;http://www.cardiff.gov.uk/&quot;,
+    &quot;identifiers&quot;: [
+      &quot;W06000015&quot;
+    ]
   },
   &quot;registration&quot;: {
     &quot;address&quot;: &quot;Electoral Registration Officer\\nCity of Cardiff Council\\nCounty Hall Atlantic Wharf&quot;,
@@ -1106,7 +1088,7 @@
       &quot;properties&quot;: {
         &quot;council_id&quot;: {
           &quot;type&quot;: &quot;string&quot;,
-          &quot;description&quot;: &quot;GSS code for this council&quot;
+          &quot;description&quot;: &quot;Three-letter code for this council&quot;
         },
         &quot;name&quot;: {
           &quot;type&quot;: &quot;string&quot;,
@@ -1135,6 +1117,13 @@
         &quot;website&quot;: {
           &quot;type&quot;: &quot;string&quot;,
           &quot;description&quot;: &quot;URL for this council&#x27;s website&quot;
+        },
+        &quot;identifiers&quot;: {
+          &quot;type&quot;: &quot;array&quot;,
+          &quot;items&quot;: {
+            &quot;type&quot;: &quot;string&quot;
+          },
+          &quot;description&quot;: &quot;An array of alternative identifiers for this council. If known, this array will contain a GSS code for this council&quot;
         }
       },
       &quot;description&quot;: &quot;Contact details for the user&#x27;s local Electoral Services team. If we do not know the user&#x27;s polling station, this can be used to provide contact info for their local council. This may be `null` if we are not able to determine the user&#x27;s council.&quot;
@@ -1293,10 +1282,12 @@
           &quot;poll_open_date&quot;: &quot;2017-05-04&quot;,
           &quot;elected_role&quot;: &quot;Local Councillor&quot;,
           &quot;metadata&quot;: null,
-          &quot;cancelled&quot;: false,
-          &quot;cancellation_reason&quot;: &quot;null&quot;,
+          &quot;cancelled&quot;: true,
+          &quot;cancellation_reason&quot;: &quot;NO_CANDIDATES&quot;,
           &quot;replaced_by&quot;: null,
           &quot;replaces&quot;: null,
+          &quot;requires_voter_id&quot;: &quot;EA-2022&quot;,
+          &quot;postal_voting_requirements&quot;: &quot;EA-2022&quot;,
           &quot;election_id&quot;: &quot;local.cardiff.2017-05-04&quot;,
           &quot;election_name&quot;: &quot;Cardiff local election&quot;,
           &quot;post_name&quot;: &quot;Pontprennau/Old St. Mellons&quot;,
@@ -1338,25 +1329,11 @@
                 &quot;photo_url&quot;: null,
                 &quot;leaflets&quot;: [
                   {
-                    &quot;leaflet_id&quot;: 0,
-                    &quot;thumb_url&quot;: &quot;&quot;,
-                    &quot;leaflet_url&quot;: &quot;&quot;
+                    &quot;leaflet_id&quot;: 14666,
+                    &quot;thumb_url&quot;: &quot;https://images.electionleaflets.org/thumbs/350x350/leaflets/18813566_827285407428319_685384237798419912_n.png&quot;,
+                    &quot;leaflet_url&quot;: &quot;https://electionleaflets.org/leaflets/14666/&quot;
                   }
                 ]
-              }
-            },
-            {
-              &quot;list_position&quot;: null,
-              &quot;party&quot;: {
-                &quot;party_id&quot;: &quot;party:52&quot;,
-                &quot;party_name&quot;: &quot;Conservative and Unionist Party&quot;
-              },
-              &quot;person&quot;: {
-                &quot;ynr_id&quot;: 8071,
-                &quot;name&quot;: &quot;Joel Williams&quot;,
-                &quot;absolute_url&quot;: &quot;https://whocanivotefor.co.uk/person/8071/joel-williams&quot;,
-                &quot;email&quot;: null,
-                &quot;photo_url&quot;: &quot;https://static-candidates.democracyclub.org.uk/media/images/images/8071.png&quot;
               }
             }
           ],
@@ -1366,14 +1343,17 @@
     }
   ],
   &quot;electoral_services&quot;: {
-    &quot;council_id&quot;: &quot;W06000015&quot;,
+    &quot;council_id&quot;: &quot;CRF&quot;,
     &quot;name&quot;: &quot;Cardiff Council&quot;,
     &quot;nation&quot;: &quot;Wales&quot;,
     &quot;address&quot;: &quot;Electoral Registration Officer\\nCity of Cardiff Council\\nCounty Hall Atlantic Wharf&quot;,
     &quot;postcode&quot;: &quot;CF10 4UW&quot;,
     &quot;email&quot;: &quot;electoralservices@cardiff.gov.uk&quot;,
     &quot;phone&quot;: &quot;029 2087 2034&quot;,
-    &quot;website&quot;: &quot;http://www.cardiff.gov.uk/&quot;
+    &quot;website&quot;: &quot;http://www.cardiff.gov.uk/&quot;,
+    &quot;identifiers&quot;: [
+      &quot;W06000015&quot;
+    ]
   },
   &quot;registration&quot;: {
     &quot;address&quot;: &quot;Electoral Registration Officer\\nCity of Cardiff Council\\nCounty Hall Atlantic Wharf&quot;,
@@ -1619,7 +1599,6 @@
                     &quot;EQUAL_CANDIDATES&quot;,
                     &quot;UNDER_CONTESTED&quot;,
                     &quot;CANDIDATE_DEATH&quot;,
-                    &quot;null&quot;,
                     null
                   ],
                   &quot;description&quot;: &quot;If a ballot has been cancelled, this key may hold a codified reason for that ballot&#x27;s cancellation&quot;
@@ -1637,6 +1616,32 @@
                     &quot;null&quot;
                   ],
                   &quot;description&quot;: &quot;If this ballot replaces another cancelled ballot, this key will hold the ballot_paper_id of the ballot that it replaces.&quot;
+                },
+                &quot;requires_voter_id&quot;: {
+                  &quot;type&quot;: [
+                    &quot;string&quot;,
+                    &quot;null&quot;
+                  ],
+                  &quot;enum&quot;: [
+                    &quot;EFA-2002&quot;,
+                    &quot;EA-2022&quot;,
+                    &quot;pilot-2018&quot;,
+                    &quot;pilot-2019&quot;,
+                    null
+                  ],
+                  &quot;description&quot;: &quot;The type of voter ID required in order to vote in this election. Nullable, or one of Electoral Fraud (Northern Ireland) Act 2002, Elections Act 2022 or one of the pilots.&quot;
+                },
+                &quot;postal_voting_requirements&quot;: {
+                  &quot;type&quot;: [
+                    &quot;string&quot;,
+                    &quot;null&quot;
+                  ],
+                  &quot;enum&quot;: [
+                    &quot;EA-2022&quot;,
+                    &quot;RPA2000&quot;,
+                    null
+                  ],
+                  &quot;description&quot;: &quot;Postal voting requirements for this election. Nullable, or one of Elections Act 2022 or Representation of the People Act 2000.&quot;
                 },
                 &quot;election_id&quot;: {
                   &quot;type&quot;: &quot;string&quot;,
@@ -1713,18 +1718,33 @@
                 },
                 &quot;candidates&quot;: {
                   &quot;type&quot;: &quot;array&quot;,
-                  &quot;items&quot;: [
-                    {
-                      &quot;type&quot;: &quot;object&quot;,
-                      &quot;properties&quot;: {
-                        &quot;list_position&quot;: {
-                          &quot;type&quot;: [
-                            &quot;number&quot;,
-                            &quot;null&quot;
-                          ],
-                          &quot;description&quot;: &quot;Numeric position in party list. This value is only relevant to elections using party lists. It will always be null in First-Past-The-post elections.&quot;
-                        },
-                        &quot;party&quot;: {
+                  &quot;items&quot;: {
+                    &quot;type&quot;: &quot;object&quot;,
+                    &quot;properties&quot;: {
+                      &quot;list_position&quot;: {
+                        &quot;type&quot;: [
+                          &quot;number&quot;,
+                          &quot;null&quot;
+                        ],
+                        &quot;description&quot;: &quot;Numeric position in party list. This value is only relevant to elections using party lists. It will always be null in First-Past-The-post elections.&quot;
+                      },
+                      &quot;party&quot;: {
+                        &quot;type&quot;: &quot;object&quot;,
+                        &quot;properties&quot;: {
+                          &quot;party_id&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          },
+                          &quot;party_name&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          }
+                        }
+                      },
+                      &quot;previous_party_affiliations&quot;: {
+                        &quot;type&quot;: [
+                          &quot;array&quot;,
+                          &quot;null&quot;
+                        ],
+                        &quot;items&quot;: {
                           &quot;type&quot;: &quot;object&quot;,
                           &quot;properties&quot;: {
                             &quot;party_id&quot;: {
@@ -1732,134 +1752,65 @@
                             },
                             &quot;party_name&quot;: {
                               &quot;type&quot;: &quot;string&quot;
-                            }
-                          }
-                        },
-                        &quot;previous_party_affiliations&quot;: {
-                          &quot;type&quot;: [
-                            &quot;array&quot;,
-                            &quot;null&quot;
-                          ],
-                          &quot;items&quot;: {
-                            &quot;type&quot;: &quot;object&quot;,
-                            &quot;properties&quot;: {
-                              &quot;party_id&quot;: {
-                                &quot;type&quot;: &quot;string&quot;
-                              },
-                              &quot;party_name&quot;: {
-                                &quot;type&quot;: &quot;string&quot;
-                              }
-                            }
-                          }
-                        },
-                        &quot;person&quot;: {
-                          &quot;type&quot;: &quot;object&quot;,
-                          &quot;properties&quot;: {
-                            &quot;ynr_id&quot;: {
-                              &quot;type&quot;: &quot;number&quot;
-                            },
-                            &quot;name&quot;: {
-                              &quot;type&quot;: &quot;string&quot;
-                            },
-                            &quot;absolute_url&quot;: {
-                              &quot;type&quot;: &quot;string&quot;,
-                              &quot;description&quot;: &quot;Link for more (human-readable) information about this candidate&quot;
-                            },
-                            &quot;email&quot;: {
-                              &quot;type&quot;: [
-                                &quot;string&quot;,
-                                &quot;null&quot;
-                              ],
-                              &quot;description&quot;: &quot;Email address for this candidate, if we hold it&quot;
-                            },
-                            &quot;photo_url&quot;: {
-                              &quot;type&quot;: [
-                                &quot;string&quot;,
-                                &quot;null&quot;
-                              ],
-                              &quot;description&quot;: &quot;URL for a photo of this candidate, if we hold one&quot;
-                            },
-                            &quot;leaflets&quot;: {
-                              &quot;type&quot;: [
-                                &quot;array&quot;,
-                                &quot;null&quot;
-                              ],
-                              &quot;items&quot;: {
-                                &quot;type&quot;: &quot;object&quot;,
-                                &quot;properties&quot;: {
-                                  &quot;leaflet_id&quot;: {
-                                    &quot;type&quot;: &quot;number&quot;,
-                                    &quot;description&quot;: &quot;The electionleaflets.org ID for this leaflet&quot;
-                                  },
-                                  &quot;thumb_url&quot;: {
-                                    &quot;type&quot;: &quot;string&quot;,
-                                    &quot;description&quot;: &quot;URL to the thumbnail image of this leaflet&quot;
-                                  },
-                                  &quot;leaflet_url&quot;: {
-                                    &quot;type&quot;: &quot;string&quot;,
-                                    &quot;description&quot;: &quot;URL to the leaflet page on electionleaflets.org&quot;
-                                  }
-                                }
-                              },
-                              &quot;description&quot;: &quot;Leaflets uploaded to electionleaflets.org and tagged with this person&quot;
                             }
                           }
                         }
-                      }
-                    },
-                    {
-                      &quot;type&quot;: &quot;object&quot;,
-                      &quot;properties&quot;: {
-                        &quot;list_position&quot;: {
-                          &quot;type&quot;: [
-                            &quot;number&quot;,
-                            &quot;null&quot;
-                          ],
-                          &quot;description&quot;: &quot;Numeric position in party list. This value is only relevant to elections using party lists. It will always be null in First-Past-The-post elections.&quot;
-                        },
-                        &quot;party&quot;: {
-                          &quot;type&quot;: &quot;object&quot;,
-                          &quot;properties&quot;: {
-                            &quot;party_id&quot;: {
-                              &quot;type&quot;: &quot;string&quot;
+                      },
+                      &quot;person&quot;: {
+                        &quot;type&quot;: &quot;object&quot;,
+                        &quot;properties&quot;: {
+                          &quot;ynr_id&quot;: {
+                            &quot;type&quot;: &quot;number&quot;
+                          },
+                          &quot;name&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          },
+                          &quot;absolute_url&quot;: {
+                            &quot;type&quot;: &quot;string&quot;,
+                            &quot;description&quot;: &quot;Link for more (human-readable) information about this candidate&quot;
+                          },
+                          &quot;email&quot;: {
+                            &quot;type&quot;: [
+                              &quot;string&quot;,
+                              &quot;null&quot;
+                            ],
+                            &quot;description&quot;: &quot;Email address for this candidate, if we hold it&quot;
+                          },
+                          &quot;photo_url&quot;: {
+                            &quot;type&quot;: [
+                              &quot;string&quot;,
+                              &quot;null&quot;
+                            ],
+                            &quot;description&quot;: &quot;URL for a photo of this candidate, if we hold one&quot;
+                          },
+                          &quot;leaflets&quot;: {
+                            &quot;type&quot;: [
+                              &quot;array&quot;,
+                              &quot;null&quot;
+                            ],
+                            &quot;items&quot;: {
+                              &quot;type&quot;: &quot;object&quot;,
+                              &quot;properties&quot;: {
+                                &quot;leaflet_id&quot;: {
+                                  &quot;type&quot;: &quot;number&quot;,
+                                  &quot;description&quot;: &quot;The electionleaflets.org ID for this leaflet&quot;
+                                },
+                                &quot;thumb_url&quot;: {
+                                  &quot;type&quot;: &quot;string&quot;,
+                                  &quot;description&quot;: &quot;URL to the thumbnail image of this leaflet&quot;
+                                },
+                                &quot;leaflet_url&quot;: {
+                                  &quot;type&quot;: &quot;string&quot;,
+                                  &quot;description&quot;: &quot;URL to the leaflet page on electionleaflets.org&quot;
+                                }
+                              }
                             },
-                            &quot;party_name&quot;: {
-                              &quot;type&quot;: &quot;string&quot;
-                            }
-                          }
-                        },
-                        &quot;person&quot;: {
-                          &quot;type&quot;: &quot;object&quot;,
-                          &quot;properties&quot;: {
-                            &quot;ynr_id&quot;: {
-                              &quot;type&quot;: &quot;number&quot;
-                            },
-                            &quot;name&quot;: {
-                              &quot;type&quot;: &quot;string&quot;
-                            },
-                            &quot;absolute_url&quot;: {
-                              &quot;type&quot;: &quot;string&quot;,
-                              &quot;description&quot;: &quot;Link for more (human-readable) information about this candidate&quot;
-                            },
-                            &quot;email&quot;: {
-                              &quot;type&quot;: [
-                                &quot;string&quot;,
-                                &quot;null&quot;
-                              ],
-                              &quot;description&quot;: &quot;Email address for this candidate, if we hold it&quot;
-                            },
-                            &quot;photo_url&quot;: {
-                              &quot;type&quot;: [
-                                &quot;string&quot;,
-                                &quot;null&quot;
-                              ],
-                              &quot;description&quot;: &quot;URL for a photo of this candidate, if we hold one&quot;
-                            }
+                            &quot;description&quot;: &quot;Leaflets uploaded to electionleaflets.org and tagged with this person&quot;
                           }
                         }
                       }
                     }
-                  ],
+                  },
                   &quot;description&quot;: &quot;Array of candidate objects describing candidates that will appear on this ballot paper. In an election which uses party lists, the `candidates` array is sorted by party and `list_position` within parties. For other election types it is sorted alphabetically by candidate name.&quot;
                 },
                 &quot;wcivf_url&quot;: {
@@ -1882,7 +1833,7 @@
       &quot;properties&quot;: {
         &quot;council_id&quot;: {
           &quot;type&quot;: &quot;string&quot;,
-          &quot;description&quot;: &quot;GSS code for this council&quot;
+          &quot;description&quot;: &quot;Three-letter code for this council&quot;
         },
         &quot;name&quot;: {
           &quot;type&quot;: &quot;string&quot;,
@@ -1911,6 +1862,13 @@
         &quot;website&quot;: {
           &quot;type&quot;: &quot;string&quot;,
           &quot;description&quot;: &quot;URL for this council&#x27;s website&quot;
+        },
+        &quot;identifiers&quot;: {
+          &quot;type&quot;: &quot;array&quot;,
+          &quot;items&quot;: {
+            &quot;type&quot;: &quot;string&quot;
+          },
+          &quot;description&quot;: &quot;An array of alternative identifiers for this council. If known, this array will contain a GSS code for this council&quot;
         }
       },
       &quot;description&quot;: &quot;Contact details for the user&#x27;s local Electoral Services team. If we do not know the user&#x27;s polling station, this can be used to provide contact info for their local council. This may be `null` if we are not able to determine the user&#x27;s council.&quot;
@@ -2067,50 +2025,50 @@
   &quot;previous&quot;: null,
   &quot;results&quot;: [
     {
-      &quot;election_id&quot;: &quot;naw.c.alyn-and-deeside.by.2018-02-06&quot;,
-      &quot;election_title&quot;: &quot;Alyn and Deeside (Constituencies) by-election&quot;,
-      &quot;poll_open_date&quot;: &quot;2018-02-06&quot;,
+      &quot;election_id&quot;: &quot;gla.c.barnet-and-camden.2024-05-02&quot;,
+      &quot;election_title&quot;: &quot;Greater London Assembly elections (Constituencies) Barnet and Camden&quot;,
+      &quot;poll_open_date&quot;: &quot;2024-05-02&quot;,
       &quot;election_type&quot;: {
-        &quot;name&quot;: &quot;National Assembly for Wales elections&quot;,
-        &quot;election_type&quot;: &quot;naw&quot;
+        &quot;name&quot;: &quot;Greater London Assembly elections&quot;,
+        &quot;election_type&quot;: &quot;gla&quot;
       },
       &quot;election_subtype&quot;: {
         &quot;name&quot;: &quot;Constituencies&quot;,
         &quot;election_subtype&quot;: &quot;c&quot;
       },
       &quot;organisation&quot;: {
-        &quot;official_identifier&quot;: &quot;naw&quot;,
-        &quot;organisation_type&quot;: &quot;naw&quot;,
+        &quot;official_identifier&quot;: &quot;gla&quot;,
+        &quot;organisation_type&quot;: &quot;gla&quot;,
         &quot;organisation_subtype&quot;: &quot;&quot;,
-        &quot;official_name&quot;: &quot;Welsh assembly&quot;,
-        &quot;common_name&quot;: &quot;Welsh assembly&quot;,
-        &quot;slug&quot;: &quot;naw&quot;,
-        &quot;territory_code&quot;: &quot;WLS&quot;,
-        &quot;election_name&quot;: &quot;National Assembly for Wales election&quot;,
-        &quot;start_date&quot;: &quot;1999-05-06&quot;,
+        &quot;official_name&quot;: &quot;London Assembly&quot;,
+        &quot;common_name&quot;: &quot;London Assembly&quot;,
+        &quot;slug&quot;: &quot;gla&quot;,
+        &quot;territory_code&quot;: &quot;ENG&quot;,
+        &quot;election_name&quot;: &quot;London Assembly election&quot;,
+        &quot;start_date&quot;: &quot;2000-07-03&quot;,
         &quot;end_date&quot;: null
       },
-      &quot;group&quot;: &quot;naw.c.2018-02-06&quot;,
+      &quot;group&quot;: &quot;gla.c.2024-05-02&quot;,
       &quot;identifier_type&quot;: &quot;ballot&quot;,
       &quot;children&quot;: [],
       &quot;elected_role&quot;: &quot;Assembly Member&quot;,
       &quot;seats_contested&quot;: 1,
       &quot;division&quot;: {
         &quot;divisionset&quot;: {
-          &quot;start_date&quot;: &quot;2016-04-13&quot;,
+          &quot;start_date&quot;: &quot;2004-12-02&quot;,
           &quot;end_date&quot;: null,
           &quot;legislation_url&quot;: null,
           &quot;consultation_url&quot;: null,
-          &quot;short_title&quot;: &quot;2016 Boundaries&quot;,
+          &quot;short_title&quot;: &quot;2004 Boundaries&quot;,
           &quot;notes&quot;: &quot;Auto imported from http://mapit.mysociety.org&quot;
         },
-        &quot;name&quot;: &quot;Alyn and Deeside&quot;,
-        &quot;official_identifier&quot;: &quot;gss:W09000007&quot;,
-        &quot;slug&quot;: &quot;alyn-and-deeside&quot;,
-        &quot;division_type&quot;: &quot;WAC&quot;,
+        &quot;name&quot;: &quot;Barnet and Camden&quot;,
+        &quot;official_identifier&quot;: &quot;gss:E32000001&quot;,
+        &quot;slug&quot;: &quot;barnet-and-camden&quot;,
+        &quot;division_type&quot;: &quot;LAC&quot;,
         &quot;division_election_sub_type&quot;: &quot;c&quot;,
-        &quot;seats_total&quot;: null,
-        &quot;territory_code&quot;: &quot;WLS&quot;
+        &quot;seats_total&quot;: 1,
+        &quot;territory_code&quot;: &quot;ENG&quot;
       },
       &quot;voting_system&quot;: {
         &quot;slug&quot;: &quot;FPTP&quot;,
@@ -2200,7 +2158,7 @@
             &quot;properties&quot;: {
               &quot;official_identifier&quot;: {
                 &quot;type&quot;: &quot;string&quot;,
-                &quot;description&quot;: &quot;An identifier for this organisation. Where possible, we&#x27;ll us a code from the relevant [gov.uk register](https://www.registers.service.gov.uk/).&quot;
+                &quot;description&quot;: &quot;An identifier for this organisation.&quot;
               },
               &quot;organisation_type&quot;: {
                 &quot;type&quot;: &quot;string&quot;,
@@ -2213,6 +2171,7 @@
                   &quot;nia&quot;,
                   &quot;parl&quot;,
                   &quot;police-area&quot;,
+                  &quot;senedd&quot;,
                   &quot;sp&quot;
                 ]
               },
@@ -2228,7 +2187,7 @@
                   &quot;SRA&quot;,
                   &quot;UA&quot;
                 ],
-                &quot;description&quot;: &quot;If organisation_type = &#x27;local-authority&#x27;, an additional description of what type of local authority this is from the [gov.uk local authority registers](https://www.registers.service.gov.uk/category/regional-and-local-government). Empty string for other organisation types&quot;
+                &quot;description&quot;: &quot;If organisation_type = &#x27;local-authority&#x27;, an additional description of what type of local authority. Empty string for other organisation types&quot;
               },
               &quot;official_name&quot;: {
                 &quot;type&quot;: &quot;string&quot;,
@@ -2461,50 +2420,50 @@
 </code></pre></div><div class="api-action-body">
                                                                                                                                                                         Body:
     <pre><code>{
-  &quot;election_id&quot;: &quot;naw.c.alyn-and-deeside.by.2018-02-06&quot;,
-  &quot;election_title&quot;: &quot;Alyn and Deeside (Constituencies) by-election&quot;,
-  &quot;poll_open_date&quot;: &quot;2018-02-06&quot;,
+  &quot;election_id&quot;: &quot;gla.c.barnet-and-camden.2024-05-02&quot;,
+  &quot;election_title&quot;: &quot;Greater London Assembly elections (Constituencies) Barnet and Camden&quot;,
+  &quot;poll_open_date&quot;: &quot;2024-05-02&quot;,
   &quot;election_type&quot;: {
-    &quot;name&quot;: &quot;National Assembly for Wales elections&quot;,
-    &quot;election_type&quot;: &quot;naw&quot;
+    &quot;name&quot;: &quot;Greater London Assembly elections&quot;,
+    &quot;election_type&quot;: &quot;gla&quot;
   },
   &quot;election_subtype&quot;: {
     &quot;name&quot;: &quot;Constituencies&quot;,
     &quot;election_subtype&quot;: &quot;c&quot;
   },
   &quot;organisation&quot;: {
-    &quot;official_identifier&quot;: &quot;naw&quot;,
-    &quot;organisation_type&quot;: &quot;naw&quot;,
+    &quot;official_identifier&quot;: &quot;gla&quot;,
+    &quot;organisation_type&quot;: &quot;gla&quot;,
     &quot;organisation_subtype&quot;: &quot;&quot;,
-    &quot;official_name&quot;: &quot;Welsh assembly&quot;,
-    &quot;common_name&quot;: &quot;Welsh assembly&quot;,
-    &quot;slug&quot;: &quot;naw&quot;,
-    &quot;territory_code&quot;: &quot;WLS&quot;,
-    &quot;election_name&quot;: &quot;National Assembly for Wales election&quot;,
-    &quot;start_date&quot;: &quot;1999-05-06&quot;,
+    &quot;official_name&quot;: &quot;London Assembly&quot;,
+    &quot;common_name&quot;: &quot;London Assembly&quot;,
+    &quot;slug&quot;: &quot;gla&quot;,
+    &quot;territory_code&quot;: &quot;ENG&quot;,
+    &quot;election_name&quot;: &quot;London Assembly election&quot;,
+    &quot;start_date&quot;: &quot;2000-07-03&quot;,
     &quot;end_date&quot;: null
   },
-  &quot;group&quot;: &quot;naw.c.2018-02-06&quot;,
+  &quot;group&quot;: &quot;gla.c.2024-05-02&quot;,
   &quot;identifier_type&quot;: &quot;ballot&quot;,
   &quot;children&quot;: [],
   &quot;elected_role&quot;: &quot;Assembly Member&quot;,
   &quot;seats_contested&quot;: 1,
   &quot;division&quot;: {
     &quot;divisionset&quot;: {
-      &quot;start_date&quot;: &quot;2016-04-13&quot;,
+      &quot;start_date&quot;: &quot;2004-12-02&quot;,
       &quot;end_date&quot;: null,
       &quot;legislation_url&quot;: null,
       &quot;consultation_url&quot;: null,
-      &quot;short_title&quot;: &quot;2016 Boundaries&quot;,
+      &quot;short_title&quot;: &quot;2004 Boundaries&quot;,
       &quot;notes&quot;: &quot;Auto imported from http://mapit.mysociety.org&quot;
     },
-    &quot;name&quot;: &quot;Alyn and Deeside&quot;,
-    &quot;official_identifier&quot;: &quot;gss:W09000007&quot;,
-    &quot;slug&quot;: &quot;alyn-and-deeside&quot;,
-    &quot;division_type&quot;: &quot;WAC&quot;,
+    &quot;name&quot;: &quot;Barnet and Camden&quot;,
+    &quot;official_identifier&quot;: &quot;gss:E32000001&quot;,
+    &quot;slug&quot;: &quot;barnet-and-camden&quot;,
+    &quot;division_type&quot;: &quot;LAC&quot;,
     &quot;division_election_sub_type&quot;: &quot;c&quot;,
-    &quot;seats_total&quot;: null,
-    &quot;territory_code&quot;: &quot;WLS&quot;
+    &quot;seats_total&quot;: 1,
+    &quot;territory_code&quot;: &quot;ENG&quot;
   },
   &quot;voting_system&quot;: {
     &quot;slug&quot;: &quot;FPTP&quot;,
@@ -2569,7 +2528,7 @@
       &quot;properties&quot;: {
         &quot;official_identifier&quot;: {
           &quot;type&quot;: &quot;string&quot;,
-          &quot;description&quot;: &quot;An identifier for this organisation. Where possible, we&#x27;ll us a code from the relevant [gov.uk register](https://www.registers.service.gov.uk/).&quot;
+          &quot;description&quot;: &quot;An identifier for this organisation.&quot;
         },
         &quot;organisation_type&quot;: {
           &quot;type&quot;: &quot;string&quot;,
@@ -2582,6 +2541,7 @@
             &quot;nia&quot;,
             &quot;parl&quot;,
             &quot;police-area&quot;,
+            &quot;senedd&quot;,
             &quot;sp&quot;
           ]
         },
@@ -2597,7 +2557,7 @@
             &quot;SRA&quot;,
             &quot;UA&quot;
           ],
-          &quot;description&quot;: &quot;If organisation_type = &#x27;local-authority&#x27;, an additional description of what type of local authority this is from the [gov.uk local authority registers](https://www.registers.service.gov.uk/category/regional-and-local-government). Empty string for other organisation types&quot;
+          &quot;description&quot;: &quot;If organisation_type = &#x27;local-authority&#x27;, an additional description of what type of local authority. Empty string for other organisation types&quot;
         },
         &quot;official_name&quot;: {
           &quot;type&quot;: &quot;string&quot;,
@@ -2824,10 +2784,12 @@
                                                                                                                                                                                                             message)
                                                                                                                                                                                                             then you can look at the <code>type</code> key.</p><p>The values for this are:</p><ul><li><p><code>cancelled_election</code>: See below</p></li><li><p><code>pre_eco</code>: The council is due to have a boundary change meaning we can't create the full elections until it's
                                                                                                                                                                                                               finished. This response is a placeholder.</p></li><li><p>(deprecated) <code>voter_id_pilot</code>: over 2018 and 19 some English councils conducted pilots of the voter ID scheme.
-                                                                                                                                                                                                                We have replaced this notification with a value per ballot.</p></li></ul><h4>Cancelled Polls</h4><p>Sometimes a scheduled poll may be cancelled or rescheduled. This is usually either because
-                                                                                                                                                                                                                  the election is uncontested or due to death of a candidate.</p><p>If the user has more than one ballot and only one of them is cancelled, we will not add a notification. In this case,
-                                                                                                                                                                                                                    you should look at the <code>cancelled</code> and <code>cancellation_reason</code> values on each ballot.</p><p>If every ballot for a date is cancelled (meaning the user has no election to vote in) then we will add a notification
-                                                                                                                                                                                                                      alerting them that they don't have to vote on that day, e.g:</p><pre><code>{
+                                                                                                                                                                                                                We have replaced this notification with a value per ballot.</p></li></ul><h4>ID Requirements</h4><p>Some UK elections require ID in order to vote in person.</p><p>This is defined at the ballot level, as it's possible for some ballots to require ID and some not to. In this case the
+                                                                                                                                                                                                                  user must be told about the requirements, even if not all ballots on a single day require them.</p><p>The ballot has a <code>requires_voter_id</code> key that will be one of the following values:</p><ul><li><p><code>EFA-2002</code>: ID required under the <em>Electoral Fraud (Northern Ireland) Act 2002</em></p></li><li><p><code>EA-2022</code>: ID required under the <em>Elections Act 2022</em></p></li><li><p><code>pilot-2018</code>: 2018 voter ID pilot scheme (historic elections only)</p></li><li><p><code>pilot-2019</code>: 2019 voter ID pilot scheme (historic elections only)</p></li></ul><p>If the <code>requires_voter_id</code> is not null then users must be told that they are required to bring ID. The exact ID
+                                                                                                                                                                                                                    requirements change depending on the value. This should be taken into account when writing copy that is shown to users.</p><h4>Cancelled Polls</h4><p>Sometimes a scheduled poll may be cancelled or rescheduled. This is usually either because
+                                                                                                                                                                                                                      the election is uncontested or due to death of a candidate.</p><p>If the user has more than one ballot and only one of them is cancelled, we will not add a notification. In this case,
+                                                                                                                                                                                                                        you should look at the <code>cancelled</code> and <code>cancellation_reason</code> values on each ballot.</p><p>If every ballot for a date is cancelled (meaning the user has no election to vote in) then we will add a notification
+                                                                                                                                                                                                                          alerting them that they don't have to vote on that day, e.g:</p><pre><code>{
 ...
   "notifications": [
     {
@@ -2839,8 +2801,8 @@
   ]
 }
 </code></pre><p>When we know the reason for a cancelled ballot we will add a <code>cancellation_reason</code> to the ballot object, next to the
-                                                                                                                                                                                                                          <code>cancelled</code> boolean:</p><ul><li><p><code>NO_CANDIDATES</code>: No candidates</p></li><li><p><code>EQUAL_CANDIDATES</code>: Equal candidates to contested seats</p></li><li><p><code>UNDER_CONTESTED</code>: Fewer candidates than seats</p></li><li><p><code>CANDIDATE_DEATH</code>: Death of a candidate</p></li></ul><h3>Advance Voting Stations</h3><p>For the 2022 local elections in Wales, four councils are piloting "Advance Voting". This means people in the pilot areas
-                                                                                                                                                                                                                            will be able to cast their vote in the days before polling day.</p><p>We support this pilot, and have an extra key in the API in the <code>dates</code> array.</p><p><pre><code>{
+                                                                                                                                                                                                                              <code>cancelled</code> boolean:</p><ul><li><p><code>NO_CANDIDATES</code>: No candidates</p></li><li><p><code>EQUAL_CANDIDATES</code>: Equal candidates to contested seats</p></li><li><p><code>UNDER_CONTESTED</code>: Fewer candidates than seats</p></li><li><p><code>CANDIDATE_DEATH</code>: Death of a candidate</p></li></ul><h3>Advance Voting Stations</h3><p>For the 2022 local elections in Wales, four councils are piloting "Advance Voting". This means people in the pilot areas
+                                                                                                                                                                                                                                will be able to cast their vote in the days before polling day.</p><p>We support this pilot, and have an extra key in the API in the <code>dates</code> array.</p><p><pre><code>{
 ...
 "advance_voting_station": {
     "name": "Exeter Guildhall",
@@ -2867,12 +2829,12 @@
     ]
   },
 }</pre></code></p><p>If this object exists in the API response, it's <em>highly recommended</em> to display it to the user.</p><p>Each Advance Voting Station has a name, address, postcode and location. Opening times are given as an ordered list of
-                                                                                                                                                                                                                                lists, containing:</p><p><code>[date, open time, close time]</code></p><h3>Previous Party Affiliations</h3><p>The <a href="https://www.legislation.gov.uk/wsi/2021/1459/made">Local Elections (Principal Areas) (Wales) Rules 2021</a> Statutory
-                                                                                                                                                                                                                                  Instrument, among other things introduced a requirement for candidates to list any other political party membership in
-                                                                                                                                                                                                                                  the last 12 months on the Statement Of Persons Nominated.</p><p>We store this information, and present it for candidates in Welsh run elections. The field exists on the <code>candidate</code>
-                                                                                                                                                                                                                                    object in the <code>candidates</code> list on each ballot. It wil be <code>null</code> unless the candidate has declared affiliation with
-                                                                                                                                                                                                                                    another party in the last 12 months.</p><p>Note that this is <em>not</em> the same as previous candidacies for this person. We also track this, but a person must declare
-                                                                                                                                                                                                                                      parties they have beem members of in the previous 12 months before the date of the election.</p><p>When data exists, it's a list of parties. This information is transcribed from the Statement of Persons Nominated.</p><h2>Errors</h2><div class="ds-grid"><div><p>
-                                                                                                                                                                                                                                        Errors will be reported using HTTP status codes. The body of the error will be formatted as valid JSON and will give a description of the error
-                                                                                                                                                                                                                                      </p></div><div class="ds-stack-smaller"><figure><figcaption>
-                                                                                                                                                                                                                                        Example error response</figcaption><pre>{ "detail": "Could not geocode from any source" }</pre></figure></div></div></div></div>
+                                                                                                                                                                                                                                    lists, containing:</p><p><code>[date, open time, close time]</code></p><h3>Previous Party Affiliations</h3><p>The <a href="https://www.legislation.gov.uk/wsi/2021/1459/made">Local Elections (Principal Areas) (Wales) Rules 2021</a> Statutory
+                                                                                                                                                                                                                                      Instrument, among other things introduced a requirement for candidates to list any other political party membership in
+                                                                                                                                                                                                                                      the last 12 months on the Statement Of Persons Nominated.</p><p>We store this information, and present it for candidates in Welsh run elections. The field exists on the <code>candidate</code>
+                                                                                                                                                                                                                                        object in the <code>candidates</code> list on each ballot. It wil be <code>null</code> unless the candidate has declared affiliation with
+                                                                                                                                                                                                                                        another party in the last 12 months.</p><p>Note that this is <em>not</em> the same as previous candidacies for this person. We also track this, but a person must declare
+                                                                                                                                                                                                                                          parties they have beem members of in the previous 12 months before the date of the election.</p><p>When data exists, it's a list of parties. This information is transcribed from the Statement of Persons Nominated.</p><h2>Errors</h2><div class="ds-grid"><div><p>
+                                                                                                                                                                                                                                            Errors will be reported using HTTP status codes. The body of the error will be formatted as valid JSON and will give a description of the error
+                                                                                                                                                                                                                                          </p></div><div class="ds-stack-smaller"><figure><figcaption>
+                                                                                                                                                                                                                                            Example error response</figcaption><pre>{ "detail": "Could not geocode from any source" }</pre></figure></div></div></div></div>

@@ -1,5 +1,5 @@
 ## ElectoralServices (object)
-+ `council_id`: `W06000015` (string) - GSS code for this council
++ `council_id`: `CRF` (string) - Three-letter code for this council
 + name: `Cardiff Council` (string) - Name of this council
 + nation: `Wales` (string) - Name of nation
 + address: `Electoral Registration Officer\nCity of Cardiff Council\nCounty Hall Atlantic Wharf` (string) - Contact address for this council
@@ -7,6 +7,8 @@
 + email: `electoralservices@cardiff.gov.uk` (string) - Contact email address for this council's Electoral Services team
 + phone: `029 2087 2034` (string) - Telephone number for this council's Electoral Services team
 + website: `http://www.cardiff.gov.uk/` (string) - URL for this council's website
++ identifiers (array[string], fixed-type) - An array of alternative identifiers for this council. If known, this array will contain a GSS code for this council
+    + `W06000015`
 
 ## Registration (object)
 + address: `Electoral Registration Officer\nCity of Cardiff Council\nCounty Hall Atlantic Wharf` (string) - Contact address for this council
@@ -85,10 +87,18 @@
                 + `poll_open_date`: `2017-05-04` (string) - Polling day for this ballot  (ISO 8601)
                 + `elected_role`: `Local Councillor` (string) - Name of the role the winner(s) of this election will assume
                 + metadata: (object, nullable) - Object containing information about special conditions for the user to be aware about (e.g: cancelled elections, voter id pilot). (details TBC)
-                + cancelled: `false` (boolean) - True if this ballot has been cancelled
-                + cancellation_reason: `null` (CancellationReason, nullable) - If a ballot has been cancelled, this key may hold a codified reason for that ballot's cancellation
+                + cancelled: `true` (boolean) - True if this ballot has been cancelled
+                + cancellation_reason: (CancellationReason, nullable) - If a ballot has been cancelled, this key may hold a codified reason for that ballot's cancellation
                 + `replaced_by`: (string, nullable) - If a ballot has been cancelled (cancelled = true) and rescheduled for a later date, this key will hold the ballot_paper_id of the ballot that replaces it.
                 + replaces: (string, nullable) - If this ballot replaces another cancelled ballot, this key will hold the ballot_paper_id of the ballot that it replaces.
+                + `requires_voter_id`: `EA-2022` (enum[string], nullable) - The type of voter ID required in order to vote in this election. Nullable, or one of Electoral Fraud (Northern Ireland) Act 2002, Elections Act 2022 or one of the pilots.
+                    + `EFA-2002`
+                    + `EA-2022`
+                    + `pilot-2018`
+                    + `pilot-2019`
+                + `postal_voting_requirements`: `EA-2022` (enum[string], nullable) - Postal voting requirements for this election. Nullable, or one of Elections Act 2022 or Representation of the People Act 2000.
+                    + `EA-2022`
+                    + `RPA2000`
                 + `election_id`: `local.cardiff.2017-05-04` (string) - Identifier for this ballot's parent election group
                 + `election_name`: `Cardiff local election` (string) - Friendly name for this ballot's parent election group
                 + `post_name`: `Pontprennau/Old St. Mellons` (string) - Name of the division or post the winner(s) of this election will represent
@@ -124,22 +134,9 @@
                             + `photo_url`: (string, nullable) - URL for a photo of this candidate, if we hold one
                             + leaflets: (array[object], fixed-type, nullable) - Leaflets uploaded to electionleaflets.org and tagged with this person
                                 + (object)
-                                    + `leaflet_id`: (number) - The electionleaflets.org ID for this leaflet
-                                    + `thumb_url`: (string) - URL to the thumbnail image of this leaflet
-                                    + `leaflet_url`: (string) - URL to the leaflet page on electionleaflets.org
-
-
-                    + (object)
-                        + `list_position`: (number, nullable) - Numeric position in party list. This value is only relevant to elections using party lists. It will always be null in First-Past-The-post elections.
-                        + party: (object)
-                            + `party_id`: `party:52` (string)
-                            + `party_name`: `Conservative and Unionist Party` (string)
-                        + person: (object)
-                            + `ynr_id`: `8071` (number)
-                            + name: `Joel Williams` (string)
-                            + `absolute_url`: `https://whocanivotefor.co.uk/person/8071/joel-williams` (string) - Link for more (human-readable) information about this candidate
-                            + `email`: (string, nullable) - Email address for this candidate, if we hold it
-                            + `photo_url`: `https://static-candidates.democracyclub.org.uk/media/images/images/8071.png` (string, nullable) - URL for a photo of this candidate, if we hold one
+                                    + `leaflet_id`: `14666` (number) - The electionleaflets.org ID for this leaflet
+                                    + `thumb_url`: `https://images.electionleaflets.org/thumbs/350x350/leaflets/18813566_827285407428319_685384237798419912_n.png` (string) - URL to the thumbnail image of this leaflet
+                                    + `leaflet_url`: `https://electionleaflets.org/leaflets/14666/` (string) - URL to the leaflet page on electionleaflets.org
                 + `wcivf_url`: `https://whocanivotefor.co.uk/elections/local.cardiff.2017-05-04/post-UTE:W05000900/pontprennauold-st-mellons` - Link for more (human-readable) information about this ballot
 + `electoral_services` (ElectoralServices, nullable) - Contact details for the user's local Electoral Services team. If we do not know the user's polling station, this can be used to provide contact info for their local council. This may be `null` if we are not able to determine the user's council.
 + `registration` (Registration, nullable) - Sometimes the contact information for registration and proxy voting is different to the electoral services contact details. Use these if they exist and your users might have questions about voter registration. If this key is null, assume the electoral services contact details can be used for electoral registration related enquiries.

@@ -225,7 +225,7 @@ class Stitcher:
         details = council.get("registration_contacts", None)
         if details:
             try:
-                details["phone"] = details.get("phone_numbers", [])[0]
+                details["phone"] = details.pop("phone_numbers", [])[0]
             except IndexError:
                 details["phone"] = ""
         else:
@@ -233,6 +233,7 @@ class Stitcher:
             details.pop("name")
             details.pop("nation")
             details.pop("council_id")
+            details.pop("identifiers")
         return details
 
     def make_wcivf_ballots(self):
