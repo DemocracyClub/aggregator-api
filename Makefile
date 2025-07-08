@@ -27,8 +27,8 @@ check_empty: ## Check if the requirements.txt file is empty
 		echo "File is not empty"
 	fi
 
-lambda-layers/FrontendDependenciesLayer/requirements.txt: Pipfile Pipfile.lock ## Update the requirements.txt file used to build this Lambda function's FrontendDependenciesLayer
-	pipenv requirements --categories frontend | sed "s/^-e //" | sed "s/^\.\/api.*//" | sed "s/^\polars.*//" >lambda-layers/FrontendDependenciesLayer/requirements.txt
+lambda-layers/FrontendDependenciesLayer/requirements.txt: pyproject.toml uv.lock ## Update the requirements.txt file used to build this Lambda function's FrontendDependenciesLayer
+	uv export --no-dev --no-hashes --no-editable --no-emit-workspace --no-emit-package polars >lambda-layers/FrontendDependenciesLayer/requirements.txt
 
 .PHONY: aggregator/apps/api_docs/v1/templates/api_docs_rendered.html
 aggregator/apps/api_docs/v1/templates/api_docs_rendered.html: ## Rebuild the API documentation page
