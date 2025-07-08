@@ -1,7 +1,8 @@
-from common.auth_models import User
 from starlette.datastructures import Headers, QueryParams
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
+
+from common.auth_models import User
 
 
 class ForwardedForMiddleware:
