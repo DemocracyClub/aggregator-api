@@ -21,11 +21,7 @@ This project provides an API gateway in front of other Democracy Club APIs.
 ### Application
 
 * `cp aggregator-api/aggregator/settings/local.example.py aggregator-api/aggregator/settings/local.py`
-* Install Python dependencies
-  * This project makes use of the new pipenv categories. This means a straight `pipenv install` no longer works, and instead we must install by category. `pipenv install --categories "frontend api dev-packages"` will get you everything.
-  * When installing a new dependency, you must define the category you're installing it into, e.g. `pipenv install --categories "frontend" django`
-  * When removing a dependency you must remove it from the category it's defined in, e.g. `pipenv uninstall --categories "frontend" django `
-
+* Install Python dependencies: `uv sync --dev`
 * Run the test suite: `pytest`
 * Run lint checks: `pytest --ruff`
 * Auto-format: `ruff format .`
@@ -91,7 +87,7 @@ Before following these steps:
 
 ```shell
 NEW_ENV_NAME=<NAME> python samconfig.toml.d/new-dev-env.py >>samconfig.toml
-AWS_DEFAULT_REGION=eu-west-2 pipenv run sam validate
+AWS_DEFAULT_REGION=eu-west-2 uv run sam validate
 make all
 sam build  --config-env <NAME> --use-container --cached
 sam deploy --config-env <NAME>
