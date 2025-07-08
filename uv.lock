@@ -1,6 +1,13 @@
 version = 1
 requires-python = "==3.12.*"
 
+[manifest]
+members = [
+    "aggregator-api",
+    "api-auth",
+    "endpoints",
+]
+
 [[package]]
 name = "aggregator-api"
 version = "0.0.0"
@@ -91,6 +98,11 @@ sdist = { url = "https://files.pythonhosted.org/packages/95/7d/4c1bd541d4dffa1b5
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a1/ee/48ca1a7c89ffec8b6a0c5d02b89c305671d5ffd8d3c94acf8b8c408575bb/anyio-4.9.0-py3-none-any.whl", hash = "sha256:9f76d541cad6e36af7beb62e978876f3b41e3e04f2c1fbf0884604c0a9c4d93c", size = 100916 },
 ]
+
+[[package]]
+name = "api-auth"
+version = "0.0.0"
+source = { virtual = "api/api_auth" }
 
 [[package]]
 name = "asgiref"
@@ -488,6 +500,11 @@ sdist = { url = "https://files.pythonhosted.org/packages/48/ce/13508a1ec3f8bb981
 wheels = [
     { url = "https://files.pythonhosted.org/packages/d7/ee/bf0adb559ad3c786f12bcbc9296b3f5675f529199bef03e2df281fa1fadb/email_validator-2.2.0-py3-none-any.whl", hash = "sha256:561977c2d73ce3611850a06fa56b414621e0c8faa9d66f2611407d87465da631", size = 33521 },
 ]
+
+[[package]]
+name = "endpoints"
+version = "0.0.0"
+source = { virtual = "api/endpoints" }
 
 [[package]]
 name = "filelock"

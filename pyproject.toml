@@ -52,6 +52,12 @@ dc-api-common = { path = "./api/common" }
 required-version = "<0.6.0"
 package = false
 
+[tool.uv.workspace]
+members = [
+    "api/api_auth",
+    "api/endpoints",
+]
+
 [tool.ruff]
 line-length = 80
 lint.ignore = ["E501"]
