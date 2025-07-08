@@ -3,7 +3,12 @@ name = "endpoints"
 version = "0.0.0"
 description = "devs.DC API endpoints"
 requires-python = "==3.12.*"
-dependencies = []
+dependencies = [
+    "dc-api-common"
+]
+
+[tool.uv.sources]
+dc-api-common = { workspace = true }
 
 [tool.uv]
 package = false

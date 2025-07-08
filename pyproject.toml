@@ -45,7 +45,7 @@ aws-wsgi = { git = "https://github.com/DemocracyClub/awsgi.git", rev = "a5b80037
 dc-design-system = { git = "https://github.com/DemocracyClub/design-system.git", tag = "0.4.0" }
 dc-django-utils = { git = "https://github.com/DemocracyClub/dc_django_utils.git", tag = "2.4.0" }
 dc-response-builder = { git = "https://github.com/DemocracyClub/dc_response_builder.git", tag = "1.1.2" }
-dc-api-common = { path = "./api/common" }
+dc-api-common = { workspace = true }
 
 
 [tool.uv]
@@ -55,6 +55,7 @@ package = false
 [tool.uv.workspace]
 members = [
     "api/api_auth",
+    "api/common",
     "api/endpoints",
 ]
 

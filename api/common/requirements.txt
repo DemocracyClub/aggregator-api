@@ -1,2 +1,2 @@
-# File uses for AWS SAM. The `.` below tells SAM to run `setup.py`
+# File for AWS SAM. The `.` below tells SAM to install the current directory as a package
 .

@@ -5,6 +5,7 @@ requires-python = "==3.12.*"
 members = [
     "aggregator-api",
     "api-auth",
+    "dc-api-common",
     "endpoints",
 ]
 
@@ -51,7 +52,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "aws-wsgi", git = "https://github.com/DemocracyClub/awsgi.git?rev=a5b800373c326e75f705d400c48f7df301409724" },
-    { name = "dc-api-common", directory = "api/common" },
+    { name = "dc-api-common", editable = "api/common" },
     { name = "dc-design-system", git = "https://github.com/DemocracyClub/design-system.git?tag=0.4.0" },
     { name = "dc-django-utils", git = "https://github.com/DemocracyClub/dc_django_utils.git?tag=2.4.0" },
     { name = "django", specifier = "==4.2.23" },
@@ -103,6 +104,12 @@ wheels = [
 name = "api-auth"
 version = "0.0.0"
 source = { virtual = "api/api_auth" }
+dependencies = [
+    { name = "dc-api-common" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "dc-api-common", editable = "api/common" }]
 
 [[package]]
 name = "asgiref"
@@ -309,7 +316,7 @@ wheels = [
 [[package]]
 name = "dc-api-common"
 version = "0.0.4"
-source = { directory = "api/common" }
+source = { editable = "api/common" }
 dependencies = [
     { name = "dc-logging-utils" },
     { name = "httpx", extra = ["http2"] },
@@ -317,18 +324,16 @@ dependencies = [
     { name = "polars" },
     { name = "sentry-sdk", extra = ["starlette"] },
     { name = "starlette" },
-    { name = "urllib3" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "dc-logging-utils", git = "https://github.com/DemocracyClub/dc_logging.git?rev=1.0.2" },
+    { name = "dc-logging-utils", git = "https://github.com/DemocracyClub/dc_logging.git?tag=1.0.2" },
     { name = "httpx", extras = ["http2"], specifier = "==0.26.0" },
     { name = "mangum", specifier = "==0.17.0" },
     { name = "polars", specifier = "==1.25.2" },
-    { name = "sentry-sdk", extras = ["starlette"] },
+    { name = "sentry-sdk", extras = ["starlette"], specifier = "==2.32.0" },
     { name = "starlette", specifier = "==0.36.2" },
-    { name = "urllib3", specifier = "<2.0.0" },
 ]
 
 [[package]]
@@ -355,7 +360,7 @@ dependencies = [
 [[package]]
 name = "dc-logging-utils"
 version = "1.0.2"
-source = { git = "https://github.com/DemocracyClub/dc_logging.git?rev=1.0.2#804b5fd766208b47b21af05a25a8acefc602cb4d" }
+source = { git = "https://github.com/DemocracyClub/dc_logging.git?tag=1.0.2#804b5fd766208b47b21af05a25a8acefc602cb4d" }
 dependencies = [
     { name = "cachetools" },
 ]
@@ -505,6 +510,12 @@ wheels = [
 name = "endpoints"
 version = "0.0.0"
 source = { virtual = "api/endpoints" }
+dependencies = [
+    { name = "dc-api-common" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "dc-api-common", editable = "api/common" }]
 
 [[package]]
 name = "filelock"

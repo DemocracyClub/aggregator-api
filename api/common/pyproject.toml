@@ -1,0 +1,27 @@
+[project]
+name = "dc-api-common"
+version = "0.0.4"
+description = "Common elements to the DC API"
+requires-python = "==3.12.*"
+dependencies = [
+    "httpx[http2]==0.26.0",
+    "mangum==0.17.0",
+    "starlette==0.36.2",
+    "sentry-sdk[starlette]==2.32.0",
+    "polars==1.25.2",
+    "dc-logging-utils"
+]
+
+[tool.uv.sources]
+dc-logging-utils = { git = "https://github.com/DemocracyClub/dc_logging.git", tag = "1.0.2" }
+
+[tool.uv]
+package = true
+
+[tool.uv.build-backend]
+module-name = "common"
+module-root = ""
+
+[build-system]
+requires = ["uv_build>=0.7.12,<0.8.0"]
+build-backend = "uv_build"
