@@ -328,7 +328,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "dc-logging-utils", git = "https://github.com/DemocracyClub/dc_logging.git?tag=1.0.2" },
+    { name = "dc-logging-utils", git = "https://github.com/DemocracyClub/dc_logging.git?rev=1.0.2" },
     { name = "httpx", extras = ["http2"], specifier = "==0.26.0" },
     { name = "mangum", specifier = "==0.17.0" },
     { name = "polars", specifier = "==1.25.2" },
@@ -360,7 +360,7 @@ dependencies = [
 [[package]]
 name = "dc-logging-utils"
 version = "1.0.2"
-source = { git = "https://github.com/DemocracyClub/dc_logging.git?tag=1.0.2#804b5fd766208b47b21af05a25a8acefc602cb4d" }
+source = { git = "https://github.com/DemocracyClub/dc_logging.git?rev=1.0.2#804b5fd766208b47b21af05a25a8acefc602cb4d" }
 dependencies = [
     { name = "cachetools" },
 ]
