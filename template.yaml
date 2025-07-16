@@ -310,6 +310,7 @@ Resources:
       CodeUri: .
       Handler: frontend.asgi.handler
       Layers:
+        - !Ref APICommonLayer
         - !Ref FrontendDependenciesLayer
       Runtime: python3.12
       MemorySize: 512
@@ -389,6 +390,7 @@ Resources:
       CodeUri: .
       Handler: frontend.lambda_awsgi.management_handler
       Layers:
+        - !Ref APICommonLayer
         - !Ref FrontendDependenciesLayer
       Runtime: python3.12
       MemorySize: 512

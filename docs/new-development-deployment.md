@@ -34,13 +34,13 @@ In order to [deploy into Lambda](#deploying-into-aws-lambda) and then [deploy TL
 
 ## Example output in this document
 
-In this document, the `jcm1` environment will be deployed to show example output, using `pipenv run` as a prefix to activate a virtualenv containing the appropriate dev tools. You can activate or use such a virtualenv however suits you best.
+In this document, the `jcm1` environment will be deployed to show example output, using `uv run` as a prefix to activate a virtualenv containing the appropriate dev tools. You can activate or use such a virtualenv however suits you best.
 
 ## Deploying into AWS Lambda
 
 ### Local pre-requisites
 
-After cloning the repo, use pipenv to install the dev packages. Avoid Pipenv version 11.9, unfortunately baked into recent Ubuntu releases, as it's broken in various Pipfile-processing ways (https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=945139).
+After cloning the repo, use uv to install the dev packages.
 
 Make your AWS credentials available to the shell. Environment variables work well, as does having a setup baked into your user-level AWS configuration files (https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html).
 
@@ -79,7 +79,7 @@ ubuntu adm dialout cdrom floppy sudo audio dip video plugdev netdev lxd docker
 Use the script `samconfig.toml.d/new-dev-env.py` to clone the `[EXAMPLE]` and `[EXAMPLE-public-access]` sections and subsections, substituting `EXAMPLE` for a new deployment name of your choice. If you choose a new environment name composed of the characters "a" through "z" and "0" through "9" then everything has the best chance of working. If you also use characters in the set `[-_A-Z]` then things _might_ work. Using periods will definitely break several DNS-based limitations: don't do that.
 
 ```
-$ NEW_ENV_NAME=myenv pipenv run python samconfig.toml.d/new-dev-env.py >>samconfig.toml
+$ NEW_ENV_NAME=myenv uv run python samconfig.toml.d/new-dev-env.py >>samconfig.toml
 ```
 
 To achieve the same result without using the script, edit `samconfig.toml.d/development`. Clone the `[EXAMPLE]` and `[EXAMPLE-public-access]` top-level sections, including all their subsections. For this deployment, only the `[EXAMPLE.deploy.parameters]` section *needs* to have each occurrence of the `EXAMPLE` text changed to an environment name of your choice, but you should change every instance right now. Just do a simple find'n'replace.
@@ -91,13 +91,13 @@ The `sam` CLI will be your main deployment tool. *Every* time you invoke it, you
 If you forget to provide the `--config-env` parameter, or provide an non-existent env name, then you'll see this unhelpful error:
 
 ```
-$ pipenv run sam deploy # missing: --config-env <anything>
+$ uv run sam deploy # missing: --config-env <anything>
 Usage: sam deploy [OPTIONS]
 Try 'sam deploy --help' for help.
 
 Error: Missing option '--stack-name', 'sam deploy --guided' can be used to provide and save needed parameters for future deploys.
 
-$ pipenv run sam deploy --config-env INVALID
+$ uv run sam deploy --config-env INVALID
 Usage: sam deploy [OPTIONS]
 Try 'sam deploy --help' for help.
 
@@ -111,7 +111,7 @@ If your intention is to deploy the app and then *immediately* wrap it in TLS/CDN
 Validating the template contacts the AWS API, so can't be done offline. This one `sam` command doesn't seem to obey any sections in the `samconfig.toml.d/development` file, but it *does* need to know which AWS region to contact. Rather than inject the implict knowledge into future `sam` commands by exporting the `AWS_DEFAULT_REGION` environment variable for this entire session, or more permanently, here we can just prepend *this one command* with the variable. Don't use this method for any other `sam` commands.
 
 ```
-$ AWS_DEFAULT_REGION=eu-west-2 pipenv run sam validate
+$ AWS_DEFAULT_REGION=eu-west-2 uv run sam validate
 /home/ubuntu/code/aggregator-api/template.yaml is a valid SAM Template
 ```
 
@@ -124,10 +124,10 @@ Use the Makefile's `all` target to:
 
 The results of the first 2 of these steps are gitignored. The rendered API docs **are** currently committed, and may well show git changes after you run this step. They exist as both template and rendered output for unclear reasons, possibly to do with the historic complexity of installing the API-doc-generating libraries. *Feel free to change this behaviour, and these docs, if you know this area!*.
 
-All these steps have to be re-done when you change either `Pipfile`, `Pipfile.lock`, or anything that alters how the static assets or the API docs look. All these files will be rebuilt inside CI before the CI-managed deployments are updated, but the results of this rebuild are not committed back to the repository.
+All these steps have to be re-done when you change either `pyproject.toml`, `uv.lock`, or anything that alters how the static assets or the API docs look. All these files will be rebuilt inside CI before the CI-managed deployments are updated, but the results of this rebuild are not committed back to the repository.
 
 ```
-$ pipenv run make all
+$ uv run make all
 rm -rf aggregator/static_files/ lambda-layers/FrontendDependenciesLayer/requirements.txt
 python manage.py collectstatic --noinput --clear
 Copying '/home/ubuntu/code/aggregator-api/aggregator/assets/images/dc-badge/black/badge.png'
@@ -135,7 +135,7 @@ Copying '/home/ubuntu/code/aggregator-api/aggregator/assets/images/dc-badge/blac
 Post-processed 'css/styles.css' as 'css/styles.css'
 [ ... 111 "Post-processed" lines elided ... ]
 134 static files copied to '/home/ubuntu/code/aggregator-api/aggregator/static_files', 139 post-processed.
-pipenv lock -r | sed "s/^-e //" >lambda-layers/FrontendDependenciesLayer/requirements.txt
+uv run make lambda-layers/FrontendDependenciesLayer/requirements.txt
 ```
 
 Now build the Lambda deployment package.
@@ -143,7 +143,7 @@ Now build the Lambda deployment package.
 NB **this will destroy the current contents of the `.aws-sam/build/` directory**; but it *should* only contain the generated result of your previous build. If you've modified any files under that path this command will revert their contents back to what's in your working directory.
 
 ```
-$ pipenv run sam build --config-env jcm1 --use-container --cached
+$ uv run sam build --config-env jcm1 --use-container --cached
 Starting Build inside a container
 Building codeuri: . runtime: python3.10 metadata: {} functions:
 ['AggregatorApiFunction']
@@ -174,7 +174,7 @@ Current Artifacts Directory : /tmp/samcli/artifacts
 
 Note the use of 2 semi-optional flags passed to `sam build`, above:
 
-- `--use-container`: this is *strongly* recommended for build/dev environment isolation, but isn't absolutely essential. It requires docker to be installed, and for your user to be able to start containers without the use of `sudo`, as [documented above](#local-pre-requisites). If that's not possible, you can build without `--use-container`, but be aware that **your app is likely not to work inside AWS Lambda, and any changes you make to `Pipfile`/`Pipfile.lock` may not build correctly in CI**.
+- `--use-container`: this is *strongly* recommended for build/dev environment isolation, but isn't absolutely essential. It requires docker to be installed, and for your user to be able to start containers without the use of `sudo`, as [documented above](#local-pre-requisites). If that's not possible, you can build without `--use-container`, but be aware that **your app is likely not to work inside AWS Lambda, and any changes you make to `pyproject.toml`/`uv.lock` may not build correctly in CI**.
 - `--cached`: this is a time-saving flag, which first causes the `sam build` command to evaluate if it needs to rebuild either the DependenciesLayer or app function, based on if any files have changed since the last time you built *on this machine*; and secondly, as a knock-on effect, if it *doesn't* need to rebuild either, and you had already deployed either one to AWS, it doesn't upload the same, unmodified, packages again. There's no downside to using this flag.
 
 After building, the resulting artifacts appear in the `.aws-sam/build/` directory. Note the presence of the file `.aws-sam/build/template.yaml`: this is the CloudFormation template that will be deployed in the next step; if you modify the source `template.yaml` file in the root of the repo and want to deploy those changes, you'll need to re-run the build. Whilst it's *possible* to make changes directly to `.aws-sam/build/template`, hence allowing a redeployment without a rebuild (sometimes useful when rapidly iterating on infra- or AWS-related changes), do keep in mind that **all your changes made this way will be lost the next time you build**!
@@ -184,7 +184,7 @@ After building, the resulting artifacts appear in the `.aws-sam/build/` director
 Use the `sam` CLI to deploy the app. Once you have seen the 3 uploads complete (currently: 3MB app; 28MB dependencies layer; 1KB template), the CloudFormation Stack creation should take no more than a minute - or something's not right.
 
 ```
-$ pipenv run sam deploy --config-env jcm1
+$ uv run sam deploy --config-env jcm1
 	Deploying with following values
 	===============================
 	Stack name                   : AggregatorApiApp-jcm1
@@ -279,7 +279,7 @@ Use the pytests in `.circleci/tests/system/test_app_via_api_gateway.py` to check
 Teach the tests about your config env by setting the `SAM_LAMBDA_CONFIG_ENV` environment variable appropriately:
 
 ```
-$ SAM_LAMBDA_CONFIG_ENV=jcm1 pipenv run pytest -vrP --disable-warnings .circleci/tests/system/test_app_via_api_gateway.py
+$ SAM_LAMBDA_CONFIG_ENV=jcm1 uv run pytest -vrP --disable-warnings .circleci/tests/system/test_app_via_api_gateway.py
 ================================================== test session starts ====================================================
 platform linux -- Python 3.10, pytest-6.1.2, py-1.9.0, pluggy-0.13.1 --
 /home/ubuntu/.local/share/virtualenvs/8/bin/python
@@ -302,7 +302,7 @@ collected 1 item
 App logs are shipped by Lambda into CloudWatch Logs, with a default retention of 2 months. To view them, make sure your environment in `samconfig.toml` contains appropriately copied and modified `[<env-name>.logs]`/`[<env-name>.logs.parameters]` sections. Then, use the `sam` CLI to tail (with `--tail`) or view (without `--tail`) the most recent logs:
 
 ```
-$ pipenv run sam logs --config-env jcm1
+$ uv run sam logs --config-env jcm1
 2020/12/07/[$LATEST]70e6068f1e704bdfad78fdd8eab994d3 2020-12-07T21:39:29.460000 START RequestId: 4b3d24d7-af3a-44f6-9f3b-89d1200d0030 Version: $LATEST
 2020/12/07/[$LATEST]70e6068f1e704bdfad78fdd8eab994d3 2020-12-07T21:39:34.455000 END RequestId: 4b3d24d7-af3a-44f6-9f3b-89d1200d0030
 2020/12/07/[$LATEST]70e6068f1e704bdfad78fdd8eab994d3 2020-12-07T21:39:34.455000 REPORT RequestId: 4b3d24d7-af3a-44f6-9f3b-89d1200d0030  Duration: 4994.93 ms Billed Duration: 4995 ms Memory Size: 192 MB     Max Memory Used: 99 MB  Init Duration: 1080.62 ms
@@ -444,7 +444,7 @@ With everything in place, you can now deploy. NB the `config-env` specified here
 This deployment will take **around** 5 minutes; subsequent deployments should take less time (if any!) so long as the CloudFront distribution isn't modified as part of the deployment. Given that price of an unused CloudFront distribution is effectively zero, there's no immediate need to tear the environment down from a cost perspective.
 
 ```
-$ pipenv run sam deploy --config-env jcm1-public-access
+$ uv run sam deploy --config-env jcm1-public-access
 
 	Deploying with following values
 	===============================
@@ -510,7 +510,7 @@ Use the pytests in `.circleci/tests/system/` to check the deployment is working 
 Teach the tests about your config env by setting both the `SAM_LAMBDA_CONFIG_ENV` and `SAM_PUBLIC_CONFIG_ENV` environment variables appropriately:
 
 ```
-$ SAM_LAMBDA_CONFIG_ENV=jcm1 SAM_PUBLIC_CONFIG_ENV=jcm1-public-access pipenv run pytest -vrP --disable-warnings .circleci/tests/system/
+$ SAM_LAMBDA_CONFIG_ENV=jcm1 SAM_PUBLIC_CONFIG_ENV=jcm1-public-access uv run pytest -vrP --disable-warnings .circleci/tests/system/
 ========================================================== test session starts ==========================================================
 platform linux -- Python 3.8.5, pytest-6.1.2, py-1.9.0, pluggy-0.13.1 -- /home/ubuntu/.local/share/virtualenvs/aggregator-api-_ak-AzJ8/bin/python
 cachedir: .pytest_cache
