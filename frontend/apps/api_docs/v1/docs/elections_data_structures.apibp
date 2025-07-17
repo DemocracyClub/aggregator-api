@@ -63,7 +63,7 @@
 + `election_type`: (object)
     + name: `Greater London Assembly elections` (string) - Friendly name for this election type
     + `election_type`: `gla` (string) - Identifier slug for this election type (a component of the identifier)
-+ `election_subtype`: (object, nullable) - Election subtype provides details for the subtype in Additional Member System elections (Welsh Assembly, Scottish Parliament, Greater London Assembly). This key will be null for other election types
++ `election_subtype`: (object, nullable) - Election subtype provides details for the subtype in Additional Member System elections (Scottish Parliament, Greater London Assembly). This key will be null for other election types
     + name: `Constituencies` (string) - Friendly name for this election subtype
     + `election_subtype`: `c` (string) - Identifier slug for this election subtype (a component of the identifier)
 + organisation (ElectionOrganisation) - Object describing the body the winner of this election will be elected to
