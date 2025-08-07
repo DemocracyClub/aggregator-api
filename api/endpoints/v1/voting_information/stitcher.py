@@ -362,7 +362,11 @@ class Stitcher:
                 ballot["postal_voting_requirements"] = wcivf_ballot.get(
                     "postal_voting_requirements", None
                 )
-
+                ballot["by_election_reason"] = wcivf_ballot.get(
+                    "by_election_reason", ""
+                )
+                if ballot["by_election_reason"] == "":
+                    ballot["by_election_reason"] = "NOT_APPLICABLE"
                 # We only sort by organisation_type at the moment, but we
                 # could add more values here to sort by more fields
                 self.ballot_sort_keys[ballot["ballot_paper_id"]] = wcivf_ballot[
