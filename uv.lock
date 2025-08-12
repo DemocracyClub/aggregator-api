@@ -319,9 +319,13 @@ dependencies = [
     { name = "dc-logging-utils" },
     { name = "httpx", extra = ["http2"] },
     { name = "mangum" },
-    { name = "polars" },
     { name = "sentry-sdk", extra = ["starlette"] },
     { name = "starlette" },
+]
+
+[package.optional-dependencies]
+polars = [
+    { name = "polars" },
 ]
 
 [package.metadata]
@@ -329,7 +333,7 @@ requires-dist = [
     { name = "dc-logging-utils", git = "https://github.com/DemocracyClub/dc_logging.git?rev=1.0.2" },
     { name = "httpx", extras = ["http2"], specifier = "==0.26.0" },
     { name = "mangum", specifier = "==0.17.0" },
-    { name = "polars", specifier = "==1.25.2" },
+    { name = "polars", marker = "extra == 'polars'", specifier = "==1.25.2" },
     { name = "sentry-sdk", extras = ["starlette"], specifier = "==2.32.0" },
     { name = "starlette", specifier = "==0.36.2" },
 ]
@@ -513,11 +517,11 @@ name = "endpoints"
 version = "0.0.0"
 source = { virtual = "api/endpoints" }
 dependencies = [
-    { name = "dc-api-common" },
+    { name = "dc-api-common", extra = ["polars"] },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "dc-api-common", editable = "api/common" }]
+requires-dist = [{ name = "dc-api-common", extras = ["polars"], editable = "api/common" }]
 
 [[package]]
 name = "filelock"
