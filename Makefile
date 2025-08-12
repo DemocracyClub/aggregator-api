@@ -12,7 +12,7 @@ all: clean collectstatic lambda-layers/FrontendDependenciesLayer aggregator/apps
 
 .PHONY: clean
 clean: ## Delete any generated static asset or req.txt files and git-restore the rendered API documentation file
-	rm -rf frontend/static_files/ lambda-layers/FrontendDependenciesLayer/requirements.txt
+	rm -rf frontend/frontend/static_files/ lambda-layers/FrontendDependenciesLayer/requirements.txt
 	git checkout aggregator/apps/api_docs/v1/templates/api_docs_rendered.html
 
 .PHONY: collectstatic
@@ -28,7 +28,7 @@ check_empty: ## Check if the requirements.txt file is empty
 	fi
 
 lambda-layers/FrontendDependenciesLayer/requirements.txt: pyproject.toml uv.lock ## Update the requirements.txt file used to build this Lambda function's FrontendDependenciesLayer
-	uv export --no-dev --no-hashes --no-editable --no-emit-workspace >lambda-layers/FrontendDependenciesLayer/requirements.txt
+	uv export --no-dev --no-hashes --no-editable --no-emit-workspace --package frontend > lambda-layers/FrontendDependenciesLayer/requirements.txt
 
 .PHONY: aggregator/apps/api_docs/v1/templates/api_docs_rendered.html
 aggregator/apps/api_docs/v1/templates/api_docs_rendered.html: ## Rebuild the API documentation page
