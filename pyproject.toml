@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = "==3.12.*"
 dependencies = [
     "frontend",
-    "dc-api-common[polars]",
+    "dc-api-common",
 ]
 
 [dependency-groups]
@@ -28,6 +28,11 @@ dev = [
     "djhtml==3.0.6",
     "beautifulsoup4==4.13.4",
     "dc-response-builder",
+
+    # don't bother pinning this here
+    # the version constraint for polars is defined
+    # in the api/endpoints workspace
+    "polars>1",
 ]
 
 [tool.uv.sources]

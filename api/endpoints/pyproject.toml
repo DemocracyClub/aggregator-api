@@ -4,7 +4,12 @@ version = "0.0.0"
 description = "devs.DC API endpoints"
 requires-python = "==3.12.*"
 dependencies = [
-    "dc-api-common[polars]"
+    "dc-api-common"
+]
+
+[dependency-groups]
+polars = [
+    "polars==1.25.2",
 ]
 
 [tool.uv.sources]

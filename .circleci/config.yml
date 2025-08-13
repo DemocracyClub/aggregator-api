@@ -27,12 +27,14 @@ jobs:
     - install_uv
     - run: uv sync --dev --no-python-downloads
     - run: make lambda-layers/FrontendDependenciesLayer/requirements.txt
+    - run: make lambda-layers/PolarsLayer/requirements.txt
     - run: uv run python manage.py collectstatic --noinput --clear
     - run: uv run make aggregator/apps/api_docs/v1/templates/api_docs_rendered.html APP_IS_BEHIND_CLOUDFRONT=True
     - persist_to_workspace:
         root: ~/repo/
         paths:
           - lambda-layers/FrontendDependenciesLayer/requirements.txt
+          - lambda-layers/PolarsLayer/requirements.txt
           - aggregator/apps/api_docs/v1/templates/api_docs_rendered.html
           - frontend/frontend/static_files/
     - save_cache:
@@ -201,7 +203,7 @@ workflows:
 
     - sam_build:
         requires:
-        - install_and_update_dependencies # FrontendDependenciesLayer build needs lambda-layers/FrontendDependenciesLayer/requirements.txt
+        - install_and_update_dependencies # We need the requirements.txt files we built earlier
         - test
 
     # This deployment tracks the tip of the main branch in Github. It is not intended
