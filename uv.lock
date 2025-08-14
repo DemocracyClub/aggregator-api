@@ -5,8 +5,10 @@ requires-python = "==3.12.*"
 members = [
     "aggregator-api",
     "api-auth",
+    "basic-auth",
     "dc-api-common",
     "endpoints",
+    "frontend",
 ]
 
 [[package]]
@@ -14,17 +16,8 @@ name = "aggregator-api"
 version = "0.0.0"
 source = { virtual = "." }
 dependencies = [
-    { name = "aws-wsgi" },
     { name = "dc-api-common" },
-    { name = "dc-design-system" },
-    { name = "dc-django-utils" },
-    { name = "django" },
-    { name = "django-apiblueprint-view" },
-    { name = "django-sesame" },
-    { name = "django-storages" },
-    { name = "psycopg2-binary" },
-    { name = "setuptools" },
-    { name = "whitenoise" },
+    { name = "frontend" },
 ]
 
 [package.dev-dependencies]
@@ -36,6 +29,7 @@ dev = [
     { name = "djhtml" },
     { name = "moto", extra = ["dynamodb"] },
     { name = "mypy-boto3-dynamodb" },
+    { name = "polars" },
     { name = "pre-commit" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
@@ -50,17 +44,8 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "aws-wsgi", git = "https://github.com/DemocracyClub/awsgi.git?rev=a5b800373c326e75f705d400c48f7df301409724" },
     { name = "dc-api-common", editable = "api/common" },
-    { name = "dc-design-system", git = "https://github.com/DemocracyClub/design-system.git?tag=0.5.0" },
-    { name = "dc-django-utils", git = "https://github.com/DemocracyClub/dc_django_utils.git?tag=8.0.2" },
-    { name = "django", specifier = "==4.2.23" },
-    { name = "django-apiblueprint-view", specifier = "==2.4.0" },
-    { name = "django-sesame", specifier = "==3.2.2" },
-    { name = "django-storages", specifier = "==1.13.2" },
-    { name = "psycopg2-binary", specifier = "==2.9.10" },
-    { name = "setuptools", specifier = "==69.5.1" },
-    { name = "whitenoise", specifier = "==6.4.0" },
+    { name = "frontend", editable = "frontend" },
 ]
 
 [package.metadata.requires-dev]
@@ -72,6 +57,7 @@ dev = [
     { name = "djhtml", specifier = "==3.0.6" },
     { name = "moto", extras = ["dynamodb"], specifier = "==5.0.5" },
     { name = "mypy-boto3-dynamodb", specifier = "==1.34.91" },
+    { name = "polars", specifier = ">1" },
     { name = "pre-commit", specifier = "==3.7.0" },
     { name = "pytest", specifier = "==7.4.4" },
     { name = "pytest-asyncio", specifier = "==0.23.6" },
@@ -122,6 +108,11 @@ wheels = [
 name = "aws-wsgi"
 version = "0.2.7"
 source = { git = "https://github.com/DemocracyClub/awsgi.git?rev=a5b800373c326e75f705d400c48f7df301409724#a5b800373c326e75f705d400c48f7df301409724" }
+
+[[package]]
+name = "basic-auth"
+version = "0.0.0"
+source = { virtual = "api/basic_auth" }
 
 [[package]]
 name = "beautifulsoup4"
@@ -319,7 +310,6 @@ dependencies = [
     { name = "dc-logging-utils" },
     { name = "httpx", extra = ["http2"] },
     { name = "mangum" },
-    { name = "polars" },
     { name = "sentry-sdk", extra = ["starlette"] },
     { name = "starlette" },
 ]
@@ -329,7 +319,6 @@ requires-dist = [
     { name = "dc-logging-utils", git = "https://github.com/DemocracyClub/dc_logging.git?rev=1.0.2" },
     { name = "httpx", extras = ["http2"], specifier = "==0.26.0" },
     { name = "mangum", specifier = "==0.17.0" },
-    { name = "polars", specifier = "==1.25.2" },
     { name = "sentry-sdk", extras = ["starlette"], specifier = "==2.32.0" },
     { name = "starlette", specifier = "==0.36.2" },
 ]
@@ -516,8 +505,16 @@ dependencies = [
     { name = "dc-api-common" },
 ]
 
+[package.dev-dependencies]
+polars = [
+    { name = "polars" },
+]
+
 [package.metadata]
 requires-dist = [{ name = "dc-api-common", editable = "api/common" }]
+
+[package.metadata.requires-dev]
+polars = [{ name = "polars", specifier = "==1.25.2" }]
 
 [[package]]
 name = "filelock"
@@ -526,6 +523,39 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/0a/10/c23352565a6544bdc5353e0b15fc1c563352101f30e24bf500207a54df9a/filelock-3.18.0.tar.gz", hash = "sha256:adbc88eabb99d2fec8c9c1b229b171f18afa655400173ddc653d5d01501fb9f2", size = 18075 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/4d/36/2a115987e2d8c300a974597416d9de88f2444426de9571f4b59b2cca3acc/filelock-3.18.0-py3-none-any.whl", hash = "sha256:c401f4f8377c4464e6db25fff06205fd89bdd83b65eb0488ed1b160f780e21de", size = 16215 },
+]
+
+[[package]]
+name = "frontend"
+version = "0.0.0"
+source = { editable = "frontend" }
+dependencies = [
+    { name = "aws-wsgi" },
+    { name = "dc-api-common" },
+    { name = "dc-design-system" },
+    { name = "dc-django-utils" },
+    { name = "django" },
+    { name = "django-apiblueprint-view" },
+    { name = "django-sesame" },
+    { name = "django-storages" },
+    { name = "psycopg2-binary" },
+    { name = "setuptools" },
+    { name = "whitenoise" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "aws-wsgi", git = "https://github.com/DemocracyClub/awsgi.git?rev=a5b800373c326e75f705d400c48f7df301409724" },
+    { name = "dc-api-common", editable = "api/common" },
+    { name = "dc-design-system", git = "https://github.com/DemocracyClub/design-system.git?tag=0.5.0" },
+    { name = "dc-django-utils", git = "https://github.com/DemocracyClub/dc_django_utils.git?tag=8.0.2" },
+    { name = "django", specifier = "==4.2.23" },
+    { name = "django-apiblueprint-view", specifier = "==2.4.0" },
+    { name = "django-sesame", specifier = "==3.2.2" },
+    { name = "django-storages", specifier = "==1.13.2" },
+    { name = "psycopg2-binary", specifier = "==2.9.10" },
+    { name = "setuptools", specifier = "==69.5.1" },
+    { name = "whitenoise", specifier = "==6.4.0" },
 ]
 
 [[package]]

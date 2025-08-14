@@ -7,6 +7,11 @@ dependencies = [
     "dc-api-common"
 ]
 
+[dependency-groups]
+polars = [
+    "polars==1.25.2",
+]
+
 [tool.uv.sources]
 dc-api-common = { workspace = true }
 

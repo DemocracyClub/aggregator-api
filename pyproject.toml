@@ -5,16 +5,7 @@ description = "devs.DC"
 readme = "README.md"
 requires-python = "==3.12.*"
 dependencies = [
-    "django==4.2.23",
-    "psycopg2-binary==2.9.10",
-    "django-apiblueprint-view==2.4.0",
-    "django-storages==1.13.2",
-    "django-sesame==3.2.2",
-    "setuptools==69.5.1",
-    "whitenoise==6.4.0",
-    "aws-wsgi",
-    "dc-design-system",
-    "dc-django-utils",
+    "frontend",
     "dc-api-common",
 ]
 
@@ -37,6 +28,11 @@ dev = [
     "djhtml==3.0.6",
     "beautifulsoup4==4.13.4",
     "dc-response-builder",
+
+    # don't bother pinning this here
+    # the version constraint for polars is defined
+    # in the api/endpoints workspace
+    "polars>1",
 ]
 
 [tool.uv.sources]
@@ -45,6 +41,7 @@ dc-design-system = { git = "https://github.com/DemocracyClub/design-system.git",
 dc-django-utils = { git = "https://github.com/DemocracyClub/dc_django_utils.git", tag = "8.0.2" }
 dc-response-builder = { git = "https://github.com/DemocracyClub/dc_response_builder.git", tag = "1.1.2" }
 dc-api-common = { workspace = true }
+frontend = { workspace = true }
 
 
 [tool.uv]
@@ -54,8 +51,10 @@ package = false
 [tool.uv.workspace]
 members = [
     "api/api_auth",
+    "api/basic_auth",
     "api/common",
     "api/endpoints",
+    "frontend",
 ]
 
 [tool.ruff]
@@ -73,4 +72,14 @@ lint.extend-select = [
 exclude_lines = [
     "if __name__ == .__main__.:",
     "@abstractmethod"
+]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "frontend.settings.testing"
+asyncio_mode = "strict"
+pythonpath = [
+    "api/endpoints/v1/voting_information",
+    "api/endpoints/v1/elections",
+    "api/endpoints/v1/sandbox",
+    "api/endpoints/v1/layers_of_state",
 ]

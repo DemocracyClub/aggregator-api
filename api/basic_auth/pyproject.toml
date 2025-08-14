@@ -1,0 +1,9 @@
+[project]
+name = "basic-auth"
+version = "0.0.0"
+description = "API endpoint for handling http basic auth"
+requires-python = "==3.12.*"
+dependencies = []
+
+[tool.uv]
+package = false

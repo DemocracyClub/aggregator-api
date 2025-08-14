@@ -7,8 +7,8 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).parent.parent
 sys.path.insert(0, os.path.join(BASE_DIR, "apps"))
-sys.path.insert(0, os.path.join(BASE_DIR.parent, "api"))
-sys.path.insert(0, os.path.join(BASE_DIR.parent, "api/endpoints/v1"))
+sys.path.insert(0, os.path.join(BASE_DIR.parent.parent, "api"))
+sys.path.insert(0, os.path.join(BASE_DIR.parent.parent, "api/endpoints/v1"))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY", None)
