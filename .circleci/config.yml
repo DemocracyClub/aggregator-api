@@ -65,12 +65,12 @@ jobs:
           uv run djhtml frontend/frontend/apps/api_docs/v1/templates/api_docs_rendered.html
           git diff --exit-code
     - run: uv run pytest --ruff --cov-report= --cov=frontend --cov=api --junitxml=test-results/junit.xml
-    - run: |
-        if [ -n "$COVERALLS_REPO_TOKEN" ]; then
-          uv run coveralls
-        else
-          echo "skipping coverage for forked PR"
-        fi
+    #- run: |
+    #    if [ -n "$COVERALLS_REPO_TOKEN" ]; then
+    #      uv run coveralls
+    #    else
+    #      echo "skipping coverage for forked PR"
+    #    fi
     - store_artifacts:
         path: test-results
         destination: test-results
