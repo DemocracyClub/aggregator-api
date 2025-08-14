@@ -54,7 +54,7 @@ jobs:
     - install_uv
     - run: uv lock --locked
     - run: uv run ruff format . --check
-    - run: uv run ruff check .
+    - run: uv run ruff check . -v
     - run: git ls-files '*.html' | xargs uv run djhtml --check
     - run:
         name: ensure api_docs_rendered.html is up to date
