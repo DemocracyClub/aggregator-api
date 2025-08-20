@@ -53,7 +53,7 @@ requires-dist = [
     { name = "aws-wsgi", git = "https://github.com/DemocracyClub/awsgi.git?rev=a5b800373c326e75f705d400c48f7df301409724" },
     { name = "dc-api-common", editable = "api/common" },
     { name = "dc-design-system", git = "https://github.com/DemocracyClub/design-system.git?tag=0.5.0" },
-    { name = "dc-django-utils", git = "https://github.com/DemocracyClub/dc_django_utils.git?tag=8.0.2" },
+    { name = "dc-django-utils", git = "https://github.com/DemocracyClub/dc_django_utils.git?tag=8.0.3" },
     { name = "django", specifier = "==4.2.23" },
     { name = "django-apiblueprint-view", specifier = "==2.4.0" },
     { name = "django-sesame", specifier = "==3.2.2" },
@@ -341,8 +341,8 @@ source = { git = "https://github.com/DemocracyClub/design-system.git?tag=0.5.0#9
 
 [[package]]
 name = "dc-django-utils"
-version = "8.0.2"
-source = { git = "https://github.com/DemocracyClub/dc_django_utils.git?tag=8.0.2#6a565d3a9e1dfc97b7c7a264fa354e9d4939ca47" }
+version = "8.0.3"
+source = { git = "https://github.com/DemocracyClub/dc_django_utils.git?tag=8.0.3#a9319366d3351c639e5129d11452bab68824287f" }
 dependencies = [
     { name = "django" },
     { name = "django-localflavor" },
