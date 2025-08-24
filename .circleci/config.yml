@@ -25,7 +25,7 @@ jobs:
         keys:
         - v9-dependencies-{{ checksum "uv.lock" }}
     - install_uv
-    - run: uv sync --dev --no-python-downloads
+    - run: uv sync --dev --no-python-downloads --all-packages
     - run: make lambda-layers/FrontendDependenciesLayer/requirements.txt
     - run: uv run python manage.py collectstatic --noinput --clear
     - run: uv run make aggregator/apps/api_docs/v1/templates/api_docs_rendered.html APP_IS_BEHIND_CLOUDFRONT=True
@@ -51,6 +51,7 @@ jobs:
         keys:
         - v9-dependencies-{{ checksum "uv.lock" }}
     - install_uv
+    - run: uv sync --dev --no-python-downloads --all-packages
     - run: uv lock --locked
     - run: uv run ruff format . --check
     - run: uv run ruff check .

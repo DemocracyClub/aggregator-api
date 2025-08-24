@@ -28,7 +28,7 @@ check_empty: ## Check if the requirements.txt file is empty
 	fi
 
 lambda-layers/FrontendDependenciesLayer/requirements.txt: pyproject.toml uv.lock ## Update the requirements.txt file used to build this Lambda function's FrontendDependenciesLayer
-	uv export --no-dev --no-hashes --no-editable --no-emit-workspace --no-emit-package polars >lambda-layers/FrontendDependenciesLayer/requirements.txt
+	uv export --no-dev --no-hashes --no-editable --no-emit-workspace --no-emit-package polars --package frontend >lambda-layers/FrontendDependenciesLayer/requirements.txt
 
 .PHONY: aggregator/apps/api_docs/v1/templates/api_docs_rendered.html
 aggregator/apps/api_docs/v1/templates/api_docs_rendered.html: ## Rebuild the API documentation page
