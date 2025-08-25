@@ -21,7 +21,7 @@ This project provides an API gateway in front of other Democracy Club APIs.
 ### Application
 
 * `cp aggregator-api/aggregator/settings/local.example.py aggregator-api/aggregator/settings/local.py`
-* Install Python dependencies: `uv sync --dev --all-packages`
+* Install Python dependencies: `uv sync --all-groups --all-packages`
 * Run the test suite: `pytest`
 * Run lint checks: `pytest --ruff`
 * Auto-format: `ruff format .`

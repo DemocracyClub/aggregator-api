@@ -10,6 +10,7 @@ api/frontend/frontend/static_files/
 /.aws-sam/
 /test-results
 /lambda-layers/FrontendDependenciesLayer/requirements.txt
+/lambda-layers/PolarsLayer/requirements.txt
 api/common/build/
 api/common/dc_api_common.egg-info/
 .coverage
