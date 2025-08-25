@@ -6,8 +6,9 @@ from api_users.management.commands.sync_api_keys import (
 )
 from api_users.models import APIKey, CustomUser
 from api_users.utils import send_new_key_notification
-from common.conf import settings
 from django.test.utils import override_settings
+
+from common.conf import settings
 
 
 def test_save_api_key_posts_to_dynamodb(db, dynamodb):

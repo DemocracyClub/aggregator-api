@@ -3,10 +3,10 @@ import os
 import sys
 
 import boto3
-from common.auth_models import User
 from django.conf import settings
 
 from api_users.models import APIKey
+from common.auth_models import User
 
 logger = logging.getLogger()
 

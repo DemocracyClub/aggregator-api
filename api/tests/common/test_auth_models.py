@@ -1,10 +1,11 @@
 import json
 
 import httpx
-from common.auth_models import User
 from elections_api_client import wcivf_ballot_cache_url_from_ballot
 from tests.helpers import load_fixture, load_sandbox_output
 from voting_information.app import handler as voting_information_handler
+
+from common.auth_models import User
 
 
 def test_unauthenticated():

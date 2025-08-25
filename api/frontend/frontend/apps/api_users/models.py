@@ -2,7 +2,6 @@
 import binascii
 import os
 
-from common.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
@@ -15,6 +14,7 @@ from django.utils.translation import gettext_lazy as _
 from api_users.logging_helpers import APIKeyForLogging
 from api_users.managers import CustomUserManager
 from api_users.mixins import TimestampMixin
+from common.conf import settings
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):

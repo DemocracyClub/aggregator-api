@@ -1,12 +1,13 @@
 from pathlib import Path
 
-from common.conf import settings
-from common.middleware import MIDDLEWARE
-from common.sentry_helper import init_sentry
 from mangum import Mangum
 from starlette.applications import Starlette
 from starlette.responses import FileResponse, Response
 from starlette.routing import Route
+
+from common.conf import settings
+from common.middleware import MIDDLEWARE
+from common.sentry_helper import init_sentry
 
 init_sentry()
 

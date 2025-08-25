@@ -2,9 +2,10 @@ import os
 from pathlib import Path
 
 import polars
-from common.conf import settings
 from polars import DataFrame
 from static_data_helper import AddressModel, FileNotFoundError, StaticDataHelper
+
+from common.conf import settings
 
 from .models import (
     BasePetitionResponse,

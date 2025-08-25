@@ -3,9 +3,10 @@ import os
 import boto3
 import pytest
 from api_auth.handler import dynamodb_auth, lambda_handler
-from common.auth_models import User
 from moto import mock_aws
 from mypy_boto3_dynamodb import DynamoDBServiceResource
+
+from common.auth_models import User
 
 
 @pytest.fixture(scope="function")

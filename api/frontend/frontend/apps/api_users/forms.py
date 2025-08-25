@@ -1,9 +1,9 @@
-from common.conf import settings
 from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 
 from api_users.models import APIKey, CustomUser
+from common.conf import settings
 
 User = get_user_model()
 
