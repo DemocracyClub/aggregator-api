@@ -8,12 +8,12 @@ REQUIREMENTS = "lambda-layers/FrontendDependenciesLayer/requirements.txt"
 
 
 .PHONY: all
-all: clean collectstatic lambda-layers/FrontendDependenciesLayer aggregator/apps/api_docs/v1/templates/api_docs_rendered.html ## Rebuild everything this Makefile knows how to build
+all: clean collectstatic lambda-layers/FrontendDependenciesLayer/requirements.txt lambda-layers/PolarsLayer/requirements.txt aggregator/apps/api_docs/v1/templates/api_docs_rendered.html ## Rebuild everything this Makefile knows how to build
 
 .PHONY: clean
 clean: ## Delete any generated static asset or req.txt files and git-restore the rendered API documentation file
 	rm -rf api/frontend/frontend/static_files/ lambda-layers/FrontendDependenciesLayer/requirements.txt lambda-layers/PolarsLayer/requirements.txt
-	git checkout aggregator/apps/api_docs/v1/templates/api_docs_rendered.html
+	git checkout api/frontend/frontend/apps/api_docs/v1/templates/api_docs_rendered.html
 
 .PHONY: collectstatic
 collectstatic: ## Rebuild the static assets
