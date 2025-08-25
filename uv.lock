@@ -507,7 +507,7 @@ wheels = [
 [[package]]
 name = "frontend"
 version = "0.0.0"
-source = { virtual = "frontend" }
+source = { virtual = "api/frontend" }
 dependencies = [
     { name = "aws-wsgi" },
     { name = "dc-api-common" },

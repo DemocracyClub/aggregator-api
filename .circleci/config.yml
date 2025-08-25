@@ -34,7 +34,7 @@ jobs:
         paths:
           - lambda-layers/FrontendDependenciesLayer/requirements.txt
           - aggregator/apps/api_docs/v1/templates/api_docs_rendered.html
-          - frontend/static_files/
+          - api/frontend/frontend/static_files/
     - save_cache:
         when: on_success
         paths:
@@ -60,9 +60,9 @@ jobs:
         name: ensure api_docs_rendered.html is up to date
         command: |
           SECRET_KEY=fake uv run python manage.py build_docs
-          uv run djhtml frontend/apps/api_docs/v1/templates/api_docs_rendered.html
+          uv run djhtml api/frontend/frontend/apps/api_docs/v1/templates/api_docs_rendered.html
           git diff --exit-code
-    - run: uv run pytest --ruff --cov-report= --cov=frontend --cov=api --junitxml=test-results/junit.xml
+    - run: uv run pytest --ruff --cov-report= --cov=api --junitxml=test-results/junit.xml
     - run: |
         if [ -n "$COVERALLS_REPO_TOKEN" ]; then
           uv run coveralls

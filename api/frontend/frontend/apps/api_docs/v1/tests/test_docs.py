@@ -16,7 +16,7 @@ We're going to:
 
 def get_code_blocks():
     with open(
-        "frontend/apps/api_docs/v1/templates/api_docs_rendered.html",
+        "api/frontend/frontend/apps/api_docs/v1/templates/api_docs_rendered.html",
         "r",
         encoding="utf-8",
     ) as file:

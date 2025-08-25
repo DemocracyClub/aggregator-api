@@ -307,7 +307,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
-      CodeUri: .
+      CodeUri: ./api/frontend
       Handler: frontend.asgi.handler
       Layers:
         - !Ref APICommonLayer
@@ -367,7 +367,7 @@ Resources:
   BasicAuthFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./frontend/
+      CodeUri: ./api/frontend/frontend
       Handler: lambda_basic_auth.lambda_handler
       Runtime: python3.12
 
@@ -387,7 +387,7 @@ Resources:
       FunctionName: ApiFrontendManagementFunction
       Timeout: 60
       Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
-      CodeUri: .
+      CodeUri: ./api/frontend
       Handler: frontend.lambda_awsgi.management_handler
       Layers:
         - !Ref APICommonLayer

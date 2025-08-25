@@ -44,7 +44,7 @@ members = [
     "api/api_auth",
     "api/common",
     "api/endpoints",
-    "frontend",
+    "api/frontend",
 ]
 
 [tool.ruff]
