@@ -4,6 +4,7 @@ from endpoints.v1.elections import app
 from endpoints.v1.elections.voting_information_api_client import EEApiClient
 from httpx import QueryParams
 from starlette.testclient import TestClient
+
 from tests.helpers import load_fixture
 
 

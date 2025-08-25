@@ -2,13 +2,14 @@ import pytest
 from starlette.datastructures import Headers
 from starlette.requests import Request
 from starlette.testclient import TestClient
-from tests.helpers import fixture_map, load_fixture, load_sandbox_output
 from voting_information.app import app
 from voting_information.stitcher import (
     CANCELLATION_REASONS,
     Stitcher,
     get_ballot_cancellation_reason_data,
 )
+
+from tests.helpers import fixture_map, load_fixture, load_sandbox_output
 
 
 @pytest.fixture(scope="function")

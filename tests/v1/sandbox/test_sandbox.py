@@ -4,7 +4,7 @@ import pytest
 from response_builder.v1.models.base import RootModel
 from sandbox.app import handler as sandbox_handler
 
-from api.tests.helpers import fixture_map, load_sandbox_output
+from tests.helpers import fixture_map, load_sandbox_output
 
 
 @pytest.mark.parametrize("postcode", fixture_map.keys())

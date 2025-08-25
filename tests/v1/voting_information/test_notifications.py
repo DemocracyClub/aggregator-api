@@ -1,4 +1,4 @@
-from api.endpoints.v1.voting_information.stitcher import (
+from endpoints.v1.voting_information.stitcher import (
     CANCELLATION_REASONS,
     NotificationsMaker,
 )

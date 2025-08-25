@@ -1,12 +1,13 @@
 import httpx
 import pytest
+from voting_information.elections_api_client import (
+    wcivf_ballot_cache_url_from_ballot,
+)
+
 from tests.helpers import (
     fixture_map,
     load_fixture,
     load_sandbox_output,
-)
-from voting_information.elections_api_client import (
-    wcivf_ballot_cache_url_from_ballot,
 )
 
 

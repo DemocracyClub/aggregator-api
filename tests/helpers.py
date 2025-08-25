@@ -26,7 +26,7 @@ def load_fixture_by_url(testname, url):
 
 
 def load_sandbox_output(filename, base_url=None, api_version="v1"):
-    dirname = Path(__file__).parent.parent / "endpoints"
+    dirname = Path(__file__).parent.parent / "api" / "endpoints"
     file_path: Path = (
         dirname / api_version / "sandbox" / f"sandbox-responses/{filename}.json"
     )
