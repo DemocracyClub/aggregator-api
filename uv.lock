@@ -84,7 +84,7 @@ dependencies = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "dc-api-common", editable = "api/common" }]
+requires-dist = [{ name = "dc-api-common", editable = "common" }]
 
 [[package]]
 name = "asgiref"
@@ -296,7 +296,7 @@ wheels = [
 [[package]]
 name = "dc-api-common"
 version = "0.0.4"
-source = { editable = "api/common" }
+source = { editable = "common" }
 dependencies = [
     { name = "dc-logging-utils" },
     { name = "httpx", extra = ["http2"] },
@@ -502,7 +502,7 @@ polars = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "dc-api-common", editable = "api/common" }]
+requires-dist = [{ name = "dc-api-common", editable = "common" }]
 
 [package.metadata.requires-dev]
 polars = [{ name = "polars", specifier = "==1.25.2" }]
@@ -537,7 +537,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "aws-wsgi", git = "https://github.com/DemocracyClub/awsgi.git?rev=a5b800373c326e75f705d400c48f7df301409724" },
-    { name = "dc-api-common", editable = "api/common" },
+    { name = "dc-api-common", editable = "common" },
     { name = "dc-design-system", git = "https://github.com/DemocracyClub/design-system.git?tag=0.5.0" },
     { name = "dc-django-utils", git = "https://github.com/DemocracyClub/dc_django_utils.git?tag=8.0.2" },
     { name = "django", specifier = "==4.2.23" },
