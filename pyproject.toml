@@ -42,6 +42,7 @@ package = false
 [tool.uv.workspace]
 members = [
     "api/api_auth",
+    "api/basic_auth",
     "api/common",
     "api/endpoints",
     "api/frontend",

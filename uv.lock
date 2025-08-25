@@ -6,6 +6,7 @@ requires-python = "==3.12.*"
 members = [
     "aggregator-api",
     "api-auth",
+    "basic-auth",
     "dc-api-common",
     "endpoints",
     "frontend",
@@ -98,6 +99,11 @@ wheels = [
 name = "aws-wsgi"
 version = "0.2.7"
 source = { git = "https://github.com/DemocracyClub/awsgi.git?rev=a5b800373c326e75f705d400c48f7df301409724#a5b800373c326e75f705d400c48f7df301409724" }
+
+[[package]]
+name = "basic-auth"
+version = "0.0.0"
+source = { virtual = "api/basic_auth" }
 
 [[package]]
 name = "beautifulsoup4"

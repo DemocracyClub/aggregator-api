@@ -380,8 +380,8 @@ Resources:
   BasicAuthFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./api/frontend/frontend
-      Handler: lambda_basic_auth.lambda_handler
+      CodeUri: ./api/basic_auth
+      Handler: handler.lambda_handler
       Runtime: python3.12
 
   BasicAuthGatewayResponse:
