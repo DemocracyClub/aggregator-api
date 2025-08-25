@@ -1,14 +1,15 @@
 import os
 
 from address import get_address
-from common.conf import settings
-from common.middleware import MIDDLEWARE
-from common.sentry_helper import init_sentry
 from dc_logging_client import DCWidePostcodeLoggingClient
 from mangum import Mangum
 from postcode import get_postcode
 from starlette.applications import Starlette
 from starlette.routing import Route
+
+from common.conf import settings
+from common.middleware import MIDDLEWARE
+from common.sentry_helper import init_sentry
 
 init_sentry()
 

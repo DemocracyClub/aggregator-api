@@ -3,8 +3,9 @@ import secrets
 
 import boto3
 import pytest
-from common.auth_models import User
 from tomlkit.toml_file import TOMLFile
+
+from common.auth_models import User
 
 
 @pytest.fixture(scope="function")

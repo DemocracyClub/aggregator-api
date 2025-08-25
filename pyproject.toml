@@ -4,19 +4,7 @@ version = "0.0.0"
 description = "devs.DC"
 readme = "README.md"
 requires-python = "==3.12.*"
-dependencies = [
-    "django==4.2.23",
-    "psycopg2-binary==2.9.10",
-    "django-apiblueprint-view==2.4.0",
-    "django-storages==1.13.2",
-    "django-sesame==3.2.2",
-    "setuptools==69.5.1",
-    "whitenoise==6.4.0",
-    "aws-wsgi",
-    "dc-design-system",
-    "dc-django-utils",
-    "dc-api-common",
-]
+dependencies = []
 
 [dependency-groups]
 dev = [
@@ -48,14 +36,13 @@ dc-api-common = { workspace = true }
 
 
 [tool.uv]
-required-version = "<0.6.0"
+required-version = "==0.8.*"
 package = false
 
 [tool.uv.workspace]
 members = [
-    "api/api_auth",
-    "api/common",
-    "api/endpoints",
+    "common",
+    "api/*",
 ]
 
 [tool.ruff]
@@ -73,4 +60,17 @@ lint.extend-select = [
 exclude_lines = [
     "if __name__ == .__main__.:",
     "@abstractmethod"
+]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "frontend.settings.testing"
+asyncio_mode = "strict"
+pythonpath = [
+    "api/",
+    "api/frontend",
+    "api/endpoints/v1",
+    "api/endpoints/v1/elections",
+    "api/endpoints/v1/layers_of_state",
+    "api/endpoints/v1/sandbox",
+    "api/endpoints/v1/voting_information",
 ]

@@ -1,8 +1,9 @@
-from common.async_requests import UpstreamApiError
 from elections_api_client import WdivWcivfApiClient
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from stitcher import Stitcher
+
+from common.async_requests import UpstreamApiError
 
 
 def get_address(request: Request):

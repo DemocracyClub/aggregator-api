@@ -1,8 +1,5 @@
 import os
 
-from common.conf import settings
-from common.middleware import MIDDLEWARE
-from common.sentry_helper import init_sentry
 from dc_logging_client import DCWidePostcodeLoggingClient
 from election_views import (
     get_election_list,
@@ -13,6 +10,10 @@ from election_views import (
 from mangum import Mangum
 from starlette.applications import Starlette
 from starlette.routing import Route
+
+from common.conf import settings
+from common.middleware import MIDDLEWARE
+from common.sentry_helper import init_sentry
 
 
 def init_logger(app):

@@ -5,8 +5,9 @@ from pathlib import Path
 from typing import IO, List, Optional
 
 from botocore.exceptions import ClientError
-from common.conf import settings
 from starlette.requests import Request
+
+from common.conf import settings
 
 
 class StaticDataHelper(metaclass=ABCMeta):

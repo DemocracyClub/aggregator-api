@@ -1,8 +1,8 @@
 __pycache__/
 *.pyc
 *.DS_Store
-frontend/settings/local.py
-frontend/static_files/
+api/frontend/frontend/settings/local.py
+api/frontend/frontend/static_files/
 
 # SQLite
 *.sqlite3
@@ -10,6 +10,7 @@ frontend/static_files/
 /.aws-sam/
 /test-results
 /lambda-layers/FrontendDependenciesLayer/requirements.txt
+/lambda-layers/PolarsLayer/requirements.txt
 api/common/build/
 api/common/dc_api_common.egg-info/
 .coverage

@@ -1,10 +1,11 @@
 from urllib.parse import parse_qs, urlparse
 
+from httpx import QueryParams
+
 from common.api_client import BaseAPIClient
 from common.async_requests import AsyncRequester
 from common.conf import settings
 from common.url_resolver import build_absolute_url
-from httpx import QueryParams
 
 
 class EEApiClient(BaseAPIClient):

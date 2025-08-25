@@ -2,10 +2,11 @@ import contextlib
 from json import JSONDecodeError
 
 import httpx
+from httpx import QueryParams
+
 from common.async_requests import UpstreamApiError
 from common.conf import settings
 from common.http_client import app_httpx_client
-from httpx import QueryParams
 
 SUPPRESS = [JSONDecodeError, httpx.HTTPError]
 if settings.DEBUG:
