@@ -28,12 +28,7 @@ dev = [
 ]
 
 [tool.uv.sources]
-aws-wsgi = { git = "https://github.com/DemocracyClub/awsgi.git", rev = "a5b800373c326e75f705d400c48f7df301409724" }
-dc-design-system = { git = "https://github.com/DemocracyClub/design-system.git", tag = "0.5.0" }
-dc-django-utils = { git = "https://github.com/DemocracyClub/dc_django_utils.git", tag = "8.0.3" }
 dc-response-builder = { git = "https://github.com/DemocracyClub/dc_response_builder.git", tag = "1.1.2" }
-dc-api-common = { workspace = true }
-
 
 [tool.uv]
 required-version = "==0.8.*"
