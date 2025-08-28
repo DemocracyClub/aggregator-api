@@ -3,10 +3,11 @@ from copy import deepcopy
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from common.conf import settings
-from common.url_resolver import build_absolute_url
 from recall_petitions.client import RecallPetitionApiClient
 from starlette.requests import Request
+
+from common.conf import settings
+from common.url_resolver import build_absolute_url
 
 CANCELLATION_REASONS = {
     "NO_CANDIDATES": {

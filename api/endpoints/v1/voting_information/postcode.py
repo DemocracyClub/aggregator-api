@@ -1,9 +1,10 @@
-from common.async_requests import UpstreamApiError
 from dc_logging_client import DCWidePostcodeLoggingClient
 from elections_api_client import WdivWcivfApiClient
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from stitcher import Stitcher
+
+from common.async_requests import UpstreamApiError
 
 
 async def get_postcode(request: Request):

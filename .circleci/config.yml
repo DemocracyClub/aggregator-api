@@ -11,7 +11,7 @@ version: 2.1
 commands:
   install_uv:
     steps:
-      - run: pip install --upgrade uv">=0.5.12,<0.6.0"
+      - run: pip install --upgrade uv"==0.8.*"
 
 jobs:
 
@@ -25,20 +25,21 @@ jobs:
         keys:
         - v9-dependencies-{{ checksum "uv.lock" }}
     - install_uv
-    - run: uv sync --dev --no-python-downloads
+    - run: uv sync --all-groups --all-packages --no-python-downloads
     - run: make lambda-layers/FrontendDependenciesLayer/requirements.txt
+    - run: make lambda-layers/PolarsLayer/requirements.txt
     - run: uv run python manage.py collectstatic --noinput --clear
     - run: uv run make aggregator/apps/api_docs/v1/templates/api_docs_rendered.html APP_IS_BEHIND_CLOUDFRONT=True
     - persist_to_workspace:
         root: ~/repo/
         paths:
           - lambda-layers/FrontendDependenciesLayer/requirements.txt
+          - lambda-layers/PolarsLayer/requirements.txt
           - aggregator/apps/api_docs/v1/templates/api_docs_rendered.html
-          - frontend/static_files/
+          - api/frontend/frontend/static_files/
     - save_cache:
         when: on_success
         paths:
-          - ./.venv
           - $HOME/.cache/uv
         key: v9-dependencies-{{ checksum "uv.lock" }}
 
@@ -52,6 +53,7 @@ jobs:
         keys:
         - v9-dependencies-{{ checksum "uv.lock" }}
     - install_uv
+    - run: uv sync --all-groups --all-packages --no-python-downloads
     - run: uv lock --locked
     - run: uv run ruff format . --check
     - run: uv run ruff check .
@@ -60,9 +62,9 @@ jobs:
         name: ensure api_docs_rendered.html is up to date
         command: |
           SECRET_KEY=fake uv run python manage.py build_docs
-          uv run djhtml frontend/apps/api_docs/v1/templates/api_docs_rendered.html
+          uv run djhtml api/frontend/frontend/apps/api_docs/v1/templates/api_docs_rendered.html
           git diff --exit-code
-    - run: uv run pytest --ruff --cov-report= --cov=frontend --cov=api --junitxml=test-results/junit.xml
+    - run: uv run pytest --ruff --cov-report= --cov=api --junitxml=test-results/junit.xml
     - run: |
         if [ -n "$COVERALLS_REPO_TOKEN" ]; then
           uv run coveralls
@@ -201,7 +203,7 @@ workflows:
 
     - sam_build:
         requires:
-        - install_and_update_dependencies # FrontendDependenciesLayer build needs lambda-layers/FrontendDependenciesLayer/requirements.txt
+        - install_and_update_dependencies # We need the requirements.txt files we built earlier
         - test
 
     # This deployment tracks the tip of the main branch in Github. It is not intended

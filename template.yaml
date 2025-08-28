@@ -155,6 +155,16 @@ Resources:
       BuildMethod: makefile
     RetentionPolicy: Delete
 
+  PolarsLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      ContentUri: ./lambda-layers/PolarsLayer/
+      CompatibleRuntimes:
+        - python3.12
+    Metadata:
+      BuildMethod: makefile
+    RetentionPolicy: Delete
+
   APIAuthFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -184,6 +194,7 @@ Resources:
 #            - 1
       Layers:
         - !Ref APICommonLayer
+        - !Ref PolarsLayer
       Runtime: python3.12
       MemorySize: 512
       Environment:
@@ -216,6 +227,7 @@ Resources:
       Handler: app.handler
       Layers:
         - !Ref APICommonLayer
+        - !Ref PolarsLayer
       Runtime: python3.12
       MemorySize: 512
       Environment:
@@ -246,6 +258,7 @@ Resources:
       Handler: app.handler
       Layers:
         - !Ref APICommonLayer
+        - !Ref PolarsLayer
       Runtime: python3.12
       MemorySize: 512
       Environment:
@@ -307,7 +320,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
-      CodeUri: .
+      CodeUri: ./api/frontend
       Handler: frontend.asgi.handler
       Layers:
         - !Ref APICommonLayer
@@ -367,8 +380,8 @@ Resources:
   BasicAuthFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./frontend/
-      Handler: lambda_basic_auth.lambda_handler
+      CodeUri: ./api/basic_auth
+      Handler: handler.lambda_handler
       Runtime: python3.12
 
   BasicAuthGatewayResponse:
@@ -387,7 +400,7 @@ Resources:
       FunctionName: ApiFrontendManagementFunction
       Timeout: 60
       Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/AggregatorApiLambdaExecutionRole"
-      CodeUri: .
+      CodeUri: ./api/frontend
       Handler: frontend.lambda_awsgi.management_handler
       Layers:
         - !Ref APICommonLayer
