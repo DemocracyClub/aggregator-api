@@ -1,3 +1,4 @@
+@import 'partials/_switcher.scss';
 @import 'partials/_fonts.scss';
 @import 'partials/_variables.scss';
 @import 'partials/_type.scss';
@@ -26,6 +27,7 @@
 @import 'partials/_codeblock.scss';
 @import 'partials/_dark.scss';
 @import 'partials/_page.scss';
+@import 'partials/_map-leaflet.scss';
 @import 'partials/_utilities.scss';
 @import 'partials/_logo.scss';
 // // Generate atomic classes for documentation demos
@@ -33,6 +35,7 @@
 @import 'partials/_classes-scales.scss';
 $scope: false;
 @mixin optional-styles {
+  @include switcher;
   @include description-lists;
   @include button;
   @include cta;
@@ -54,6 +57,7 @@ $scope: false;
   @include filter;
   @include status;
   @include codeblock;
+  @include map-leaflet;
   @include logo;
 }
 
