@@ -316,8 +316,8 @@ requires-dist = [
 
 [[package]]
 name = "dc-design-system"
-version = "0.7.0"
-source = { git = "https://github.com/DemocracyClub/design-system.git?tag=0.7.0#9bc27773cd5a91c9f10966fe6c4871a4d3277a1a" }
+version = "0.8.0"
+source = { git = "https://github.com/DemocracyClub/design-system.git?tag=0.8.0#36fed8729842d062ba143b75401119b99f0386ad" }
 
 [[package]]
 name = "dc-django-utils"
@@ -539,7 +539,7 @@ dependencies = [
 requires-dist = [
     { name = "aws-wsgi", git = "https://github.com/DemocracyClub/awsgi.git?rev=a5b800373c326e75f705d400c48f7df301409724" },
     { name = "dc-api-common", editable = "common" },
-    { name = "dc-design-system", git = "https://github.com/DemocracyClub/design-system.git?tag=0.7.0" },
+    { name = "dc-design-system", git = "https://github.com/DemocracyClub/design-system.git?tag=0.8.0" },
     { name = "dc-django-utils", git = "https://github.com/DemocracyClub/dc_django_utils.git?tag=8.0.5" },
     { name = "django", specifier = "==5.2.5" },
     { name = "django-apiblueprint-view", specifier = "==2.5.1" },

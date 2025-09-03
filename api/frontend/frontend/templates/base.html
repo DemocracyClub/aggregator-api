@@ -38,7 +38,10 @@
                                     <a href="{% url "api_users:profile" %}">Profile</a>
                                 </li>
                                 <li>
-                                    <a href="{% url "api_users:logout" %}">Logout</a>
+                                    <form class="ds-logout" id="logout-form" method="post" action="{% url 'api_users:logout' %}">
+                                        {% csrf_token %}
+                                        <button type="submit">Logout</button>
+                                    </form>
                                 </li>
                             {% else %}
                                 <li>
