@@ -4,9 +4,9 @@ version = "0.0.0"
 description = "devs.DC API frontend"
 requires-python = "==3.12.*"
 dependencies = [
-    "django==4.2.23",
+    "django==5.2.5",
     "psycopg2-binary==2.9.10",
-    "django-apiblueprint-view==2.4.0",
+    "django-apiblueprint-view==2.5.1",
     "django-storages==1.13.2",
     "django-sesame==3.2.2",
     "setuptools==69.5.1",
@@ -19,7 +19,7 @@ dependencies = [
 
 [tool.uv.sources]
 aws-wsgi = { git = "https://github.com/DemocracyClub/awsgi.git", rev = "a5b800373c326e75f705d400c48f7df301409724" }
-dc-design-system = { git = "https://github.com/DemocracyClub/design-system.git", tag = "0.5.0" }
+dc-design-system = { git = "https://github.com/DemocracyClub/design-system.git", tag = "0.7.0" }
 dc-django-utils = { git = "https://github.com/DemocracyClub/dc_django_utils.git", tag = "8.0.4" }
 dc-api-common = { workspace = true }
 
