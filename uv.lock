@@ -45,7 +45,7 @@ dev = [
     { name = "beautifulsoup4", specifier = "==4.13.4" },
     { name = "boto3", specifier = "==1.34.91" },
     { name = "coveralls", specifier = "==3.3.1" },
-    { name = "dc-response-builder", git = "https://github.com/DemocracyClub/dc_response_builder.git?tag=1.1.2" },
+    { name = "dc-response-builder", git = "https://github.com/DemocracyClub/dc_response_builder.git?tag=1.2.0" },
     { name = "djhtml", specifier = "==3.0.6" },
     { name = "moto", extras = ["dynamodb"], specifier = "==5.0.5" },
     { name = "mypy-boto3-dynamodb", specifier = "==1.34.91" },
@@ -345,8 +345,8 @@ dependencies = [
 
 [[package]]
 name = "dc-response-builder"
-version = "1.1.2"
-source = { git = "https://github.com/DemocracyClub/dc_response_builder.git?tag=1.1.2#4f63e497e10f8ba57dc3dec3b42772667847e6ae" }
+version = "1.2.0"
+source = { git = "https://github.com/DemocracyClub/dc_response_builder.git?tag=1.2.0#cd645bdd6db2b704bb23d6e077e6700d36f12773" }
 dependencies = [
     { name = "pydantic", extra = ["email"] },
     { name = "uk-election-ids" },
@@ -1223,11 +1223,11 @@ wheels = [
 
 [[package]]
 name = "uk-election-ids"
-version = "0.8.0"
+version = "0.10.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/09/9d/278835079029a73c9cdd02066d3298ab55859771ab9a73bf6bd3cdecca7d/uk_election_ids-0.8.0.tar.gz", hash = "sha256:af0428ecf5d1802d7834ed0b843b67c873f3b02da53d54a822b1a11f9cf8ef31", size = 10797, upload-time = "2024-04-16T06:59:35.515Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b6/06/0c5388f56583deddd63cb200ed6447943442fbba0834a79a9557996a7fdc/uk_election_ids-0.10.0.tar.gz", hash = "sha256:f024cdfb4bf5688b2c5a3269458a7ff503fe50869a87ad5fe56faebd36b02c34", size = 11121, upload-time = "2025-07-16T11:47:34.142Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/93/e3/c86328f5c676b69256ded7b3cfb45376cd7117434714bbedc680ed64a93b/uk_election_ids-0.8.0-py3-none-any.whl", hash = "sha256:b53bbda223e65db0e7eedffa38616c62a82f86e7b99b021522934c5b09598a02", size = 12001, upload-time = "2024-04-16T06:59:34.306Z" },
+    { url = "https://files.pythonhosted.org/packages/ad/8e/592e156eeffec70751324298a455d486c93d83c9996b4e3edbb1f8785172/uk_election_ids-0.10.0-py3-none-any.whl", hash = "sha256:873cdd297e5977187fb437f82418d8ce4748b1fc66a183eca3142794a949c7d6", size = 12303, upload-time = "2025-07-16T11:47:32.823Z" },
 ]
 
 [[package]]

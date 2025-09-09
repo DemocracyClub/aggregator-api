@@ -45,6 +45,7 @@
           "post_name": "London Borough of Lewisham",
           "postal_voting_requirements": null,
           "candidates_verified": true,
+          "by_election_reason": "",
           "wcivf_url": "https://whocanivotefor.co.uk/elections/mayor.lewisham.2018-05-03/post-lewisham/london-borough-of-lewisham",
           "voting_system": {
             "slug": "sv",
@@ -264,6 +265,7 @@
           "post_name": "Blackheath",
           "postal_voting_requirements": null,
           "candidates_verified": true,
+          "by_election_reason": "",
           "wcivf_url": "https://whocanivotefor.co.uk/elections/local.lewisham.2018-05-03/post-LBW:E05000438/blackheath",
           "voting_system": {
             "slug": "FPTP",
