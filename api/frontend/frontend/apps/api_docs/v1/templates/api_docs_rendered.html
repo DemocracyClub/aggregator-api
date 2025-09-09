@@ -302,6 +302,7 @@
           &quot;election_name&quot;: &quot;Cardiff local election&quot;,
           &quot;post_name&quot;: &quot;Pontprennau/Old St. Mellons&quot;,
           &quot;candidates_verified&quot;: false,
+          &quot;by_election_reason&quot;: &quot;DEATH&quot;,
           &quot;voting_system&quot;: {
             &quot;slug&quot;: &quot;FPTP&quot;,
             &quot;name&quot;: &quot;First-past-the-post&quot;,
@@ -668,6 +669,23 @@
                 &quot;candidates_verified&quot;: {
                   &quot;type&quot;: &quot;boolean&quot;,
                   &quot;description&quot;: &quot;True if the list of candidates for this election has been confirmed against the nomination papers for this ballot. If this property is False, the candidate list is provisional or unconfirmed.&quot;
+                },
+                &quot;by_election_reason&quot;: {
+                  &quot;type&quot;: &quot;string&quot;,
+                  &quot;enum&quot;: [
+                    &quot;DEATH&quot;,
+                    &quot;RESIGNATION&quot;,
+                    &quot;ELECTORAL_COURT&quot;,
+                    &quot;FAILURE_TO_ACCEPT&quot;,
+                    &quot;FAILURE_TO_ATTEND_MEETINGS&quot;,
+                    &quot;DISQUALIFICATION&quot;,
+                    &quot;LOSING_QUALIFICATION&quot;,
+                    &quot;RECALL_PETITION&quot;,
+                    &quot;OTHER&quot;,
+                    &quot;UNKNOWN&quot;,
+                    &quot;``&quot;
+                  ],
+                  &quot;description&quot;: &quot;reason by election was triggered. A blank response denotes &#x27;NOT_APPLICABLE&#x27; - i.e. neither a by election nor a ballot.&quot;
                 },
                 &quot;voting_system&quot;: {
                   &quot;type&quot;: &quot;object&quot;,
@@ -1292,6 +1310,7 @@
           &quot;election_name&quot;: &quot;Cardiff local election&quot;,
           &quot;post_name&quot;: &quot;Pontprennau/Old St. Mellons&quot;,
           &quot;candidates_verified&quot;: false,
+          &quot;by_election_reason&quot;: &quot;DEATH&quot;,
           &quot;voting_system&quot;: {
             &quot;slug&quot;: &quot;FPTP&quot;,
             &quot;name&quot;: &quot;First-past-the-post&quot;,
@@ -1658,6 +1677,23 @@
                 &quot;candidates_verified&quot;: {
                   &quot;type&quot;: &quot;boolean&quot;,
                   &quot;description&quot;: &quot;True if the list of candidates for this election has been confirmed against the nomination papers for this ballot. If this property is False, the candidate list is provisional or unconfirmed.&quot;
+                },
+                &quot;by_election_reason&quot;: {
+                  &quot;type&quot;: &quot;string&quot;,
+                  &quot;enum&quot;: [
+                    &quot;DEATH&quot;,
+                    &quot;RESIGNATION&quot;,
+                    &quot;ELECTORAL_COURT&quot;,
+                    &quot;FAILURE_TO_ACCEPT&quot;,
+                    &quot;FAILURE_TO_ATTEND_MEETINGS&quot;,
+                    &quot;DISQUALIFICATION&quot;,
+                    &quot;LOSING_QUALIFICATION&quot;,
+                    &quot;RECALL_PETITION&quot;,
+                    &quot;OTHER&quot;,
+                    &quot;UNKNOWN&quot;,
+                    &quot;``&quot;
+                  ],
+                  &quot;description&quot;: &quot;reason by election was triggered. A blank response denotes &#x27;NOT_APPLICABLE&#x27; - i.e. neither a by election nor a ballot.&quot;
                 },
                 &quot;voting_system&quot;: {
                   &quot;type&quot;: &quot;object&quot;,

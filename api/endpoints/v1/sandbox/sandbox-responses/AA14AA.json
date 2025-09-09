@@ -30,6 +30,7 @@
           "post_name": "London Borough of Lewisham",
           "postal_voting_requirements": null,
           "candidates_verified": true,
+          "by_election_reason": "",
           "voting_system": {
             "slug": "sv",
             "name": "Supplementary Vote",
@@ -186,6 +187,7 @@
           "post_name": "Blackheath",
           "postal_voting_requirements": null,
           "candidates_verified": true,
+          "by_election_reason": "",
           "candidates": [
             {
               "list_position": null,
@@ -403,6 +405,7 @@
           "post_name": "Blackheath",
           "postal_voting_requirements": null,
           "candidates_verified": false,
+          "by_election_reason": "",
           "candidates": [
             {
               "list_position": null,
@@ -613,6 +616,7 @@
           "post_name": "Lewisham East",
           "postal_voting_requirements": null,
           "candidates_verified": false,
+          "by_election_reason": "",
           "voting_system": {
             "slug": "FPTP",
             "name": "First-past-the-post",

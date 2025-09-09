@@ -67,6 +67,7 @@
           "post_name": "Lancaster Gate",
           "postal_voting_requirements": null,
           "candidates_verified": true,
+          "by_election_reason": "",
           "voting_system": {
             "slug": "FPTP",
             "name": "First-past-the-post",

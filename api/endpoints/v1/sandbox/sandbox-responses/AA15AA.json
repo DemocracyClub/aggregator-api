@@ -43,6 +43,7 @@
           "post_name": "West Tyrone",
           "postal_voting_requirements": null,
           "candidates_verified": false,
+          "by_election_reason": "",
           "voting_system": {
             "slug": "FPTP",
             "name": "First-past-the-post",
