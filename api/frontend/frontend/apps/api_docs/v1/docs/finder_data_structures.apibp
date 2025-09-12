@@ -115,7 +115,7 @@
                 + `election_name`: `Cardiff local election` (string) - Friendly name for this ballot's parent election group
                 + `post_name`: `Pontprennau/Old St. Mellons` (string) - Name of the division or post the winner(s) of this election will represent
                 + `candidates_verified`: `false` (boolean) - True if the list of candidates for this election has been confirmed against the nomination papers for this ballot. If this property is False, the candidate list is provisional or unconfirmed.
-                + `by_election_reason`: (ByElectionReason) - reason by election was triggered. A blank response denotes 'NOT_APPLICABLE' - i.e. neither a by election nor a ballot.
+                + `by_election_reason`: (ByElectionReason) - reason by election was triggered. A blank response denotes 'NOT_APPLICABLE' - i.e. neither a by election nor a ballot. See our current [reference definition](https://elections.democracyclub.org.uk/reference_definition/#by-election-reasons) for more details.
                 + `voting_system` (object) - The voting system used in this election
                     + `slug`: `FPTP` (string) - One of `AMS`, `FPTP`, `PR-CL`, `sv`, `STV`
                     + `name`: `First-past-the-post` (string) - The name of this voting system (e.g: "First-past-the-post")
