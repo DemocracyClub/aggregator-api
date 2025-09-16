@@ -52,11 +52,13 @@ AWS_S3_CUSTOM_DOMAIN = (
 
 MEDIAFILES_LOCATION = "media"
 MEDIA_URL = "http://{}/{}/".format(AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
-DEFAULT_FILE_STORAGE = "frontend.s3_lambda_storage.MediaStorage"
 
 AWS_DEFAULT_ACL = "public-read"
 STATICFILES_LOCATION = "static"
-STATICFILES_STORAGE = "frontend.s3_lambda_storage.StaticStorage"
+STORAGES = {
+    "default": {"BACKEND": "frontend.s3_lambda_storage.MediaStorage"},
+    "staticfiles": {"BACKEND": "frontend.s3_lambda_storage.StaticStorage"},
+}
 
 STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
