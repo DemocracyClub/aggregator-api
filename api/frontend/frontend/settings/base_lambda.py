@@ -57,7 +57,7 @@ AWS_DEFAULT_ACL = "public-read"
 STATICFILES_LOCATION = "static"
 STORAGES = {
     "default": {"BACKEND": "frontend.s3_lambda_storage.MediaStorage"},
-    "staticfiles": {"BACKEND": "frontend.s3_lambda_storage.StaticStorage"},
+    "staticfiles": {"BACKEND": "dc_utils.storages.StaticStorage"},
 }
 
 STATICFILES_FINDERS = (

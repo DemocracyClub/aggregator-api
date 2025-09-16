@@ -1,14 +1,8 @@
 from django.conf import settings
 from django.contrib.staticfiles.storage import (
-    ManifestStaticFilesStorage,
     staticfiles_storage,
 )
 from pipeline.compilers.sass import SASSCompiler
-from pipeline.storage import PipelineMixin
-
-
-class StaticStorage(PipelineMixin, ManifestStaticFilesStorage):
-    pass
 
 
 class LambdaSASSCompiler(SASSCompiler):
