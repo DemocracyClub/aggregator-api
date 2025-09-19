@@ -10,8 +10,8 @@ DEBUG = os.environ.get("DEBUG", False)
 WHITENOISE_AUTOREFRESH = False
 WHITENOISE_STATIC_PREFIX = "/static/"
 
-PIPELINE["PIPELINE_ENABLED"] = os.environ.get("PIPELINE_ENABLED", False)  # noqa
-PIPELINE["PIPELINE_COLLECTOR_ENABLED"] = False  # noqa
+PIPELINE["PIPELINE_ENABLED"] = os.environ.get("PIPELINE_ENABLED", False)  # noqa F405
+PIPELINE["PIPELINE_COLLECTOR_ENABLED"] = False  # noqa F405
 
 if os.environ.get("APP_IS_BEHIND_CLOUDFRONT", False) in [
     True,
@@ -55,10 +55,7 @@ MEDIA_URL = "http://{}/{}/".format(AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
 
 AWS_DEFAULT_ACL = "public-read"
 STATICFILES_LOCATION = "static"
-STORAGES = {
-    "default": {"BACKEND": "frontend.s3_lambda_storage.MediaStorage"},
-    "staticfiles": {"BACKEND": "dc_utils.storages.StaticStorage"},
-}
+STORAGES["default"] = {"BACKEND": "frontend.s3_lambda_storage.MediaStorage"}  # noqa F405
 
 STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
