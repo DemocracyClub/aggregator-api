@@ -316,13 +316,13 @@ requires-dist = [
 
 [[package]]
 name = "dc-design-system"
-version = "0.5.0"
-source = { git = "https://github.com/DemocracyClub/design-system.git?tag=0.5.0#993897caa852caeb603bf291c420f5ea13ffb2b4" }
+version = "0.8.0"
+source = { git = "https://github.com/DemocracyClub/design-system.git?tag=0.8.0#36fed8729842d062ba143b75401119b99f0386ad" }
 
 [[package]]
 name = "dc-django-utils"
-version = "8.0.4"
-source = { git = "https://github.com/DemocracyClub/dc_django_utils.git?tag=8.0.4#6d308a16f574ddbd1601a8cadd79e9b3f6ca56bf" }
+version = "8.0.5"
+source = { git = "https://github.com/DemocracyClub/dc_django_utils.git?tag=8.0.5#7f3cbb59117284445c3cc29394078a787aa88b3b" }
 dependencies = [
     { name = "django" },
     { name = "django-localflavor" },
@@ -363,21 +363,21 @@ wheels = [
 
 [[package]]
 name = "django"
-version = "4.2.23"
+version = "5.2.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "asgiref" },
     { name = "sqlparse" },
     { name = "tzdata", marker = "sys_platform == 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b5/20/02242739714eb4e53933d6c0fe2c57f41feb449955b0aa39fc2da82b8f3c/django-4.2.23.tar.gz", hash = "sha256:42fdeaba6e6449d88d4f66de47871015097dc6f1b87910db00a91946295cfae4", size = 10448384, upload-time = "2025-06-10T10:06:34.574Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/62/9b/779f853c3d2d58b9e08346061ff3e331cdec3fe3f53aae509e256412a593/django-5.2.5.tar.gz", hash = "sha256:0745b25681b129a77aae3d4f6549b62d3913d74407831abaa0d9021a03954bae", size = 10859748, upload-time = "2025-08-06T08:26:29.978Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cb/44/314e8e4612bd122dd0424c88b44730af68eafbee88cc887a86586b7a1f2a/django-4.2.23-py3-none-any.whl", hash = "sha256:dafbfaf52c2f289bd65f4ab935791cb4fb9a198f2a5ba9faf35d7338a77e9803", size = 7993904, upload-time = "2025-06-10T10:06:28.092Z" },
+    { url = "https://files.pythonhosted.org/packages/9d/6e/98a1d23648e0085bb5825326af17612ecd8fc76be0ce96ea4dc35e17b926/django-5.2.5-py3-none-any.whl", hash = "sha256:2b2ada0ee8a5ff743a40e2b9820d1f8e24c11bac9ae6469cd548f0057ea6ddcd", size = 8302999, upload-time = "2025-08-06T08:26:23.562Z" },
 ]
 
 [[package]]
 name = "django-apiblueprint-view"
-version = "2.4.0"
+version = "2.5.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cffi" },
@@ -385,9 +385,10 @@ dependencies = [
     { name = "markdown2" },
     { name = "refract" },
 ]
+sdist = { url = "https://files.pythonhosted.org/packages/58/ff/b7040206ec20922d8838c65b37945ee2b330d170d46fa23e896309038a1d/django_apiblueprint_view-2.5.1.tar.gz", hash = "sha256:e3bb045c358993a92ab64dee78fc48add1982a6cd9f309a39529912c72211b47", size = 9762, upload-time = "2023-12-06T19:21:29.44Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c6/58/3119fefcf8778a1abab1e1f5647811ce677a62341c9e7061f56f94c576c3/django_apiblueprint_view-2.4.0-py3-none-any.whl", hash = "sha256:ec188366d0f951df966e9bf086bdde866da5dfadda478db8c41025395f48694d", size = 1138587, upload-time = "2021-12-07T20:26:20.756Z" },
-    { url = "https://files.pythonhosted.org/packages/1b/54/4ff6a4fb11efdf477a2126cc3dc10a154ae5b9700bf0778d497c537ab1dd/django_apiblueprint_view-2.4.0-py3-none-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:4240d9bd30f9d14396c5c05054d9159e0d3308ecdeed3e37271550c6559b528f", size = 1139857, upload-time = "2021-12-07T20:26:22.315Z" },
+    { url = "https://files.pythonhosted.org/packages/ba/dd/07a17ab6e2de1e50811e1f8caf81d0e48664e840160fcbddc13aa8ee80f9/django_apiblueprint_view-2.5.1-py3-none-macosx_11_0_x86_64.whl", hash = "sha256:409d465884be7fd42d948c1aa7bf13177f9a11faf7086e7683287d9d1e5b7d26", size = 466565, upload-time = "2023-12-06T19:21:26.138Z" },
+    { url = "https://files.pythonhosted.org/packages/ea/1f/d017da315ea1a61d0ad670f68944fcf159d4b88d8431c289f3e6854d7a4d/django_apiblueprint_view-2.5.1-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:7b4f553965c1d06e77c90ee8eac77249f6a2f49f568f5c0336d21e106d33c401", size = 1189073, upload-time = "2023-12-06T19:21:28.111Z" },
 ]
 
 [[package]]
@@ -405,15 +406,15 @@ wheels = [
 
 [[package]]
 name = "django-pipeline"
-version = "4.0.0"
+version = "4.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "setuptools" },
     { name = "wheel" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/49/f5/12c83c33f0d6cd93a7b1498a1b3ae9bd86828f1f739998f59c5249d7504e/django_pipeline-4.0.0.tar.gz", hash = "sha256:0ab1190d9dc64e2f7b72be3f7b023c06aca7cc1cc61e7dc9f0343838e29bbc88", size = 71780, upload-time = "2024-12-06T12:11:11.795Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1c/7b/2f78ccdad9f45a3d4f709950160f9d7e5009b2b8bec8ef636025ec89b62e/django_pipeline-4.1.0.tar.gz", hash = "sha256:aa1d79df6f215b78396cdd50ed162f8741dc4993e9fba2c78483d9b6f1e722b4", size = 72180, upload-time = "2025-09-13T11:47:45.332Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/2d/05/7258f4b27839d186dfc29f9416475d236c2a64f25ff64a22e77d700eb753/django_pipeline-4.0.0-py3-none-any.whl", hash = "sha256:90e50c15387a6e051ee1a6ce2aaca333823ccfb23695028790f74412bde7d7db", size = 75384, upload-time = "2024-12-06T12:10:08.162Z" },
+    { url = "https://files.pythonhosted.org/packages/9a/89/fd40adbf5cc16550007ad67bffd7493c9976f7e576bf431d1bc537cfa976/django_pipeline-4.1.0-py3-none-any.whl", hash = "sha256:bdb84feb8db73b9fe8298fd9d0f6e50f30d78eb28a8ed28f73ca5d154080c3d5", size = 75523, upload-time = "2025-09-13T11:42:55.754Z" },
 ]
 
 [[package]]
@@ -430,14 +431,14 @@ wheels = [
 
 [[package]]
 name = "django-storages"
-version = "1.13.2"
+version = "1.14.6"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "django" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/cb/8a/3872af7e3d61a8eb7616872549cd74f7f1090de41792a059adb7ce6854dc/django-storages-1.13.2.tar.gz", hash = "sha256:cbadd15c909ceb7247d4ffc503f12a9bec36999df8d0bef7c31e57177d512688", size = 107522, upload-time = "2022-12-23T04:54:47.871Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ff/d6/2e50e378fff0408d558f36c4acffc090f9a641fd6e084af9e54d45307efa/django_storages-1.14.6.tar.gz", hash = "sha256:7a25ce8f4214f69ac9c7ce87e2603887f7ae99326c316bc8d2d75375e09341c9", size = 87587, upload-time = "2025-04-02T02:34:55.103Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/06/ed/6eef8d009138d4c58c63026bf24e946a7e09caac77aca33ab46a5e5bc51f/django_storages-1.13.2-py3-none-any.whl", hash = "sha256:31dc5a992520be571908c4c40d55d292660ece3a55b8141462b4e719aa38eab3", size = 46715, upload-time = "2022-12-23T04:54:45.041Z" },
+    { url = "https://files.pythonhosted.org/packages/1f/21/3cedee63417bc5553eed0c204be478071c9ab208e5e259e97287590194f1/django_storages-1.14.6-py3-none-any.whl", hash = "sha256:11b7b6200e1cb5ffcd9962bd3673a39c7d6a6109e8096f0e03d46fab3d3aabd9", size = 33095, upload-time = "2025-04-02T02:34:53.291Z" },
 ]
 
 [[package]]
@@ -538,12 +539,12 @@ dependencies = [
 requires-dist = [
     { name = "aws-wsgi", git = "https://github.com/DemocracyClub/awsgi.git?rev=a5b800373c326e75f705d400c48f7df301409724" },
     { name = "dc-api-common", editable = "common" },
-    { name = "dc-design-system", git = "https://github.com/DemocracyClub/design-system.git?tag=0.5.0" },
-    { name = "dc-django-utils", git = "https://github.com/DemocracyClub/dc_django_utils.git?tag=8.0.4" },
-    { name = "django", specifier = "==4.2.23" },
-    { name = "django-apiblueprint-view", specifier = "==2.4.0" },
+    { name = "dc-design-system", git = "https://github.com/DemocracyClub/design-system.git?tag=0.8.0" },
+    { name = "dc-django-utils", git = "https://github.com/DemocracyClub/dc_django_utils.git?tag=8.0.5" },
+    { name = "django", specifier = "==5.2.5" },
+    { name = "django-apiblueprint-view", specifier = "==2.5.1" },
     { name = "django-sesame", specifier = "==3.2.2" },
-    { name = "django-storages", specifier = "==1.13.2" },
+    { name = "django-storages", specifier = "==1.14.6" },
     { name = "psycopg2-binary", specifier = "==2.9.10" },
     { name = "setuptools", specifier = "==69.5.1" },
     { name = "whitenoise", specifier = "==6.4.0" },

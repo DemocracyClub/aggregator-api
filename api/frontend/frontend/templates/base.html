@@ -38,7 +38,10 @@
                                     <a href="{% url "api_users:profile" %}">Profile</a>
                                 </li>
                                 <li>
-                                    <a href="{% url "api_users:logout" %}">Logout</a>
+                                    <form class="ds-logout" id="logout-form" method="post" action="{% url 'api_users:logout' %}">
+                                        {% csrf_token %}
+                                        <button type="submit">Logout</button>
+                                    </form>
                                 </li>
                             {% else %}
                                 <li>
@@ -72,23 +75,30 @@
                 {% block content %}
                 {% endblock content %}
             </main>
+
             <footer class="ds-footer">
-                <div class="ds-block-centered ds-text-centered ds-stack">
-                    <div class="ds-cluster-center">
-                        <ul>
-                            <li><a href="{% url 'home' %}">Home</a></li>
-                            <li><a href="https://democracyclub.org.uk/about/">About Democracy Club</a></li>
-                            <li><a href="https://democracyclub.org.uk/contact/">Contact Us</a></li>
-                            <li><a href="https://democracyclub.org.uk/privacy/">Privacy</a></li>
-                            <li><a href="https://democracyclub.org.uk/donate/">Donate</a></li>
-                            <li><a href="https://democracyclub.org.uk/blog/">Blog</a></li>
-                            <li><a href="https://twitter.com/democlub">Twitter</a></li>
-                            <li><a href="https://mastodon.me.uk/@DemocracyClub">Mastodon</a></li>
-                            <li><a href="https://github.com/DemocracyClub">GitHub</a></li>
 
+                {% block footer_menu %}
+                    {% block footer_links %}
+                        <div class="ds-block-centered ds-text-centered ds-stack">
+                            <div class="ds-cluster-center">
+                                <ul>
+                                    <li><a href="{% url 'home' %}">Home</a></li>
+                                    <li><a href="https://democracyclub.org.uk/about/">About Democracy Club</a></li>
+                                    <li><a href="https://democracyclub.org.uk/contact/">Contact Us</a></li>
+                                    <li><a href="https://democracyclub.org.uk/privacy/">Privacy</a></li>
+                                    <li><a href="https://democracyclub.org.uk/donate/">Donate</a></li>
+                                    <li><a href="https://democracyclub.org.uk/blog/">Blog</a></li>
+                                    <li><a href="https://twitter.com/democlub">Twitter</a></li>
+                                    <li><a href="https://mastodon.me.uk/@DemocracyClub">Mastodon</a></li>
+                                    <li><a href="https://github.com/DemocracyClub">GitHub</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    {% endblock footer_links %}
+                {% endblock footer_menu %}
 
-                        </ul>
-                    </div>
+                {% block extra_footer_copyright_text %}
                     <div class="ds-copyright">
                         <a class="ds-logo" href="https://democracyclub.org.uk/">
                             <img src="{% static 'images/logo_icon.svg' %}" alt="" />
@@ -104,7 +114,8 @@
                             the digital infrastructure needed for a 21st century democracy
                         </p>
                     </div>
-                </div>
+                {% endblock extra_footer_copyright_text %}
+
             </footer>
         </div>
     </body>
