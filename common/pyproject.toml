@@ -11,7 +11,7 @@ dependencies = [
 
     # note: PEP508 syntax here instead of tool.uv.sources
     # so we can pip install the package
-    "dc-logging-utils @ git+https://github.com/DemocracyClub/dc_logging.git@1.0.2"
+    "dc-logging-utils @ git+https://github.com/DemocracyClub/dc_logging.git@3.0.0"
 ]
 
 [tool.uv]
