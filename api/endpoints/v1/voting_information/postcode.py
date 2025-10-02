@@ -10,14 +10,6 @@ from common.async_requests import UpstreamApiError
 async def get_postcode(request: Request):
     postcode = request.path_params["postcode"].upper()
     logger: DCWidePostcodeLoggingClient = request.app.state.POSTCODE_LOGGER
-    entry = logger.entry_class(
-        postcode=str(postcode),
-        dc_product=logger.dc_product.aggregator_api,
-        api_key=request.scope["api_user"].api_key,
-        calls_devs_dc_api=False,
-        **request.scope["utm_dict"],
-    )
-    logger.log(entry)
 
     client = WdivWcivfApiClient(query_params=request.query_params)
     try:
@@ -30,5 +22,20 @@ async def get_postcode(request: Request):
         result = stitcher.make_address_picker_response()
     else:
         result = stitcher.make_result_known_response()
+
+        has_ballot = any(
+            date.get("ballots") for date in result.get("dates", [])
+        )
+
+        logger.log(
+            logger.entry_class(
+                postcode=str(postcode),
+                dc_product=logger.dc_product.aggregator_api,
+                api_key=request.scope["api_user"].api_key,
+                calls_devs_dc_api=False,
+                had_election=has_ballot,
+                **request.scope["utm_dict"],
+            )
+        )
 
     return JSONResponse(result)
