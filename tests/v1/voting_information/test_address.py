@@ -1,3 +1,6 @@
+import logging
+from unittest.mock import patch
+
 import httpx
 import pytest
 from voting_information.elections_api_client import (
@@ -18,7 +21,7 @@ def test_no_stitcher_error_with_mismatched_ballots(respx_mock, vi_app_client):
     """
 
     fixture = load_fixture(
-        "addresspc_endpoints/test_multiple_elections", "wdiv"
+        "addresspc_endpoints/test_multiple_elections", "wdiv_address"
     )
     respx_mock.get(
         "https://wheredoivote.co.uk/api/beta/address/1-foo-street-bar-town/?all_future_ballots=1&utm_medium=devs.DC+API"
@@ -41,8 +44,11 @@ def test_no_stitcher_error_with_mismatched_ballots(respx_mock, vi_app_client):
                 ),
             )
         )
-
-    response = vi_app_client.get("/api/v1/address/1-foo-street-bar-town/")
+    with patch(
+        "api.endpoints.v1.voting_information.address.DCWidePostcodeLoggingClient.log"
+    ) as mock_log:
+        response = vi_app_client.get("/api/v1/address/1-foo-street-bar-town/")
+        mock_log.assert_called_once()
     assert response.status_code == 200
 
 
@@ -50,7 +56,7 @@ def test_no_stitcher_error_with_mismatched_ballots(respx_mock, vi_app_client):
 def test_valid(postcode, vi_app_client, respx_mock, api_settings):
     # iterate through the subset of applicable expected inputs/outputs
     # we test against in test_stitcher.py
-    fixture = load_fixture(fixture_map[postcode], "wdiv")
+    fixture = load_fixture(fixture_map[postcode], "wdiv_address")
     respx_mock.get(
         "https://wheredoivote.co.uk/api/beta/address/1-foo-street-bar-town/?all_future_ballots=1&utm_medium=devs.DC+API"
     ).mock(return_value=httpx.Response(200, json=fixture))
@@ -71,8 +77,78 @@ def test_valid(postcode, vi_app_client, respx_mock, api_settings):
     expected = load_sandbox_output(
         postcode, base_url="http://testserver/api/v1/"
     )
-    response = vi_app_client.get(
-        "/api/v1/address/1-foo-street-bar-town/",
-    )
+
+    with patch(
+        "api.endpoints.v1.voting_information.address.DCWidePostcodeLoggingClient.log"
+    ) as mock_log:
+        response = vi_app_client.get(
+            "/api/v1/address/1-foo-street-bar-town/",
+        )
+        mock_log.assert_called_once()
+
     assert expected == response.json()
     assert response.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "postcode,fixture_name,expected_had_election",
+    [
+        ("AA1 4AA", "addresspc_endpoints/test_multiple_elections", "true"),
+        ("AA1 1AA", "addresspc_endpoints/test_no_elections", "false"),
+    ],
+)
+def test_logging_working(
+    respx_mock,
+    vi_app_client,
+    caplog,
+    api_settings,
+    postcode,
+    fixture_name,
+    expected_had_election,
+):
+    caplog.set_level(logging.DEBUG)
+    fixture = load_fixture(fixture_name, "wdiv_address")
+    respx_mock.get(
+        "https://wheredoivote.co.uk/api/beta/address/1-foo-street-bar-town/?all_future_ballots=1&utm_medium=devs.DC+API"
+    ).mock(
+        return_value=httpx.Response(
+            200,
+            json=fixture,
+        )
+    )
+
+    for ballot in fixture["ballots"]:
+        respx_mock.get(
+            wcivf_ballot_cache_url_from_ballot(ballot["ballot_paper_id"])
+        ).mock(
+            return_value=httpx.Response(
+                200,
+                json=load_fixture(
+                    fixture_name,
+                    ballot["ballot_paper_id"],
+                ),
+            )
+        )
+
+    vi_app_client.get(
+        "/api/v1/address/1-foo-street-bar-town/",
+        params={
+            "foo": "bar",
+            "utm_source": "test",
+            "utm_campaign": "better_tracking",
+            "utm_medium": "pytest",
+        },
+    )
+
+    logging_message = None
+    for record in caplog.records:
+        if record.message.startswith("dc-postcode-searches"):
+            logging_message = record
+    assert logging_message
+    assert f'"postcode": "{postcode}"' in logging_message.message
+    assert '"dc_product": "AGGREGATOR_API"' in logging_message.message
+    assert '"api_key": "local-dev"' in logging_message.message
+    assert '"utm_source": "test"' in logging_message.message
+    assert '"utm_campaign": "better_tracking"' in logging_message.message
+    assert '"utm_medium": "pytest"' in logging_message.message
+    assert f'"had_election": {expected_had_election}' in logging_message.message

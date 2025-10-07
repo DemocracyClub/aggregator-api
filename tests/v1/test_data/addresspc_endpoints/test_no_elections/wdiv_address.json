@@ -1,0 +1,45 @@
+{
+  "polling_station_known": false,
+  "postcode_location": {
+    "type": "Feature",
+    "properties": {
+      "postcode": "AA1 1AA"
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -0.13447605,
+        51.489488200000004
+      ]
+    }
+  },
+  "council": {
+    "url": "https://wheredoivote.co.uk/api/beta/councils/WSM/",
+    "council_id": "WSM",
+    "name": "City of Westminster",
+    "nation": "England",
+    "email": "electoralservices@westminster.gov.uk",
+    "phone": "020 7641 2730",
+    "website": "http://www.westminster.gov.uk/",
+    "postcode": "WC2N 5HR",
+    "address": "Electoral Registration Officer\nWestminster City Council\n2nd Floor, City Hall\n5 Strand",
+    "identifiers": [
+      "E09000033"
+    ]
+  },
+  "polling_station": null,
+  "advance_voting_station": null,
+  "addresses": [
+    {
+      "url": "http://127.0.0.1:8000/api/beta/address/1-foo-street-bar-town/",
+      "address": "1 Foo St., Bar Town",
+      "postcode": "AA1 1AA",
+      "council": "City of Westminster",
+      "polling_station_id": "",
+      "uprn": "1-foo-street-bar-town"
+    }
+  ],
+  "report_problem_url": null,
+  "metadata": null,
+  "ballots": []
+}

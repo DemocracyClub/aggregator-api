@@ -1,0 +1,58 @@
+{
+  "polling_station_known": false,
+  "postcode_location": {
+    "type": "Feature",
+    "properties": {
+      "postcode": "AA1 2AB"
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -0.1804843,
+        51.5113775
+      ]
+    }
+  },
+  "council": {
+    "url": "https://wheredoivote.co.uk/api/beta/councils/WSM/",
+    "council_id": "WSM",
+    "name": "City of Westminster",
+    "nation": "England",
+    "email": "electoralservices@westminster.gov.uk",
+    "phone": "020 7641 2730",
+    "website": "http://www.westminster.gov.uk/",
+    "postcode": "WC2N 5HR",
+    "address": "Electoral Registration Officer\nWestminster City Council\n2nd Floor, City Hall\n5 Strand",
+    "identifiers": [
+      "E09000033"
+    ]
+  },
+  "polling_station": null,
+  "advance_voting_station": null,
+  "addresses": [
+    {
+      "url": "http://127.0.0.1:8000/api/beta/address/1-foo-street-bar-town/",
+      "address": "1 Foo St., Bar Town",
+      "postcode": "AA1 2AB",
+      "council": "City of Westminster",
+      "polling_station_id": "",
+      "uprn": "1-foo-street-bar-town"
+    }
+  ],
+  "report_problem_url": null,
+  "metadata": null,
+  "ballots": [
+    {
+      "ballot_paper_id": "local.westminster.lancaster-gate.by.2018-11-22",
+      "ballot_title": "Westminster local election Lancaster Gate by-election",
+      "poll_open_date": "2018-11-22",
+      "elected_role": "Local Councillor",
+      "metadata": null,
+      "cancelled": false,
+      "cancellation_reason": null,
+      "replaced_by": null,
+      "replaces": null,
+      "requires_voter_id": "EA-2022"
+    }
+  ]
+}
