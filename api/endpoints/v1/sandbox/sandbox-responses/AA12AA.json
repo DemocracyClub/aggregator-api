@@ -198,7 +198,9 @@
   },
   "postcode_location": {
     "type": "Feature",
-    "properties": null,
+    "properties": {
+      "postcode": "AA1 2AA"
+    },
     "geometry": {
       "type": "Point",
       "coordinates": [

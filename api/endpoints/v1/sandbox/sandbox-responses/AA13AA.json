@@ -43,7 +43,9 @@
   },
   "postcode_location": {
     "type": "Feature",
-    "properties": null,
+    "properties": {
+      "postcode": "AA1 3AA"
+    },
     "geometry": {
       "type": "Point",
       "coordinates": [

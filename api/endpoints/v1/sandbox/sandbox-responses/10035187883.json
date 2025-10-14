@@ -161,7 +161,9 @@
   },
   "postcode_location": {
     "type": "Feature",
-    "properties": null,
+    "properties": {
+      "postcode": "W2 3AN"
+    },
     "geometry": {
       "type": "Point",
       "coordinates": [

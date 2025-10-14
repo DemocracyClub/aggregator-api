@@ -2,7 +2,9 @@
   "polling_station_known": false,
   "postcode_location": {
     "type": "Feature",
-    "properties": null,
+    "properties": {
+      "postcode": "AA1 2AB"
+    },
     "geometry": {
       "type": "Point",
       "coordinates": [
