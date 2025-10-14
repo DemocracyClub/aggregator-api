@@ -299,7 +299,9 @@
   },
   "postcode_location": {
     "type": "Feature",
-    "properties": null,
+    "properties": {
+      "postcode": "AB1 2CD"
+    },
     "geometry": {
       "type": "Point",
       "coordinates": [

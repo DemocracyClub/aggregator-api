@@ -24,7 +24,9 @@
   },
   "postcode_location": {
     "type": "Feature",
-    "properties": null,
+    "properties": {
+      "postcode": "EH1 1YJ"
+    },
     "geometry": {
       "type": "Point",
       "coordinates": [
