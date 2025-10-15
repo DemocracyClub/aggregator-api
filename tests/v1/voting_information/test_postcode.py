@@ -1,4 +1,5 @@
 import logging
+from unittest.mock import patch
 
 import httpx
 import pytest
@@ -42,7 +43,14 @@ def test_valid(
     expected = load_sandbox_output(
         postcode, base_url="http://testserver/api/v1/"
     )
-    response = vi_app_client.get(f"/api/v1/postcode/{postcode}/")
+    with patch(
+        "api.endpoints.v1.voting_information.address.DCWidePostcodeLoggingClient.log"
+    ) as mock_log:
+        response = vi_app_client.get(f"/api/v1/postcode/{postcode}/")
+        if postcode == "AA13AA":
+            mock_log.assert_not_called()  # address picker
+        else:
+            mock_log.assert_called_once()
     assert response.status_code == 200
     assert response.json() == expected
 
@@ -79,13 +87,26 @@ def test_wcivf_missing_ballot(respx_mock, vi_app_client, api_settings):
     assert "mayor.lewisham.2018-05-03" in resp.text
 
 
-def test_logging_working(respx_mock, vi_app_client, caplog, api_settings):
+@pytest.mark.parametrize(
+    "postcode,fixture_name,expected_had_election",
+    [
+        ("SW1A1AA", "addresspc_endpoints/test_multiple_elections", "true"),
+        ("AA11AA", "addresspc_endpoints/test_no_elections", "false"),
+    ],
+)
+def test_logging_working(
+    respx_mock,
+    vi_app_client,
+    caplog,
+    api_settings,
+    postcode,
+    fixture_name,
+    expected_had_election,
+):
     caplog.set_level(logging.DEBUG)
-    fixture = load_fixture(
-        "addresspc_endpoints/test_multiple_elections", "wdiv"
-    )
+    fixture = load_fixture(fixture_name, "wdiv")
     respx_mock.get(
-        "https://wheredoivote.co.uk/api/beta/postcode/SW1A1AA/"
+        f"https://wheredoivote.co.uk/api/beta/postcode/{postcode}/"
     ).mock(
         return_value=httpx.Response(
             200,
@@ -100,14 +121,14 @@ def test_logging_working(respx_mock, vi_app_client, caplog, api_settings):
             return_value=httpx.Response(
                 200,
                 json=load_fixture(
-                    "addresspc_endpoints/test_multiple_elections",
+                    fixture_name,
                     ballot["ballot_paper_id"],
                 ),
             )
         )
 
     vi_app_client.get(
-        "/api/v1/postcode/SW1A1AA/",
+        f"/api/v1/postcode/{postcode}/",
         params={
             "foo": "bar",
             "utm_source": "test",
@@ -121,9 +142,10 @@ def test_logging_working(respx_mock, vi_app_client, caplog, api_settings):
         if record.message.startswith("dc-postcode-searches"):
             logging_message = record
     assert logging_message
-    assert '"postcode": "SW1A1AA"' in logging_message.message
+    assert f'"postcode": "{postcode}"' in logging_message.message
     assert '"dc_product": "AGGREGATOR_API"' in logging_message.message
     assert '"api_key": "local-dev"' in logging_message.message
     assert '"utm_source": "test"' in logging_message.message
     assert '"utm_campaign": "better_tracking"' in logging_message.message
     assert '"utm_medium": "pytest"' in logging_message.message
+    assert f'"had_election": {expected_had_election}' in logging_message.message
