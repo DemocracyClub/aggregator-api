@@ -114,6 +114,7 @@ jobs:
     - restore_cache:
         keys:
         - v9-dependencies-{{ checksum "uv.lock" }}
+    - setup_remote_docker
     - run: printenv DJANGO_SETTINGS_MODULE SAM_CONFIG_FILE SAM_LAMBDA_CONFIG_ENV SAM_PUBLIC_CONFIG_ENV
     - run: printenv SECRET_KEY | md5sum
     - run: printenv AWS_ACCESS_KEY_ID | md5sum
