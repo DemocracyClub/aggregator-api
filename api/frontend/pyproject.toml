@@ -4,12 +4,12 @@ version = "0.0.0"
 description = "devs.DC API frontend"
 requires-python = "==3.12.*"
 dependencies = [
-    "django==5.2.5",
+    "django==5.2.7",
     "psycopg2-binary==2.9.10",
     "django-apiblueprint-view==2.5.1",
     "django-storages==1.14.6",
     "django-sesame==3.2.2",
-    "setuptools==69.5.1",
+    "setuptools==78.1.1",
     "whitenoise==6.4.0",
     "aws-wsgi",
     "dc-design-system",
