@@ -1,3 +1,5 @@
+import datetime as dt
+
 import pytest
 from starlette.datastructures import Headers
 from starlette.requests import Request
@@ -105,6 +107,34 @@ def test_multiple_elections(mock_request):
         wdiv_json,
         wcivf_json,
         mock_request(f"/api/v1/postcode/{postcode}"),
+        sandbox=True,
+    )
+    assert s.make_result_known_response() == load_sandbox_output(postcode)
+
+
+@pytest.mark.time_machine(dt.datetime(2018, 11, 20))
+def test_with_accessibility_information():
+    postcode = "CC12CC"
+    wdiv_json = load_fixture(fixture_map[postcode], "wdiv")
+    wcivf_json = []
+    for ballot in wdiv_json["ballots"]:
+        wcivf_json.append(
+            load_fixture(fixture_map[postcode], ballot["ballot_paper_id"])
+        )
+
+    s = Stitcher(
+        wdiv_json,
+        wcivf_json,
+        Request(
+            {
+                "type": "http",
+                "path": f"/api/v1/postcode/{postcode}",
+                "server": ("developers.democracyclub.org.uk", 443),
+                "scheme": "https",
+                "headers": Headers().raw,
+                "query_string": "include_accessibility=true",
+            }
+        ),
         sandbox=True,
     )
     assert s.make_result_known_response() == load_sandbox_output(postcode)
