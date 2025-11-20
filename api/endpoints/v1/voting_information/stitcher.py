@@ -304,6 +304,13 @@ class Stitcher:
             resp["station"]["properties"].pop("urls", None)
             resp["station"]["properties"].pop("council", None)
             resp["station"]["properties"].pop("station_id", None)
+            if (
+                "query_string" not in self.request.scope
+                or not self.request.query_params.get("include_accessibility")
+            ):
+                resp["station"]["properties"].pop(
+                    "accessibility_information", None
+                )
         return resp
 
     def make_result_known_response(self):
