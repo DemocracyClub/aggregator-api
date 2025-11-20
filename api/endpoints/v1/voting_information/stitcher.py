@@ -317,9 +317,9 @@ class Stitcher:
         results = []
         dates = self.get_dates()
         for date in dates:
-            data_obj = datetime.strptime(date, "%Y-%m-%d").date()
+            date_obj = datetime.strptime(date, "%Y-%m-%d").date()
             if (
-                data_obj < datetime.today().date()
+                date_obj < datetime.today().date()
                 and "query_string" in self.request.scope
                 and not self.request.query_params.get(
                     "include_current", self.always_include_current
