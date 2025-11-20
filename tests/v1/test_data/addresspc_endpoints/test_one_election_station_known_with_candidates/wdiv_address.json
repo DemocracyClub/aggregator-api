@@ -45,7 +45,20 @@
       "council": "http://127.0.0.1:8001/api/beta/councils/E09000033/",
       "station_id": "39-york-room-lancaster-hall-hotel",
       "postcode": "W2 3EL",
-      "address": "York Room, Lancaster Hall Hotel\n35 Craven Terrace\nLondon"
+      "address": "York Room, Lancaster Hall Hotel\n35 Craven Terrace\nLondon",
+      "accessibility_information": {
+        "is_temporary": false,
+        "nearby_parking": true,
+        "disabled_parking": true,
+        "level_access": true,
+        "temporary_ramp": null,
+        "hearing_loop": null,
+        "public_toilets": true,
+        "getting_to_the_station": "Use the main road",
+        "getting_to_the_station_cy": "Defnyddiwch y brif ffordd",
+        "at_the_station": "Look for the blue door",
+        "at_the_station_cy": "Chwiliwch am y drws glas"
+      }
     }
   },
   "advance_voting_station": {

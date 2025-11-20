@@ -304,15 +304,22 @@ class Stitcher:
             resp["station"]["properties"].pop("urls", None)
             resp["station"]["properties"].pop("council", None)
             resp["station"]["properties"].pop("station_id", None)
+            if (
+                "query_string" not in self.request.scope
+                or not self.request.query_params.get("include_accessibility")
+            ):
+                resp["station"]["properties"].pop(
+                    "accessibility_information", None
+                )
         return resp
 
     def make_result_known_response(self):
         results = []
         dates = self.get_dates()
         for date in dates:
-            data_obj = datetime.strptime(date, "%Y-%m-%d").date()
+            date_obj = datetime.strptime(date, "%Y-%m-%d").date()
             if (
-                data_obj < datetime.today().date()
+                date_obj < datetime.today().date()
                 and "query_string" in self.request.scope
                 and not self.request.query_params.get(
                     "include_current", self.always_include_current
