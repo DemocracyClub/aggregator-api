@@ -62,6 +62,7 @@ def mock_proxy_multiple_requests(fixture_name, loop, *requests):
 fixture_map = {
     "AA11AA": "addresspc_endpoints/test_no_elections",
     "AA12AA": "addresspc_endpoints/test_one_election_station_known_with_candidates",
+    "CC12CC": "addresspc_endpoints/test_one_election_station_known_with_candidates",
     "AA12AB": "addresspc_endpoints/test_one_election_station_not_known_with_candidates",
     "AA13AA": "addresspc_endpoints/test_address_picker",
     "AA14AA": "addresspc_endpoints/test_multiple_elections",
