@@ -31,7 +31,7 @@ dev = [
 dc-response-builder = { git = "https://github.com/DemocracyClub/dc_response_builder.git", tag = "1.2.0" }
 
 [tool.uv]
-required-version = "==0.8.*"
+required-version = "==0.9.*"
 package = false
 
 [tool.uv.workspace]
