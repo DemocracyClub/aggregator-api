@@ -64,6 +64,7 @@ def test_valid(
     assert response.json() == expected
 
 
+@pytest.mark.time_machine(dt.datetime(2018, 1, 1))
 def test_wcivf_missing_ballot(respx_mock, vi_app_client, api_settings):
     load_fixture("addresspc_endpoints/test_multiple_elections", "wcivf")
     fixture = load_fixture(
@@ -96,6 +97,7 @@ def test_wcivf_missing_ballot(respx_mock, vi_app_client, api_settings):
     assert "mayor.lewisham.2018-05-03" in resp.text
 
 
+@pytest.mark.time_machine(dt.datetime(2018, 1, 1))
 @pytest.mark.parametrize(
     "postcode,fixture_name,expected_had_election",
     [

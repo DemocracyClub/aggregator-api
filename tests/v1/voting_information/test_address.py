@@ -1,3 +1,4 @@
+import datetime as dt
 import logging
 from unittest.mock import patch
 
@@ -14,6 +15,7 @@ from tests.helpers import (
 )
 
 
+@pytest.mark.time_machine(dt.datetime(2018, 1, 1))
 def test_no_stitcher_error_with_mismatched_ballots(respx_mock, vi_app_client):
     """
     Dispite the ballots mismatching, don't raise an error
@@ -52,6 +54,7 @@ def test_no_stitcher_error_with_mismatched_ballots(respx_mock, vi_app_client):
     assert response.status_code == 200
 
 
+@pytest.mark.time_machine(dt.datetime(2018, 1, 1))
 @pytest.mark.parametrize("postcode", ["AA12AA", "AA12AB", "AA14AA"])
 def test_valid(postcode, vi_app_client, respx_mock, api_settings):
     # iterate through the subset of applicable expected inputs/outputs
@@ -90,6 +93,7 @@ def test_valid(postcode, vi_app_client, respx_mock, api_settings):
     assert response.status_code == 200
 
 
+@pytest.mark.time_machine(dt.datetime(2018, 1, 1))
 @pytest.mark.parametrize(
     "postcode,fixture_name,expected_had_election",
     [
