@@ -191,13 +191,16 @@ class NotificationsMaker:
 
 
 class Stitcher:
-    def __init__(self, wdiv_resp, wcivf_resp, request, sandbox=False):
+    def __init__(
+        self, wdiv_resp, wcivf_resp, request, query_params, sandbox=False
+    ):
         self.wdiv_resp = wdiv_resp
         self.wcivf_resp = wcivf_resp
         self.sandbox = sandbox
         self.wcivf_ballots = self.make_wcivf_ballots()
         self.ballot_sort_keys = {}
         self.request: Request = request
+        self.query_params = query_params
         self.validate()
         self.always_include_current = settings.ALWAYS_INCLUDE_CURRENT
 
@@ -304,10 +307,7 @@ class Stitcher:
             resp["station"]["properties"].pop("urls", None)
             resp["station"]["properties"].pop("council", None)
             resp["station"]["properties"].pop("station_id", None)
-            if (
-                "query_string" not in self.request.scope
-                or not self.request.query_params.get("include_accessibility")
-            ):
+            if not self.query_params.include_accessibility:
                 resp["station"]["properties"].pop(
                     "accessibility_information", None
                 )
@@ -318,12 +318,8 @@ class Stitcher:
         dates = self.get_dates()
         for date in dates:
             date_obj = datetime.strptime(date, "%Y-%m-%d").date()
-            if (
-                date_obj < datetime.today().date()
-                and "query_string" in self.request.scope
-                and not self.request.query_params.get(
-                    "include_current", self.always_include_current
-                )
+            if date_obj < datetime.today().date() and not (
+                self.query_params.include_current or self.always_include_current
             ):
                 continue
             ballots = self.get_ballots_for_date(date)
@@ -411,8 +407,7 @@ class Stitcher:
         # TODO: Remove when we remove petitions
         if (
             settings.RECALL_PETITION_ENABLED
-            and hasattr(self.request, "query_params")
-            and self.request.query_params.get("recall_petition")
+            and self.query_params.recall_petition
             and not resp["address_picker"]
         ):
             resp["parl_recall_petition"] = None
