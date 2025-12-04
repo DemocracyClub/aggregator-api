@@ -24,6 +24,7 @@ dev = [
     "uvicorn==0.30.6",
     "djhtml==3.0.6",
     "beautifulsoup4==4.13.4",
+    "time-machine==3.0.0",
     "dc-response-builder",
 ]
 
