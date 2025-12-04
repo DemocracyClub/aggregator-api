@@ -15,6 +15,9 @@ def clean_query_params(request, config_cls):
         if f.type is bool:
             raw = request.query_params.get(f.name, "")
             updates[f.name] = raw.lower() in TRUTHY_VALUES
+        elif f.type is str:
+            raw = request.query_params.get(f.name, getattr(cfg, f.name))
+            updates[f.name] = raw
         else:
             # TODO: implement other types if we need them
             raise NotImplementedError()
