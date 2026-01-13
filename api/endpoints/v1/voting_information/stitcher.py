@@ -3,6 +3,7 @@ from copy import deepcopy
 from datetime import datetime
 from typing import Dict, List, Optional
 
+from boundary_changes.client import BoundaryReviewsApiClient
 from recall_petitions.client import RecallPetitionApiClient
 from starlette.requests import Request
 
@@ -422,5 +423,18 @@ class Stitcher:
                 )
                 resp = recall_petition_client.patch_response(resp)
         # TODO: End removal code
+
+        if (
+            settings.BOUNDARY_REVIEWS_ENABLED
+            and self.query_params.boundary_reviews
+            and not resp["address_picker"]
+        ):
+            resp["boundary_reviews"] = None
+            boundary_reviews_client = BoundaryReviewsApiClient(
+                self.request,
+                postcode=postcode,
+                uprn=uprn,
+            )
+            resp = boundary_reviews_client.patch_response(resp)
 
         return resp

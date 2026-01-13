@@ -43,6 +43,12 @@ class BaseSettings:
             "RECALL_DATA_KEY_PREFIX", "blackpool-south.2024-03/"
         )
 
+        self.BOUNDARY_REVIEWS_ENABLED = True
+        self.BOUNDARY_REVIEWS_DATA_KEY_PREFIX = os.environ.get(
+            "BOUNDARY_REVIEWS_DATA_KEY_PREFIX",
+            "current_boundary_reviews_parquet/",
+        )
+
         self.ELECTIONS_DATA_PATH = "s3://pollingstations.private.data/addressbase/production/current_elections_parquet"
 
         self.DEBUG = bool(int(os.environ.get("DEBUG", "0")))
