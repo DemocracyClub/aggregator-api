@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import IO, List, Optional
 
+import polars
 from botocore.exceptions import ClientError
 from starlette.requests import Request
 
@@ -20,9 +21,8 @@ class StaticDataHelper(metaclass=ABCMeta):
         self.uprn = uprn
         self.request = request
 
-    @abstractmethod
     def get_shard_key(self):
-        ...
+        return f"{self.postcode.outcode}.parquet"
 
     @abstractmethod
     def get_file_path(self):
@@ -44,18 +44,22 @@ class StaticDataHelper(metaclass=ABCMeta):
         ...
 
     def get_data_for_postcode(self):
-        ...
+        return polars.read_parquet(self.get_filename_or_file()).filter(
+            (polars.col("postcode") == self.postcode.with_space)
+        )
 
     def get_data_for_uprn(self):
-        ...
+        return polars.read_parquet(self.get_filename_or_file()).filter(
+            (polars.col("uprn") == str(self.uprn))
+        )
 
-    @abstractmethod
     def postcode_response(self):
-        pass
+        data = self.get_data_for_postcode()
+        return self.query_to_dict(data)
 
-    @abstractmethod
     def uprn_response(self):
-        pass
+        data = self.get_data_for_uprn()
+        return self.query_to_dict(data)
 
     @abstractmethod
     def query_to_dict(self, query_data):
