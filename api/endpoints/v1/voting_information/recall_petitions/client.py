@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 
-import polars
 from polars import DataFrame
 from static_data_helper import AddressModel, FileNotFoundError, StaticDataHelper
 
@@ -28,19 +27,6 @@ class RecallPetitionApiClient(StaticDataHelper):
 
     def get_postcode_query_expression(self):
         return f"""select * from S3Object s where s.postcode_ns='{self.postcode.without_space}'"""
-
-    def get_data_for_postcode(self):
-        return polars.read_parquet(self.get_filename_or_file()).filter(
-            (polars.col("postcode") == self.postcode.with_space)
-        )
-
-    def get_data_for_uprn(self):
-        return polars.read_parquet(self.get_filename_or_file()).filter(
-            (polars.col("uprn") == int(self.uprn))
-        )
-
-    def get_shard_key(self):
-        return f"{self.postcode.outcode}.parquet"
 
     def get_bucket_name(self):
         dc_env = os.environ.get("DC_ENVIRONMENT", "development")
@@ -78,14 +64,6 @@ class RecallPetitionApiClient(StaticDataHelper):
             signing_station = SigningStationModel.from_row(row)
             resp.parl_recall_petition.signing_station = signing_station
         return resp.as_dict()
-
-    def postcode_response(self):
-        data = self.get_data_for_postcode()
-        return self.query_to_dict(data)
-
-    def uprn_response(self):
-        data = self.get_data_for_uprn()
-        return self.query_to_dict(data)
 
     def get_file_path(self):
         DATA_BASE_PATH = Path(settings.RECALL_DATA_KEY_PREFIX)
