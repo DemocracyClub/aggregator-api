@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 
+import polars as pl
+
 from common.conf import settings
 
 
@@ -63,7 +65,16 @@ fixture_map = {
     "AA11AA": "addresspc_endpoints/test_no_elections",
     "AA12AA": "addresspc_endpoints/test_one_election_station_known_with_candidates",
     "CC12CC": "addresspc_endpoints/test_one_election_station_known_with_candidates",
+    "AD11DD": "addresspc_endpoints/test_one_election_station_known_with_candidates",
     "AA12AB": "addresspc_endpoints/test_one_election_station_not_known_with_candidates",
     "AA13AA": "addresspc_endpoints/test_address_picker",
     "AA14AA": "addresspc_endpoints/test_multiple_elections",
 }
+
+
+def load_boundary_reviews_fixture(testname, api_version="v1"):
+    """Load boundary reviews fixture as a polars DataFrame."""
+    fixture_data = load_fixture(testname, "boundary_reviews", api_version)
+    if not fixture_data:
+        return pl.DataFrame()
+    return pl.DataFrame(fixture_data)

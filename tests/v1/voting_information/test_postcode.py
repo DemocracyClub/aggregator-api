@@ -10,6 +10,7 @@ from voting_information.elections_api_client import (
 
 from tests.helpers import (
     fixture_map,
+    load_boundary_reviews_fixture,
     load_fixture,
     load_sandbox_output,
 )
@@ -53,7 +54,16 @@ def test_valid(
         if postcode == "CC12CC":
             url += "?include_accessibility=true"
 
-        response = vi_app_client.get(url)
+        if postcode == "AD11DD":
+            url += "?include_boundary_reviews=true"
+            boundary_reviews_data = load_boundary_reviews_fixture(input_fixture)
+            with patch(
+                "boundary_changes.client.BoundaryReviewsApiClient.get_data_for_postcode",
+                return_value=boundary_reviews_data,
+            ):
+                response = vi_app_client.get(url)
+        else:
+            response = vi_app_client.get(url)
 
         if postcode == "AA13AA":
             mock_log.assert_not_called()  # address picker
