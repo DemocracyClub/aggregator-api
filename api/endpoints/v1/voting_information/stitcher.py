@@ -1,3 +1,4 @@
+import logging
 import re
 from copy import deepcopy
 from datetime import datetime
@@ -10,6 +11,8 @@ from starlette.requests import Request
 
 from common.conf import settings
 from common.url_resolver import build_absolute_url
+
+logger = logging.getLogger(__name__)
 
 CANCELLATION_REASONS = {
     "NO_CANDIDATES": {
@@ -431,7 +434,7 @@ class Stitcher:
             and not resp["address_picker"]
         ):
             try:
-                resp["boundary_reviews"] = None
+                resp["boundary_reviews"] = []
                 boundary_reviews_client = BoundaryReviewsApiClient(
                     self.request,
                     postcode=postcode,
@@ -439,7 +442,10 @@ class Stitcher:
                 )
                 resp = boundary_reviews_client.patch_response(resp)
             except Exception as ex:
-                # Log to sentry, but don't fail to return response
+                # If we encounter an error getting boundary reviews
+                # we don't want to return a 5xx. But we do want to know about it.
+                # So log and raise in sentry, but don't fail to return response
+                logger.exception("Failed to fetch boundary reviews")
                 sentry_sdk.capture_exception(ex)
-                resp["boundary_reviews"] = "Error fetching boundary reviews"
+                resp["boundary_reviews"] = []
         return resp

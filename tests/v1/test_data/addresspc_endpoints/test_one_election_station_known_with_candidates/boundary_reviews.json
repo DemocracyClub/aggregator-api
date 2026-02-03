@@ -1,0 +1,12 @@
+[
+  {
+    "uprn": "100",
+    "address": "1 Test Street",
+    "postcode": "AD1 1DD",
+    "addressbase_source": "s3://test/",
+    "boundary_reviews": [
+      "{\"boundary_review_id\":123,\"boundary_review_details\":{\"consultation_url\":\"https://example.com/boundary-review\",\"effective_date\":\"2026-05-07\",\"legislation_title\":\"The Test Boundary Order 2025\",\"organisation_name\":\"Test Council\",\"organisation_official_name\":\"Test Council Official\",\"organisation_gss\":\"E09000033\"},\"changes\":[{\"change_scenario\":\"NO_CHANGE\",\"division_type\":\"ward\",\"new_division_official_identifier\":\"gss:E05000638\",\"new_division_slug\":\"lancaster-gate\",\"new_divisionset_pmtiles_url\":\"https://example.com/new.pmtiles\",\"old_division_official_identifier\":\"gss:E05000638\",\"old_division_slug\":\"lancaster-gate\",\"old_divisionset_pmtiles_url\":\"https://example.com/old.pmtiles\"}]}"
+    ],
+    "outcode": "AD1"
+  }
+]

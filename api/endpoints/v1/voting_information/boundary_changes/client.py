@@ -1,7 +1,9 @@
 import json
+import logging
 from pathlib import Path
 
 import polars
+import sentry_sdk
 from polars import DataFrame
 from static_data_helper import AddressModel, FileNotFoundError, StaticDataHelper
 
@@ -11,6 +13,8 @@ from .models import (
     BaseBoundaryReviewsResponse,
     BoundaryReviewModel,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class BoundaryReviewsApiClient(StaticDataHelper):
@@ -104,6 +108,10 @@ class BoundaryReviewsApiClient(StaticDataHelper):
                 "boundary_reviews"
             )
             return resp
-        except FileNotFoundError:
-            resp["boundary_reviews"] = None
+        except FileNotFoundError as ex:
+            # If we're missing a parquet file we want to know about this so log it, and raise in sentry.
+            # But don't crash over it.
+            logger.exception("Boundary Review File Not Found")
+            sentry_sdk.capture_exception(ex)
+            resp["boundary_reviews"] = []
             return resp

@@ -1,3 +1,4 @@
+import logging
 import re
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass, field
@@ -10,6 +11,8 @@ from sentry_sdk import set_context
 from starlette.requests import Request
 
 from common.conf import settings
+
+logger = logging.getLogger(__name__)
 
 
 class StaticDataHelper(metaclass=ABCMeta):
@@ -36,7 +39,9 @@ class StaticDataHelper(metaclass=ABCMeta):
             )
         local_file_path = Path(settings.LOCAL_DATA_PATH) / self.get_file_path()
         if not local_file_path.exists():
-            print(f"WARNING: local data doesn't exist at {local_file_path}")
+            logger.warning(
+                f"WARNING: Local data path {local_file_path} doesn't exist"
+            )
             raise FileNotFoundError()
         return local_file_path
 
@@ -45,14 +50,18 @@ class StaticDataHelper(metaclass=ABCMeta):
         ...
 
     def get_data_for_postcode(self):
-        return polars.read_parquet(self.get_filename_or_file()).filter(
+        postcode_df = polars.read_parquet(self.get_filename_or_file()).filter(
             (polars.col("postcode") == self.postcode.with_space)
         )
+        self.data_quality_check(postcode_df)
+        return postcode_df
 
     def get_data_for_uprn(self):
-        return polars.read_parquet(self.get_filename_or_file()).filter(
-            (polars.col("uprn") == str(self.uprn))
+        postcode_df = polars.read_parquet(self.get_filename_or_file()).filter(
+            (polars.col("postcode") == self.postcode.with_space)
         )
+        self.data_quality_check(postcode_df)
+        return postcode_df.filter((polars.col("uprn") == str(self.uprn)))
 
     def postcode_response(self):
         data = self.get_data_for_postcode()
@@ -61,6 +70,27 @@ class StaticDataHelper(metaclass=ABCMeta):
     def uprn_response(self):
         data = self.get_data_for_uprn()
         return self.query_to_dict(data)
+
+    def data_quality_check(self, postcode_df):
+        if postcode_df.select("uprn").unique().height != postcode_df.height:
+            duplicate_uprns = (
+                postcode_df.group_by("uprn")
+                .len()
+                .filter(polars.col("len") > 1)["uprn"]
+                .to_list()
+            )
+            raise DuplicateUPRNError(
+                postcode=self.postcode.with_space, uprns=duplicate_uprns
+            )
+        if postcode_df.select("addressbase_source").unique().height > 1:
+            sources = (
+                postcode_df.select("addressbase_source")
+                .unique()["addressbase_source"]
+                .to_list()
+            )
+            raise MultipleAddressbaseSourceError(
+                postcode=self.postcode.with_space, sources=sources
+            )
 
     @abstractmethod
     def query_to_dict(self, query_data):
@@ -105,6 +135,7 @@ class StaticDataHelper(metaclass=ABCMeta):
                     set_context(
                         "Missing File", {"s3_key": key, "bucket": bucket}
                     )
+                    logger.error(f"S3 key {key} not found in {bucket}")
                     raise FileNotFoundError()
                 # Raise any other boto3 errors
                 raise
@@ -169,6 +200,20 @@ class Postcode:
 
 class FileNotFoundError(ValueError):
     ...
+
+
+class DuplicateUPRNError(ValueError):
+    def __init__(self, postcode, uprns):
+        message = (
+            f"Duplicate UPRNs found for postcode {postcode}: {sorted(uprns)}"
+        )
+        super().__init__(message)
+
+
+class MultipleAddressbaseSourceError(ValueError):
+    def __init__(self, postcode, sources):
+        message = f"Multiple addressbase sources found for postcode {postcode}: {sorted(sources)}"
+        super().__init__(message)
 
 
 @dataclass
