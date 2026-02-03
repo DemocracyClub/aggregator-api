@@ -6,6 +6,7 @@ from typing import IO, List, Optional
 
 import polars
 from botocore.exceptions import ClientError
+from sentry_sdk import set_context
 from starlette.requests import Request
 
 from common.conf import settings
@@ -95,15 +96,17 @@ class StaticDataHelper(metaclass=ABCMeta):
         :return:
         """
         if settings.S3_CLIENT_ENABLED:
+            key = str(self.get_file_path())
+            bucket = self.get_bucket_name()
             try:
-                response = settings.S3_CLIENT.get_object(
-                    Bucket=self.get_bucket_name(), Key=str(self.get_file_path())
-                )
+                response = settings.S3_CLIENT.get_object(Bucket=bucket, Key=key)
             except ClientError as ex:
                 if ex.response["Error"]["Code"] == "NoSuchKey":
-                    # If there's no key for whatever reason raise
+                    set_context(
+                        "Missing File", {"s3_key": key, "bucket": bucket}
+                    )
                     raise FileNotFoundError()
-                # Raie any other boto3 errors
+                # Raise any other boto3 errors
                 raise
             return response["Body"].read()
 

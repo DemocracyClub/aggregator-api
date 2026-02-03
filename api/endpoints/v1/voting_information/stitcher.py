@@ -3,6 +3,7 @@ from copy import deepcopy
 from datetime import datetime
 from typing import Dict, List, Optional
 
+import sentry_sdk
 from boundary_changes.client import BoundaryReviewsApiClient
 from recall_petitions.client import RecallPetitionApiClient
 from starlette.requests import Request
@@ -429,12 +430,16 @@ class Stitcher:
             and self.query_params.include_boundary_reviews
             and not resp["address_picker"]
         ):
-            resp["boundary_reviews"] = None
-            boundary_reviews_client = BoundaryReviewsApiClient(
-                self.request,
-                postcode=postcode,
-                uprn=uprn,
-            )
-            resp = boundary_reviews_client.patch_response(resp)
-
+            try:
+                resp["boundary_reviews"] = None
+                boundary_reviews_client = BoundaryReviewsApiClient(
+                    self.request,
+                    postcode=postcode,
+                    uprn=uprn,
+                )
+                resp = boundary_reviews_client.patch_response(resp)
+            except Exception as ex:
+                # Log to sentry, but don't fail to return response
+                sentry_sdk.capture_exception(ex)
+                resp["boundary_reviews"] = "Error fetching boundary reviews"
         return resp
