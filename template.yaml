@@ -55,6 +55,11 @@ Parameters:
     Description: The ARN of the Lambda ingest function
     Type: AWS::SSM::Parameter::Value<String>
 
+  AppBoundaryReviewsDataPrefix:
+    Default: AppBoundaryReviewsDataPrefix
+    Description: S3 Prefix for where boundary review data is
+    Type: AWS::SSM::Parameter::Value<String>
+
   AppDjangoSettingsModule:
     # NB This parameter (and how it reaches the app, and how it's set in
     # developer and CI-managed deployments) is used in
@@ -205,6 +210,7 @@ Resources:
           WDIV_API_KEY: !Ref AppWdivApiKey
           DC_ENVIRONMENT: !Ref DCEnvironment
           LOGGER_ARN: !Ref AppLoggerArn
+          BOUNDARY_REVIEWS_DATA_KEY_PREFIX: !Ref AppBoundaryReviewsDataPrefix
       Events:
         PostcodeRequests:
           Type: Api
