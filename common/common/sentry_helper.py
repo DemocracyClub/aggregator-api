@@ -9,6 +9,7 @@ def init_sentry():
 
         sentry_sdk.init(
             dsn=sentry_dsn,
+            environment=os.environ.get("DC_ENVIRONMENT", "development"),
             traces_sample_rate=0,
             integrations=[
                 StarletteIntegration(transaction_style="endpoint"),
