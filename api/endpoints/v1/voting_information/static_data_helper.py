@@ -64,9 +64,7 @@ class StaticDataHelper(metaclass=ABCMeta):
             # In theory this shouldn't happen
             # but if our 2 copies of AddressBase (local DB and parquet files)
             # are out of sync this will totally happen at some point
-            message = (
-                f"Postcode {self.postcode.with_space} did not exist in outcode Parquet file"
-            )
+            message = f"Postcode {self.postcode.with_space} did not exist in outcode Parquet file"
             scope = get_current_scope()
             scope.fingerprint = ["parquet:postcode_not_in_parquet_file"]
             logging.error(message)
@@ -85,7 +83,6 @@ class StaticDataHelper(metaclass=ABCMeta):
             # so just return
             return postcode_df
 
-
         uprn_df = postcode_df.filter((polars.col("uprn") == str(self.uprn)))
 
         if uprn_df.height == 0:
@@ -93,9 +90,7 @@ class StaticDataHelper(metaclass=ABCMeta):
             # In theory this shouldn't happen
             # but if our 2 copies of AddressBase (local DB and parquet files)
             # are out of sync this will totally happen at some point
-            message = (
-                f"UPRN {str(self.uprn)} did not exist in outcode Parquet file for {self.postcode.with_space}"
-            )
+            message = f"UPRN {str(self.uprn)} did not exist in outcode Parquet file for {self.postcode.with_space}"
             scope = get_current_scope()
             scope.fingerprint = ["parquet:uprn_not_in_parquet_file"]
             logging.error(message)
