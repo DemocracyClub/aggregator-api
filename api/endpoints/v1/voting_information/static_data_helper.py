@@ -7,7 +7,7 @@ from typing import IO, List, Optional
 
 import polars
 from botocore.exceptions import ClientError
-from sentry_sdk import set_context
+from sentry_sdk import get_current_scope, set_context
 from starlette.requests import Request
 
 from common.conf import settings
@@ -50,18 +50,60 @@ class StaticDataHelper(metaclass=ABCMeta):
         ...
 
     def get_data_for_postcode(self):
-        postcode_df = polars.read_parquet(self.get_filename_or_file()).filter(
+        df = polars.read_parquet(self.get_filename_or_file())
+        if df.height == 0:
+            # empty parquet file, return early
+            return df
+
+        postcode_df = df.filter(
             (polars.col("postcode") == self.postcode.with_space)
         )
+
+        if postcode_df.height == 0:
+            # ERROR
+            # In theory this shouldn't happen
+            # but if our 2 copies of AddressBase (local DB and parquet files)
+            # are out of sync this will totally happen at some point
+            message = (
+                f"Postcode {self.postcode.with_space} did not exist in outcode Parquet file"
+            )
+            scope = get_current_scope()
+            scope.fingerprint = ["parquet:postcode_not_in_parquet_file"]
+            logging.error(message)
+
+            # Still return the empty df
+            return postcode_df
+
         self.data_quality_check(postcode_df)
         return postcode_df
 
     def get_data_for_uprn(self):
-        postcode_df = polars.read_parquet(self.get_filename_or_file()).filter(
-            (polars.col("postcode") == self.postcode.with_space)
-        )
-        self.data_quality_check(postcode_df)
-        return postcode_df.filter((polars.col("uprn") == str(self.uprn)))
+        postcode_df = self.get_data_for_postcode()
+
+        if postcode_df.height == 0:
+            # We've already raised an error in get_data_for_postcode
+            # so just return
+            return postcode_df
+
+
+        uprn_df = postcode_df.filter((polars.col("uprn") == str(self.uprn)))
+
+        if uprn_df.height == 0:
+            # ERROR
+            # In theory this shouldn't happen
+            # but if our 2 copies of AddressBase (local DB and parquet files)
+            # are out of sync this will totally happen at some point
+            message = (
+                f"UPRN {str(self.uprn)} did not exist in outcode Parquet file for {self.postcode.with_space}"
+            )
+            scope = get_current_scope()
+            scope.fingerprint = ["parquet:uprn_not_in_parquet_file"]
+            logging.error(message)
+
+            # Still return the empty df
+            return postcode_df
+
+        return uprn_df
 
     def postcode_response(self):
         data = self.get_data_for_postcode()
