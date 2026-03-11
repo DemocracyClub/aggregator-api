@@ -116,9 +116,11 @@ def test_parse_boundary_reviews_parses_json_strings(mock_client):
                     "division_type": "ward",
                     "new_division_official_identifier": "gss:E2",
                     "new_division_slug": "new-ward",
+                    "new_division_name": "New Ward",
                     "new_divisionset_pmtiles_url": "https://example.com/new.pmtiles",
                     "old_division_official_identifier": "gss:E1",
                     "old_division_slug": "old-ward",
+                    "old_division_name": "Old Ward",
                     "old_divisionset_pmtiles_url": "https://example.com/old.pmtiles",
                 }
             ],
@@ -143,9 +145,11 @@ def test_parse_boundary_reviews_parses_json_strings(mock_client):
                     division_type="ward",
                     new_division_official_identifier="gss:E2",
                     new_division_slug="new-ward",
+                    new_division_name="New Ward",
                     new_divisionset_pmtiles_url="https://example.com/new.pmtiles",
                     old_division_official_identifier="gss:E1",
                     old_division_slug="old-ward",
+                    old_division_name="Old Ward",
                     old_divisionset_pmtiles_url="https://example.com/old.pmtiles",
                     ballots=[],
                 )

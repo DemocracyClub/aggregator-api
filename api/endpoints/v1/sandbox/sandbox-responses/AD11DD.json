@@ -224,9 +224,11 @@
           "division_type": "ward",
           "new_division_official_identifier": "gss:E05000638",
           "new_division_slug": "lancaster-gate",
+          "new_division_name": "Lancaster Gate",
           "new_divisionset_pmtiles_url": "https://example.com/new.pmtiles",
           "old_division_official_identifier": "gss:E05000638",
           "old_division_slug": "lancaster-gate",
+          "old_division_name": "Lancaster Gate",
           "old_divisionset_pmtiles_url": "https://example.com/old.pmtiles",
           "ballots": []
         }
