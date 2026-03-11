@@ -10,9 +10,11 @@ class BoundaryChangeModel(BaseDictDataclass):
     division_type: str
     new_division_official_identifier: str
     new_division_slug: str
+    new_division_name: str
     new_divisionset_pmtiles_url: str
     old_division_official_identifier: str
     old_division_slug: str
+    old_division_name: str
     old_divisionset_pmtiles_url: str
     ballots: List[str]
 
@@ -25,11 +27,13 @@ class BoundaryChangeModel(BaseDictDataclass):
                 "new_division_official_identifier"
             ],
             new_division_slug=data["new_division_slug"],
+            new_division_name=data["new_division_name"],
             new_divisionset_pmtiles_url=data["new_divisionset_pmtiles_url"],
             old_division_official_identifier=data[
                 "old_division_official_identifier"
             ],
             old_division_slug=data["old_division_slug"],
+            old_division_name=data["old_division_name"],
             old_divisionset_pmtiles_url=data["old_divisionset_pmtiles_url"],
             ballots=data.get("ballots", []),
         )
