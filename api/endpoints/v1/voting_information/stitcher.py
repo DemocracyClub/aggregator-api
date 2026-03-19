@@ -381,10 +381,6 @@ class Stitcher:
                 ]
         if results:
             results[0]["polling_station"] = self.minimal_wdiv_response
-            if results[0]["polling_station"]["polling_station_known"]:
-                results[0]["advance_voting_station"] = self.wdiv_resp.get(
-                    "advance_voting_station", None
-                )
         resp = {
             "address_picker": False,
             "addresses": [],
