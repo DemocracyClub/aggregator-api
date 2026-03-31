@@ -381,6 +381,10 @@ class Stitcher:
                 ]
         if results:
             results[0]["polling_station"] = self.minimal_wdiv_response
+            if self.query_params.include_2026_pilots:
+                results[0]["alternative_voting_stations"] = self.wdiv_resp.get(
+                    "alternative_voting_stations", None
+                )
         resp = {
             "address_picker": False,
             "addresses": [],
