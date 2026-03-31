@@ -157,6 +157,68 @@ def test_with_accessibility_information():
 
 
 @pytest.mark.time_machine(dt.datetime(2018, 1, 1))
+def test_alternative_voting_stations_included_with_2026_pilots_flag():
+    postcode = "AA12AA"
+    wdiv_json = load_fixture(fixture_map[postcode], "wdiv")
+    wdiv_json["alternative_voting_stations"] = [
+        {"name": "Test Alt Station", "address": "1 Test St"}
+    ]
+    wcivf_json = []
+    for ballot in wdiv_json["ballots"]:
+        wcivf_json.append(
+            load_fixture(fixture_map[postcode], ballot["ballot_paper_id"])
+        )
+
+    request = Request(
+        {
+            "type": "http",
+            "path": f"/api/v1/postcode/{postcode}",
+            "server": ("developers.democracyclub.org.uk", 443),
+            "scheme": "https",
+            "headers": Headers().raw,
+            "query_string": "include_2026_pilots=true",
+        }
+    )
+    query_params = clean_query_params(request, QueryParams)
+
+    s = Stitcher(
+        wdiv_json,
+        wcivf_json,
+        request,
+        query_params,
+        sandbox=True,
+    )
+    resp = s.make_result_known_response()
+    assert resp["dates"][0]["alternative_voting_stations"] == [
+        {"name": "Test Alt Station", "address": "1 Test St"}
+    ]
+
+
+@pytest.mark.time_machine(dt.datetime(2018, 1, 1))
+def test_alternative_voting_stations_excluded_by_default(mock_request):
+    postcode = "AA12AA"
+    wdiv_json = load_fixture(fixture_map[postcode], "wdiv")
+    wdiv_json["alternative_voting_stations"] = [
+        {"name": "Test Alt Station", "address": "1 Test St"}
+    ]
+    wcivf_json = []
+    for ballot in wdiv_json["ballots"]:
+        wcivf_json.append(
+            load_fixture(fixture_map[postcode], ballot["ballot_paper_id"])
+        )
+
+    s = Stitcher(
+        wdiv_json,
+        wcivf_json,
+        mock_request(f"/api/v1/postcode/{postcode}"),
+        QueryParams(),
+        sandbox=True,
+    )
+    resp = s.make_result_known_response()
+    assert "alternative_voting_stations" not in resp["dates"][0]
+
+
+@pytest.mark.time_machine(dt.datetime(2018, 1, 1))
 def test_validate_false_with_mismatched_ballots(mock_request):
     postcode = "AA14AA"
     wdiv_json = load_fixture(fixture_map[postcode], "wdiv")
