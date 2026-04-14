@@ -49,7 +49,6 @@ def s3_prod_bucket(s3_client):
 
 
 @pytest.fixture
-@pytest.mark.django_db
 def user_fixture():
     User = get_user_model()
     return User.objects.create(
@@ -60,7 +59,6 @@ def user_fixture():
 
 
 @pytest.fixture
-@pytest.mark.django_db
 def api_key_fixture(user_fixture):
     return APIKey.objects.create(
         name="Test API Key",
