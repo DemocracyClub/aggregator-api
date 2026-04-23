@@ -6,8 +6,14 @@ import pytest
 from api_users.logging_helpers import APIKeyForLogging
 from api_users.models import APIKey
 from django.contrib.auth import get_user_model
-from django.test.utils import override_settings
 from moto import mock_aws
+
+
+def _set_dc_environment(monkeypatch, env):
+    if env is None:
+        monkeypatch.delenv("DC_ENVIRONMENT", raising=False)
+    else:
+        monkeypatch.setenv("DC_ENVIRONMENT", env)
 
 
 @pytest.fixture
@@ -85,9 +91,9 @@ def test_file_name(api_key):
         ("other", "api-users/aggregator-api/local-dev/latest/"),
     ],
 )
-def test_prefix(api_key, env, expected):
-    with override_settings(DC_ENVIRONMENT=env):
-        assert api_key.prefix == expected
+def test_prefix(api_key, env, expected, monkeypatch):
+    _set_dc_environment(monkeypatch, env)
+    assert api_key.prefix == expected
 
 
 @pytest.mark.parametrize(
@@ -100,16 +106,23 @@ def test_prefix(api_key, env, expected):
         ("other", "local-dev-logging"),
     ],
 )
-def test_bucket(api_key, env, expected):
-    with override_settings(DC_ENVIRONMENT=env):
-        assert api_key.bucket == expected
+def test_bucket(api_key, env, expected, monkeypatch):
+    _set_dc_environment(monkeypatch, env)
+    assert api_key.bucket == expected
 
 
 @pytest.mark.parametrize("env", ["production", "development", "staging"])
 def test_upload_to_s3_deployed(
-    api_key, s3_client, s3_prod_bucket, s3_dev_bucket, env, caplog
+    api_key,
+    s3_client,
+    s3_prod_bucket,
+    s3_dev_bucket,
+    env,
+    caplog,
+    monkeypatch,
 ):
-    with override_settings(DC_ENVIRONMENT=env), mock_aws():
+    _set_dc_environment(monkeypatch, env)
+    with mock_aws():
         # Upload the file
         destination = api_key.upload_to_s3()
         expected_destination = (
@@ -141,9 +154,9 @@ def test_upload_to_s3_deployed(
     assert row[4] == api_key.usage_reason
 
 
-def test_upload_to_s3_local(api_key, caplog):
-    with override_settings(DC_ENVIRONMENT=None):
-        destination = api_key.upload_to_s3()
+def test_upload_to_s3_local(api_key, caplog, monkeypatch):
+    _set_dc_environment(monkeypatch, None)
+    destination = api_key.upload_to_s3()
     expected_destination = (
         f"s3://{api_key.bucket}/{api_key.prefix}{api_key.file_name}"
     )

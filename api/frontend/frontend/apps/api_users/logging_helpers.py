@@ -1,10 +1,10 @@
 import csv
 import logging
+import os
 from dataclasses import dataclass
 from io import StringIO
 
 import boto3
-from django.conf import settings
 
 logger = logging.getLogger()
 
@@ -19,7 +19,7 @@ class APIKeyForLogging:
 
     @property
     def dc_environment(self):
-        return getattr(settings, "DC_ENVIRONMENT", None)
+        return os.environ.get("DC_ENVIRONMENT", None)
 
     @property
     def file_name(self):
