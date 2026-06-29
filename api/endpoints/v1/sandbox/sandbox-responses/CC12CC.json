@@ -52,6 +52,12 @@
           "replaced_by": null,
           "replaces": null,
           "requires_voter_id": "EA-2022",
+          "timetable": {
+            "close_of_nominations": "2018-10-26",
+            "registration_deadline": "2018-11-06",
+            "postal_vote_application_deadline": "2018-11-07",
+            "vac_application_deadline": "2018-11-14"
+          },
           "election_id": "local.westminster.2018-11-22",
           "election_name": "Westminster local election",
           "post_name": "Lancaster Gate",

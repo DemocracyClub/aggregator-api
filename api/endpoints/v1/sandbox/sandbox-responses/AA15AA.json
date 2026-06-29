@@ -38,6 +38,12 @@
           "replaced_by": null,
           "replaces": null,
           "requires_voter_id": "EFA-2002",
+          "timetable": {
+            "close_of_nominations": "2018-04-06",
+            "registration_deadline": "2018-04-17",
+            "postal_vote_application_deadline": "2018-04-13",
+            "vac_application_deadline": null
+          },
           "election_id": "parl.2018-05-03",
           "election_name": "UK Parliament elections",
           "post_name": "West Tyrone",
