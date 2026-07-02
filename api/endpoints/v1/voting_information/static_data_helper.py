@@ -170,7 +170,16 @@ class StaticDataHelper(metaclass=ABCMeta):
             except ClientError as ex:
                 if ex.response["Error"]["Code"] == "NoSuchKey":
                     set_context(
-                        "Missing File", {"s3_key": key, "bucket": bucket}
+                        "Missing File",
+                        {
+                            "s3_key": key,
+                            "bucket": bucket,
+                            "postcode_object": self.postcode.__dict__,
+                            "postcode_param": self.request.path_params.get(
+                                "postcode"
+                            ),
+                            "request_path": self.request.scope.get("path"),
+                        },
                     )
                     logger.error(f"S3 key {key} not found in {bucket}")
                     raise FileNotFoundError()
