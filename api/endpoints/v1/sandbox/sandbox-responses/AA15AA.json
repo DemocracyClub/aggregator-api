@@ -24,7 +24,7 @@
           "ballot_paper_id": "parl.west-tyrone.by.2018-05-03",
           "ballot_title": "West Tyrone by-election",
           "ballot_url": "https://developers.democracyclub.org.uk/api/v1/sandbox/elections/parl.west-tyrone.by.2018-05-03/",
-          "poll_open_date": "2018-11-22",
+          "poll_open_date": "2018-05-03",
           "elected_role": "Member of Parliament",
           "metadata": {
             "ni-voter-id": {
@@ -39,7 +39,9 @@
           "replaces": null,
           "requires_voter_id": "EFA-2002",
           "timetable": {
+            "notice_of_election_deadline": "2018-04-03",
             "close_of_nominations": "2018-04-06",
+            "sopn_publish_deadline": "2018-04-09",
             "registration_deadline": "2018-04-17",
             "postal_vote_application_deadline": "2018-04-13",
             "vac_application_deadline": null

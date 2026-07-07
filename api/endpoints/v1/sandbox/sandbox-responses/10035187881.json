@@ -40,7 +40,9 @@
           "replaces": null,
           "requires_voter_id": "EA-2022",
           "timetable": {
+            "notice_of_election_deadline": "2018-10-18",
             "close_of_nominations": "2018-10-26",
+            "sopn_publish_deadline": "2018-10-29",
             "registration_deadline": "2018-11-06",
             "postal_vote_application_deadline": "2018-11-07",
             "vac_application_deadline": "2018-11-14"
