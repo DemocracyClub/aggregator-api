@@ -37,6 +37,14 @@
           "replaced_by": null,
           "replaces": null,
           "requires_voter_id": "EA-2022",
+          "timetable": {
+            "notice_of_election_deadline": "2018-03-27",
+            "close_of_nominations": "2018-04-06",
+            "sopn_publish_deadline": "2018-04-09",
+            "registration_deadline": "2018-04-17",
+            "postal_vote_application_deadline": "2018-04-18",
+            "vac_application_deadline": "2018-04-25"
+          },
           "seats_contested": 1,
           "candidates": [],
           "ballot_url": "https://developers.democracyclub.org.uk/api/v1/sandbox/elections/mayor.lewisham.2018-05-03/",
@@ -80,6 +88,14 @@
           "replaced_by": "local.lewisham.blackheath.2018-05-10",
           "replaces": null,
           "requires_voter_id": "EA-2022",
+          "timetable": {
+            "notice_of_election_deadline": "2018-03-27",
+            "close_of_nominations": "2018-04-06",
+            "sopn_publish_deadline": "2018-04-09",
+            "registration_deadline": "2018-04-17",
+            "postal_vote_application_deadline": "2018-04-18",
+            "vac_application_deadline": "2018-04-25"
+          },
           "seats_contested": 1,
           "candidates": [
             {

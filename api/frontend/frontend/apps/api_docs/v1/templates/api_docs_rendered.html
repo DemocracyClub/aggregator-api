@@ -283,6 +283,14 @@
           &quot;replaced_by&quot;: null,
           &quot;replaces&quot;: null,
           &quot;requires_voter_id&quot;: &quot;EA-2022&quot;,
+          &quot;timetable&quot;: {
+            &quot;notice_of_election_deadline&quot;: &quot;2017-03-28&quot;,
+            &quot;close_of_nominations&quot;: &quot;2017-04-04&quot;,
+            &quot;sopn_publish_deadline&quot;: &quot;2017-04-05&quot;,
+            &quot;registration_deadline&quot;: &quot;2017-04-13&quot;,
+            &quot;postal_vote_application_deadline&quot;: &quot;2017-04-18&quot;,
+            &quot;vac_application_deadline&quot;: &quot;2017-04-25&quot;
+          },
           &quot;postal_voting_requirements&quot;: &quot;EA-2022&quot;,
           &quot;election_id&quot;: &quot;local.cardiff.2017-05-04&quot;,
           &quot;election_name&quot;: &quot;Cardiff local election&quot;,
@@ -582,6 +590,45 @@
                     null
                   ],
                   &quot;description&quot;: &quot;The type of voter ID required in order to vote in this election. Nullable, or one of Electoral Fraud (Northern Ireland) Act 2002, Elections Act 2022 or one of the pilots.&quot;
+                },
+                &quot;timetable&quot;: {
+                  &quot;type&quot;: &quot;object&quot;,
+                  &quot;properties&quot;: {
+                    &quot;notice_of_election_deadline&quot;: {
+                      &quot;type&quot;: &quot;string&quot;,
+                      &quot;description&quot;: &quot;Date by which a Notice of Election document must be published (ISO 8601).&quot;
+                    },
+                    &quot;close_of_nominations&quot;: {
+                      &quot;type&quot;: [
+                        &quot;string&quot;,
+                        &quot;null&quot;
+                      ],
+                      &quot;description&quot;: &quot;Date when list of candidates will be finalised (ISO 8601). Null if the election is a referendum&quot;
+                    },
+                    &quot;sopn_publish_deadline&quot;: {
+                      &quot;type&quot;: [
+                        &quot;string&quot;,
+                        &quot;null&quot;
+                      ],
+                      &quot;description&quot;: &quot;Date by which a Statement of Persons Nominated document must be published (ISO 8601). Null if the election is a referendum&quot;
+                    },
+                    &quot;registration_deadline&quot;: {
+                      &quot;type&quot;: &quot;string&quot;,
+                      &quot;description&quot;: &quot;Deadline to register to vote (ISO 8601)&quot;
+                    },
+                    &quot;postal_vote_application_deadline&quot;: {
+                      &quot;type&quot;: &quot;string&quot;,
+                      &quot;description&quot;: &quot;Deadline to apply for a postal vote (ISO 8601)&quot;
+                    },
+                    &quot;vac_application_deadline&quot;: {
+                      &quot;type&quot;: [
+                        &quot;string&quot;,
+                        &quot;null&quot;
+                      ],
+                      &quot;description&quot;: &quot;Deadline to apply for a Voter Authority Certificate (ISO 8601). Null if this election does not require ID, and for elections in Northern Ireland&quot;
+                    }
+                  },
+                  &quot;description&quot;: &quot;Key dates leading up to polling day for this ballot&quot;
                 },
                 &quot;postal_voting_requirements&quot;: {
                   &quot;type&quot;: [
@@ -1234,6 +1281,14 @@
           &quot;replaced_by&quot;: null,
           &quot;replaces&quot;: null,
           &quot;requires_voter_id&quot;: &quot;EA-2022&quot;,
+          &quot;timetable&quot;: {
+            &quot;notice_of_election_deadline&quot;: &quot;2017-03-28&quot;,
+            &quot;close_of_nominations&quot;: &quot;2017-04-04&quot;,
+            &quot;sopn_publish_deadline&quot;: &quot;2017-04-05&quot;,
+            &quot;registration_deadline&quot;: &quot;2017-04-13&quot;,
+            &quot;postal_vote_application_deadline&quot;: &quot;2017-04-18&quot;,
+            &quot;vac_application_deadline&quot;: &quot;2017-04-25&quot;
+          },
           &quot;postal_voting_requirements&quot;: &quot;EA-2022&quot;,
           &quot;election_id&quot;: &quot;local.cardiff.2017-05-04&quot;,
           &quot;election_name&quot;: &quot;Cardiff local election&quot;,
@@ -1533,6 +1588,45 @@
                     null
                   ],
                   &quot;description&quot;: &quot;The type of voter ID required in order to vote in this election. Nullable, or one of Electoral Fraud (Northern Ireland) Act 2002, Elections Act 2022 or one of the pilots.&quot;
+                },
+                &quot;timetable&quot;: {
+                  &quot;type&quot;: &quot;object&quot;,
+                  &quot;properties&quot;: {
+                    &quot;notice_of_election_deadline&quot;: {
+                      &quot;type&quot;: &quot;string&quot;,
+                      &quot;description&quot;: &quot;Date by which a Notice of Election document must be published (ISO 8601).&quot;
+                    },
+                    &quot;close_of_nominations&quot;: {
+                      &quot;type&quot;: [
+                        &quot;string&quot;,
+                        &quot;null&quot;
+                      ],
+                      &quot;description&quot;: &quot;Date when list of candidates will be finalised (ISO 8601). Null if the election is a referendum&quot;
+                    },
+                    &quot;sopn_publish_deadline&quot;: {
+                      &quot;type&quot;: [
+                        &quot;string&quot;,
+                        &quot;null&quot;
+                      ],
+                      &quot;description&quot;: &quot;Date by which a Statement of Persons Nominated document must be published (ISO 8601). Null if the election is a referendum&quot;
+                    },
+                    &quot;registration_deadline&quot;: {
+                      &quot;type&quot;: &quot;string&quot;,
+                      &quot;description&quot;: &quot;Deadline to register to vote (ISO 8601)&quot;
+                    },
+                    &quot;postal_vote_application_deadline&quot;: {
+                      &quot;type&quot;: &quot;string&quot;,
+                      &quot;description&quot;: &quot;Deadline to apply for a postal vote (ISO 8601)&quot;
+                    },
+                    &quot;vac_application_deadline&quot;: {
+                      &quot;type&quot;: [
+                        &quot;string&quot;,
+                        &quot;null&quot;
+                      ],
+                      &quot;description&quot;: &quot;Deadline to apply for a Voter Authority Certificate (ISO 8601). Null if this election does not require ID, and for elections in Northern Ireland&quot;
+                    }
+                  },
+                  &quot;description&quot;: &quot;Key dates leading up to polling day for this ballot&quot;
                 },
                 &quot;postal_voting_requirements&quot;: {
                   &quot;type&quot;: [
