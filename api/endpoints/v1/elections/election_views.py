@@ -4,16 +4,24 @@ from starlette.responses import JSONResponse
 from static_elections_client import ElectionsForPostcodeHelper
 from voting_information_api_client import EEApiClient
 
+from common.async_requests import UpstreamApiError
+
 
 async def get_election_list(request: Request):
     client = EEApiClient(request.base_url)
-    result = await client.get_election_list(request.query_params)
+    try:
+        result = await client.get_election_list(request.query_params)
+    except UpstreamApiError as error:
+        return JSONResponse(error.message, status_code=error.status)
     return JSONResponse(result)
 
 
 async def get_single_election(request: Request):
     client = EEApiClient(request.base_url)
-    result = await client.get_single_election(request.path_params["slug"])
+    try:
+        result = await client.get_single_election(request.path_params["slug"])
+    except UpstreamApiError as error:
+        return JSONResponse(error.message, status_code=error.status)
     return JSONResponse(result)
 
 

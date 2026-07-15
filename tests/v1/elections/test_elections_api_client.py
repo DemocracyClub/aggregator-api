@@ -44,6 +44,23 @@ def test_clean_query_params(elections_app_client):
 
 
 @pytest.mark.asyncio
+async def test_get_election_list_upstream_error(
+    respx_mock, elections_app_client
+):
+    respx_mock.get(
+        "https://elections.democracyclub.org.uk/api/elections/"
+    ).mock(
+        return_value=httpx.Response(
+            404,
+            json={"detail": "Not found."},
+        )
+    )
+    response = elections_app_client.get("/api/v1/elections/")
+    assert response.status_code == 404
+    assert response.json() == {"error": "Not found."}
+
+
+@pytest.mark.asyncio
 async def test_get_election_list(respx_mock, elections_app_client):
     respx_mock.get(
         "https://elections.democracyclub.org.uk/api/elections/"
@@ -60,6 +77,22 @@ async def test_get_election_list(respx_mock, elections_app_client):
         "elections_endpoint/test_every_election_list", "expected_output"
     )
     assert expected == response.json()
+
+
+def test_get_single_election_upstream_error(respx_mock, elections_app_client):
+    respx_mock.get(
+        "https://elections.democracyclub.org.uk/api/elections/not-a-real-election/"
+    ).mock(
+        return_value=httpx.Response(
+            404,
+            json={"detail": "Not found."},
+        )
+    )
+    response = elections_app_client.get(
+        "/api/v1/elections/not-a-real-election/"
+    )
+    assert response.status_code == 404
+    assert response.json() == {"error": "Not found."}
 
 
 def test_get_single_election(respx_mock, elections_app_client):
