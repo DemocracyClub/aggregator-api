@@ -29,8 +29,7 @@ class StaticDataHelper(metaclass=ABCMeta):
         return f"{self.postcode.outcode}.parquet"
 
     @abstractmethod
-    def get_file_path(self):
-        ...
+    def get_file_path(self): ...
 
     def get_local_file_name(self):
         if not settings.LOCAL_DATA_PATH:
@@ -46,8 +45,7 @@ class StaticDataHelper(metaclass=ABCMeta):
         return local_file_path
 
     @abstractmethod
-    def get_bucket_name(self):
-        ...
+    def get_bucket_name(self): ...
 
     def get_data_for_postcode(self):
         df = polars.read_parquet(self.get_filename_or_file())
@@ -244,8 +242,7 @@ class Postcode:
         return self.without_space
 
 
-class FileNotFoundError(ValueError):
-    ...
+class FileNotFoundError(ValueError): ...
 
 
 class DuplicateUPRNError(ValueError):

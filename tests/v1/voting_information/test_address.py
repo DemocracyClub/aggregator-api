@@ -187,11 +187,14 @@ def test_no_postcode_logs_error(respx_mock, vi_app_client, api_settings):
             )
         )
 
-    with patch(
-        "api.endpoints.v1.voting_information.address.sentry_logger.error"
-    ) as mock_sentry_error, patch(
-        "api.endpoints.v1.voting_information.address.Stitcher.make_result_known_response"
-    ) as mock_result:
+    with (
+        patch(
+            "api.endpoints.v1.voting_information.address.sentry_logger.error"
+        ) as mock_sentry_error,
+        patch(
+            "api.endpoints.v1.voting_information.address.Stitcher.make_result_known_response"
+        ) as mock_result,
+    ):
         # Mock the result to have no postcode
         mock_result.return_value = {
             "dates": [],
