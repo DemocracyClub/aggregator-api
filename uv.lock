@@ -55,7 +55,7 @@ dev = [
     { name = "pytest-asyncio", specifier = "==1.3.0" },
     { name = "pytest-cov", specifier = "==4.1.0" },
     { name = "pytest-django", specifier = "==4.8.0" },
-    { name = "pytest-ruff", specifier = "==0.3.1" },
+    { name = "pytest-ruff", specifier = "==0.5" },
     { name = "respx", specifier = "==0.21.1" },
     { name = "ruff", specifier = "==0.15.22" },
     { name = "time-machine", specifier = "==3.0.0" },
@@ -980,15 +980,15 @@ wheels = [
 
 [[package]]
 name = "pytest-ruff"
-version = "0.3.1"
+version = "0.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pytest" },
     { name = "ruff" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/93/85/65daa94d5e3a3fd3d74fe1a3dbe772943e5aa63e78bc2d90d019de45ba35/pytest_ruff-0.3.1.tar.gz", hash = "sha256:c9f7392a3384af73a6a72741a4035a605480a7a8e7a4bd8da05a98e6664cffb5", size = 3830, upload-time = "2024-03-10T12:49:59.751Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/32/5a/bee55130757fb4a14e0ac5d2c6558323275b5dccfa2f5353f3893299ff7d/pytest_ruff-0.5.tar.gz", hash = "sha256:f611c780fc2b9b8d7041fa0e7589f0a9f352b288d0cfc330881101b35d382063", size = 3854, upload-time = "2025-06-19T07:26:24.607Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d8/23/b73c1036ca593db850db7a6d6172bfe4247d3ae02c22118942f0e359690d/pytest_ruff-0.3.1-py3-none-any.whl", hash = "sha256:008556576fb1bda93a432ad381432bfd5575cc94627d22bfdece46561b8e4f7f", size = 4502, upload-time = "2024-03-10T12:49:58.812Z" },
+    { url = "https://files.pythonhosted.org/packages/1d/ca/abfce6de0bb0f017ed05ef9f2330596235cc5a3341b4d8d40895682b3814/pytest_ruff-0.5-py3-none-any.whl", hash = "sha256:d9db170d86fb167008e6702b4d79e2cccd8287f069c3a57f9261831cebdc4a31", size = 4680, upload-time = "2025-06-19T07:26:23.897Z" },
 ]
 
 [[package]]
