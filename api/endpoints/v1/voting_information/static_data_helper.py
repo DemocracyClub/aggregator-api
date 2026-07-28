@@ -7,10 +7,9 @@ from typing import IO, List, Optional
 
 import polars
 from botocore.exceptions import ClientError
+from common.conf import settings
 from sentry_sdk import get_current_scope, set_context
 from starlette.requests import Request
-
-from common.conf import settings
 
 logger = logging.getLogger(__name__)
 

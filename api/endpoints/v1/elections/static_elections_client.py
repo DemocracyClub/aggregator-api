@@ -11,10 +11,9 @@ from urllib.parse import urljoin
 import httpx
 import polars
 from botocore.exceptions import ClientError
-from starlette.requests import Request
-
 from common.async_requests import AsyncRequester
 from common.conf import settings
+from starlette.requests import Request
 
 logger = logging.getLogger(__name__)
 

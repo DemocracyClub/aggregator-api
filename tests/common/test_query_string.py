@@ -1,9 +1,8 @@
 from dataclasses import dataclass
 
 import pytest
-from starlette.requests import Request
-
 from common.query_string import clean_query_params
+from starlette.requests import Request
 
 
 @dataclass

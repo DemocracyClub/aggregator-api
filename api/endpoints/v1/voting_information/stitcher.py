@@ -6,11 +6,10 @@ from typing import Dict, List, Optional
 
 import sentry_sdk
 from boundary_changes.client import BoundaryReviewsApiClient
-from recall_petitions.client import RecallPetitionApiClient
-from starlette.requests import Request
-
 from common.conf import settings
 from common.url_resolver import build_absolute_url
+from recall_petitions.client import RecallPetitionApiClient
+from starlette.requests import Request
 
 logger = logging.getLogger(__name__)
 

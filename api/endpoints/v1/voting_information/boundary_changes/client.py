@@ -4,10 +4,9 @@ from pathlib import Path
 
 import polars
 import sentry_sdk
+from common.conf import settings
 from polars import DataFrame
 from static_data_helper import AddressModel, FileNotFoundError, StaticDataHelper
-
-from common.conf import settings
 
 from .models import (
     BaseBoundaryReviewsResponse,
