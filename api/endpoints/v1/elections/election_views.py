@@ -1,10 +1,9 @@
+from common.async_requests import UpstreamApiError
 from dc_logging_client import DCWidePostcodeLoggingClient
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from static_elections_client import ElectionsForPostcodeHelper
 from voting_information_api_client import EEApiClient
-
-from common.async_requests import UpstreamApiError
 
 
 async def get_election_list(request: Request):

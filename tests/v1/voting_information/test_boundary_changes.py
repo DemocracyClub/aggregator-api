@@ -168,9 +168,8 @@ def test_query_to_dict_returns_none_for_empty_dataframe(
 def test_query_to_dict_returns_address_picker_when_split(
     mock_client, split_dataframe
 ):
-    mock_client.request.url_for = (
-        lambda name,
-        **kwargs: f"https://example.com/{name}/{kwargs.get('uprn')}"
+    mock_client.request.url_for = lambda name, **kwargs: (
+        f"https://example.com/{name}/{kwargs.get('uprn')}"
     )
 
     result = mock_client.query_to_dict(split_dataframe)
@@ -220,9 +219,8 @@ def test_patch_response_returns_address_picker_when_boundary_data_is_split(
     When boundary data is split (different addresses have different boundary
     reviews), patch_response should return an address picker response.
     """
-    mock_client.request.url_for = (
-        lambda name,
-        **kwargs: f"https://example.com/{name}/{kwargs.get('uprn')}"
+    mock_client.request.url_for = lambda name, **kwargs: (
+        f"https://example.com/{name}/{kwargs.get('uprn')}"
     )
     mock_client.postcode_response = lambda: {
         "address_picker": True,

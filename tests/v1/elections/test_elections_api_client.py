@@ -120,7 +120,7 @@ def test_filter_single_election_empty():
     client = EEApiClient()
     # if none of the keys we're trying to remove are present
     # we should just pass the object without throwing an exception
-    assert {} == client.filter_single_election({})
+    assert client.filter_single_election({}) == {}
 
 
 def test_filter_single_election_valid():

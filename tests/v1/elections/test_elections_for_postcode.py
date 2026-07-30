@@ -6,12 +6,11 @@ import httpx
 import polars
 import pytest
 import respx
+from common.async_requests import UpstreamApiError
 from endpoints.v1.elections import app
 from httpx import Response
 from starlette.testclient import TestClient
 from static_elections_client import ballot_paper_id_to_static_url
-
-from common.async_requests import UpstreamApiError
 
 
 @pytest.fixture(scope="function")

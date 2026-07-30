@@ -1,6 +1,7 @@
 import datetime as dt
 
 import pytest
+from common.query_string import clean_query_params
 from config import QueryParams
 from starlette.datastructures import Headers
 from starlette.requests import Request
@@ -12,7 +13,6 @@ from voting_information.stitcher import (
     get_ballot_cancellation_reason_data,
 )
 
-from common.query_string import clean_query_params
 from tests.helpers import fixture_map, load_fixture, load_sandbox_output
 
 

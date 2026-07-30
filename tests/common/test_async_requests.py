@@ -1,6 +1,5 @@
 import httpx
 import pytest
-
 from common.async_requests import (
     AsyncRequester,
     UpstreamApiError,
