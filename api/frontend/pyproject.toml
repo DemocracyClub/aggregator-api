@@ -9,7 +9,7 @@ dependencies = [
     "django-apiblueprint-view==3.0.1",
     "django-storages==1.14.6",
     "django-sesame==3.2.2",
-    "setuptools==78.1.1",
+    "setuptools==83.0.0",
     "whitenoise==6.4.0",
     "aws-wsgi",
     "dc-design-system",
