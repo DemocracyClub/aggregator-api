@@ -16,7 +16,7 @@ class BoundaryChangeModel(BaseDictDataclass):
     old_division_slug: str
     old_division_name: str
     old_divisionset_pmtiles_url: str
-    ballots: List[str]
+    related_ballots: List[str]
 
     @classmethod
     def from_dict(cls, data: dict):
@@ -35,7 +35,7 @@ class BoundaryChangeModel(BaseDictDataclass):
             old_division_slug=data["old_division_slug"],
             old_division_name=data["old_division_name"],
             old_divisionset_pmtiles_url=data["old_divisionset_pmtiles_url"],
-            ballots=data.get("ballots", []),
+            related_ballots=data["related_ballots"],
         )
 
 
