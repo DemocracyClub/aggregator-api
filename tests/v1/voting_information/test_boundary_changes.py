@@ -122,6 +122,7 @@ def test_parse_boundary_reviews_parses_json_strings(mock_client):
                     "old_division_slug": "old-ward",
                     "old_division_name": "Old Ward",
                     "old_divisionset_pmtiles_url": "https://example.com/old.pmtiles",
+                    "related_ballots": '["test.ballot"]',
                 }
             ],
         }
@@ -151,7 +152,7 @@ def test_parse_boundary_reviews_parses_json_strings(mock_client):
                     old_division_slug="old-ward",
                     old_division_name="Old Ward",
                     old_divisionset_pmtiles_url="https://example.com/old.pmtiles",
-                    ballots=[],
+                    related_ballots=["test.ballot"],
                 )
             ],
         )
