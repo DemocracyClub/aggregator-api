@@ -152,7 +152,7 @@ jobs:
     - run:
         name: "Migrate database"
         command: |
-          AWS_REGION=eu-west-2 aws lambda invoke --function-name ApiFrontendManagementFunction --payload '{ "command": "migrate", "args": ["--no-input"] }' --cli-binary-format raw-in-base64-out -
+          AWS_REGION=eu-west-2 aws lambda invoke --function-name ApiFrontendManagementFunction --payload '{ "command": "migrate", "args": ["--no-input"] }' --cli-binary-format raw-in-base64-out - | grep --invert-match 'FunctionError'
 
     - run:
         name:   "Install test dependencies"
