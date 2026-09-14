@@ -44,6 +44,8 @@
             "sopn_publish_deadline": "2018-04-09",
             "registration_deadline": "2018-04-17",
             "postal_vote_application_deadline": "2018-04-13",
+            "proxy_vote_application_deadline": "2018-04-13",
+            "replacement_pack_start_date": null,
             "vac_application_deadline": null
           },
           "election_id": "parl.2018-05-03",

@@ -59,6 +59,8 @@
         "sopn_publish_deadline": "2018-04-09",
         "registration_deadline": "2018-04-17",
         "postal_vote_application_deadline": "2018-04-18",
+        "proxy_vote_application_deadline": "2018-04-25",
+        "replacement_pack_start_date": "2018-04-27",
         "vac_application_deadline": "2018-04-25"
       }
     },
@@ -79,6 +81,8 @@
         "sopn_publish_deadline": "2018-04-09",
         "registration_deadline": "2018-04-17",
         "postal_vote_application_deadline": "2018-04-18",
+        "proxy_vote_application_deadline": "2018-04-25",
+        "replacement_pack_start_date": "2018-04-27",
         "vac_application_deadline": "2018-04-25"
       }
     },
@@ -99,6 +103,8 @@
         "sopn_publish_deadline": "2018-04-13",
         "registration_deadline": "2018-04-23",
         "postal_vote_application_deadline": "2018-04-24",
+        "proxy_vote_application_deadline": "2018-05-01",
+        "replacement_pack_start_date": "2018-05-03",
         "vac_application_deadline": "2018-05-01"
       }
     },
@@ -119,6 +125,8 @@
         "sopn_publish_deadline": "2018-05-18",
         "registration_deadline": "2018-05-29",
         "postal_vote_application_deadline": "2018-05-30",
+        "proxy_vote_application_deadline": "2018-06-06",
+        "replacement_pack_start_date": "2018-06-08",
         "vac_application_deadline": "2018-06-06"
       }
     }

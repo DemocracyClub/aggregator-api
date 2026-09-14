@@ -106,6 +106,8 @@
         "sopn_publish_deadline": "2018-10-29",
         "registration_deadline": "2018-11-06",
         "postal_vote_application_deadline": "2018-11-07",
+        "proxy_vote_application_deadline": "2018-11-14",
+        "replacement_pack_start_date": "2018-11-16",
         "vac_application_deadline": "2018-11-14"
       }
     }
