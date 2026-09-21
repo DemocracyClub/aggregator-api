@@ -43,6 +43,8 @@
             "sopn_publish_deadline": "2018-04-09",
             "registration_deadline": "2018-04-17",
             "postal_vote_application_deadline": "2018-04-18",
+            "proxy_vote_application_deadline": "2018-04-25",
+            "replacement_pack_start_date": "2018-04-27",
             "vac_application_deadline": "2018-04-25"
           },
           "seats_contested": 1,
@@ -94,6 +96,8 @@
             "sopn_publish_deadline": "2018-04-09",
             "registration_deadline": "2018-04-17",
             "postal_vote_application_deadline": "2018-04-18",
+            "proxy_vote_application_deadline": "2018-04-25",
+            "replacement_pack_start_date": "2018-04-27",
             "vac_application_deadline": "2018-04-25"
           },
           "seats_contested": 1,
