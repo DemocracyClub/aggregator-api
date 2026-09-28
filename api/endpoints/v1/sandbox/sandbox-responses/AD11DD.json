@@ -199,6 +199,7 @@
   "boundary_reviews": [
     {
       "id": "123",
+      "dc_stage": "MAP",
       "consultation_url": "https://example.com/boundary-review",
       "effective_date": "2026-05-07",
       "legislation_title": "The Test Boundary Order 2025",
