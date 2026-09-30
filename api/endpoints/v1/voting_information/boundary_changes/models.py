@@ -16,7 +16,7 @@ class BoundaryChangeModel(BaseDictDataclass):
     old_division_slug: str
     old_division_name: str
     old_divisionset_pmtiles_url: str
-    ballots: List[str]
+    related_ballots: List[str]
 
     @classmethod
     def from_dict(cls, data: dict):
@@ -35,13 +35,14 @@ class BoundaryChangeModel(BaseDictDataclass):
             old_division_slug=data["old_division_slug"],
             old_division_name=data["old_division_name"],
             old_divisionset_pmtiles_url=data["old_divisionset_pmtiles_url"],
-            ballots=data.get("ballots", []),
+            related_ballots=data["related_ballots"],
         )
 
 
 @dataclass(eq=True, unsafe_hash=True)
 class BoundaryReviewModel(BaseDictDataclass):
     id: str
+    dc_stage: str
     consultation_url: str
     effective_date: str
     legislation_title: str
@@ -54,6 +55,7 @@ class BoundaryReviewModel(BaseDictDataclass):
     def from_dict(cls, data: dict):
         return cls(
             id=str(data["boundary_review_id"]),
+            dc_stage=data["boundary_review_details"]["dc_stage"],
             consultation_url=data["boundary_review_details"][
                 "consultation_url"
             ],

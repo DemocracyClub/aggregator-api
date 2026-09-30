@@ -104,6 +104,7 @@ def test_parse_boundary_reviews_parses_json_strings(mock_client):
             "boundary_review_id": "123",
             "boundary_review_details": {
                 "consultation_url": "https://example.com",
+                "dc_stage": "MAP",
                 "effective_date": "2025-05-01",
                 "legislation_title": "Test Legislation",
                 "organisation_name": "Test Council",
@@ -122,6 +123,7 @@ def test_parse_boundary_reviews_parses_json_strings(mock_client):
                     "old_division_slug": "old-ward",
                     "old_division_name": "Old Ward",
                     "old_divisionset_pmtiles_url": "https://example.com/old.pmtiles",
+                    "related_ballots": ["test.ballot"],
                 }
             ],
         }
@@ -133,6 +135,7 @@ def test_parse_boundary_reviews_parses_json_strings(mock_client):
     expected = [
         BoundaryReviewModel(
             id="123",
+            dc_stage="MAP",
             consultation_url="https://example.com",
             effective_date="2025-05-01",
             legislation_title="Test Legislation",
@@ -151,7 +154,7 @@ def test_parse_boundary_reviews_parses_json_strings(mock_client):
                     old_division_slug="old-ward",
                     old_division_name="Old Ward",
                     old_divisionset_pmtiles_url="https://example.com/old.pmtiles",
-                    ballots=[],
+                    related_ballots=["test.ballot"],
                 )
             ],
         )
